@@ -74,7 +74,7 @@ int SV_OrgVisibleBox(vec3_t org1, vec3_t mins, vec3_t maxs, vec3_t org2, int ign
 	return 0;
 }
 
-void *BotVMShift( intptr_t ptr );
+void *BotVMShift(intptr_t ptr);
 
 void SV_BotWaypointReception(int wpnum, wpobject_t **wps)
 {
@@ -94,7 +94,7 @@ void SV_BotWaypointReception(int wpnum, wpobject_t **wps)
 SV_BotCalculatePaths
 ==================
 */
-void SV_BotCalculatePaths( int /*rmg*/ )
+void SV_BotCalculatePaths(int /*rmg*/)
 {
 	int i;
 	int c;
@@ -191,17 +191,17 @@ int SV_BotAllocateClient(void) {
 	client_t	*cl;
 
 	// find a client slot
-	for ( i = 0, cl = svs.clients; i < sv_maxclients->integer; i++, cl++ ) {
-		if ( cl->state == CS_FREE ) {
+	for (i = 0, cl = svs.clients; i < sv_maxclients->integer; i++, cl++) {
+		if (cl->state == CS_FREE) {
 			break;
 		}
 	}
 
-	if ( i == sv_maxclients->integer ) {
+	if (i == sv_maxclients->integer) {
 		return -1;
 	}
 
-	cl->gentity = SV_GentityNum( i );
+	cl->gentity = SV_GentityNum(i);
 	cl->gentity->s.number = i;
 	cl->state = CS_ACTIVE;
 	cl->lastPacketTime = svs.time;
@@ -217,21 +217,21 @@ int SV_BotAllocateClient(void) {
 SV_BotFreeClient
 ==================
 */
-void SV_BotFreeClient( int clientNum ) {
+void SV_BotFreeClient(int clientNum) {
 	client_t	*cl;
 
-	if ( clientNum < 0 || clientNum >= sv_maxclients->integer ) {
-		Com_Error( ERR_DROP, "SV_BotFreeClient: bad clientNum: %i", clientNum );
+	if (clientNum < 0 || clientNum >= sv_maxclients->integer) {
+		Com_Error(ERR_DROP, "SV_BotFreeClient: bad clientNum: %i", clientNum);
 	}
 	cl = &svs.clients[clientNum];
 	cl->state = CS_FREE;
 	cl->name[0] = 0;
-	if ( cl->gentity ) {
+	if (cl->gentity) {
 		cl->gentity->r.svFlags &= ~SVF_BOT;
 	}
 
-	if ( cl->demo.demorecording ) {
-		SV_StopRecordDemo( cl );
+	if (cl->demo.demorecording) {
+		SV_StopRecordDemo(cl);
 	}
 }
 
@@ -431,7 +431,7 @@ BotImport_GetMemoryGame
 void *Bot_GetMemoryGame(int size) {
 	void *ptr;
 
-	ptr = Z_Malloc( size, TAG_BOTGAME, qtrue );
+	ptr = Z_Malloc(size, TAG_BOTGAME, qtrue);
 
 	return ptr;
 }
@@ -453,7 +453,7 @@ BotImport_GetMemory
 void *BotImport_GetMemory(int size) {
 	void *ptr;
 
-	ptr = Z_Malloc( size, TAG_BOTLIB, qtrue );
+	ptr = Z_Malloc(size, TAG_BOTLIB, qtrue);
 	return ptr;
 }
 
@@ -471,11 +471,11 @@ void BotImport_FreeMemory(void *ptr) {
 BotImport_HunkAlloc
 =================
 */
-void *BotImport_HunkAlloc( int size ) {
-	if( Hunk_CheckMark() ) {
-		Com_Error( ERR_DROP, "SV_Bot_HunkAlloc: Alloc with marks already set\n" );
+void *BotImport_HunkAlloc(int size) {
+	if(Hunk_CheckMark()) {
+		Com_Error(ERR_DROP, "SV_Bot_HunkAlloc: Alloc with marks already set\n");
 	}
-	return Hunk_Alloc( size, h_high );
+	return Hunk_Alloc(size, h_high);
 }
 
 /*
@@ -589,8 +589,8 @@ void BotImport_DebugLineShow(int line, vec3_t start, vec3_t end, int color) {
 SV_BotClientCommand
 ==================
 */
-void BotClientCommand( int client, char *command ) {
-	SV_ExecuteClientCommand( &svs.clients[client], command, qtrue );
+void BotClientCommand(int client, char *command) {
+	SV_ExecuteClientCommand(&svs.clients[client], command, qtrue);
 }
 
 /*
@@ -598,13 +598,13 @@ void BotClientCommand( int client, char *command ) {
 SV_BotFrame
 ==================
 */
-void SV_BotFrame( int time ) {
+void SV_BotFrame(int time) {
 	if (!bot_enable)
 		return;
 	//NOTE: maybe the game is already shutdown
 	if (!svs.gameStarted)
 		return;
-	GVM_BotAIStartFrame( time );
+	GVM_BotAIStartFrame(time);
 }
 
 /*
@@ -612,13 +612,13 @@ void SV_BotFrame( int time ) {
 SV_BotLibSetup
 ===============
 */
-int SV_BotLibSetup( void ) {
+int SV_BotLibSetup(void) {
 	if (!bot_enable) {
 		return 0;
 	}
 
-	if ( !botlib_export ) {
-		Com_Printf( S_COLOR_RED "Error: SV_BotLibSetup without SV_BotInitBotLib\n" );
+	if (!botlib_export) {
+		Com_Printf(S_COLOR_RED "Error: SV_BotLibSetup without SV_BotInitBotLib\n");
 		return -1;
 	}
 
@@ -633,9 +633,9 @@ Called when either the entire server is being killed, or
 it is changing to a different game directory.
 ===============
 */
-int SV_BotLibShutdown( void ) {
+int SV_BotLibShutdown(void) {
 
-	if ( !botlib_export ) {
+	if (!botlib_export) {
 		return -1;
 	}
 
@@ -681,7 +681,7 @@ void SV_BotInitCvars(void) {
 	Cvar_Get("bot_interbreedwrite", "", CVAR_CHEAT);	//write interbreeded bots to this file
 }
 
-extern botlib_export_t *GetBotLibAPI( int apiVersion, botlib_import_t *import );
+extern botlib_export_t *GetBotLibAPI(int apiVersion, botlib_import_t *import);
 
 // there's no such thing as this now, since the zone is unlimited, but I have to provide something
 //	so it doesn't run out of control alloc-wise (since the bot code calls this in a while() loop to free
@@ -690,7 +690,7 @@ extern botlib_export_t *GetBotLibAPI( int apiVersion, botlib_import_t *import );
 static int bot_Z_AvailableMemory(void)
 {
 	const int iMaxBOTLIBMem = 8 * 1024 * 1024;	// adjust accordingly.
-	return iMaxBOTLIBMem - Z_MemSize( TAG_BOTLIB );
+	return iMaxBOTLIBMem - Z_MemSize(TAG_BOTLIB);
 }
 
 /*
@@ -736,7 +736,7 @@ void SV_BotInitBotLib(void) {
 	botlib_import.DebugPolygonCreate = BotImport_DebugPolygonCreate;
 	botlib_import.DebugPolygonDelete = BotImport_DebugPolygonDelete;
 
-	botlib_export = (botlib_export_t *)GetBotLibAPI( BOTLIB_API_VERSION, &botlib_import );
+	botlib_export = (botlib_export_t *)GetBotLibAPI(BOTLIB_API_VERSION, &botlib_import);
 	assert(botlib_export);
 }
 
@@ -750,7 +750,7 @@ void SV_BotInitBotLib(void) {
 SV_BotGetConsoleMessage
 ==================
 */
-int SV_BotGetConsoleMessage( int client, char *buf, int size )
+int SV_BotGetConsoleMessage(int client, char *buf, int size)
 {
 	client_t	*cl;
 	int			index;
@@ -758,18 +758,18 @@ int SV_BotGetConsoleMessage( int client, char *buf, int size )
 	cl = &svs.clients[client];
 	cl->lastPacketTime = svs.time;
 
-	if ( cl->reliableAcknowledge == cl->reliableSequence ) {
+	if (cl->reliableAcknowledge == cl->reliableSequence) {
 		return qfalse;
 	}
 
 	cl->reliableAcknowledge++;
-	index = cl->reliableAcknowledge & ( MAX_RELIABLE_COMMANDS - 1 );
+	index = cl->reliableAcknowledge & (MAX_RELIABLE_COMMANDS - 1);
 
-	if ( !cl->reliableCommands[index][0] ) {
+	if (!cl->reliableCommands[index][0]) {
 		return qfalse;
 	}
 
-	Q_strncpyz( buf, cl->reliableCommands[index], size );
+	Q_strncpyz(buf, cl->reliableCommands[index], size);
 	return qtrue;
 }
 
@@ -779,15 +779,15 @@ int SV_BotGetConsoleMessage( int client, char *buf, int size )
 EntityInPVS
 ==================
 */
-int EntityInPVS( int client, int entityNum ) {
+int EntityInPVS(int client, int entityNum) {
 	client_t			*cl;
 	clientSnapshot_t	*frame;
 	int					i;
 
 	cl = &svs.clients[client];
 	frame = &cl->frames[cl->netchan.outgoingSequence & PACKET_MASK];
-	for ( i = 0; i < frame->num_entities; i++ )	{
-		if ( svs.snapshotEntities[(frame->first_entity + i) % svs.numSnapshotEntities].number == entityNum ) {
+	for (i = 0; i < frame->num_entities; i++)	{
+		if (svs.snapshotEntities[(frame->first_entity + i) % svs.numSnapshotEntities].number == entityNum) {
 			return qtrue;
 		}
 	}
@@ -800,7 +800,7 @@ int EntityInPVS( int client, int entityNum ) {
 SV_BotGetSnapshotEntity
 ==================
 */
-int SV_BotGetSnapshotEntity( int client, int sequence ) {
+int SV_BotGetSnapshotEntity(int client, int sequence) {
 	client_t			*cl;
 	clientSnapshot_t	*frame;
 

@@ -35,7 +35,7 @@ namespace
 		vec3_t velocity;
 	};
 
-	void RB_UpdateWindObject( windObject_t *wo )
+	void RB_UpdateWindObject(windObject_t *wo)
 	{
 		if (wo->targetVelocityTimeRemaining == 0)
 		{
@@ -68,13 +68,13 @@ namespace
 		VectorAdd(wo->currentVelocity, deltaVelocity, wo->currentVelocity);
 	}
 
-	void GenerateRainModel( weatherObject_t& ws, const int maxParticleCount )
+	void GenerateRainModel(weatherObject_t& ws, const int maxParticleCount)
 	{
 		const int mapExtentZ = (int)(tr.world->bmodels[0].bounds[1][2] - tr.world->bmodels[0].bounds[0][2]);
 		const int PARTICLE_COUNT = (int)(maxParticleCount * mapExtentZ / CHUNK_EXTENDS);
 		std::vector<rainVertex_t> rainVertices(PARTICLE_COUNT * CHUNK_COUNT);
 
-		for ( int i = 0; i < rainVertices.size(); ++i )
+		for (int i = 0; i < rainVertices.size(); ++i)
 		{
 			rainVertex_t& vertex = rainVertices[i];
 			vertex.position[0] = Q_flrand(-HALF_CHUNK_EXTENDS, HALF_CHUNK_EXTENDS);
@@ -1113,7 +1113,7 @@ void R_AddWeatherSurfaces()
 	);
 }
 
-void RB_SurfaceWeather( srfWeather_t *surf )
+void RB_SurfaceWeather(srfWeather_t *surf)
 {
 	assert(tr.weatherSystem);
 

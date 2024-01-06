@@ -114,7 +114,7 @@ typedef struct
 
 	// some new stuff added for dynamic music, to allow "how many seconds left to play" queries...
 	//
-	// ( m_lengthInSeconds = ((iUnpackedDataLength / iRate) / iChannels) / iWidth; )
+	// (m_lengthInSeconds = ((iUnpackedDataLength / iRate) / iChannels) / iWidth;)
 	//
 	// Note that these fields are only valid/initialised if MP3Stream_InitPlayingTimeFields() was called.
 	//	If not, this->iTimeQuery_UnpackedLength will be zero.

@@ -200,7 +200,7 @@ uint32_t Com_BlockChecksum (const void *buffer, int length)
 	int				digest[4];
 	uint32_t	val;
 
-	mdfour( (byte *)digest, (byte *)buffer, length );
+	mdfour((byte *)digest, (byte *)buffer, length);
 
 	val = digest[0] ^ digest[1] ^ digest[2] ^ digest[3];
 

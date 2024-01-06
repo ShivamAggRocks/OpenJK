@@ -61,9 +61,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////////////////////
 // Externs
 ////////////////////////////////////////////////////////////////////////////////////////
-extern Vehicle_t *G_IsRidingVehicle( gentity_t *ent );
-extern void G_SoundAtSpot( vec3_t org, int soundIndex, qboolean broadcast );
-extern void CG_DrawEdge( vec3_t start, vec3_t end, int type );
+extern Vehicle_t *G_IsRidingVehicle(gentity_t *ent);
+extern void G_SoundAtSpot(vec3_t org, int soundIndex, qboolean broadcast);
+extern void CG_DrawEdge(vec3_t start, vec3_t end, int type);
 
 
 
@@ -110,7 +110,7 @@ void	Pilot_Update(void)
 		{
 			mActivePilotCount++;
 		}
-		if ( g_entities[i].inuse &&
+		if (g_entities[i].inuse &&
 			 g_entities[i].client &&
 			 g_entities[i].m_pVehicle &&
 			!g_entities[i].owner &&
@@ -389,7 +389,7 @@ void	Pilot_Update_Enemy()
 				(EG2_Collision)0, 0);
 
 			if ((mPilotViewTrace.allsolid==qfalse) &&
-				(mPilotViewTrace.startsolid==qfalse ) &&
+				(mPilotViewTrace.startsolid==qfalse) &&
 				((mPilotViewTrace.entityNum==NPC->enemy->s.number)||(mPilotViewTrace.entityNum==NPC->enemy->s.m_iVehicleNum)))
 			{
 				TIMER_Set(NPC, "PilotRemoveTime", MIN_STAY_VIEWABLE_TIME);
@@ -734,7 +734,7 @@ void	Pilot_Steer_Vehicle()
 				//}
 				WeaponThink(qtrue);
 			}
-			ucmd.rightmove = (EnemySide==Side_Left)?( 127):(-127);
+			ucmd.rightmove = (EnemySide==Side_Left)?(127):(-127);
 		}
 		else
 		{

@@ -343,15 +343,15 @@ int BotMindTricked(int botClient, int enemyClient)
 int BotGetWeaponRange(bot_state_t *bs);
 int PassLovedOneCheck(bot_state_t *bs, gentity_t *ent);
 
-void ExitLevel( void );
+void ExitLevel(void);
 
 void QDECL BotAI_Print(int type, char *fmt, ...) { return; }
 
-qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower );
+qboolean WP_ForcePowerUsable(gentity_t *self, forcePowers_t forcePower);
 
 int IsTeamplay(void)
 {
-	if ( level.gametype < GT_TEAM )
+	if (level.gametype < GT_TEAM)
 	{
 		return 0;
 	}
@@ -364,18 +364,18 @@ int IsTeamplay(void)
 BotAI_GetClientState
 ==================
 */
-int BotAI_GetClientState( int clientNum, playerState_t *state ) {
+int BotAI_GetClientState(int clientNum, playerState_t *state) {
 	gentity_t	*ent;
 
 	ent = &g_entities[clientNum];
-	if ( !ent->inuse ) {
+	if (!ent->inuse) {
 		return qfalse;
 	}
-	if ( !ent->client ) {
+	if (!ent->client) {
 		return qfalse;
 	}
 
-	memcpy( state, &ent->client->ps, sizeof(playerState_t) );
+	memcpy(state, &ent->client->ps, sizeof(playerState_t));
 	return qtrue;
 }
 
@@ -384,15 +384,15 @@ int BotAI_GetClientState( int clientNum, playerState_t *state ) {
 BotAI_GetEntityState
 ==================
 */
-int BotAI_GetEntityState( int entityNum, entityState_t *state ) {
+int BotAI_GetEntityState(int entityNum, entityState_t *state) {
 	gentity_t	*ent;
 
 	ent = &g_entities[entityNum];
-	memset( state, 0, sizeof(entityState_t) );
+	memset(state, 0, sizeof(entityState_t));
 	if (!ent->inuse) return qfalse;
 	if (!ent->r.linked) return qfalse;
 	if (ent->r.svFlags & SVF_NOCLIENT) return qfalse;
-	memcpy( state, &ent->s, sizeof(entityState_t) );
+	memcpy(state, &ent->s, sizeof(entityState_t));
 	return qtrue;
 }
 
@@ -401,16 +401,16 @@ int BotAI_GetEntityState( int entityNum, entityState_t *state ) {
 BotAI_GetSnapshotEntity
 ==================
 */
-int BotAI_GetSnapshotEntity( int clientNum, int sequence, entityState_t *state ) {
+int BotAI_GetSnapshotEntity(int clientNum, int sequence, entityState_t *state) {
 	int		entNum;
 
-	entNum = trap->BotGetSnapshotEntity( clientNum, sequence );
-	if ( entNum == -1 ) {
+	entNum = trap->BotGetSnapshotEntity(clientNum, sequence);
+	if (entNum == -1) {
 		memset(state, 0, sizeof(entityState_t));
 		return -1;
 	}
 
-	BotAI_GetEntityState( entNum, state );
+	BotAI_GetEntityState(entNum, state);
 
 	return sequence + 1;
 }
@@ -702,11 +702,11 @@ void BotAIRegularUpdate(void) {
 RemoveColorEscapeSequences
 ==============
 */
-void RemoveColorEscapeSequences( char *text ) {
+void RemoveColorEscapeSequences(char *text) {
 	int i, l;
 
 	l = 0;
-	for ( i = 0; text[i]; i++ ) {
+	for (i = 0; text[i]; i++) {
 		if (Q_IsColorStringExt(&text[i])) {
 			i++;
 			continue;
@@ -742,17 +742,17 @@ int BotAI(int client, float thinktime) {
 	}
 
 	//retrieve the current client state
-	BotAI_GetClientState( client, &bs->cur_ps );
+	BotAI_GetClientState(client, &bs->cur_ps);
 
 	//retrieve any waiting server commands
-	while( trap->BotGetServerCommand(client, buf, sizeof(buf)) ) {
+	while(trap->BotGetServerCommand(client, buf, sizeof(buf))) {
 		//have buf point to the command and args to the command arguments
-		args = strchr( buf, ' ');
+		args = strchr(buf, ' ');
 		if (!args) continue;
 		*args++ = '\0';
 
 		//remove color espace sequences from the arguments
-		RemoveColorEscapeSequences( args );
+		RemoveColorEscapeSequences(args);
 
 		if (!Q_stricmp(buf, "cp "))
 			{ /*CenterPrintf*/ }
@@ -811,8 +811,8 @@ void BotScheduleBotThink(void) {
 
 	botnum = 0;
 
-	for( i = 0; i < MAX_CLIENTS; i++ ) {
-		if( !botstates[i] || !botstates[i]->inuse ) {
+	for(i = 0; i < MAX_CLIENTS; i++) {
+		if(!botstates[i] || !botstates[i]->inuse) {
 			continue;
 		}
 		//initialize the bot think residual time
@@ -994,12 +994,12 @@ void BotResetState(bot_state_t *bs) {
 BotAILoadMap
 ==============
 */
-int BotAILoadMap( int restart ) {
+int BotAILoadMap(int restart) {
 	int			i;
 
 	for (i = 0; i < MAX_CLIENTS; i++) {
 		if (botstates[i] && botstates[i]->inuse) {
-			BotResetState( botstates[i] );
+			BotResetState(botstates[i]);
 			botstates[i]->setupcount = 4;
 		}
 	}
@@ -1014,7 +1014,7 @@ int OrgVisible(vec3_t org1, vec3_t org2, int ignore)
 {
 	trace_t tr;
 
-	trap->Trace(&tr, org1, NULL, NULL, org2, ignore, MASK_SOLID, qfalse, 0, 0 );
+	trap->Trace(&tr, org1, NULL, NULL, org2, ignore, MASK_SOLID, qfalse, 0, 0);
 
 	if (tr.fraction == 1)
 	{
@@ -1114,7 +1114,7 @@ int CheckForFunc(vec3_t org, int ignore)
 }
 
 //perform pvs check based on rmg or not
-qboolean BotPVSCheck( const vec3_t p1, const vec3_t p2 )
+qboolean BotPVSCheck(const vec3_t p1, const vec3_t p2)
 {
 	if (RMG.integer && bot_pvstype.integer)
 	{
@@ -2432,7 +2432,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 	{
 		ent = &g_entities[i];
 
-		if ( (ent &&
+		if ((ent &&
 			!ent->client &&
 			ent->inuse &&
 			ent->damage &&
@@ -2444,7 +2444,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 			ent->inuse &&
 			ent->health > 0 &&
 			ent->genericValue3 != bs->client &&
-			g_entities[ent->genericValue3].client && !OnSameTeam(&g_entities[bs->client], &g_entities[ent->genericValue3])) )
+			g_entities[ent->genericValue3].client && !OnSameTeam(&g_entities[bs->client], &g_entities[ent->genericValue3])))
 		{ //try to escape from anything with a non-0 s.weapon and non-0 damage. This hopefully only means dangerous projectiles.
 		  //Or a sentry gun if bolt_Head == 1000. This is a terrible hack, yes.
 			VectorSubtract(bs->origin, ent->r.currentOrigin, hold);
@@ -2469,7 +2469,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 			if (ent->s.weapon == WP_ROCKET_LAUNCHER &&
 				(ent->r.ownerNum == bs->client ||
 				(ent->r.ownerNum > 0 && ent->r.ownerNum < MAX_CLIENTS &&
-				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))) )
+				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))))
 			{ //don't be afraid of your own rockets or your teammates' rockets
 				factor = 0;
 			}
@@ -2477,7 +2477,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 			if (ent->s.weapon == WP_DET_PACK &&
 				(ent->r.ownerNum == bs->client ||
 				(ent->r.ownerNum > 0 && ent->r.ownerNum < MAX_CLIENTS &&
-				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))) )
+				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))))
 			{ //don't be afraid of your own detpacks or your teammates' detpacks
 				factor = 0;
 			}
@@ -2485,7 +2485,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 			if (ent->s.weapon == WP_TRIP_MINE &&
 				(ent->r.ownerNum == bs->client ||
 				(ent->r.ownerNum > 0 && ent->r.ownerNum < MAX_CLIENTS &&
-				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))) )
+				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))))
 			{ //don't be afraid of your own trip mines or your teammates' trip mines
 				factor = 0;
 			}
@@ -2493,7 +2493,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 			if (ent->s.weapon == WP_THERMAL &&
 				(ent->r.ownerNum == bs->client ||
 				(ent->r.ownerNum > 0 && ent->r.ownerNum < MAX_CLIENTS &&
-				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))) )
+				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))))
 			{ //don't be afraid of your own thermals or your teammates' thermals
 				factor = 0;
 			}
@@ -3118,16 +3118,16 @@ int Siege_TargetClosestObjective(bot_state_t *bs, int flag)
 	maxs[1] = 1;
 	maxs[2] = 1;
 
-	if ( bs->wpDestination && (bs->wpDestination->flags & flag) && bs->wpDestination->associated_entity != ENTITYNUM_NONE &&
-		 g_entities[bs->wpDestination->associated_entity].inuse && g_entities[bs->wpDestination->associated_entity].use )
+	if (bs->wpDestination && (bs->wpDestination->flags & flag) && bs->wpDestination->associated_entity != ENTITYNUM_NONE &&
+		 g_entities[bs->wpDestination->associated_entity].inuse && g_entities[bs->wpDestination->associated_entity].use)
 	{
 		goto hasPoint;
 	}
 
 	while (i < gWPNum)
 	{
-		if ( gWPArray[i] && gWPArray[i]->inuse && (gWPArray[i]->flags & flag) && gWPArray[i]->associated_entity != ENTITYNUM_NONE &&
-			 g_entities[gWPArray[i]->associated_entity].inuse && g_entities[gWPArray[i]->associated_entity].use )
+		if (gWPArray[i] && gWPArray[i]->inuse && (gWPArray[i]->flags & flag) && gWPArray[i]->associated_entity != ENTITYNUM_NONE &&
+			 g_entities[gWPArray[i]->associated_entity].inuse && g_entities[gWPArray[i]->associated_entity].use)
 		{
 			VectorSubtract(gWPArray[i]->origin, bs->origin, a);
 			testdistance = VectorLength(a);
@@ -4617,7 +4617,7 @@ void SaberCombatHandling(bot_state_t *bs)
 //so, by how much?
 float BotWeaponCanLead(bot_state_t *bs)
 {
-	switch ( bs->cur_ps.weapon )
+	switch (bs->cur_ps.weapon)
 	{
 	case WP_BRYAR_PISTOL:
 		return 0.5f;
@@ -4867,7 +4867,7 @@ int ShouldSecondaryFire(bot_state_t *bs)
 
 		if (rTime > 0)
 		{
-			dif = ( level.time - rTime ) / ( 1200.0f / 16.0f );
+			dif = (level.time - rTime) / (1200.0f / 16.0f);
 
 			if (dif >= 10)
 			{
@@ -5187,17 +5187,17 @@ int BotSelectIdealWeapon(bot_state_t *bs)
 		i++;
 	}
 
-	if ( bs->currentEnemy && bs->frame_Enemy_Len < 300 &&
+	if (bs->currentEnemy && bs->frame_Enemy_Len < 300 &&
 		(bestweapon == WP_BRYAR_PISTOL || bestweapon == WP_BLASTER || bestweapon == WP_BOWCASTER) &&
-		(bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER)) )
+		(bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER)))
 	{
 		bestweapon = WP_SABER;
 		bestweight = 1;
 	}
 
-	if ( bs->currentEnemy && bs->frame_Enemy_Len > 300 &&
+	if (bs->currentEnemy && bs->frame_Enemy_Len > 300 &&
 		bs->currentEnemy->client && bs->currentEnemy->client->ps.weapon != WP_SABER &&
-		(bestweapon == WP_SABER) )
+		(bestweapon == WP_SABER))
 	{ //if the enemy is far away, and we have our saber selected, see if we have any good distance weapons instead
 		if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 		{
@@ -5766,7 +5766,7 @@ void BotCheckDetPacks(bot_state_t *bs)
 	float enLen;
 	float myLen;
 
-	while ( (dp = G_Find( dp, FOFS(classname), "detpack") ) != NULL )
+	while ((dp = G_Find(dp, FOFS(classname), "detpack")) != NULL)
 	{
 		if (dp && dp->parent && dp->parent->s.number == bs->client)
 		{
@@ -7017,8 +7017,8 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 				bs->saberPowerTime = level.time + Q_irand(3000, 15000);
 			}
 
-			if ( g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_STAFF
-				&& g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_DUAL )
+			if (g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_STAFF
+				&& g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_DUAL)
 			{
 				if (bs->currentEnemy->health > 75
 					&& g_entities[bs->client].client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE] > 2)
@@ -7346,11 +7346,11 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		trap->EA_Crouch(bs->client);
 	}
 
-	if ( bs->dangerousObject && bs->dangerousObject->inuse && bs->dangerousObject->health > 0 &&
+	if (bs->dangerousObject && bs->dangerousObject->inuse && bs->dangerousObject->health > 0 &&
 		bs->dangerousObject->takedamage && (!bs->frame_Enemy_Vis || !bs->currentEnemy) &&
 		(BotGetWeaponRange(bs) == BWEAPONRANGE_MID || BotGetWeaponRange(bs) == BWEAPONRANGE_LONG) &&
 		bs->cur_ps.weapon != WP_DET_PACK && bs->cur_ps.weapon != WP_TRIP_MINE &&
-		!bs->shootGoal )
+		!bs->shootGoal)
 	{
 		float danLen;
 
@@ -7448,7 +7448,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 
 	if (bs->doAttack && bs->cur_ps.weapon == WP_SABER &&
 		bs->saberDefending && bs->currentEnemy && bs->currentEnemy->client &&
-		BotWeaponBlockable(bs->currentEnemy->client->ps.weapon) )
+		BotWeaponBlockable(bs->currentEnemy->client->ps.weapon))
 	{
 		bs->doAttack = 0;
 	}
@@ -7569,14 +7569,14 @@ int BotAIStartFrame(int time) {
 	else thinktime = BOT_THINK_TIME;
 
 	// execute scheduled bot AI
-	for( i = 0; i < MAX_CLIENTS; i++ ) {
-		if( !botstates[i] || !botstates[i]->inuse ) {
+	for(i = 0; i < MAX_CLIENTS; i++) {
+		if(!botstates[i] || !botstates[i]->inuse) {
 			continue;
 		}
 		//
 		botstates[i]->botthink_residual += elapsed_time;
 		//
-		if ( botstates[i]->botthink_residual >= thinktime ) {
+		if (botstates[i]->botthink_residual >= thinktime) {
 			botstates[i]->botthink_residual -= thinktime;
 
 			if (g_entities[i].client->pers.connected == CON_CONNECTED) {
@@ -7586,11 +7586,11 @@ int BotAIStartFrame(int time) {
 	}
 
 	// execute bot user commands every frame
-	for( i = 0; i < MAX_CLIENTS; i++ ) {
-		if( !botstates[i] || !botstates[i]->inuse ) {
+	for(i = 0; i < MAX_CLIENTS; i++) {
+		if(!botstates[i] || !botstates[i]->inuse) {
 			continue;
 		}
-		if( g_entities[i].client->pers.connected != CON_CONNECTED ) {
+		if(g_entities[i].client->pers.connected != CON_CONNECTED) {
 			continue;
 		}
 
@@ -7606,7 +7606,7 @@ int BotAIStartFrame(int time) {
 BotAISetup
 ==============
 */
-int BotAISetup( int restart ) {
+int BotAISetup(int restart) {
 	//rww - new bot cvars..
 	trap->Cvar_Register(&bot_forcepowers, "bot_forcepowers", "1", CVAR_CHEAT);
 	trap->Cvar_Register(&bot_forgimmick, "bot_forgimmick", "0", CVAR_CHEAT);
@@ -7639,7 +7639,7 @@ int BotAISetup( int restart ) {
 	}
 
 	//initialize the bot states
-	memset( botstates, 0, sizeof(botstates) );
+	memset(botstates, 0, sizeof(botstates));
 
 	if (!trap->BotLibSetup())
 	{
@@ -7654,12 +7654,12 @@ int BotAISetup( int restart ) {
 BotAIShutdown
 ==============
 */
-int BotAIShutdown( int restart ) {
+int BotAIShutdown(int restart) {
 
 	int i;
 
 	//if the game is restarted for a tournament
-	if ( restart ) {
+	if (restart) {
 		//shutdown all the bots in the botlib
 		for (i = 0; i < MAX_CLIENTS; i++) {
 			if (botstates[i] && botstates[i]->inuse) {

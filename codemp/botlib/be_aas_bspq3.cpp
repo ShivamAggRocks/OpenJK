@@ -470,7 +470,7 @@ void AAS_DumpBSPData(void)
 	bspworld.entdatasize = 0;
 	//
 	bspworld.loaded = qfalse;
-	Com_Memset( &bspworld, 0, sizeof(bspworld) );
+	Com_Memset(&bspworld, 0, sizeof(bspworld));
 } //end of the function AAS_DumpBSPData
 //===========================================================================
 // load a .bsp file

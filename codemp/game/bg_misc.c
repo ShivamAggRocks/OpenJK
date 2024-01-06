@@ -322,12 +322,12 @@ int WeaponAttackAnim[WP_NUM_WEAPONS] =
 	BOTH_ATTACK1//WP_TURRET,
 };
 
-qboolean BG_FileExists( const char *fileName ) {
-	if ( fileName && fileName[0] ) {
+qboolean BG_FileExists(const char *fileName) {
+	if (fileName && fileName[0]) {
 		fileHandle_t f = NULL_FILE;
-		trap->FS_Open( fileName, &f, FS_READ );
-		if ( f > 0 ) {
-			trap->FS_Close( f );
+		trap->FS_Open(fileName, &f, FS_READ);
+		if (f > 0) {
+			trap->FS_Close(f);
 			return qtrue;
 		}
 	}
@@ -404,24 +404,24 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 	int final_Side;
 	int final_Powers[NUM_FORCE_POWERS] = {0};
 
-	if ( powerLen >= 128 )
+	if (powerLen >= 128)
 	{ //This should not happen. If it does, this is obviously a bogus string.
 		//They can have this string. Because I said so.
-		Q_strncpyz( powerBuf, DEFAULT_FORCEPOWERS, sizeof( powerBuf ) );
+		Q_strncpyz(powerBuf, DEFAULT_FORCEPOWERS, sizeof(powerBuf));
 		maintainsValidity = qfalse;
 	}
 	else
-		Q_strncpyz( powerBuf, powerOut, sizeof( powerBuf ) ); //copy it as the original
+		Q_strncpyz(powerBuf, powerOut, sizeof(powerBuf)); //copy it as the original
 
 	//first of all, print the max rank into the string as the rank
-	Q_strncpyz( powerOut, va( "%i-", maxRank ), powerOutSize );
+	Q_strncpyz(powerOut, va("%i-", maxRank), powerOutSize);
 
-	while (i < sizeof( powerBuf ) && powerBuf[i] && powerBuf[i] != '-')
+	while (i < sizeof(powerBuf) && powerBuf[i] && powerBuf[i] != '-')
 	{
 		i++;
 	}
 	i++;
-	while (i < sizeof( powerBuf ) && powerBuf[i] && powerBuf[i] != '-')
+	while (i < sizeof(powerBuf) && powerBuf[i] && powerBuf[i] != '-')
 	{
 		readBuf[c] = powerBuf[i];
 		c++;
@@ -452,7 +452,7 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 	//Now we have established a valid rank, and a valid side.
 	//Read the force powers in, and cut them down based on the various rules supplied.
 	c = 0;
-	while (i < sizeof( powerBuf ) && powerBuf[i] && powerBuf[i] != '\n' && powerBuf[i] != '\r'
+	while (i < sizeof(powerBuf) && powerBuf[i] && powerBuf[i] != '\n' && powerBuf[i] != '\r'
 		&& powerBuf[i] >= '0' && powerBuf[i] <= '3' && c < NUM_FORCE_POWERS)
 	{
 		readBuf[0] = powerBuf[i];
@@ -477,8 +477,8 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 			//This is only likely to happen with g_forceBasedTeams. Let it slide.
 		}
 
-		if ( final_Powers[i] &&
-			(fpDisabled & (1 << i)) )
+		if (final_Powers[i] &&
+			(fpDisabled & (1 << i)))
 		{ //if this power is disabled on the server via said server option, then we don't get it.
 			final_Powers[i] = 0;
 		}
@@ -496,16 +496,16 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 	i = 0;
 	while (i < NUM_FORCE_POWERS)
 	{
-		countDown = Com_Clampi( 0, NUM_FORCE_POWER_LEVELS, final_Powers[i] );
+		countDown = Com_Clampi(0, NUM_FORCE_POWER_LEVELS, final_Powers[i]);
 
 		while (countDown > 0)
 		{
 			usedPoints += bgForcePowerCost[i][countDown]; //[fp index][fp level]
 			//if this is jump, or we have a free saber and it's offense or defense, take the level back down on level 1
-			if ( countDown == 1 &&
+			if (countDown == 1 &&
 				((i == FP_LEVITATION) ||
 				 (i == FP_SABER_OFFENSE && freeSaber) ||
-				 (i == FP_SABER_DEFENSE && freeSaber)) )
+				 (i == FP_SABER_DEFENSE && freeSaber)))
 			{
 				usedPoints -= bgForcePowerCost[i][countDown];
 			}
@@ -548,9 +548,9 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 
 						while (final_Powers[whichOne] > 0 && usedPoints > allowedPoints)
 						{
-							if ( final_Powers[whichOne] > 1 ||
-								( (whichOne != FP_SABER_OFFENSE || !freeSaber) &&
-								  (whichOne != FP_SABER_DEFENSE || !freeSaber) ) )
+							if (final_Powers[whichOne] > 1 ||
+								((whichOne != FP_SABER_OFFENSE || !freeSaber) &&
+								  (whichOne != FP_SABER_DEFENSE || !freeSaber)))
 							{ //don't take attack or defend down on level 1 still, if it's free
 								usedPoints -= bgForcePowerCost[whichOne][final_Powers[whichOne]];
 								final_Powers[whichOne]--;
@@ -565,10 +565,10 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 					{
 						while (final_Powers[c] > 0 && usedPoints > allowedPoints)
 						{
-							if ( final_Powers[c] > 1 ||
+							if (final_Powers[c] > 1 ||
 								((c != FP_LEVITATION) &&
 								(c != FP_SABER_OFFENSE || !freeSaber) &&
-								(c != FP_SABER_DEFENSE || !freeSaber)) )
+								(c != FP_SABER_DEFENSE || !freeSaber)))
 							{
 								usedPoints -= bgForcePowerCost[c][final_Powers[c]];
 								final_Powers[c]--;
@@ -657,7 +657,7 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 	c = 0;
 	while (c < NUM_FORCE_POWERS)
 	{
-		Q_strncpyz(readBuf, va( "%i", final_Powers[c] ), sizeof( readBuf ) );
+		Q_strncpyz(readBuf, va("%i", final_Powers[c]), sizeof(readBuf));
 		powerOut[i] = readBuf[0];
 		c++;
 		i++;
@@ -667,7 +667,7 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 	return maintainsValidity;
 }
 
-/*QUAKED item_***** ( 0 0 0 ) (-16 -16 -16) (16 16 16) suspended
+/*QUAKED item_***** (0 0 0) (-16 -16 -16) (16 16 16) suspended
 DO NOT USE THIS CLASS, IT JUST HOLDS GENERAL INFORMATION.
 The suspended flag will allow items to hang in the air, otherwise they are dropped to the next surface.
 
@@ -1483,7 +1483,7 @@ Ammo for the Bryar and Blaster pistols.
 	},
 
 /*QUAKED ammo_powercell (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-Ammo for Tenloss Disruptor, Wookie Bowcaster, and the Destructive Electro Magnetic Pulse (demp2 ) guns
+Ammo for Tenloss Disruptor, Wookie Bowcaster, and the Destructive Electro Magnetic Pulse (demp2) guns
 */
 	{
 		"ammo_powercell",
@@ -1661,14 +1661,14 @@ Only in One Flag CTF games
 
 int		bg_numItems = sizeof(bg_itemlist) / sizeof(bg_itemlist[0]) - 1;
 
-float vectoyaw( const vec3_t vec ) {
+float vectoyaw(const vec3_t vec) {
 	float	yaw;
 
 	if (vec[YAW] == 0 && vec[PITCH] == 0) {
 		yaw = 0;
 	} else {
 		if (vec[PITCH]) {
-			yaw = ( atan2( vec[YAW], vec[PITCH]) * 180 / M_PI );
+			yaw = (atan2(vec[YAW], vec[PITCH]) * 180 / M_PI);
 		} else if (vec[YAW] > 0) {
 			yaw = 90;
 		} else {
@@ -1705,7 +1705,7 @@ qboolean BG_CanUseFPNow(int gametype, playerState_t *ps, int time, forcePowers_t
 		return qfalse;
 	}
 
-	if ( ps->forceRestricted || ps->trueNonJedi )
+	if (ps->forceRestricted || ps->trueNonJedi)
 	{
 		return qfalse;
 	}
@@ -1769,13 +1769,13 @@ qboolean BG_CanUseFPNow(int gametype, playerState_t *ps, int time, forcePowers_t
 BG_FindItemForPowerup
 ==============
 */
-gitem_t	*BG_FindItemForPowerup( powerup_t pw ) {
+gitem_t	*BG_FindItemForPowerup(powerup_t pw) {
 	int		i;
 
-	for ( i = 0 ; i < bg_numItems ; i++ ) {
-		if ( (bg_itemlist[i].giType == IT_POWERUP ||
+	for (i = 0 ; i < bg_numItems ; i++) {
+		if ((bg_itemlist[i].giType == IT_POWERUP ||
 					bg_itemlist[i].giType == IT_TEAM) &&
-			bg_itemlist[i].giTag == pw ) {
+			bg_itemlist[i].giTag == pw) {
 			return &bg_itemlist[i];
 		}
 	}
@@ -1789,16 +1789,16 @@ gitem_t	*BG_FindItemForPowerup( powerup_t pw ) {
 BG_FindItemForHoldable
 ==============
 */
-gitem_t	*BG_FindItemForHoldable( holdable_t pw ) {
+gitem_t	*BG_FindItemForHoldable(holdable_t pw) {
 	int		i;
 
-	for ( i = 0 ; i < bg_numItems ; i++ ) {
-		if ( bg_itemlist[i].giType == IT_HOLDABLE && bg_itemlist[i].giTag == pw ) {
+	for (i = 0 ; i < bg_numItems ; i++) {
+		if (bg_itemlist[i].giType == IT_HOLDABLE && bg_itemlist[i].giTag == pw) {
 			return &bg_itemlist[i];
 		}
 	}
 
-	Com_Error( ERR_DROP, "HoldableItem not found" );
+	Com_Error(ERR_DROP, "HoldableItem not found");
 
 	return NULL;
 }
@@ -1810,16 +1810,16 @@ BG_FindItemForWeapon
 
 ===============
 */
-gitem_t	*BG_FindItemForWeapon( weapon_t weapon ) {
+gitem_t	*BG_FindItemForWeapon(weapon_t weapon) {
 	gitem_t	*it;
 
-	for ( it = bg_itemlist + 1 ; it->classname ; it++) {
-		if ( it->giType == IT_WEAPON && it->giTag == weapon ) {
+	for (it = bg_itemlist + 1 ; it->classname ; it++) {
+		if (it->giType == IT_WEAPON && it->giTag == weapon) {
 			return it;
 		}
 	}
 
-	Com_Error( ERR_DROP, "Couldn't find item for weapon %i", weapon);
+	Com_Error(ERR_DROP, "Couldn't find item for weapon %i", weapon);
 	return NULL;
 }
 
@@ -1829,16 +1829,16 @@ BG_FindItemForAmmo
 
 ===============
 */
-gitem_t	*BG_FindItemForAmmo( ammo_t ammo ) {
+gitem_t	*BG_FindItemForAmmo(ammo_t ammo) {
 	gitem_t	*it;
 
-	for ( it = bg_itemlist + 1 ; it->classname ; it++) {
-		if ( it->giType == IT_AMMO && it->giTag == ammo ) {
+	for (it = bg_itemlist + 1 ; it->classname ; it++) {
+		if (it->giType == IT_AMMO && it->giTag == ammo) {
 			return it;
 		}
 	}
 
-	Com_Error( ERR_DROP, "Couldn't find item for ammo %i", ammo);
+	Com_Error(ERR_DROP, "Couldn't find item for ammo %i", ammo);
 	return NULL;
 }
 
@@ -1848,11 +1848,11 @@ BG_FindItem
 
 ===============
 */
-gitem_t	*BG_FindItem( const char *classname ) {
+gitem_t	*BG_FindItem(const char *classname) {
 	gitem_t	*it;
 
-	for ( it = bg_itemlist + 1 ; it->classname ; it++ ) {
-		if ( !Q_stricmp( it->classname, classname) )
+	for (it = bg_itemlist + 1 ; it->classname ; it++) {
+		if (!Q_stricmp(it->classname, classname))
 			return it;
 	}
 
@@ -1867,60 +1867,60 @@ Items can be picked up without actually touching their physical bounds to make
 grabbing them easier
 ============
 */
-qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime ) {
+qboolean	BG_PlayerTouchesItem(playerState_t *ps, entityState_t *item, int atTime) {
 	vec3_t		origin;
 
-	BG_EvaluateTrajectory( &item->pos, atTime, origin );
+	BG_EvaluateTrajectory(&item->pos, atTime, origin);
 
 	// we are ignoring ducked differences here
-	if ( ps->origin[0] - origin[0] > 44
+	if (ps->origin[0] - origin[0] > 44
 		|| ps->origin[0] - origin[0] < -50
 		|| ps->origin[1] - origin[1] > 36
 		|| ps->origin[1] - origin[1] < -36
 		|| ps->origin[2] - origin[2] > 36
-		|| ps->origin[2] - origin[2] < -36 ) {
+		|| ps->origin[2] - origin[2] < -36) {
 		return qfalse;
 	}
 
 	return qtrue;
 }
 
-int BG_ProperForceIndex( int power ) {
+int BG_ProperForceIndex(int power) {
 	int i;
 
-	for ( i=0; i<NUM_FORCE_POWERS; i++ ) {
-		if ( forcePowerSorted[i] == power )
+	for (i=0; i<NUM_FORCE_POWERS; i++) {
+		if (forcePowerSorted[i] == power)
 			return i;
 	}
 
 	return -1;
 }
 
-void BG_CycleForce( playerState_t *ps, int direction ) {
+void BG_CycleForce(playerState_t *ps, int direction) {
 	int i, x, presel;
 	int foundnext = -1;
 
 	presel = x = i = ps->fd.forcePowerSelected;
 
 	// no valid force powers
-	if ( x >= NUM_FORCE_POWERS || x == -1 )
+	if (x >= NUM_FORCE_POWERS || x == -1)
 		return;
 
-	presel = x = BG_ProperForceIndex( x );
+	presel = x = BG_ProperForceIndex(x);
 
 	// get the next/prev power and handle overflow
-	if ( direction == 1 )	x++;
+	if (direction == 1)	x++;
 	else					x--;
-	if ( x >= NUM_FORCE_POWERS )	x = 0;
-	if ( x < 0 )					x = NUM_FORCE_POWERS-1;
+	if (x >= NUM_FORCE_POWERS)	x = 0;
+	if (x < 0)					x = NUM_FORCE_POWERS-1;
 
 	i = forcePowerSorted[x]; //the "sorted" value of this power
 
-	while ( x != presel ) {
+	while (x != presel) {
 		// loop around to the current force power
-		if ( ps->fd.forcePowersKnown & (1 << i) && i != (signed)ps->fd.forcePowerSelected ) {
+		if (ps->fd.forcePowersKnown & (1 << i) && i != (signed)ps->fd.forcePowerSelected) {
 			// we have this power
-			if ( i != FP_LEVITATION && i != FP_SABER_OFFENSE && i != FP_SABER_DEFENSE && i != FP_SABERTHROW ) {
+			if (i != FP_LEVITATION && i != FP_SABER_OFFENSE && i != FP_SABER_DEFENSE && i != FP_SABERTHROW) {
 				// it's selectable
 				foundnext = i;
 				break;
@@ -1928,16 +1928,16 @@ void BG_CycleForce( playerState_t *ps, int direction ) {
 		}
 
 		// get the next/prev power and handle overflow
-		if ( direction == 1 )	x++;
+		if (direction == 1)	x++;
 		else					x--;
-		if ( x >= NUM_FORCE_POWERS )	x = 0;
-		if ( x < 0 )					x = NUM_FORCE_POWERS-1;
+		if (x >= NUM_FORCE_POWERS)	x = 0;
+		if (x < 0)					x = NUM_FORCE_POWERS-1;
 
 		i = forcePowerSorted[x]; //set to the sorted value again
 	}
 
 	// if we found one, select it
-	if ( foundnext != -1 )
+	if (foundnext != -1)
 		ps->fd.forcePowerSelected = foundnext;
 }
 
@@ -2041,43 +2041,43 @@ Returns false if the item should not be picked up.
 This needs to be the same for client side prediction and server use.
 ================
 */
-qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const playerState_t *ps ) {
+qboolean BG_CanItemBeGrabbed(int gametype, const entityState_t *ent, const playerState_t *ps) {
 	gitem_t	*item;
 
-	if ( ent->modelindex < 1 || ent->modelindex >= bg_numItems ) {
-		Com_Error( ERR_DROP, "BG_CanItemBeGrabbed: index out of range" );
+	if (ent->modelindex < 1 || ent->modelindex >= bg_numItems) {
+		Com_Error(ERR_DROP, "BG_CanItemBeGrabbed: index out of range");
 	}
 
 	item = &bg_itemlist[ent->modelindex];
 
-	if ( ps )
+	if (ps)
 	{
-		if ( ps->trueJedi )
+		if (ps->trueJedi)
 		{//force powers and saber only
-			if ( item->giType != IT_TEAM //not a flag
+			if (item->giType != IT_TEAM //not a flag
 				&& item->giType != IT_ARMOR//not shields
 				&& (item->giType != IT_WEAPON
 									|| item->giTag != WP_SABER)//not a saber
 				&& (item->giType != IT_HOLDABLE || item->giTag != HI_SEEKER)//not a seeker
-				&& (item->giType != IT_POWERUP || item->giTag == PW_YSALAMIRI) )//not a force pick-up
+				&& (item->giType != IT_POWERUP || item->giTag == PW_YSALAMIRI))//not a force pick-up
 			{
 				return qfalse;
 			}
 		}
-		else if ( ps->trueNonJedi )
+		else if (ps->trueNonJedi)
 		{//can't pick up force powerups
-			if ( (item->giType == IT_POWERUP && item->giTag != PW_YSALAMIRI) //if a powerup, can only can pick up ysalamiri
+			if ((item->giType == IT_POWERUP && item->giTag != PW_YSALAMIRI) //if a powerup, can only can pick up ysalamiri
 				|| (item->giType == IT_HOLDABLE && item->giTag == HI_SEEKER)//if holdable, cannot pick up seeker
-				|| (item->giType == IT_WEAPON && item->giTag == WP_SABER ) )//or if it's a saber
+				|| (item->giType == IT_WEAPON && item->giTag == WP_SABER))//or if it's a saber
 			{
 				return qfalse;
 			}
 		}
-		if ( ps->isJediMaster && item && (item->giType == IT_WEAPON || item->giType == IT_AMMO))
+		if (ps->isJediMaster && item && (item->giType == IT_WEAPON || item->giType == IT_AMMO))
 		{//jedi master cannot pick up weapons
 			return qfalse;
 		}
-		if ( ps->duelInProgress )
+		if (ps->duelInProgress)
 		{ //no picking stuff up while in a duel, no matter what the type is
 			return qfalse;
 		}
@@ -2087,7 +2087,7 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 		return qfalse;
 	}
 
-	switch( item->giType ) {
+	switch(item->giType) {
 	case IT_WEAPON:
 		if (ent->generic1 == ps->clientNum && ent->powerups)
 		{
@@ -2113,13 +2113,13 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 		{ //special case for "all ammo" packs
 			return qtrue;
 		}
-		if ( ps->ammo[item->giTag] >= ammoData[item->giTag].max) {
+		if (ps->ammo[item->giTag] >= ammoData[item->giTag].max) {
 			return qfalse;		// can't hold any more
 		}
 		return qtrue;
 
 	case IT_ARMOR:
-		if ( ps->stats[STAT_ARMOR] >= ps->stats[STAT_MAX_HEALTH]/* * item->giTag*/ ) {
+		if (ps->stats[STAT_ARMOR] >= ps->stats[STAT_MAX_HEALTH]/* * item->giTag*/) {
 			return qfalse;
 		}
 		return qtrue;
@@ -2132,14 +2132,14 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 			return qfalse;
 		}
 
-		if ( item->quantity == 5 || item->quantity == 100 ) {
-			if ( ps->stats[STAT_HEALTH] >= ps->stats[STAT_MAX_HEALTH] * 2 ) {
+		if (item->quantity == 5 || item->quantity == 100) {
+			if (ps->stats[STAT_HEALTH] >= ps->stats[STAT_MAX_HEALTH] * 2) {
 				return qfalse;
 			}
 			return qtrue;
 		}
 
-		if ( ps->stats[STAT_HEALTH] >= ps->stats[STAT_MAX_HEALTH] ) {
+		if (ps->stats[STAT_HEALTH] >= ps->stats[STAT_MAX_HEALTH]) {
 			return qfalse;
 		}
 		return qtrue;
@@ -2155,19 +2155,19 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 		return qtrue;	// powerups are always picked up
 
 	case IT_TEAM: // team items, such as flags
-		if( gametype == GT_CTF || gametype == GT_CTY ) {
+		if(gametype == GT_CTF || gametype == GT_CTY) {
 			// ent->modelindex2 is non-zero on items if they are dropped
 			// we need to know this because we can pick up our dropped flag (and return it)
 			// but we can't pick up our flag at base
 			if (ps->persistant[PERS_TEAM] == TEAM_RED) {
 				if (item->giTag == PW_BLUEFLAG ||
 					(item->giTag == PW_REDFLAG && ent->modelindex2) ||
-					(item->giTag == PW_REDFLAG && ps->powerups[PW_BLUEFLAG]) )
+					(item->giTag == PW_REDFLAG && ps->powerups[PW_BLUEFLAG]))
 					return qtrue;
 			} else if (ps->persistant[PERS_TEAM] == TEAM_BLUE) {
 				if (item->giTag == PW_REDFLAG ||
 					(item->giTag == PW_BLUEFLAG && ent->modelindex2) ||
-					(item->giTag == PW_BLUEFLAG && ps->powerups[PW_REDFLAG]) )
+					(item->giTag == PW_BLUEFLAG && ps->powerups[PW_REDFLAG]))
 					return qtrue;
 			}
 		}
@@ -2175,17 +2175,17 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 		return qfalse;
 
 	case IT_HOLDABLE:
-		if ( ps->stats[STAT_HOLDABLE_ITEMS] & (1 << item->giTag))
+		if (ps->stats[STAT_HOLDABLE_ITEMS] & (1 << item->giTag))
 		{
 			return qfalse;
 		}
 		return qtrue;
 
         case IT_BAD:
-            Com_Error( ERR_DROP, "BG_CanItemBeGrabbed: IT_BAD" );
+            Com_Error(ERR_DROP, "BG_CanItemBeGrabbed: IT_BAD");
         default:
 #ifndef NDEBUG // bk0001204
-          Com_Printf("BG_CanItemBeGrabbed: unknown enum %d\n", item->giType );
+          Com_Printf("BG_CanItemBeGrabbed: unknown enum %d\n", item->giType);
 #endif
          break;
 	}
@@ -2201,60 +2201,60 @@ BG_EvaluateTrajectory
 
 ================
 */
-void BG_EvaluateTrajectory( const trajectory_t *tr, int atTime, vec3_t result ) {
+void BG_EvaluateTrajectory(const trajectory_t *tr, int atTime, vec3_t result) {
 	float		deltaTime;
 	float		phase;
 
-	switch( tr->trType ) {
+	switch(tr->trType) {
 	case TR_STATIONARY:
 	case TR_INTERPOLATE:
-		VectorCopy( tr->trBase, result );
+		VectorCopy(tr->trBase, result);
 		break;
 	case TR_LINEAR:
-		deltaTime = ( atTime - tr->trTime ) * 0.001;	// milliseconds to seconds
-		VectorMA( tr->trBase, deltaTime, tr->trDelta, result );
+		deltaTime = (atTime - tr->trTime) * 0.001;	// milliseconds to seconds
+		VectorMA(tr->trBase, deltaTime, tr->trDelta, result);
 		break;
 	case TR_SINE:
-		deltaTime = ( atTime - tr->trTime ) / (float) tr->trDuration;
-		phase = sin( deltaTime * M_PI * 2 );
-		VectorMA( tr->trBase, phase, tr->trDelta, result );
+		deltaTime = (atTime - tr->trTime) / (float) tr->trDuration;
+		phase = sin(deltaTime * M_PI * 2);
+		VectorMA(tr->trBase, phase, tr->trDelta, result);
 		break;
 	case TR_LINEAR_STOP:
-		if ( atTime > tr->trTime + tr->trDuration ) {
+		if (atTime > tr->trTime + tr->trDuration) {
 			atTime = tr->trTime + tr->trDuration;
 		}
-		deltaTime = ( atTime - tr->trTime ) * 0.001;	// milliseconds to seconds
-		if ( deltaTime < 0 ) {
+		deltaTime = (atTime - tr->trTime) * 0.001;	// milliseconds to seconds
+		if (deltaTime < 0) {
 			deltaTime = 0;
 		}
-		VectorMA( tr->trBase, deltaTime, tr->trDelta, result );
+		VectorMA(tr->trBase, deltaTime, tr->trDelta, result);
 		break;
 	case TR_NONLINEAR_STOP:
-		if ( atTime > tr->trTime + tr->trDuration )
+		if (atTime > tr->trTime + tr->trDuration)
 		{
 			atTime = tr->trTime + tr->trDuration;
 		}
 		//new slow-down at end
-		if ( atTime - tr->trTime > tr->trDuration || atTime - tr->trTime <= 0  )
+		if (atTime - tr->trTime > tr->trDuration || atTime - tr->trTime <= 0 )
 		{
 			deltaTime = 0;
 		}
 		else
 		{//FIXME: maybe scale this somehow?  So that it starts out faster and stops faster?
-			deltaTime = tr->trDuration*0.001f*((float)cos( DEG2RAD(90.0f - (90.0f*((float)(atTime-tr->trTime))/(float)tr->trDuration)) ));
+			deltaTime = tr->trDuration*0.001f*((float)cos(DEG2RAD(90.0f - (90.0f*((float)(atTime-tr->trTime))/(float)tr->trDuration))));
 		}
-		VectorMA( tr->trBase, deltaTime, tr->trDelta, result );
+		VectorMA(tr->trBase, deltaTime, tr->trDelta, result);
 		break;
 	case TR_GRAVITY:
-		deltaTime = ( atTime - tr->trTime ) * 0.001;	// milliseconds to seconds
-		VectorMA( tr->trBase, deltaTime, tr->trDelta, result );
+		deltaTime = (atTime - tr->trTime) * 0.001;	// milliseconds to seconds
+		VectorMA(tr->trBase, deltaTime, tr->trDelta, result);
 		result[2] -= 0.5 * DEFAULT_GRAVITY * deltaTime * deltaTime;		// FIXME: local gravity...
 		break;
 	default:
 #ifdef _GAME
-		Com_Error( ERR_DROP, "BG_EvaluateTrajectory: [ GAME] unknown trType: %i", tr->trType );
+		Com_Error(ERR_DROP, "BG_EvaluateTrajectory: [ GAME] unknown trType: %i", tr->trType);
 #else
-		Com_Error( ERR_DROP, "BG_EvaluateTrajectory: [CGAME] unknown trType: %i", tr->trType );
+		Com_Error(ERR_DROP, "BG_EvaluateTrajectory: [CGAME] unknown trType: %i", tr->trType);
 #endif
 		break;
 	}
@@ -2267,50 +2267,50 @@ BG_EvaluateTrajectoryDelta
 For determining velocity at a given time
 ================
 */
-void BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result ) {
+void BG_EvaluateTrajectoryDelta(const trajectory_t *tr, int atTime, vec3_t result) {
 	float	deltaTime;
 	float	phase;
 
-	switch( tr->trType ) {
+	switch(tr->trType) {
 	case TR_STATIONARY:
 	case TR_INTERPOLATE:
-		VectorClear( result );
+		VectorClear(result);
 		break;
 	case TR_LINEAR:
-		VectorCopy( tr->trDelta, result );
+		VectorCopy(tr->trDelta, result);
 		break;
 	case TR_SINE:
-		deltaTime = ( atTime - tr->trTime ) / (float) tr->trDuration;
-		phase = cos( deltaTime * M_PI * 2 );	// derivative of sin = cos
+		deltaTime = (atTime - tr->trTime) / (float) tr->trDuration;
+		phase = cos(deltaTime * M_PI * 2);	// derivative of sin = cos
 		phase *= 0.5;
-		VectorScale( tr->trDelta, phase, result );
+		VectorScale(tr->trDelta, phase, result);
 		break;
 	case TR_LINEAR_STOP:
-		if ( atTime > tr->trTime + tr->trDuration ) {
-			VectorClear( result );
+		if (atTime > tr->trTime + tr->trDuration) {
+			VectorClear(result);
 			return;
 		}
-		VectorCopy( tr->trDelta, result );
+		VectorCopy(tr->trDelta, result);
 		break;
 	case TR_NONLINEAR_STOP:
-		if ( atTime - tr->trTime > tr->trDuration || atTime - tr->trTime <= 0  )
+		if (atTime - tr->trTime > tr->trDuration || atTime - tr->trTime <= 0 )
 		{
-			VectorClear( result );
+			VectorClear(result);
 			return;
 		}
-		deltaTime = tr->trDuration*0.001f*((float)cos( DEG2RAD(90.0f - (90.0f*((float)(atTime-tr->trTime))/(float)tr->trDuration)) ));
-		VectorScale( tr->trDelta, deltaTime, result );
+		deltaTime = tr->trDuration*0.001f*((float)cos(DEG2RAD(90.0f - (90.0f*((float)(atTime-tr->trTime))/(float)tr->trDuration))));
+		VectorScale(tr->trDelta, deltaTime, result);
 		break;
 	case TR_GRAVITY:
-		deltaTime = ( atTime - tr->trTime ) * 0.001;	// milliseconds to seconds
-		VectorCopy( tr->trDelta, result );
+		deltaTime = (atTime - tr->trTime) * 0.001;	// milliseconds to seconds
+		VectorCopy(tr->trDelta, result);
 		result[2] -= DEFAULT_GRAVITY * deltaTime;		// FIXME: local gravity...
 		break;
 	default:
 #ifdef _GAME
-		Com_Error( ERR_DROP, "BG_EvaluateTrajectoryDelta: [ GAME] unknown trType: %i", tr->trType );
+		Com_Error(ERR_DROP, "BG_EvaluateTrajectoryDelta: [ GAME] unknown trType: %i", tr->trType);
 #else
-		Com_Error( ERR_DROP, "BG_EvaluateTrajectoryDelta: [CGAME] unknown trType: %i", tr->trType );
+		Com_Error(ERR_DROP, "BG_EvaluateTrajectoryDelta: [CGAME] unknown trType: %i", tr->trType);
 #endif
 		break;
 	}
@@ -2487,7 +2487,7 @@ Handles the sequence numbers
 ===============
 */
 
-void BG_AddPredictableEventToPlayerstate( int newEvent, int eventParm, playerState_t *ps ) {
+void BG_AddPredictableEventToPlayerstate(int newEvent, int eventParm, playerState_t *ps) {
 
 #ifdef _DEBUG
 	{
@@ -2500,7 +2500,7 @@ void BG_AddPredictableEventToPlayerstate( int newEvent, int eventParm, playerSta
 			isRegistered = qtrue;
 		}
 
-		if ( showEvents.integer != 0 ) {
+		if (showEvents.integer != 0) {
 #ifdef _GAME
 			Com_Printf(" game event svt %5d -> %5d: num = %20s parm %d\n", ps->pmove_framecount/*ps->commandTime*/, ps->eventSequence, eventnames[newEvent], eventParm);
 #else
@@ -2519,21 +2519,21 @@ void BG_AddPredictableEventToPlayerstate( int newEvent, int eventParm, playerSta
 BG_TouchJumpPad
 ========================
 */
-void BG_TouchJumpPad( playerState_t *ps, entityState_t *jumppad ) {
+void BG_TouchJumpPad(playerState_t *ps, entityState_t *jumppad) {
 	// spectators don't use jump pads
-	if ( ps->pm_type != PM_NORMAL && ps->pm_type != PM_JETPACK && ps->pm_type != PM_FLOAT ) {
+	if (ps->pm_type != PM_NORMAL && ps->pm_type != PM_JETPACK && ps->pm_type != PM_FLOAT) {
 		return;
 	}
 
 	// if we didn't hit this same jumppad the previous frame
 	// then don't play the event sound again if we are in a fat trigger
 	/*
-	if ( ps->jumppad_ent != jumppad->number ) {
+	if (ps->jumppad_ent != jumppad->number) {
 		vec3_t angles;
 		float p;
 
-		vectoangles( jumppad->origin2, angles);
-		p = fabs( AngleNormalize180( angles[PITCH] ) );
+		vectoangles(jumppad->origin2, angles);
+		p = fabs(AngleNormalize180(angles[PITCH]));
 		effectNum =  (p<45) ? 0 : 1;
 	}
 	*/
@@ -2542,7 +2542,7 @@ void BG_TouchJumpPad( playerState_t *ps, entityState_t *jumppad ) {
 	ps->jumppad_ent = jumppad->number;
 	ps->jumppad_frame = ps->pmove_framecount;
 	// give the player the velocity from the jumppad
-	VectorCopy( jumppad->origin2, ps->velocity );
+	VectorCopy(jumppad->origin2, ps->velocity);
 	// fix: no more force draining after bouncing the jumppad
 	ps->fd.forcePowersActive &= ~(1<<FP_LEVITATION);
 }
@@ -2619,7 +2619,7 @@ qboolean BG_IsValidCharacterModel(const char *modelName, const char *skinName)
 	return qtrue;
 }
 
-qboolean BG_ValidateSkinForTeam( const char *modelName, char *skinName, int team, float *colors )
+qboolean BG_ValidateSkinForTeam(const char *modelName, char *skinName, int team, float *colors)
 {
 	if (strlen (modelName) > 5 && Q_stricmpn (modelName, "jedi_", 5) == 0)
 	{ //argh, it's a custom player skin!
@@ -2640,29 +2640,29 @@ qboolean BG_ValidateSkinForTeam( const char *modelName, char *skinName, int team
 
 	if (team == TEAM_RED)
 	{
-		if ( Q_stricmp( "red", skinName ) != 0 )
+		if (Q_stricmp("red", skinName) != 0)
 		{//not "red"
-			if ( Q_stricmp( "blue", skinName ) == 0
-				|| Q_stricmp( "default", skinName ) == 0
+			if (Q_stricmp("blue", skinName) == 0
+				|| Q_stricmp("default", skinName) == 0
 				|| strchr(skinName, '|')//a multi-skin playerModel
-				|| !BG_IsValidCharacterModel(modelName, skinName) )
+				|| !BG_IsValidCharacterModel(modelName, skinName))
 			{
 				Q_strncpyz(skinName, "red", MAX_QPATH);
 				return qfalse;
 			}
 			else
 			{//need to set it to red
-				int len = strlen( skinName );
-				if ( len < 3 )
+				int len = strlen(skinName);
+				if (len < 3)
 				{//too short to be "red"
 					Q_strcat(skinName, MAX_QPATH, "_red");
 				}
 				else
 				{
 					char	*start = &skinName[len-3];
-					if ( Q_strncmp( "red", start, 3 ) != 0 )
+					if (Q_strncmp("red", start, 3) != 0)
 					{//doesn't already end in "red"
-						if ( len+4 >= MAX_QPATH )
+						if (len+4 >= MAX_QPATH)
 						{//too big to append "_red"
 							Q_strncpyz(skinName, "red", MAX_QPATH);
 							return qfalse;
@@ -2674,7 +2674,7 @@ qboolean BG_ValidateSkinForTeam( const char *modelName, char *skinName, int team
 					}
 				}
 				//if file does not exist, set to "red"
-				if ( !BG_FileExists( va( "models/players/%s/model_%s.skin", modelName, skinName ) ) )
+				if (!BG_FileExists(va("models/players/%s/model_%s.skin", modelName, skinName)))
 				{
 					Q_strncpyz(skinName, "red", MAX_QPATH);
 				}
@@ -2685,29 +2685,29 @@ qboolean BG_ValidateSkinForTeam( const char *modelName, char *skinName, int team
 	}
 	else if (team == TEAM_BLUE)
 	{
-		if ( Q_stricmp( "blue", skinName ) != 0 )
+		if (Q_stricmp("blue", skinName) != 0)
 		{
-			if ( Q_stricmp( "red", skinName ) == 0
-				|| Q_stricmp( "default", skinName ) == 0
+			if (Q_stricmp("red", skinName) == 0
+				|| Q_stricmp("default", skinName) == 0
 				|| strchr(skinName, '|')//a multi-skin playerModel
-				|| !BG_IsValidCharacterModel(modelName, skinName) )
+				|| !BG_IsValidCharacterModel(modelName, skinName))
 			{
 				Q_strncpyz(skinName, "blue", MAX_QPATH);
 				return qfalse;
 			}
 			else
 			{//need to set it to blue
-				int len = strlen( skinName );
-				if ( len < 4 )
+				int len = strlen(skinName);
+				if (len < 4)
 				{//too short to be "blue"
 					Q_strcat(skinName, MAX_QPATH, "_blue");
 				}
 				else
 				{
 					char	*start = &skinName[len-4];
-					if ( Q_strncmp( "blue", start, 4 ) != 0 )
+					if (Q_strncmp("blue", start, 4) != 0)
 					{//doesn't already end in "blue"
-						if ( len+5 >= MAX_QPATH )
+						if (len+5 >= MAX_QPATH)
 						{//too big to append "_blue"
 							Q_strncpyz(skinName, "blue", MAX_QPATH);
 							return qfalse;
@@ -2719,7 +2719,7 @@ qboolean BG_ValidateSkinForTeam( const char *modelName, char *skinName, int team
 					}
 				}
 				//if file does not exist, set to "blue"
-				if ( !BG_FileExists( va( "models/players/%s/model_%s.skin", modelName, skinName ) ) )
+				if (!BG_FileExists(va("models/players/%s/model_%s.skin", modelName, skinName)))
 				{
 					Q_strncpyz(skinName, "blue", MAX_QPATH);
 				}
@@ -2738,12 +2738,12 @@ This is done after each set of usercmd_t on the server,
 and after local prediction on the client
 ========================
 */
-void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean snap ) {
+void BG_PlayerStateToEntityState(playerState_t *ps, entityState_t *s, qboolean snap) {
 	int		i;
 
-	if ( ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR ) {
+	if (ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR) {
 		s->eType = ET_INVISIBLE;
-	} else if ( ps->stats[STAT_HEALTH] <= GIB_HEALTH ) {
+	} else if (ps->stats[STAT_HEALTH] <= GIB_HEALTH) {
 		s->eType = ET_INVISIBLE;
 	} else {
 		s->eType = ET_PLAYER;
@@ -2752,17 +2752,17 @@ void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean 
 	s->number = ps->clientNum;
 
 	s->pos.trType = TR_INTERPOLATE;
-	VectorCopy( ps->origin, s->pos.trBase );
-	if ( snap ) {
-		SnapVector( s->pos.trBase );
+	VectorCopy(ps->origin, s->pos.trBase);
+	if (snap) {
+		SnapVector(s->pos.trBase);
 	}
 	// set the trDelta for flag direction
-	VectorCopy( ps->velocity, s->pos.trDelta );
+	VectorCopy(ps->velocity, s->pos.trDelta);
 
 	s->apos.trType = TR_INTERPOLATE;
-	VectorCopy( ps->viewangles, s->apos.trBase );
-	if ( snap ) {
-		SnapVector( s->apos.trBase );
+	VectorCopy(ps->viewangles, s->apos.trBase);
+	if (snap) {
+		SnapVector(s->apos.trBase);
 	}
 
 	s->trickedentindex = ps->fd.forceMindtrickTargetIndex;
@@ -2815,23 +2815,23 @@ void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean 
 		s->eFlags |= EF_SEEKERDRONE;
 	}
 
-	if ( ps->stats[STAT_HEALTH] <= 0 ) {
+	if (ps->stats[STAT_HEALTH] <= 0) {
 		s->eFlags |= EF_DEAD;
 	} else {
 		s->eFlags &= ~EF_DEAD;
 	}
 
-	if ( ps->externalEvent ) {
+	if (ps->externalEvent) {
 		s->event = ps->externalEvent;
 		s->eventParm = ps->externalEventParm;
-	} else if ( ps->entityEventSequence < ps->eventSequence ) {
+	} else if (ps->entityEventSequence < ps->eventSequence) {
 		int		seq;
 
-		if ( ps->entityEventSequence < ps->eventSequence - MAX_PS_EVENTS) {
+		if (ps->entityEventSequence < ps->eventSequence - MAX_PS_EVENTS) {
 			ps->entityEventSequence = ps->eventSequence - MAX_PS_EVENTS;
 		}
 		seq = ps->entityEventSequence & (MAX_PS_EVENTS-1);
-		s->event = ps->events[ seq ] | ( ( ps->entityEventSequence & 3 ) << 8 );
+		s->event = ps->events[ seq ] | ((ps->entityEventSequence & 3) << 8);
 		s->eventParm = ps->eventParms[ seq ];
 		ps->entityEventSequence++;
 	}
@@ -2841,8 +2841,8 @@ void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean 
 	s->groundEntityNum = ps->groundEntityNum;
 
 	s->powerups = 0;
-	for ( i = 0 ; i < MAX_POWERUPS ; i++ ) {
-		if ( ps->powerups[ i ] ) {
+	for (i = 0 ; i < MAX_POWERUPS ; i++) {
+		if (ps->powerups[ i ]) {
 			s->powerups |= 1 << i;
 		}
 	}
@@ -2888,12 +2888,12 @@ This is done after each set of usercmd_t on the server,
 and after local prediction on the client
 ========================
 */
-void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s, int time, qboolean snap ) {
+void BG_PlayerStateToEntityStateExtraPolate(playerState_t *ps, entityState_t *s, int time, qboolean snap) {
 	int		i;
 
-	if ( ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR ) {
+	if (ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR) {
 		s->eType = ET_INVISIBLE;
-	} else if ( ps->stats[STAT_HEALTH] <= GIB_HEALTH ) {
+	} else if (ps->stats[STAT_HEALTH] <= GIB_HEALTH) {
 		s->eType = ET_INVISIBLE;
 	} else {
 		s->eType = ET_PLAYER;
@@ -2902,21 +2902,21 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 	s->number = ps->clientNum;
 
 	s->pos.trType = TR_LINEAR_STOP;
-	VectorCopy( ps->origin, s->pos.trBase );
-	if ( snap ) {
-		SnapVector( s->pos.trBase );
+	VectorCopy(ps->origin, s->pos.trBase);
+	if (snap) {
+		SnapVector(s->pos.trBase);
 	}
 	// set the trDelta for flag direction and linear prediction
-	VectorCopy( ps->velocity, s->pos.trDelta );
+	VectorCopy(ps->velocity, s->pos.trDelta);
 	// set the time for linear prediction
 	s->pos.trTime = time;
 	// set maximum extra polation time
 	s->pos.trDuration = 50; // 1000 / sv_fps (default = 20)
 
 	s->apos.trType = TR_INTERPOLATE;
-	VectorCopy( ps->viewangles, s->apos.trBase );
-	if ( snap ) {
-		SnapVector( s->apos.trBase );
+	VectorCopy(ps->viewangles, s->apos.trBase);
+	if (snap) {
+		SnapVector(s->apos.trBase);
 	}
 
 	s->trickedentindex = ps->fd.forceMindtrickTargetIndex;
@@ -2969,23 +2969,23 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 		s->eFlags |= EF_SEEKERDRONE;
 	}
 
-	if ( ps->stats[STAT_HEALTH] <= 0 ) {
+	if (ps->stats[STAT_HEALTH] <= 0) {
 		s->eFlags |= EF_DEAD;
 	} else {
 		s->eFlags &= ~EF_DEAD;
 	}
 
-	if ( ps->externalEvent ) {
+	if (ps->externalEvent) {
 		s->event = ps->externalEvent;
 		s->eventParm = ps->externalEventParm;
-	} else if ( ps->entityEventSequence < ps->eventSequence ) {
+	} else if (ps->entityEventSequence < ps->eventSequence) {
 		int		seq;
 
-		if ( ps->entityEventSequence < ps->eventSequence - MAX_PS_EVENTS) {
+		if (ps->entityEventSequence < ps->eventSequence - MAX_PS_EVENTS) {
 			ps->entityEventSequence = ps->eventSequence - MAX_PS_EVENTS;
 		}
 		seq = ps->entityEventSequence & (MAX_PS_EVENTS-1);
-		s->event = ps->events[ seq ] | ( ( ps->entityEventSequence & 3 ) << 8 );
+		s->event = ps->events[ seq ] | ((ps->entityEventSequence & 3) << 8);
 		s->eventParm = ps->eventParms[ seq ];
 		ps->entityEventSequence++;
 	}
@@ -2993,8 +2993,8 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 	s->groundEntityNum = ps->groundEntityNum;
 
 	s->powerups = 0;
-	for ( i = 0 ; i < MAX_POWERUPS ; i++ ) {
-		if ( ps->powerups[ i ] ) {
+	for (i = 0 ; i < MAX_POWERUPS ; i++) {
+		if (ps->powerups[ i ]) {
 			s->powerups |= 1 << i;
 		}
 	}
@@ -3045,29 +3045,29 @@ int BG_ModelCache(const char *modelName, const char *skinName)
 	#ifdef _GAME
 		void *g2 = NULL;
 
-		if ( VALIDSTRING( skinName ) )
-			trap->R_RegisterSkin( skinName );
+		if (VALIDSTRING(skinName))
+			trap->R_RegisterSkin(skinName);
 
 		//I could hook up a precache ghoul2 function, but oh well, this works
-		trap->G2API_InitGhoul2Model( &g2, modelName, 0, 0, 0, 0, 0 );
+		trap->G2API_InitGhoul2Model(&g2, modelName, 0, 0, 0, 0, 0);
 		//now get rid of it
-		if ( g2 )
-			trap->G2API_CleanGhoul2Models( &g2 );
+		if (g2)
+			trap->G2API_CleanGhoul2Models(&g2);
 
 		return 0;
 	#else // !_GAME
-		if ( VALIDSTRING( skinName ) )
+		if (VALIDSTRING(skinName))
 		{
 			#ifdef _CGAME
-				trap->R_RegisterSkin( skinName );
+				trap->R_RegisterSkin(skinName);
 			#else // !_CGAME
-				trap->R_RegisterSkin( skinName );
+				trap->R_RegisterSkin(skinName);
 			#endif // _CGAME
 		}
 		#ifdef _CGAME
-			return trap->R_RegisterModel( modelName );
+			return trap->R_RegisterModel(modelName);
 		#else // !_CGAME
-			return trap->R_RegisterModel( modelName );
+			return trap->R_RegisterModel(modelName);
 		#endif // _CGAME
 	#endif // _GAME
 }
@@ -3089,13 +3089,13 @@ static char		bg_pool[MAX_POOL_SIZE];
 static int		bg_poolSize = 0;
 static int		bg_poolTail = MAX_POOL_SIZE;
 
-void *BG_Alloc ( int size )
+void *BG_Alloc (int size)
 {
 	bg_poolSize = ((bg_poolSize + 0x00000003) & 0xfffffffc);
 
 	if (bg_poolSize + size > bg_poolTail)
 	{
-		Com_Error( ERR_DROP, "BG_Alloc: buffer exceeded tail (%d > %d)", bg_poolSize + size, bg_poolTail);
+		Com_Error(ERR_DROP, "BG_Alloc: buffer exceeded tail (%d > %d)", bg_poolSize + size, bg_poolTail);
 		return 0;
 	}
 
@@ -3104,11 +3104,11 @@ void *BG_Alloc ( int size )
 	return &bg_pool[bg_poolSize-size];
 }
 
-void *BG_AllocUnaligned ( int size )
+void *BG_AllocUnaligned (int size)
 {
 	if (bg_poolSize + size > bg_poolTail)
 	{
-		Com_Error( ERR_DROP, "BG_AllocUnaligned: buffer exceeded tail (%d > %d)", bg_poolSize + size, bg_poolTail);
+		Com_Error(ERR_DROP, "BG_AllocUnaligned: buffer exceeded tail (%d > %d)", bg_poolSize + size, bg_poolTail);
 		return 0;
 	}
 
@@ -3117,13 +3117,13 @@ void *BG_AllocUnaligned ( int size )
 	return &bg_pool[bg_poolSize-size];
 }
 
-void *BG_TempAlloc( int size )
+void *BG_TempAlloc(int size)
 {
 	size = ((size + 0x00000003) & 0xfffffffc);
 
 	if (bg_poolTail - size < bg_poolSize)
 	{
-		Com_Error( ERR_DROP, "BG_TempAlloc: buffer exceeded head (%d > %d)", bg_poolTail - size, bg_poolSize);
+		Com_Error(ERR_DROP, "BG_TempAlloc: buffer exceeded head (%d > %d)", bg_poolTail - size, bg_poolSize);
 		return 0;
 	}
 
@@ -3132,26 +3132,26 @@ void *BG_TempAlloc( int size )
 	return &bg_pool[bg_poolTail];
 }
 
-void BG_TempFree( int size )
+void BG_TempFree(int size)
 {
 	size = ((size + 0x00000003) & 0xfffffffc);
 
 	if (bg_poolTail+size > MAX_POOL_SIZE)
 	{
-		Com_Error( ERR_DROP, "BG_TempFree: tail greater than size (%d > %d)", bg_poolTail+size, MAX_POOL_SIZE );
+		Com_Error(ERR_DROP, "BG_TempFree: tail greater than size (%d > %d)", bg_poolTail+size, MAX_POOL_SIZE);
 	}
 
 	bg_poolTail += size;
 }
 
-char *BG_StringAlloc ( const char *source )
+char *BG_StringAlloc (const char *source)
 {
-	char *dest = (char*)BG_Alloc( strlen ( source ) + 1 );
-	strcpy( dest, source );
+	char *dest = (char*)BG_Alloc(strlen (source) + 1);
+	strcpy(dest, source);
 	return dest;
 }
 
-qboolean BG_OutOfMemory ( void )
+qboolean BG_OutOfMemory (void)
 {
 	return bg_poolSize >= MAX_POOL_SIZE;
 }
@@ -3169,9 +3169,9 @@ const char *gametypeStringShort[GT_MAX_GAME_TYPE] = {
 	"CTY"
 };
 
-const char *BG_GetGametypeString( int gametype )
+const char *BG_GetGametypeString(int gametype)
 {
-	switch ( gametype )
+	switch (gametype)
 	{
 	case GT_FFA:
 		return "Free For All";
@@ -3200,21 +3200,21 @@ const char *BG_GetGametypeString( int gametype )
 	}
 }
 
-int BG_GetGametypeForString( const char *gametype )
+int BG_GetGametypeForString(const char *gametype)
 {
-		 if ( !Q_stricmp( gametype, "ffa" )
-			||!Q_stricmp( gametype, "dm" ) )			return GT_FFA;
-	else if ( !Q_stricmp( gametype, "holocron" ) )		return GT_HOLOCRON;
-	else if ( !Q_stricmp( gametype, "jm" ) )			return GT_JEDIMASTER;
-	else if ( !Q_stricmp( gametype, "duel" ) )			return GT_DUEL;
-	else if ( !Q_stricmp( gametype, "powerduel" ) )		return GT_POWERDUEL;
-	else if ( !Q_stricmp( gametype, "sp" )
-			||!Q_stricmp( gametype, "coop" ) )			return GT_SINGLE_PLAYER;
-	else if ( !Q_stricmp( gametype, "tdm" )
-			||!Q_stricmp( gametype, "tffa" )
-			||!Q_stricmp( gametype, "team" ) )			return GT_TEAM;
-	else if ( !Q_stricmp( gametype, "siege" ) )			return GT_SIEGE;
-	else if ( !Q_stricmp( gametype, "ctf" ) )			return GT_CTF;
-	else if ( !Q_stricmp( gametype, "cty" ) )			return GT_CTY;
+		 if (!Q_stricmp(gametype, "ffa")
+			||!Q_stricmp(gametype, "dm"))			return GT_FFA;
+	else if (!Q_stricmp(gametype, "holocron"))		return GT_HOLOCRON;
+	else if (!Q_stricmp(gametype, "jm"))			return GT_JEDIMASTER;
+	else if (!Q_stricmp(gametype, "duel"))			return GT_DUEL;
+	else if (!Q_stricmp(gametype, "powerduel"))		return GT_POWERDUEL;
+	else if (!Q_stricmp(gametype, "sp")
+			||!Q_stricmp(gametype, "coop"))			return GT_SINGLE_PLAYER;
+	else if (!Q_stricmp(gametype, "tdm")
+			||!Q_stricmp(gametype, "tffa")
+			||!Q_stricmp(gametype, "team"))			return GT_TEAM;
+	else if (!Q_stricmp(gametype, "siege"))			return GT_SIEGE;
+	else if (!Q_stricmp(gametype, "ctf"))			return GT_CTF;
+	else if (!Q_stricmp(gametype, "cty"))			return GT_CTY;
 	else												return -1;
 }

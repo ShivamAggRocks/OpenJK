@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 uint32_t R_VboPackTangent(vec4_t v)
 {
-	return (((uint32_t)(v[3] * 1.5f   + 2.0f  )) << 30)
+	return (((uint32_t)(v[3] * 1.5f   + 2.0f )) << 30)
 		    | (((uint32_t)(v[2] * 511.5f + 512.0f)) << 20)
 		    | (((uint32_t)(v[1] * 511.5f + 512.0f)) << 10)
 		    | (((uint32_t)(v[0] * 511.5f + 512.0f)));
@@ -57,7 +57,7 @@ void R_VboUnpackNormal(vec3_t v, uint32_t b)
 	v[2] = ((b >> 20) & 0x3ff) * 1.0f/511.5f - 1.0f;
 }
 
-static GLenum GetGLBufferUsage ( vboUsage_t usage )
+static GLenum GetGLBufferUsage (vboUsage_t usage)
 {
 	switch (usage)
 	{
@@ -85,8 +85,8 @@ VBO_t *R_CreateVBO(byte * vertexes, int vertexesSize, vboUsage_t usage)
 {
 	VBO_t          *vbo;
 
-	if ( tr.numVBOs == MAX_VBOS ) {
-		ri.Error( ERR_DROP, "R_CreateVBO: MAX_VBOS hit");
+	if (tr.numVBOs == MAX_VBOS) {
+		ri.Error(ERR_DROP, "R_CreateVBO: MAX_VBOS hit");
 	}
 
 	R_IssuePendingRenderCommands();
@@ -100,10 +100,10 @@ VBO_t *R_CreateVBO(byte * vertexes, int vertexesSize, vboUsage_t usage)
 	tr.numVBOs++;
 
 	qglBindBuffer(GL_ARRAY_BUFFER, vbo->vertexesVBO);
-	if ( glRefConfig.immutableBuffers )
+	if (glRefConfig.immutableBuffers)
 	{
 		GLbitfield creationFlags = 0;
-		if ( usage == VBO_USAGE_DYNAMIC )
+		if (usage == VBO_USAGE_DYNAMIC)
 		{
 			creationFlags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
 		}
@@ -134,8 +134,8 @@ IBO_t *R_CreateIBO(byte * indexes, int indexesSize, vboUsage_t usage)
 {
 	IBO_t          *ibo;
 
-	if ( tr.numIBOs == MAX_IBOS ) {
-		ri.Error( ERR_DROP, "R_CreateIBO: MAX_IBOS hit");
+	if (tr.numIBOs == MAX_IBOS) {
+		ri.Error(ERR_DROP, "R_CreateIBO: MAX_IBOS hit");
 	}
 
 	R_IssuePendingRenderCommands();
@@ -147,10 +147,10 @@ IBO_t *R_CreateIBO(byte * indexes, int indexesSize, vboUsage_t usage)
 	tr.numIBOs++;
 
 	qglBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo->indexesVBO);
-	if ( glRefConfig.immutableBuffers )
+	if (glRefConfig.immutableBuffers)
 	{
 		GLbitfield creationFlags = 0;
-		if ( usage == VBO_USAGE_DYNAMIC )
+		if (usage == VBO_USAGE_DYNAMIC)
 		{
 			creationFlags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
 		}
@@ -542,7 +542,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.lightdir[0]));
 	}
 
-	for ( int i = 0; i < properties->numVertexArrays; i++ )
+	for (int i = 0; i < properties->numVertexArrays; i++)
 		properties->strides[properties->enabledAttributes[i]] = properties->vertexDataSize;
 }
 
@@ -598,7 +598,7 @@ void RB_UpdateVBOs(unsigned int attribBits)
 		int totalVertexDataSize = tess.numVertexes * vertexArrays.vertexDataSize;
 		backEnd.pc.c_dynamicVboTotalSize += totalVertexDataSize;
 
-		if ( (currentFrame->dynamicVboWriteOffset + totalVertexDataSize) > frameVbo->vertexesSize )
+		if ((currentFrame->dynamicVboWriteOffset + totalVertexDataSize) > frameVbo->vertexesSize)
 		{
 			// TODO: Eh...resize?
 			assert(!"This shouldn't happen");
@@ -608,7 +608,7 @@ void RB_UpdateVBOs(unsigned int attribBits)
 		R_BindVBO(frameVbo);
 
 		void *dstPtr;
-		if ( glRefConfig.immutableBuffers )
+		if (glRefConfig.immutableBuffers)
 		{
 			dstPtr = (byte *)currentFrame->dynamicVboMemory + currentFrame->dynamicVboWriteOffset;
 		}
@@ -620,9 +620,9 @@ void RB_UpdateVBOs(unsigned int attribBits)
 
 		// Interleave the data
 		void *writePtr = dstPtr;
-		for ( int i = 0; i < tess.numVertexes; i++ )
+		for (int i = 0; i < tess.numVertexes; i++)
 		{
-			for ( int j = 0; j < vertexArrays.numVertexArrays; j++ )
+			for (int j = 0; j < vertexArrays.numVertexArrays; j++)
 			{
 				const int attributeIndex = vertexArrays.enabledAttributes[j];
 				const size_t attribSize = vertexArrays.sizes[attributeIndex];
@@ -634,7 +634,7 @@ void RB_UpdateVBOs(unsigned int attribBits)
 			}
 		}
 
-		if ( !glRefConfig.immutableBuffers )
+		if (!glRefConfig.immutableBuffers)
 		{
 			qglUnmapBuffer(GL_ARRAY_BUFFER);
 		}
@@ -651,7 +651,7 @@ void RB_UpdateVBOs(unsigned int attribBits)
 
 		R_BindIBO(frameIbo);
 
-		if ( (currentFrame->dynamicIboWriteOffset + totalIndexDataSize) > frameIbo->indexesSize )
+		if ((currentFrame->dynamicIboWriteOffset + totalIndexDataSize) > frameIbo->indexesSize)
 		{
 			// TODO: Resize the buffer?
 			assert(!"This shouldn't happen");
@@ -659,7 +659,7 @@ void RB_UpdateVBOs(unsigned int attribBits)
 		}
 
 		void *dst;
-		if ( glRefConfig.immutableBuffers )
+		if (glRefConfig.immutableBuffers)
 		{
 			dst = (byte *)currentFrame->dynamicIboMemory + currentFrame->dynamicIboWriteOffset;
 		}
@@ -671,7 +671,7 @@ void RB_UpdateVBOs(unsigned int attribBits)
 
 		memcpy(dst, tess.indexes, totalIndexDataSize);
 
-		if ( !glRefConfig.immutableBuffers )
+		if (!glRefConfig.immutableBuffers)
 		{
 			qglUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 		}

@@ -1486,7 +1486,7 @@ static stbi__uint32 stbi__get32le(stbi__context *s)
 //  generic converter from built-in img_n to req_comp
 //    individual types do this automatically as much as possible (e.g. jpeg
 //    does all cases internally since it needs to colorspace convert anyway,
-//    and it never has alpha, so very few cases ). png can automatically
+//    and it never has alpha, so very few cases). png can automatically
 //    interleave an alpha=255 channel, but falls back to this for other cases
 //
 //  assume data buffer is malloced, so malloc a new one and free that one
@@ -2161,7 +2161,7 @@ stbi_inline static stbi_uc stbi__clamp(int x)
    p3 = s6;                                    \
    p1 = (p2+p3) * stbi__f2f(0.5411961f);       \
    t2 = p1 + p3*stbi__f2f(-1.847759065f);      \
-   t3 = p1 + p2*stbi__f2f( 0.765366865f);      \
+   t3 = p1 + p2*stbi__f2f(0.765366865f);      \
    p2 = s0;                                    \
    p3 = s4;                                    \
    t0 = stbi__fsh(p2+p3);                      \
@@ -2178,11 +2178,11 @@ stbi_inline static stbi_uc stbi__clamp(int x)
    p4 = t1+t3;                                 \
    p1 = t0+t3;                                 \
    p2 = t1+t2;                                 \
-   p5 = (p3+p4)*stbi__f2f( 1.175875602f);      \
-   t0 = t0*stbi__f2f( 0.298631336f);           \
-   t1 = t1*stbi__f2f( 2.053119869f);           \
-   t2 = t2*stbi__f2f( 3.072711026f);           \
-   t3 = t3*stbi__f2f( 1.501321110f);           \
+   p5 = (p3+p4)*stbi__f2f(1.175875602f);      \
+   t0 = t0*stbi__f2f(0.298631336f);           \
+   t1 = t1*stbi__f2f(2.053119869f);           \
+   t2 = t2*stbi__f2f(3.072711026f);           \
+   t3 = t3*stbi__f2f(1.501321110f);           \
    p1 = p5 + p1*stbi__f2f(-0.899976223f);      \
    p2 = p5 + p2*stbi__f2f(-2.562915447f);      \
    p3 = p3*stbi__f2f(-1.961570560f);           \
@@ -4142,9 +4142,9 @@ Init algorithm:
 {
 int i;   // use <= to match clearly with spec
 for (i=0; i <= 143; ++i)     stbi__zdefault_length[i]   = 8;
-for (   ; i <= 255; ++i)     stbi__zdefault_length[i]   = 9;
-for (   ; i <= 279; ++i)     stbi__zdefault_length[i]   = 7;
-for (   ; i <= 287; ++i)     stbi__zdefault_length[i]   = 8;
+for (  ; i <= 255; ++i)     stbi__zdefault_length[i]   = 9;
+for (  ; i <= 279; ++i)     stbi__zdefault_length[i]   = 7;
+for (  ; i <= 287; ++i)     stbi__zdefault_length[i]   = 8;
 for (i=0; i <=  31; ++i)     stbi__zdefault_distance[i] = 5;
 }
 */
@@ -5835,7 +5835,7 @@ static void *stbi__psd_load(stbi__context *s, int *x, int *y, int *comp, int req
 	pixelCount = w*h;
 
 	// Initialize the data to zero.
-	//memset( out, 0, pixelCount * 4 );
+	//memset(out, 0, pixelCount * 4);
 
 	// Finally, the image data.
 	if (compression) {

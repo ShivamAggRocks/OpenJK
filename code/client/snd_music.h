@@ -30,7 +30,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // if you change this enum, you MUST update the #defines below
 typedef enum
 {
-//( eBGRNDTRACK_DATABEGIN )			// begin-label for FOR loops
+//(eBGRNDTRACK_DATABEGIN)			// begin-label for FOR loops
 	//
 	eBGRNDTRACK_EXPLORE = 0,		// for normal walking around
 	eBGRNDTRACK_ACTION,				// for excitement
@@ -45,7 +45,7 @@ typedef enum
 	eBGRNDTRACK_EXPLORETRANS2,		// "
 	eBGRNDTRACK_EXPLORETRANS3,		// "
 	//
-//(	eBGRNDTRACK_DATAEND ),			// tracks from this point on are for logic or copies, do NOT free them.
+//(	eBGRNDTRACK_DATAEND),			// tracks from this point on are for logic or copies, do NOT free them.
 	//
 	eBGRNDTRACK_NONDYNAMIC,			// used for when music is just streaming, not part of dynamic stuff (used to be defined as same as explore entry, but this allows playing music in between 2 invokations of the same dynamic music without midleve reload, and also faster level transitioning if two consecutive dynamic sections use same DMS.DAT entries. Are you still reading this far?
 	eBGRNDTRACK_SILENCE,			// silence (more of a logic thing than an actual track at the moment)
@@ -65,18 +65,18 @@ typedef enum
 #define eBGRNDTRACK_LASTTRANSITION	eBGRNDTRACK_EXPLORETRANS3	//
 
 
-void		Music_SetLevelName			( const char *psLevelName );
-qboolean	Music_DynamicDataAvailable	( const char *psDynamicMusicLabel );
-const char *Music_GetFileNameForState	( MusicState_e eMusicState );
-qboolean	Music_StateIsTransition		( MusicState_e eMusicState );
-qboolean	Music_StateCanBeInterrupted	( MusicState_e eMusicState, MusicState_e eProposedMusicState );
-float		Music_GetRandomEntryTime	( MusicState_e eMusicState );
+void		Music_SetLevelName			(const char *psLevelName);
+qboolean	Music_DynamicDataAvailable	(const char *psDynamicMusicLabel);
+const char *Music_GetFileNameForState	(MusicState_e eMusicState);
+qboolean	Music_StateIsTransition		(MusicState_e eMusicState);
+qboolean	Music_StateCanBeInterrupted	(MusicState_e eMusicState, MusicState_e eProposedMusicState);
+float		Music_GetRandomEntryTime	(MusicState_e eMusicState);
 
 #ifdef		MP3STUFF_KNOWN
-qboolean	Music_AllowedToTransition	( float fPlayingTimeElapsed, MusicState_e eMusicState, MusicState_e	*peTransition = NULL, float *pfNewTrackEntryTime = NULL);
+qboolean	Music_AllowedToTransition	(float fPlayingTimeElapsed, MusicState_e eMusicState, MusicState_e	*peTransition = NULL, float *pfNewTrackEntryTime = NULL);
 #endif
 
-const char *Music_BaseStateToString		( MusicState_e eMusicState, qboolean bDebugPrintQuery = qfalse);
+const char *Music_BaseStateToString		(MusicState_e eMusicState, qboolean bDebugPrintQuery = qfalse);
 
 
 #endif	// #ifndef SND_MUSIC_H

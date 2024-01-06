@@ -377,7 +377,7 @@ private:
 			if (mPool[curNode].mLeft!=NULL_NODE)
 			{
 				int	OldMaxs = bounds.mMaxs[curDimension];
-				if ( !bounds.mMins[curDimension] || ((mPool[curNode].mData[curDimension]) < (mPool[bounds.mMins[curDimension]].mData[curDimension])) )
+				if (!bounds.mMins[curDimension] || ((mPool[curNode].mData[curDimension]) < (mPool[bounds.mMins[curDimension]].mData[curDimension])))
 				{
 					bounds.mMins[curDimension] = curNode;
 				}
@@ -389,7 +389,7 @@ private:
 			//----------------------
 			if (mPool[curNode].mRight!=NULL_NODE)
 			{
-				if ( !bounds.mMaxs[curDimension] || ((mPool[bounds.mMaxs[curDimension]].mData[curDimension]) < (mPool[curNode].mData[curDimension])) )
+				if (!bounds.mMaxs[curDimension] || ((mPool[bounds.mMaxs[curDimension]].mData[curDimension]) < (mPool[curNode].mData[curDimension])))
 				{
 					bounds.mMaxs[curDimension] = curNode;
 				}

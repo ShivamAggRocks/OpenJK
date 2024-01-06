@@ -30,7 +30,7 @@ Layer III
 
   cos transform for n=18, n=6
 
-computes  c[k] =  Sum( cos((pi/4*n)*(2*k+1)*(2*p+1))*f[p] )
+computes  c[k] =  Sum(cos((pi/4*n)*(2*k+1)*(2*p+1))*f[p])
                 k = 0, ...n-1,  p = 0...n-1
 
 

@@ -138,43 +138,43 @@ static void IN_UseGivenForce(void)
 }
 
 
-void IN_MLookDown( void ) {
+void IN_MLookDown(void) {
 	in_mlooking = qtrue;
 }
 
-void IN_CenterView( void );
-void IN_MLookUp( void ) {
+void IN_CenterView(void);
+void IN_MLookUp(void) {
 	in_mlooking = qfalse;
-	if ( !cl_freelook->integer ) {
+	if (!cl_freelook->integer) {
 		IN_CenterView ();
 	}
 }
 
-void IN_KeyDown( kbutton_t *b ) {
+void IN_KeyDown(kbutton_t *b) {
 	int		k;
 	const char	*c;
 
 	c = Cmd_Argv(1);
-	if ( c[0] ) {
+	if (c[0]) {
 		k = atoi(c);
 	} else {
 		k = -1;		// typed manually at the console for continuous down
 	}
 
-	if ( k == b->down[0] || k == b->down[1] ) {
+	if (k == b->down[0] || k == b->down[1]) {
 		return;		// repeating key
 	}
 
-	if ( !b->down[0] ) {
+	if (!b->down[0]) {
 		b->down[0] = k;
-	} else if ( !b->down[1] ) {
+	} else if (!b->down[1]) {
 		b->down[1] = k;
 	} else {
 		Com_Printf ("Three keys down for a button!\n");
 		return;
 	}
 
-	if ( b->active ) {
+	if (b->active) {
 		return;		// still down
 	}
 
@@ -186,13 +186,13 @@ void IN_KeyDown( kbutton_t *b ) {
 	b->wasPressed = qtrue;
 }
 
-void IN_KeyUp( kbutton_t *b ) {
+void IN_KeyUp(kbutton_t *b) {
 	int		k;
 	const char	*c;
 	unsigned	uptime;
 
 	c = Cmd_Argv(1);
-	if ( c[0] ) {
+	if (c[0]) {
 		k = atoi(c);
 	} else {
 		// typed manually at the console, assume for unsticking, so clear all
@@ -201,14 +201,14 @@ void IN_KeyUp( kbutton_t *b ) {
 		return;
 	}
 
-	if ( b->down[0] == k ) {
+	if (b->down[0] == k) {
 		b->down[0] = 0;
-	} else if ( b->down[1] == k ) {
+	} else if (b->down[1] == k) {
 		b->down[1] = 0;
 	} else {
 		return;		// key up without coresponding down (menu pass through)
 	}
-	if ( b->down[0] || b->down[1] ) {
+	if (b->down[0] || b->down[1]) {
 		return;		// some other key is still holding it down
 	}
 
@@ -217,7 +217,7 @@ void IN_KeyUp( kbutton_t *b ) {
 	// save timestamp for partial frame summing
 	c = Cmd_Argv(2);
 	uptime = atoi(c);
-	if ( uptime ) {
+	if (uptime) {
 		b->msec += uptime - b->downtime;
 	} else {
 		b->msec += frame_msec / 2;
@@ -235,16 +235,16 @@ CL_KeyState
 Returns the fraction of the frame that the key was down
 ===============
 */
-float CL_KeyState( kbutton_t *key ) {
+float CL_KeyState(kbutton_t *key) {
 	float		val;
 	int			msec;
 
 	msec = key->msec;
 	key->msec = 0;
 
-	if ( key->active ) {
+	if (key->active) {
 		// still down
-		if ( !key->downtime ) {
+		if (!key->downtime) {
 			msec = com_frameTime;
 		} else {
 			msec += com_frameTime - key->downtime;
@@ -259,10 +259,10 @@ float CL_KeyState( kbutton_t *key ) {
 #endif
 
 	val = (float)msec / frame_msec;
-	if ( val < 0 ) {
+	if (val < 0) {
 		val = 0;
 	}
-	if ( val > 1 ) {
+	if (val > 1) {
 		val = 1;
 	}
 
@@ -357,17 +357,17 @@ CL_AdjustAngles
 Moves the local angle positions
 ================
 */
-void CL_AdjustAngles( void ) {
+void CL_AdjustAngles(void) {
 	float	speed;
 
-	if ( in_speed.active ) {
+	if (in_speed.active) {
 		speed = 0.001 * cls.frametime * cl_anglespeedkey->value;
 	} else {
 		speed = 0.001 * cls.frametime;
 	}
 
-	if ( !in_strafe.active ) {
-		if ( cl_mYawOverride )
+	if (!in_strafe.active) {
+		if (cl_mYawOverride)
 		{
 			cl.viewangles[YAW] -= cl_mYawOverride*5.0f*speed*cl_yawspeed->value*CL_KeyState (&in_right);
 			cl.viewangles[YAW] += cl_mYawOverride*5.0f*speed*cl_yawspeed->value*CL_KeyState (&in_left);
@@ -379,7 +379,7 @@ void CL_AdjustAngles( void ) {
 		}
 	}
 
-	if ( cl_mPitchOverride )
+	if (cl_mPitchOverride)
 	{
 		cl.viewangles[PITCH] -= cl_mPitchOverride*5.0f*speed*cl_pitchspeed->value * CL_KeyState (&in_lookup);
 		cl.viewangles[PITCH] += cl_mPitchOverride*5.0f*speed*cl_pitchspeed->value * CL_KeyState (&in_lookdown);
@@ -398,7 +398,7 @@ CL_KeyMove
 Sets the usercmd_t based on key states
 ================
 */
-void CL_KeyMove( usercmd_t *cmd ) {
+void CL_KeyMove(usercmd_t *cmd) {
 	int		movespeed;
 	int		forward, side, up;
 
@@ -407,7 +407,7 @@ void CL_KeyMove( usercmd_t *cmd ) {
 	// the walking flag is to keep animations consistant
 	// even during acceleration and develeration
 	//
-	if ( in_speed.active ^ cl_run->integer ) {
+	if (in_speed.active ^ cl_run->integer) {
 		movespeed = 127;
 		cmd->buttons &= ~BUTTON_WALKING;
 	} else {
@@ -418,7 +418,7 @@ void CL_KeyMove( usercmd_t *cmd ) {
 	forward = 0;
 	side = 0;
 	up = 0;
-	if ( in_strafe.active ) {
+	if (in_strafe.active) {
 		side += movespeed * CL_KeyState (&in_right);
 		side -= movespeed * CL_KeyState (&in_left);
 	}
@@ -433,21 +433,21 @@ void CL_KeyMove( usercmd_t *cmd ) {
 	forward += movespeed * CL_KeyState (&in_forward);
 	forward -= movespeed * CL_KeyState (&in_back);
 
-	cmd->forwardmove = ClampChar( forward );
-	cmd->rightmove = ClampChar( side );
-	cmd->upmove = ClampChar( up );
+	cmd->forwardmove = ClampChar(forward);
+	cmd->rightmove = ClampChar(side);
+	cmd->upmove = ClampChar(up);
 }
 
-void _UI_MouseEvent( int dx, int dy );
+void _UI_MouseEvent(int dx, int dy);
 
 /*
 =================
 CL_MouseEvent
 =================
 */
-void CL_MouseEvent( int dx, int dy, int time ) {
-	if ( Key_GetCatcher( ) & KEYCATCH_UI ) {
-		_UI_MouseEvent( dx, dy );
+void CL_MouseEvent(int dx, int dy, int time) {
+	if (Key_GetCatcher() & KEYCATCH_UI) {
+		_UI_MouseEvent(dx, dy);
 	}
 	else {
 		cl.mouseDx[cl.mouseIndex] += dx;
@@ -462,9 +462,9 @@ CL_JoystickEvent
 Joystick values stay set until changed
 =================
 */
-void CL_JoystickEvent( int axis, int value, int time ) {
-	if ( axis < 0 || axis >= MAX_JOYSTICK_AXIS ) {
-		Com_Error( ERR_DROP, "CL_JoystickEvent: bad axis %i", axis );
+void CL_JoystickEvent(int axis, int value, int time) {
+	if (axis < 0 || axis >= MAX_JOYSTICK_AXIS) {
+		Com_Error(ERR_DROP, "CL_JoystickEvent: bad axis %i", axis);
 	}
 	cl.joystickAxis[axis] = value;
 }
@@ -474,26 +474,26 @@ void CL_JoystickEvent( int axis, int value, int time ) {
 CL_JoystickMove
 =================
 */
-void CL_JoystickMove( usercmd_t *cmd ) {
+void CL_JoystickMove(usercmd_t *cmd) {
 	float	anglespeed;
 
-	if ( !in_joystick->integer )
+	if (!in_joystick->integer)
 	{
 		return;
 	}
 
-	if ( !(in_speed.active ^ cl_run->integer) ) {
+	if (!(in_speed.active ^ cl_run->integer)) {
 		cmd->buttons |= BUTTON_WALKING;
 	}
 
-	if ( in_speed.active ) {
+	if (in_speed.active) {
 		anglespeed = 0.001 * cls.frametime * cl_anglespeedkey->value;
 	} else {
 		anglespeed = 0.001 * cls.frametime;
 	}
 
-	if ( !in_strafe.active ) {
-		if ( cl_mYawOverride )
+	if (!in_strafe.active) {
+		if (cl_mYawOverride)
 		{
 			cl.viewangles[YAW] += 5.0f * cl_mYawOverride * cl.joystickAxis[AXIS_SIDE];
 		}
@@ -504,11 +504,11 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 	}
 	else
 	{
-		cmd->rightmove = ClampChar( cmd->rightmove + cl.joystickAxis[AXIS_SIDE] );
+		cmd->rightmove = ClampChar(cmd->rightmove + cl.joystickAxis[AXIS_SIDE]);
 	}
 
-	if ( in_mlooking ) {
-		if ( cl_mPitchOverride )
+	if (in_mlooking) {
+		if (cl_mPitchOverride)
 		{
 			cl.viewangles[PITCH] += 5.0f * cl_mPitchOverride * cl.joystickAxis[AXIS_FORWARD];
 		}
@@ -517,10 +517,10 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 			cl.viewangles[PITCH] += anglespeed * (cl_pitchspeed->value / 100.0f) * cl.joystickAxis[AXIS_FORWARD];
 		}
 	} else {
-		cmd->forwardmove = ClampChar( cmd->forwardmove + cl.joystickAxis[AXIS_FORWARD] );
+		cmd->forwardmove = ClampChar(cmd->forwardmove + cl.joystickAxis[AXIS_FORWARD]);
 	}
 
-	cmd->upmove = ClampChar( cmd->upmove + cl.joystickAxis[AXIS_UP] );
+	cmd->upmove = ClampChar(cmd->upmove + cl.joystickAxis[AXIS_UP]);
 }
 
 /*
@@ -528,7 +528,7 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 CL_MouseMove
 =================
 */
-void CL_MouseMove( usercmd_t *cmd ) {
+void CL_MouseMove(usercmd_t *cmd) {
 	float	mx, my;
 	float	accelSensitivity;
 	float	rate;
@@ -536,9 +536,9 @@ void CL_MouseMove( usercmd_t *cmd ) {
 	const float pitch = m_pitch->value;
 
 	// allow mouse smoothing
-	if ( m_filter->integer ) {
-		mx = ( cl.mouseDx[0] + cl.mouseDx[1] ) * 0.5;
-		my = ( cl.mouseDy[0] + cl.mouseDy[1] ) * 0.5;
+	if (m_filter->integer) {
+		mx = (cl.mouseDx[0] + cl.mouseDx[1]) * 0.5;
+		my = (cl.mouseDy[0] + cl.mouseDy[1]) * 0.5;
 	} else {
 		mx = cl.mouseDx[cl.mouseIndex];
 		my = cl.mouseDy[cl.mouseIndex];
@@ -548,14 +548,14 @@ void CL_MouseMove( usercmd_t *cmd ) {
 	cl.mouseDx[cl.mouseIndex] = 0;
 	cl.mouseDy[cl.mouseIndex] = 0;
 
-	rate = SQRTFAST( mx * mx + my * my ) / speed;
+	rate = SQRTFAST(mx * mx + my * my) / speed;
 	accelSensitivity = cl_sensitivity->value + rate * cl_mouseAccel->value;
 
 	// scale by FOV
 	accelSensitivity *= cl.cgameSensitivity;
 
-	if ( rate && cl_showMouseRate->integer ) {
-		Com_Printf( "%f : %f\n", rate, accelSensitivity );
+	if (rate && cl_showMouseRate->integer) {
+		Com_Printf("%f : %f\n", rate, accelSensitivity);
 	}
 
 	mx *= accelSensitivity;
@@ -566,10 +566,10 @@ void CL_MouseMove( usercmd_t *cmd ) {
 	}
 
 	// add mouse X/Y movement to cmd
-	if ( in_strafe.active ) {
-		cmd->rightmove = ClampChar( cmd->rightmove + m_side->value * mx );
+	if (in_strafe.active) {
+		cmd->rightmove = ClampChar(cmd->rightmove + m_side->value * mx);
 	} else {
-		if ( cl_mYawOverride )
+		if (cl_mYawOverride)
 		{
 			cl.viewangles[YAW] -= cl_mYawOverride * mx;
 		}
@@ -579,12 +579,12 @@ void CL_MouseMove( usercmd_t *cmd ) {
 		}
 	}
 
-	if ( (in_mlooking || cl_freelook->integer) && !in_strafe.active ) {
+	if ((in_mlooking || cl_freelook->integer) && !in_strafe.active) {
 		// VVFIXME - This is supposed to be a CVAR
 		const float cl_pitchSensitivity = 1.0f;
-		if ( cl_mPitchOverride )
+		if (cl_mPitchOverride)
 		{
-			if ( pitch > 0 )
+			if (pitch > 0)
 			{
 				cl.viewangles[PITCH] += cl_mPitchOverride * my * cl_pitchSensitivity;
 			}
@@ -598,7 +598,7 @@ void CL_MouseMove( usercmd_t *cmd ) {
 			cl.viewangles[PITCH] += pitch * my * cl_pitchSensitivity;
 		}
 	} else {
-		cmd->forwardmove = ClampChar( cmd->forwardmove - m_forward->value * my );
+		cmd->forwardmove = ClampChar(cmd->forwardmove - m_forward->value * my);
 	}
 }
 
@@ -608,7 +608,7 @@ void CL_MouseMove( usercmd_t *cmd ) {
 CL_CmdButtons
 ==============
 */
-void CL_CmdButtons( usercmd_t *cmd ) {
+void CL_CmdButtons(usercmd_t *cmd) {
 	int		i;
 
 	//
@@ -617,20 +617,20 @@ void CL_CmdButtons( usercmd_t *cmd ) {
 	// less than a frame
 	//
 	for (i = 0 ; i < 32 ; i++) {
-		if ( in_buttons[i].active || in_buttons[i].wasPressed ) {
+		if (in_buttons[i].active || in_buttons[i].wasPressed) {
 			cmd->buttons |= 1 << i;
 		}
 		in_buttons[i].wasPressed = qfalse;
 	}
 
-	if ( Key_GetCatcher( ) ) {
+	if (Key_GetCatcher()) {
 		//cmd->buttons |= BUTTON_TALK;
 	}
 
 	// allow the game to know if any key at all is
 	// currently pressed, even if it isn't bound to anything
 	/*
-	if ( kg.anykeydown && Key_GetCatcher( ) == 0 ) {
+	if (kg.anykeydown && Key_GetCatcher() == 0) {
 		cmd->buttons |= BUTTON_ANY;
 	}
 	*/
@@ -642,7 +642,7 @@ void CL_CmdButtons( usercmd_t *cmd ) {
 CL_FinishMove
 ==============
 */
-void CL_FinishMove( usercmd_t *cmd ) {
+void CL_FinishMove(usercmd_t *cmd) {
 	int		i;
 
 	// copy the state that the cgame is currently sending
@@ -674,50 +674,50 @@ CL_CreateCmd
 */
 vec3_t cl_overriddenAngles = {0,0,0};
 qboolean cl_overrideAngles = qfalse;
-usercmd_t CL_CreateCmd( void ) {
+usercmd_t CL_CreateCmd(void) {
 	usercmd_t	cmd;
 	vec3_t		oldAngles;
 
-	VectorCopy( cl.viewangles, oldAngles );
+	VectorCopy(cl.viewangles, oldAngles);
 
 	// keyboard angle adjustment
 	CL_AdjustAngles ();
 
-	memset( &cmd, 0, sizeof( cmd ) );
+	memset(&cmd, 0, sizeof(cmd));
 
-	CL_CmdButtons( &cmd );
+	CL_CmdButtons(&cmd);
 
 	// get basic movement from keyboard
 	CL_KeyMove (&cmd);
 
 	// get basic movement from mouse
-	CL_MouseMove( &cmd );
+	CL_MouseMove(&cmd);
 
 	// get basic movement from joystick
-	CL_JoystickMove( &cmd );
+	CL_JoystickMove(&cmd);
 
 	// check to make sure the angles haven't wrapped
-	if ( cl.viewangles[PITCH] - oldAngles[PITCH] > 90 ) {
+	if (cl.viewangles[PITCH] - oldAngles[PITCH] > 90) {
 		cl.viewangles[PITCH] = oldAngles[PITCH] + 90;
-	} else if ( oldAngles[PITCH] - cl.viewangles[PITCH] > 90 ) {
+	} else if (oldAngles[PITCH] - cl.viewangles[PITCH] > 90) {
 		cl.viewangles[PITCH] = oldAngles[PITCH] - 90;
 	}
 
-	if ( cl_overrideAngles )
+	if (cl_overrideAngles)
 	{
-		VectorCopy( cl_overriddenAngles, cl.viewangles );
+		VectorCopy(cl_overriddenAngles, cl.viewangles);
 		cl_overrideAngles = qfalse;
 	}
 	// store out the final values
-	CL_FinishMove( &cmd );
+	CL_FinishMove(&cmd);
 
 	// draw debug graphs of turning for mouse testing
-	if ( cl_debugMove->integer ) {
-		if ( cl_debugMove->integer == 1 ) {
-			SCR_DebugGraph( abs(cl.viewangles[YAW] - oldAngles[YAW]), 0 );
+	if (cl_debugMove->integer) {
+		if (cl_debugMove->integer == 1) {
+			SCR_DebugGraph(abs(cl.viewangles[YAW] - oldAngles[YAW]), 0);
 		}
-		if ( cl_debugMove->integer == 2 ) {
-			SCR_DebugGraph( abs(cl.viewangles[PITCH] - oldAngles[PITCH]), 0 );
+		if (cl_debugMove->integer == 2) {
+			SCR_DebugGraph(abs(cl.viewangles[PITCH] - oldAngles[PITCH]), 0);
 		}
 	}
 
@@ -732,23 +732,23 @@ CL_CreateNewCommands
 Create a new usercmd_t structure for this frame
 =================
 */
-void CL_CreateNewCommands( void ) {
+void CL_CreateNewCommands(void) {
 	int			cmdNum;
 
 	// no need to create usercmds until we have a gamestate
-//	if ( cls.state < CA_PRIMED )
+//	if (cls.state < CA_PRIMED)
 //		return;
 
 	frame_msec = com_frameTime - old_com_frameTime;
 
 	// if running over 1000fps, act as if each frame is 1ms
 	// prevents divisions by zero
-	if ( frame_msec < 1 )
+	if (frame_msec < 1)
 		frame_msec = 1;
 
 	// if running less than 5fps, truncate the extra time to prevent
 	// unexpected moves after a hitch
-	if ( frame_msec > 200 )
+	if (frame_msec > 200)
 		frame_msec = 200;
 
 	old_com_frameTime = com_frameTime;
@@ -770,18 +770,18 @@ delivered in the next packet, but saving a header and
 getting more delta compression will reduce total bandwidth.
 =================
 */
-qboolean CL_ReadyToSendPacket( void ) {
+qboolean CL_ReadyToSendPacket(void) {
 	// don't send anything if playing back a demo
-//	if ( cls.state == CA_CINEMATIC )
-	if ( cls.state == CA_CINEMATIC || CL_IsRunningInGameCinematic())
+//	if (cls.state == CA_CINEMATIC)
+	if (cls.state == CA_CINEMATIC || CL_IsRunningInGameCinematic())
 	{
 		return qfalse;
 	}
 
 	// if we don't have a valid gamestate yet, only send
 	// one packet a second
-	if ( cls.state != CA_ACTIVE && cls.state != CA_PRIMED
-		&& cls.realtime - clc.lastPacketSentTime < 1000 ) {
+	if (cls.state != CA_ACTIVE && cls.state != CA_PRIMED
+		&& cls.realtime - clc.lastPacketSentTime < 1000) {
 		return qfalse;
 	}
 
@@ -810,7 +810,7 @@ During normal gameplay, a client packet will contain something like:
 
 ===================
 */
-void CL_WritePacket( void ) {
+void CL_WritePacket(void) {
 	msg_t		buf;
 	byte		data[MAX_MSGLEN];
 	int			i, j;
@@ -821,41 +821,41 @@ void CL_WritePacket( void ) {
 	int			count;
 
 	// don't send anything if playing back a demo
-//	if ( cls.state == CA_CINEMATIC )
-	if ( cls.state == CA_CINEMATIC || CL_IsRunningInGameCinematic())
+//	if (cls.state == CA_CINEMATIC)
+	if (cls.state == CA_CINEMATIC || CL_IsRunningInGameCinematic())
 	{
 		return;
 	}
 
-	MSG_Init( &buf, data, sizeof(data) );
+	MSG_Init(&buf, data, sizeof(data));
 
 	// write any unacknowledged clientCommands
-	for ( i = clc.reliableAcknowledge + 1 ; i <= clc.reliableSequence ; i++ ) {
-		MSG_WriteByte( &buf, clc_clientCommand );
-		MSG_WriteLong( &buf, i );
-		MSG_WriteString( &buf, clc.reliableCommands[ i & (MAX_RELIABLE_COMMANDS-1) ] );
+	for (i = clc.reliableAcknowledge + 1 ; i <= clc.reliableSequence ; i++) {
+		MSG_WriteByte(&buf, clc_clientCommand);
+		MSG_WriteLong(&buf, i);
+		MSG_WriteString(&buf, clc.reliableCommands[ i & (MAX_RELIABLE_COMMANDS-1) ]);
 	}
 
 	// we want to send all the usercmds that were generated in the last
 	// few packet, so even if a couple packets are dropped in a row,
 	// all the cmds will make it to the server
-	if ( cl_packetdup->integer < 0 ) {
-		Cvar_Set( "cl_packetdup", "0" );
-	} else if ( cl_packetdup->integer > 5 ) {
-		Cvar_Set( "cl_packetdup", "5" );
+	if (cl_packetdup->integer < 0) {
+		Cvar_Set("cl_packetdup", "0");
+	} else if (cl_packetdup->integer > 5) {
+		Cvar_Set("cl_packetdup", "5");
 	}
 	oldPacketNum = (clc.netchan.outgoingSequence - 1 - cl_packetdup->integer) & PACKET_MASK;
 	count = cl.cmdNumber - cl.packetCmdNumber[ oldPacketNum ];
-	if ( count > MAX_PACKET_USERCMDS ) {
+	if (count > MAX_PACKET_USERCMDS) {
 		count = MAX_PACKET_USERCMDS;
 		Com_Printf("MAX_PACKET_USERCMDS\n");
 	}
-	if ( count >= 1 ) {
+	if (count >= 1) {
 		// begin a client move command
 		MSG_WriteByte (&buf, clc_move);
 
 		// write the last reliable message we received
-		MSG_WriteLong( &buf, clc.serverCommandSequence );
+		MSG_WriteLong(&buf, clc.serverCommandSequence);
 
 		// write the current serverId so the server
 		// can tell if this is from the current gameState
@@ -876,15 +876,15 @@ void CL_WritePacket( void ) {
 
 		// write the cmdNumber so the server can determine which ones it
 		// has already received
-		MSG_WriteLong( &buf, cl.cmdNumber );
+		MSG_WriteLong(&buf, cl.cmdNumber);
 
 		// write the command count
-		MSG_WriteByte( &buf, count );
+		MSG_WriteByte(&buf, count);
 
 		// write all the commands, including the predicted command
-		memset( &nullcmd, 0, sizeof(nullcmd) );
+		memset(&nullcmd, 0, sizeof(nullcmd));
 		oldcmd = &nullcmd;
-		for ( i = 0 ; i < count ; i++ ) {
+		for (i = 0 ; i < count ; i++) {
 			j = (cl.cmdNumber - count + i + 1) & CMD_MASK;
 			cmd = &cl.cmds[j];
 			MSG_WriteDeltaUsercmd (&buf, oldcmd, cmd);
@@ -909,14 +909,14 @@ CL_SendCmd
 Called every frame to builds and sends a command packet to the server.
 =================
 */
-void CL_SendCmd( void ) {
+void CL_SendCmd(void) {
 	// don't send any message if not connected
-	if ( cls.state < CA_CONNECTED ) {
+	if (cls.state < CA_CONNECTED) {
 		return;
 	}
 
 	// don't send commands if paused
-	if ( com_sv_running->integer && sv_paused->integer && cl_paused->integer ) {
+	if (com_sv_running->integer && sv_paused->integer && cl_paused->integer) {
 		return;
 	}
 
@@ -924,7 +924,7 @@ void CL_SendCmd( void ) {
 	CL_CreateNewCommands();
 
 	// don't send a packet if the last packet was sent too recently
-	if ( !CL_ReadyToSendPacket() ) {
+	if (!CL_ReadyToSendPacket()) {
 		return;
 	}
 
@@ -937,7 +937,7 @@ void CL_SendCmd( void ) {
 CL_InitInput
 ============
 */
-void CL_InitInput( void ) {
+void CL_InitInput(void) {
 	Cmd_AddCommand ("centerview",IN_CenterView);
 
 	Cmd_AddCommand ("+moveup",IN_UpDown);

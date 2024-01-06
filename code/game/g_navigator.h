@@ -79,7 +79,7 @@ namespace NAV
 	// Save, Load, Construct
 	////////////////////////////////////////////////////////////////////////////////////
 	bool			LoadFromFile(const char *filename, int checksum);
-	bool			TestEdge( TNodeHandle NodeA, TNodeHandle NodeB, qboolean IsDebugEdge );
+	bool			TestEdge(TNodeHandle NodeA, TNodeHandle NodeB, qboolean IsDebugEdge);
 	bool			LoadFromEntitiesAndSaveToFile(const char *filename, int checksum);
 	void			SpawnedPoint(gentity_t* ent, EPointType type=PT_WAYNODE);
 

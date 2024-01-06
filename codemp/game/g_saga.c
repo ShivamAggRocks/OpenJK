@@ -60,7 +60,7 @@ int			gSiegeBeginTime = Q3_INFINITE;
 
 int			g_preroundState = 0; //default to starting as spec (1 is starting ingame)
 
-void LogExit( const char *string );
+void LogExit(const char *string);
 void SetTeamQuick(gentity_t *ent, int team, qboolean doBegin);
 
 static char gParseObjectives[MAX_SIEGE_INFO_SIZE];
@@ -160,11 +160,11 @@ void InitSiegeMode(void)
 	imperial_goals_completed = 0;
 	rebel_goals_completed = 0;
 
-	trap->Cvar_Register( &mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM );
+	trap->Cvar_Register(&mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
 
 	Com_sprintf(levelname, sizeof(levelname), "maps/%s.siege\0", mapname.string);
 
-	if ( !levelname[0] )
+	if (!levelname[0])
 	{
 		goto failure;
 	}
@@ -175,7 +175,7 @@ void InitSiegeMode(void)
 		goto failure;
 	}
 	if (len >= MAX_SIEGE_INFO_SIZE) {
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 		goto failure;
 	}
 
@@ -216,14 +216,14 @@ void InitSiegeMode(void)
 	}
 	else
 	{
-		trap->Error( ERR_DROP, "Siege teams not defined" );
+		trap->Error(ERR_DROP, "Siege teams not defined");
 	}
 
 	if (BG_SiegeGetValueGroup(siege_info, team2, gParseObjectives))
 	{
 		if (BG_SiegeGetPairedValue(gParseObjectives, "TeamIcon", teamIcon))
 		{
-			trap->Cvar_Set( "team2_icon", teamIcon);
+			trap->Cvar_Set("team2_icon", teamIcon);
 		}
 
 		if (BG_SiegeGetPairedValue(gParseObjectives, "RequiredObjectives", goalreq))
@@ -254,7 +254,7 @@ void InitSiegeMode(void)
 
 		if (BG_SiegeGetPairedValue(gParseObjectives, "TeamIcon", teamIcon))
 		{
-			trap->Cvar_Set( "team1_icon", teamIcon);
+			trap->Cvar_Set("team1_icon", teamIcon);
 		}
 
 		if (BG_SiegeGetPairedValue(gParseObjectives, "RequiredObjectives", goalreq))
@@ -292,7 +292,7 @@ void InitSiegeMode(void)
 
 	if (!bgNumSiegeClasses)
 	{ //We didn't find any?!
-		trap->Error( ERR_DROP, "Couldn't find any player classes for Siege" );
+		trap->Error(ERR_DROP, "Couldn't find any player classes for Siege");
 	}
 
 	/*
@@ -326,7 +326,7 @@ void InitSiegeMode(void)
 
 	if (!bgNumSiegeTeams)
 	{ //React same as with classes.
-		trap->Error( ERR_DROP, "Couldn't find any player teams for Siege" );
+		trap->Error(ERR_DROP, "Couldn't find any player teams for Siege");
 	}
 
 	//Get and set the team themes for each team. This will control which classes can be
@@ -509,7 +509,7 @@ void UseSiegeTarget(gentity_t *other, gentity_t *en, char *target)
 	gentity_t		*t;
 	gentity_t		*ent;
 
-	if ( !en || !en->client )
+	if (!en || !en->client)
 	{ //looks like we don't have access to a player, so just use the activating entity
 		ent = other;
 	}
@@ -523,26 +523,26 @@ void UseSiegeTarget(gentity_t *other, gentity_t *en, char *target)
 		return;
 	}
 
-	if ( !target )
+	if (!target)
 	{
 		return;
 	}
 
 	t = NULL;
-	while ( (t = G_Find (t, FOFS(targetname), target)) != NULL )
+	while ((t = G_Find (t, FOFS(targetname), target)) != NULL)
 	{
-		if ( t == ent )
+		if (t == ent)
 		{
 			trap->Print ("WARNING: Entity used itself.\n");
 		}
 		else
 		{
-			if ( t->use )
+			if (t->use)
 			{
 				GlobalUse(t, ent, ent);
 			}
 		}
-		if ( !ent->inuse )
+		if (!ent->inuse)
 		{
 			trap->Print("entity was removed while using targets\n");
 			return;
@@ -557,7 +557,7 @@ void SiegeBroadcast_OBJECTIVECOMPLETE(int team, int client, int objective)
 
 	VectorClear(nomatter);
 
-	te = G_TempEntity( nomatter, EV_SIEGE_OBJECTIVECOMPLETE );
+	te = G_TempEntity(nomatter, EV_SIEGE_OBJECTIVECOMPLETE);
 	te->r.svFlags |= SVF_BROADCAST;
 	te->s.eventParm = team;
 	te->s.weapon = client;
@@ -571,7 +571,7 @@ void SiegeBroadcast_ROUNDOVER(int winningteam, int winningclient)
 
 	VectorClear(nomatter);
 
-	te = G_TempEntity( nomatter, EV_SIEGE_ROUNDOVER );
+	te = G_TempEntity(nomatter, EV_SIEGE_ROUNDOVER);
 	te->r.svFlags |= SVF_BROADCAST;
 	te->s.eventParm = winningteam;
 	te->s.weapon = winningclient;
@@ -716,7 +716,7 @@ void SiegeRoundComplete(int winningteam, int winningclient)
 	{
 		if (!BG_SiegeGetPairedValue(gParseObjectives, "roundover_target", teamstr))
 		{ //didn't find the name of the thing to target upon win, just logexit now then.
-			LogExit( "Objectives completed" );
+			LogExit("Objectives completed");
 			return;
 		}
 
@@ -803,7 +803,7 @@ void G_ValidateSiegeClassForTeam(gentity_t *ent, int team)
 		if (newClassIndex != -1)
 		{ //ok, let's find it in the global class array
 			ent->client->siegeClass = BG_SiegeFindClassIndexByName(stm->classes[newClassIndex]->name);
-			Q_strncpyz( ent->client->sess.siegeClass, stm->classes[newClassIndex]->name, sizeof( ent->client->sess.siegeClass ));
+			Q_strncpyz(ent->client->sess.siegeClass, stm->classes[newClassIndex]->name, sizeof(ent->client->sess.siegeClass));
 		}
 	}
 }
@@ -813,7 +813,7 @@ void SetTeamQuick(gentity_t *ent, int team, qboolean doBegin)
 {
 	char userinfo[MAX_INFO_STRING];
 
-	trap->GetUserinfo( ent->s.number, userinfo, sizeof( userinfo ) );
+	trap->GetUserinfo(ent->s.number, userinfo, sizeof(userinfo));
 
 	if (level.gametype == GT_SIEGE)
 	{
@@ -844,18 +844,18 @@ void SetTeamQuick(gentity_t *ent, int team, qboolean doBegin)
 		}
 	}
 
-	trap->SetUserinfo( ent->s.number, userinfo );
+	trap->SetUserinfo(ent->s.number, userinfo);
 
 	ent->client->sess.spectatorClient = 0;
 
 	ent->client->pers.teamState.state = TEAM_BEGIN;
 
-	if ( !ClientUserinfoChanged( ent->s.number ) )
+	if (!ClientUserinfoChanged(ent->s.number))
 		return;
 
 	if (doBegin)
 	{
-		ClientBegin( ent->s.number, qfalse );
+		ClientBegin(ent->s.number, qfalse);
 	}
 }
 
@@ -1168,8 +1168,8 @@ void SP_info_siege_objective (gentity_t *ent)
 	}
 
 	ent->use = siegeTriggerUse;
-	G_SpawnInt( "objective", "0", &ent->objective);
-	G_SpawnInt( "side", "0", &ent->side);
+	G_SpawnInt("objective", "0", &ent->objective);
+	G_SpawnInt("side", "0", &ent->side);
 
 	if (!ent->objective || !ent->side)
 	{ //j00 fux0red something up
@@ -1187,7 +1187,7 @@ void SP_info_siege_objective (gentity_t *ent)
 	//All clients want to know where it is at all times for radar
 	ent->r.svFlags |= SVF_BROADCAST;
 
-	G_SpawnString( "icon", "", &s );
+	G_SpawnString("icon", "", &s);
 
 	if (s && s[0])
 	{
@@ -1242,7 +1242,7 @@ void SP_info_siege_radaricon (gentity_t *ent)
 		ent->r.svFlags |= SVF_BROADCAST;
 	}
 
-	G_SpawnString( "icon", "", &s );
+	G_SpawnString("icon", "", &s);
 	if (!s || !s[0])
 	{ //that's the whole point of the entity
         Com_Error(ERR_DROP, "misc_siege_radaricon without an icon");
@@ -1328,8 +1328,8 @@ void SP_info_siege_decomplete (gentity_t *ent)
 	}
 
 	ent->use = decompTriggerUse;
-	G_SpawnInt( "objective", "0", &ent->objective);
-	G_SpawnInt( "side", "0", &ent->side);
+	G_SpawnInt("objective", "0", &ent->objective);
+	G_SpawnInt("side", "0", &ent->side);
 
 	if (!ent->objective || !ent->side)
 	{ //j00 fux0red something up
@@ -1463,7 +1463,7 @@ void SiegeItemThink(gentity_t *ent)
 				G_UseTargets2(ent, ent, ent->target6);
 			}
 
-			if ( trap->PointContents(carrier->client->ps.origin, carrier->s.number) & CONTENTS_NODROP )
+			if (trap->PointContents(carrier->client->ps.origin, carrier->s.number) & CONTENTS_NODROP)
 			{ //In nodrop land, go back to the original spot.
 				SiegeItemRespawnOnOriginalSpot(ent, carrier);
 			}
@@ -1532,7 +1532,7 @@ void SiegeItemThink(gentity_t *ent)
 	ent->nextthink = level.time + FRAMETIME/2;
 }
 
-void SiegeItemTouch( gentity_t *self, gentity_t *other, trace_t *trace )
+void SiegeItemTouch(gentity_t *self, gentity_t *other, trace_t *trace)
 {
 	if (!other || !other->inuse ||
 		!other->client || other->s.eType == ET_NPC)
@@ -1559,7 +1559,7 @@ void SiegeItemTouch( gentity_t *self, gentity_t *other, trace_t *trace )
 		return;
 	}
 
-	if ( other->client->ps.pm_type == PM_SPECTATOR )
+	if (other->client->ps.pm_type == PM_SPECTATOR)
 	{//spectators don't pick stuff up
 		return;
 	}
@@ -1608,7 +1608,7 @@ void SiegeItemPain(gentity_t *self, gentity_t *attacker, int damage)
 	self->s.time2 = level.time;
 }
 
-void SiegeItemDie( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath )
+void SiegeItemDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath)
 {
 	self->takedamage = qfalse; //don't die more than once
 
@@ -1780,7 +1780,7 @@ void SP_misc_siege_item (gentity_t *ent)
 
 	if (!ent->model || !ent->model[0])
 	{
-		trap->Error( ERR_DROP, "You must specify a model for misc_siege_item types." );
+		trap->Error(ERR_DROP, "You must specify a model for misc_siege_item types.");
 	}
 
 	G_SpawnInt("canpickup", "1", &canpickup);
@@ -1811,28 +1811,28 @@ void SP_misc_siege_item (gentity_t *ent)
 	G_SpawnFloat("gravity", "3.0", &ent->radius);
 	G_SpawnFloat("bounce", "1.3", &ent->random);
 
-	G_SpawnString( "pickupsound", "", &s );
+	G_SpawnString("pickupsound", "", &s);
 
 	if (s && s[0])
 	{ //We have a pickup sound, so index it now.
 		ent->noise_index = G_SoundIndex(s);
 	}
 
-	G_SpawnString( "deathfx", "", &s );
+	G_SpawnString("deathfx", "", &s);
 
 	if (s && s[0])
 	{ //We have a death effect, so index it now.
 		ent->genericValue3 = G_EffectIndex(s);
 	}
 
-	G_SpawnString( "respawnfx", "", &s );
+	G_SpawnString("respawnfx", "", &s);
 
 	if (s && s[0])
 	{ //We have a respawn effect, so index it now.
 		ent->genericValue10 = G_EffectIndex(s);
 	}
 
-	G_SpawnString( "icon", "", &s );
+	G_SpawnString("icon", "", &s);
 
 	if (s && s[0])
 	{
@@ -1844,7 +1844,7 @@ void SP_misc_siege_item (gentity_t *ent)
 	ent->s.modelindex = G_ModelIndex(ent->model);
 
 	//Is the model a ghoul2 model?
-	if ( ent->model && !Q_stricmp( &ent->model[strlen(ent->model) - 4], ".glm" ) )
+	if (ent->model && !Q_stricmp(&ent->model[strlen(ent->model) - 4], ".glm"))
 	{ //apparently so.
         ent->s.modelGhoul2 = 1;
 	}
@@ -1871,14 +1871,14 @@ void SP_misc_siege_item (gentity_t *ent)
 		ent->die = SiegeItemDie;
 		ent->takedamage = qtrue;
 
-		G_SpawnInt( "showhealth", "0", &t );
+		G_SpawnInt("showhealth", "0", &t);
 		if (t)
 		{ //a non-0 maxhealth value will mean we want to show the health on the hud
 			ent->maxHealth = ent->health;
 			G_ScaleNetHealth(ent);
 
-			G_SpawnInt( "health_chargeamt", "0", &ent->genericValue12);
-			G_SpawnInt( "health_chargerate", "0", &ent->genericValue13);
+			G_SpawnInt("health_chargeamt", "0", &ent->genericValue12);
+			G_SpawnInt("health_chargerate", "0", &ent->genericValue13);
 		}
 	}
 	else
@@ -1898,8 +1898,8 @@ void SP_misc_siege_item (gentity_t *ent)
 		ent->s.eFlags &= ~EF_RADAROBJECT;
 	}
 
-	if ( (!ent->targetname || !ent->targetname[0]) ||
-		 (ent->spawnflags & SIEGEITEM_STARTOFFRADAR) )
+	if ((!ent->targetname || !ent->targetname[0]) ||
+		 (ent->spawnflags & SIEGEITEM_STARTOFFRADAR))
 	{
 		if (canpickup || !ent->takedamage)
 		{ //We want to be able to walk into it to pick it up then.

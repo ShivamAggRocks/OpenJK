@@ -35,7 +35,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	WANDER_RANGE		1000
 #define	FRIGHTEN_DISTANCE	300
 
-extern qboolean G_PlayerSpawned( void );
+extern qboolean G_PlayerSpawned(void);
 
 ratl::vector_vs<gentity_t*, MAX_PACKS>	mPacks;
 
@@ -114,7 +114,7 @@ gentity_t* NPC_AnimalUpdateLeader(void)
 		{
 			// If Our Leader Is Dead, Clear Him Out
 
-			if ( NPC->client->leader->health<=0 || NPC->client->leader->inuse == 0)
+			if (NPC->client->leader->health<=0 || NPC->client->leader->inuse == 0)
 			{
 				NPC->client->leader = 0;
 			}
@@ -129,7 +129,7 @@ gentity_t* NPC_AnimalUpdateLeader(void)
 
 			// If Our Leader Is Too Far Away, Clear Him Out
 			//------------------------------------------------------
-			else if ( Distance(NPC->client->leader->currentOrigin, NPC->currentOrigin)>LEAVE_PACK_DISTANCE)
+			else if (Distance(NPC->client->leader->currentOrigin, NPC->currentOrigin)>LEAVE_PACK_DISTANCE)
 			{
 				NPC->client->leader = 0;
 			}
@@ -155,7 +155,7 @@ gentity_t* NPC_AnimalUpdateLeader(void)
 NPC_BSAnimal_Default
 -------------------------
 */
-void NPC_BSAnimal_Default( void )
+void NPC_BSAnimal_Default(void)
 {
 	if (!NPC || !NPC->client)
 	{
@@ -176,12 +176,12 @@ void NPC_BSAnimal_Default( void )
 	//--------------------------------
 	CVec3	ThreatLocation(0,0,0);
 	qboolean PlayerSpawned = G_PlayerSpawned();
-	if ( PlayerSpawned )
+	if (PlayerSpawned)
 	{//player is actually in the level now
 		ThreatLocation = player->currentOrigin;
 	}
 	int	alertEvent = NPC_CheckAlertEvents(qtrue, qtrue, -1, qfalse, AEL_MINOR, qfalse);
-	if ( alertEvent >= 0 )
+	if (alertEvent >= 0)
 	{
 		alertEvent_t *event = &level.alertEvents[alertEvent];
 		if (event->owner!=NPC  &&  Distance(event->position, CurrentLocation.v)<event->radius)
@@ -407,6 +407,6 @@ void NPC_BSAnimal_Default( void )
 	}
 	STEER::DeActivate(NPC, &ucmd);
 
-	NPC_UpdateAngles( qtrue, qtrue );
+	NPC_UpdateAngles(qtrue, qtrue);
 }
 

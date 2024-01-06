@@ -68,10 +68,10 @@ png_uint_32 (PNGAPI
 png_get_uint_32)(png_const_bytep buf)
 {
    png_uint_32 uval =
-       ((png_uint_32)(*(buf    )) << 24) +
+       ((png_uint_32)(*(buf   )) << 24) +
        ((png_uint_32)(*(buf + 1)) << 16) +
        ((png_uint_32)(*(buf + 2)) <<  8) +
-       ((png_uint_32)(*(buf + 3))      ) ;
+       ((png_uint_32)(*(buf + 3))     ) ;
 
    return uval;
 }
@@ -3773,7 +3773,7 @@ png_read_filter_row_avg(png_row_infop row_info, png_bytep row,
    for (i = 0; i < bpp; i++)
    {
       *rp = (png_byte)(((int)(*rp) +
-         ((int)(*pp++) / 2 )) & 0xff);
+         ((int)(*pp++) / 2)) & 0xff);
 
       rp++;
    }
@@ -3781,7 +3781,7 @@ png_read_filter_row_avg(png_row_infop row_info, png_bytep row,
    for (i = 0; i < istop; i++)
    {
       *rp = (png_byte)(((int)(*rp) +
-         (int)(*pp++ + *(rp-bpp)) / 2 ) & 0xff);
+         (int)(*pp++ + *(rp-bpp)) / 2) & 0xff);
 
       rp++;
    }

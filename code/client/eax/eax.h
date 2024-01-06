@@ -557,7 +557,7 @@ typedef enum
 
 #define EAXSOURCE_DEFAULTFLAGS                 (EAXSOURCEFLAGS_DIRECTHFAUTO |       \
                                                 EAXSOURCEFLAGS_ROOMAUTO     |       \
-                                                EAXSOURCEFLAGS_ROOMHFAUTO  )
+                                                EAXSOURCEFLAGS_ROOMHFAUTO )
 
 #define EAXSOURCE_DEFAULTACTIVEFXSLOTID  {{ EAX_NULL_GUID.Data1, EAX_NULL_GUID.Data2, EAX_NULL_GUID.Data3, \
                                     EAX_NULL_GUID.Data4[0],EAX_NULL_GUID.Data4[1],EAX_NULL_GUID.Data4[2],\

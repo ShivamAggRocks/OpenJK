@@ -57,7 +57,7 @@ static void R_JPGOutputMessage(j_common_ptr cinfo)
 	Com_Printf("%s\n", buffer);
 }
 
-void LoadJPG( const char *filename, unsigned char **pic, int *width, int *height ) {
+void LoadJPG(const char *filename, unsigned char **pic, int *width, int *height) {
 	/* This struct contains the JPEG decompression parameters and pointers to
 	* working space (which is allocated as needed by the JPEG library).
 	*/
@@ -89,7 +89,7 @@ void LoadJPG( const char *filename, unsigned char **pic, int *width, int *height
 	* requires it in order to read binary files.
 	*/
 
-	int len = ri.FS_ReadFile ( ( char * ) filename, &fbuffer.v);
+	int len = ri.FS_ReadFile ((char *) filename, &fbuffer.v);
 	if (!fbuffer.b || len < 0) {
 		return;
 	}

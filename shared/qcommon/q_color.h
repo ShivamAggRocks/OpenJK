@@ -6,14 +6,14 @@
 extern "C" {
 #endif
 
-#define	MAKERGB( v, r, g, b ) v[0]=r;v[1]=g;v[2]=b
-#define	MAKERGBA( v, r, g, b, a ) v[0]=r;v[1]=g;v[2]=b;v[3]=a
+#define	MAKERGB(v, r, g, b) v[0]=r;v[1]=g;v[2]=b
+#define	MAKERGBA(v, r, g, b, a) v[0]=r;v[1]=g;v[2]=b;v[3]=a
 
 #define Q_COLOR_ESCAPE	'^'
 #define Q_COLOR_BITS 0xF // was 7
 
 // you MUST have the last bit on here about colour strings being less than 7 or taiwanese strings register as colour!!!!
-#define Q_IsColorString(p)	( p && *(p) == Q_COLOR_ESCAPE && *((p)+1) && *((p)+1) != Q_COLOR_ESCAPE && *((p)+1) <= '9' && *((p)+1) >= '0' )
+#define Q_IsColorString(p)	(p && *(p) == Q_COLOR_ESCAPE && *((p)+1) && *((p)+1) != Q_COLOR_ESCAPE && *((p)+1) <= '9' && *((p)+1) >= '0')
 #define Q_IsColorStringExt(p)	((p) && *(p) == Q_COLOR_ESCAPE && *((p)+1) && *((p)+1) >= '0' && *((p)+1) <= '9') // ^[0-9]
 
 #define COLOR_BLACK		'0'
@@ -26,7 +26,7 @@ extern "C" {
 #define COLOR_WHITE		'7'
 #define COLOR_ORANGE	'8'
 #define COLOR_GREY		'9'
-#define ColorIndex(c)	( ( (c) - '0' ) & Q_COLOR_BITS )
+#define ColorIndex(c)	(((c) - '0') & Q_COLOR_BITS)
 
 #define S_COLOR_BLACK	"^0"
 #define S_COLOR_RED		"^1"
@@ -146,7 +146,7 @@ extern vec4_t colorTable[CT_MAX];
 
 unsigned ColorBytes3 (float r, float g, float b);
 unsigned ColorBytes4 (float r, float g, float b, float a);
-float NormalizeColor( const vec3_t in, vec3_t out );
+float NormalizeColor(const vec3_t in, vec3_t out);
 
 #if defined(__cplusplus)
 } // extern "C"

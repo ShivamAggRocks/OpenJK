@@ -44,13 +44,13 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define WINDOW_MOUSEOVER			0x00000001	// mouse is over it, non exclusive
 #define WINDOW_HASFOCUS				0x00000002	// has cursor focus, exclusive
 #define WINDOW_VISIBLE				0x00000004	// is visible
-#define WINDOW_INACTIVE				0x00000008	// is visible but grey ( non-active )
+#define WINDOW_INACTIVE				0x00000008	// is visible but grey (non-active)
 #define WINDOW_DECORATION			0x00000010	// for decoration only, no mouse, keyboard, etc..
 #define WINDOW_FADINGOUT			0x00000020	// fading out, non-active
 #define WINDOW_FADINGIN				0x00000040	// fading in
 #define WINDOW_MOUSEOVERTEXT		0x00000080	// mouse is over it, non exclusive
 #define WINDOW_INTRANSITION			0x00000100	// window is in transition
-#define WINDOW_FORECOLORSET			0x00000200	// forecolor was explicitly set ( used to color alpha images or not )
+#define WINDOW_FORECOLORSET			0x00000200	// forecolor was explicitly set (used to color alpha images or not)
 #define WINDOW_HORIZONTAL			0x00000400	// for list boxes and sliders, vertical is default this is set of horizontal
 #define WINDOW_LB_LEFTARROW			0x00000800	// mouse is over left/up arrow
 #define WINDOW_LB_RIGHTARROW		0x00001000	// mouse is over right/down arrow
@@ -64,7 +64,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define WINDOW_FORCED				0x00100000	// forced open
 #define WINDOW_POPUP				0x00200000	// popup
 #define WINDOW_BACKCOLORSET			0x00400000	// backcolor was explicitly set
-#define WINDOW_TIMEDVISIBLE			0x00800000	// visibility timing ( NOT implemented )
+#define WINDOW_TIMEDVISIBLE			0x00800000	// visibility timing (NOT implemented)
 #define WINDOW_PLAYERCOLOR			0x01000000	// hack the forecolor to match ui_char_color_*
 
 //JLF
@@ -267,18 +267,18 @@ typedef struct textScrollDef_s
 
 typedef struct itemDef_s {
 	windowDef_t	window;						// common positional, border, style, layout info
-	rectDef_t	textRect;					// rectangle the text ( if any ) consumes
+	rectDef_t	textRect;					// rectangle the text (if any) consumes
 	int			type;						// text, button, radiobutton, checkbox, textfield, listbox, combo
 	int			alignment;					// left center right
-	int			textalignment;				// ( optional ) alignment for text within rect based on text width
-	float		textalignx;					// ( optional ) text alignment x coord
-	float		textaligny;					// ( optional ) text alignment x coord
+	int			textalignment;				// (optional) alignment for text within rect based on text width
+	float		textalignx;					// (optional) text alignment x coord
+	float		textaligny;					// (optional) text alignment x coord
 	float		textscale;					// scale percentage from 72pts
-	int			textStyle;					// ( optional ) style, normal and shadowed are it for now
+	int			textStyle;					// (optional) style, normal and shadowed are it for now
 	const char	*text;						// display text
 	const char	*text2;						// display text, 2nd line
-	float		text2alignx;				// ( optional ) text2 alignment x coord
-	float		text2aligny;				// ( optional ) text2 alignment y coord
+	float		text2alignx;				// (optional) text2 alignment x coord
+	float		text2aligny;				// (optional) text2 alignment y coord
 	void		*parent;					// menu owner
 	qhandle_t	asset;						// handle to asset
 	void		*ghoul2;					// ghoul2 instance if available instead of a model.
@@ -415,63 +415,63 @@ typedef struct commandDef_s {
 } commandDef_t;
 
 typedef struct displayContextDef_s {
-	qhandle_t		(*registerShaderNoMip)				( const char *p );
-	void			(*setColor)							( const vec4_t v );
-	void			(*drawHandlePic)					( float x, float y, float w, float h, qhandle_t asset );
-	void			(*drawStretchPic)					( float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader );
-	void			(*drawText)							( float x, float y, float scale, vec4_t color, const char *text, float adjust, int limit, int style, int iMenuFont );
-	int				(*textWidth)						( const char *text, float scale, int iMenuFont );
-	int				(*textHeight)						( const char *text, float scale, int iMenuFont );
-	qhandle_t		(*registerModel)					( const char *p );
-	void			(*modelBounds)						( qhandle_t model, vec3_t min, vec3_t max );
-	void			(*fillRect)							( float x, float y, float w, float h, const vec4_t color );
-	void			(*drawRect)							( float x, float y, float w, float h, float size, const vec4_t color );
-	void			(*drawSides)						( float x, float y, float w, float h, float size );
-	void			(*drawTopBottom)					( float x, float y, float w, float h, float size );
-	void			(*clearScene)						( void );
-	void			(*addRefEntityToScene)				( const refEntity_t *re );
-	void			(*renderScene)						( const refdef_t *fd );
-	qhandle_t		(*RegisterFont)						( const char *fontName );
-	int				(*Font_StrLenPixels)				( const char *text, const int iFontIndex, const float scale );
-	int				(*Font_StrLenChars)					( const char *text );
-	int				(*Font_HeightPixels)				( const int iFontIndex, const float scale );
-	void			(*Font_DrawString)					( int ox, int oy, const char *text, const float *rgba, const int setIndex, int iCharLimit, const float scale );
-	qboolean		(*Language_IsAsian)					( void );
-	qboolean		(*Language_UsesSpaces)				( void );
-	unsigned int	(*AnyLanguage_ReadCharFromString)	( const char *psText, int *piAdvanceCount, qboolean *pbIsTrailingPunctuation );
-	void			(*ownerDrawItem)					( float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle, int iMenuFont );
-	float			(*getValue)							( int ownerDraw );
-	qboolean		(*ownerDrawVisible)					( int flags );
-	void			(*runScript)						( char **p );
-	qboolean		(*deferScript)						( char **p );
-	void			(*getTeamColor)						( vec4_t *color );
-	void			(*getCVarString)					( const char *cvar, char *buffer, int bufsize );
-	float			(*getCVarValue)						( const char *cvar );
-	void			(*setCVar)							( const char *cvar, const char *value );
-	void			(*drawTextWithCursor)				( float x, float y, float scale, vec4_t color, const char *text, int cursorPos, char cursor, int limit, int style, int iFontIndex );
-	void			(*setOverstrikeMode)				( qboolean b );
-	qboolean		(*getOverstrikeMode)				( void );
-	void			(*startLocalSound)					( sfxHandle_t sfx, int channelNum );
-	qboolean		(*ownerDrawHandleKey)				( int ownerDraw, int flags, float *special, int key );
-	int				(*feederCount)						( float feederID );
-	const char *	(*feederItemText)					( float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3 );
-	qhandle_t		(*feederItemImage)					( float feederID, int index );
-	qboolean		(*feederSelection)					( float feederID, int index, itemDef_t *item );
-	void			(*keynumToStringBuf)				( int keynum, char *buf, int buflen );
-	void			(*getBindingBuf)					( int keynum, char *buf, int buflen );
-	void			(*setBinding)						( int keynum, const char *binding );
-	void			(*executeText)						( int exec_when, const char *text );
-	NORETURN_PTR void (*Error)( int level, const char *fmt, ... );
-	void			(*Print)							( const char *msg, ... );
-	void			(*Pause)							( qboolean b );
-	int				(*ownerDrawWidth)					( int ownerDraw, float scale );
-	sfxHandle_t		(*registerSound)					( const char *name );
-	void			(*startBackgroundTrack)				( const char *intro, const char *loop, qboolean bReturnWithoutStarting );
-	void			(*stopBackgroundTrack)				( void );
-	int				(*playCinematic)					( const char *name, float x, float y, float w, float h );
-	void			(*stopCinematic)					( int handle );
-	void			(*drawCinematic)					( int handle, float x, float y, float w, float h );
-	void			(*runCinematicFrame)				( int handle );
+	qhandle_t		(*registerShaderNoMip)				(const char *p);
+	void			(*setColor)							(const vec4_t v);
+	void			(*drawHandlePic)					(float x, float y, float w, float h, qhandle_t asset);
+	void			(*drawStretchPic)					(float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader);
+	void			(*drawText)							(float x, float y, float scale, vec4_t color, const char *text, float adjust, int limit, int style, int iMenuFont);
+	int				(*textWidth)						(const char *text, float scale, int iMenuFont);
+	int				(*textHeight)						(const char *text, float scale, int iMenuFont);
+	qhandle_t		(*registerModel)					(const char *p);
+	void			(*modelBounds)						(qhandle_t model, vec3_t min, vec3_t max);
+	void			(*fillRect)							(float x, float y, float w, float h, const vec4_t color);
+	void			(*drawRect)							(float x, float y, float w, float h, float size, const vec4_t color);
+	void			(*drawSides)						(float x, float y, float w, float h, float size);
+	void			(*drawTopBottom)					(float x, float y, float w, float h, float size);
+	void			(*clearScene)						(void);
+	void			(*addRefEntityToScene)				(const refEntity_t *re);
+	void			(*renderScene)						(const refdef_t *fd);
+	qhandle_t		(*RegisterFont)						(const char *fontName);
+	int				(*Font_StrLenPixels)				(const char *text, const int iFontIndex, const float scale);
+	int				(*Font_StrLenChars)					(const char *text);
+	int				(*Font_HeightPixels)				(const int iFontIndex, const float scale);
+	void			(*Font_DrawString)					(int ox, int oy, const char *text, const float *rgba, const int setIndex, int iCharLimit, const float scale);
+	qboolean		(*Language_IsAsian)					(void);
+	qboolean		(*Language_UsesSpaces)				(void);
+	unsigned int	(*AnyLanguage_ReadCharFromString)	(const char *psText, int *piAdvanceCount, qboolean *pbIsTrailingPunctuation);
+	void			(*ownerDrawItem)					(float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle, int iMenuFont);
+	float			(*getValue)							(int ownerDraw);
+	qboolean		(*ownerDrawVisible)					(int flags);
+	void			(*runScript)						(char **p);
+	qboolean		(*deferScript)						(char **p);
+	void			(*getTeamColor)						(vec4_t *color);
+	void			(*getCVarString)					(const char *cvar, char *buffer, int bufsize);
+	float			(*getCVarValue)						(const char *cvar);
+	void			(*setCVar)							(const char *cvar, const char *value);
+	void			(*drawTextWithCursor)				(float x, float y, float scale, vec4_t color, const char *text, int cursorPos, char cursor, int limit, int style, int iFontIndex);
+	void			(*setOverstrikeMode)				(qboolean b);
+	qboolean		(*getOverstrikeMode)				(void);
+	void			(*startLocalSound)					(sfxHandle_t sfx, int channelNum);
+	qboolean		(*ownerDrawHandleKey)				(int ownerDraw, int flags, float *special, int key);
+	int				(*feederCount)						(float feederID);
+	const char *	(*feederItemText)					(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3);
+	qhandle_t		(*feederItemImage)					(float feederID, int index);
+	qboolean		(*feederSelection)					(float feederID, int index, itemDef_t *item);
+	void			(*keynumToStringBuf)				(int keynum, char *buf, int buflen);
+	void			(*getBindingBuf)					(int keynum, char *buf, int buflen);
+	void			(*setBinding)						(int keynum, const char *binding);
+	void			(*executeText)						(int exec_when, const char *text);
+	NORETURN_PTR void (*Error)(int level, const char *fmt, ...);
+	void			(*Print)							(const char *msg, ...);
+	void			(*Pause)							(qboolean b);
+	int				(*ownerDrawWidth)					(int ownerDraw, float scale);
+	sfxHandle_t		(*registerSound)					(const char *name);
+	void			(*startBackgroundTrack)				(const char *intro, const char *loop, qboolean bReturnWithoutStarting);
+	void			(*stopBackgroundTrack)				(void);
+	int				(*playCinematic)					(const char *name, float x, float y, float w, float h);
+	void			(*stopCinematic)					(int handle);
+	void			(*drawCinematic)					(int handle, float x, float y, float w, float h);
+	void			(*runCinematicFrame)				(int handle);
 
 	float			yscale;
 	float			xscale;
@@ -492,7 +492,7 @@ typedef struct displayContextDef_s {
 	int				screenshotFormat;
 
 	struct {
-		float			(*Font_StrLenPixels)				( const char *text, const int iFontIndex, const float scale );
+		float			(*Font_StrLenPixels)				(const char *text, const int iFontIndex, const float scale);
 	} ext;
 } displayContextDef_t;
 
@@ -526,7 +526,7 @@ void Menu_New(int handle);
 void Menu_PaintAll();
 menuDef_t *Menus_ActivateByName(const char *p);
 void Menu_Reset(void);
-qboolean Menus_AnyFullScreenVisible( void );
+qboolean Menus_AnyFullScreenVisible(void);
 void  Menus_Activate(menuDef_t *menu);
 itemDef_t *Menu_FindItemByName(menuDef_t *menu, const char *p);
 void Menu_ShowGroup (menuDef_t *menu, const char *itemName, qboolean showFlag);
@@ -551,13 +551,13 @@ void Menu_SetFeederSelection(menuDef_t *menu, int feeder, int index, const char 
 void Display_CacheAll();
 void Menu_SetItemBackground(const menuDef_t *menu,const char *itemName, const char *background);
 
-void *UI_Alloc( int size );
-void UI_InitMemory( void );
+void *UI_Alloc(int size);
+void UI_InitMemory(void);
 qboolean UI_OutOfMemory();
 
-void Controls_GetConfig( void );
-void Controls_SetConfig( void );
-void Controls_SetDefaults( void );
+void Controls_GetConfig(void);
+void Controls_SetConfig(void);
+void Controls_SetDefaults(void);
 
 /*
 Ghoul2 Insert End

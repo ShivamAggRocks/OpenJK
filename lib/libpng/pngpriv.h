@@ -660,7 +660,7 @@
 #define PNG_ROWBYTES(pixel_bits, width) \
     ((pixel_bits) >= 8 ? \
     ((png_size_t)(width) * (((png_size_t)(pixel_bits)) >> 3)) : \
-    (( ((png_size_t)(width) * ((png_size_t)(pixel_bits))) + 7) >> 3) )
+    ((((png_size_t)(width) * ((png_size_t)(pixel_bits))) + 7) >> 3))
 
 /* PNG_OUT_OF_RANGE returns true if value is outside the range
  * ideal-delta..ideal+delta.  Each argument is evaluated twice.
@@ -668,7 +668,7 @@
  * integers, "value" a variable. Added to libpng-1.2.6 JB
  */
 #define PNG_OUT_OF_RANGE(value, ideal, delta) \
-   ( (value) < (ideal)-(delta) || (value) > (ideal)+(delta) )
+   ((value) < (ideal)-(delta) || (value) > (ideal)+(delta))
 
 /* Conversions between fixed and floating point, only defined if
  * required (to make sure the code doesn't accidentally use float
@@ -749,12 +749,12 @@
  * In 1.7.0 the definitions will be made public in png.h to avoid having to
  * duplicate the same definitions in application code.
  */
-#define png_IDAT PNG_U32( 73,  68,  65,  84)
-#define png_IEND PNG_U32( 73,  69,  78,  68)
-#define png_IHDR PNG_U32( 73,  72,  68,  82)
-#define png_PLTE PNG_U32( 80,  76,  84,  69)
-#define png_bKGD PNG_U32( 98,  75,  71,  68)
-#define png_cHRM PNG_U32( 99,  72,  82,  77)
+#define png_IDAT PNG_U32(73,  68,  65,  84)
+#define png_IEND PNG_U32(73,  69,  78,  68)
+#define png_IHDR PNG_U32(73,  72,  68,  82)
+#define png_PLTE PNG_U32(80,  76,  84,  69)
+#define png_bKGD PNG_U32(98,  75,  71,  68)
+#define png_cHRM PNG_U32(99,  72,  82,  77)
 #define png_fRAc PNG_U32(102,  82,  65,  99) /* registered, not defined */
 #define png_gAMA PNG_U32(103,  65,  77,  65)
 #define png_gIFg PNG_U32(103,  73,  70, 103)

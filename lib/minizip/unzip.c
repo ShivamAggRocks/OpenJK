@@ -1,14 +1,14 @@
 /* unzip.c -- IO for uncompress .zip files using zlib
    Version 1.1, February 14h, 2010
-   part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
+   part of the MiniZip project - (http://www.winimage.com/zLibDll/minizip.html)
 
-         Copyright (C) 1998-2010 Gilles Vollant (minizip) ( http://www.winimage.com/zLibDll/minizip.html )
+         Copyright (C) 1998-2010 Gilles Vollant (minizip) (http://www.winimage.com/zLibDll/minizip.html)
 
          Modifications of Unzip for Zip64
          Copyright (C) 2007-2008 Even Rouault
 
          Modifications for Zip64 support on both zip and unzip
-         Copyright (C) 2009-2010 Mathias Svensson ( http://result42.com )
+         Copyright (C) 2009-2010 Mathias Svensson (http://result42.com)
 
          For more info read MiniZip_info.txt
 
@@ -760,7 +760,7 @@ local unzFile unzOpenInternal (const void *path,
 
 
     s=(unz64_s*)ALLOC(sizeof(unz64_s));
-    if( s != NULL)
+    if(s != NULL)
     {
         *s=us;
         unzGoToFirstFile((unzFile)s);
@@ -1662,7 +1662,7 @@ extern int ZEXPORT unzOpenCurrentFile2 (unzFile file, int* method, int* level, i
 
 /** Addition for GDAL : START */
 
-extern ZPOS64_T ZEXPORT unzGetCurrentFileZStreamPos64( unzFile file)
+extern ZPOS64_T ZEXPORT unzGetCurrentFileZStreamPos64(unzFile file)
 {
     unz64_s* s;
     file_in_zip64_read_info_s* pfile_in_zip_read_info;

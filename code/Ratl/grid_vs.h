@@ -180,8 +180,8 @@ public:
 		assert(mScale[0]!=0.0f && mScale[1]!=0.0f);
 		truncate_position_to_bounds(x, y);
 
-		int xint = (int)( (x-mMins[0]) / mScale[0] );
-		int yint = (int)( (y-mMins[1]) / mScale[1] );
+		int xint = (int)((x-mMins[0]) / mScale[0]);
+		int yint = (int)((y-mMins[1]) / mScale[1]);
 
 		assert(xint>=0 && yint>=0 && xint<mSize[0] && yint<mSize[1]);
 		return mData[(xint + yint*XSIZE_MAX)];
@@ -195,8 +195,8 @@ public:
 		assert(mScale[0]!=0.0f && mScale[1]!=0.0f);
 		truncate_position_to_bounds(x, y);
 
-		xint = (int)( (x-mMins[0]) / mScale[0] );
-		yint = (int)( (y-mMins[1]) / mScale[1] );
+		xint = (int)((x-mMins[0]) / mScale[0]);
+		yint = (int)((y-mMins[1]) / mScale[1]);
 
 		assert(xint>=0 && yint>=0 && xint<mSize[0] && yint<mSize[1]);
 	}
@@ -386,8 +386,8 @@ public:
 		assert(mScale[0]!=0.0f && mScale[1]!=0.0f);
 		truncate_position_to_bounds(xReal, yReal);
 
-		int x = (int)( (xReal-mMins[0]) / mScale[0] );
-		int y = (int)( (yReal-mMins[1]) / mScale[1] );
+		int x = (int)((xReal-mMins[0]) / mScale[0]);
+		int y = (int)((yReal-mMins[1]) / mScale[1]);
 
 		return begin(x,y);
 	}
@@ -533,8 +533,8 @@ public:
 		float	position[2] = {xReal, yReal};
 		assert(mScale[0]!=0.0f && mScale[1]!=0.0f);
 		truncate_position_to_bounds(xReal, yReal);
-		int x = ( (position[0]-mMins[0]) / mScale[0] );
-		int y = ( (position[1]-mMins[1]) / mScale[1] );
+		int x = ((position[0]-mMins[0]) / mScale[0]);
+		int y = ((position[1]-mMins[1]) / mScale[1]);
 
 		assert(x>=0 && y>=0 && x<XSIZE_MAX && y<YSIZE_MAX);
 		return riterator(this, range, x, y);

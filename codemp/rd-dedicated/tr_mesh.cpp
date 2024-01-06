@@ -26,7 +26,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "tr_local.h"
 
 
-float ProjectRadius( float r, vec3_t location )
+float ProjectRadius(float r, vec3_t location)
 {
 	float pr;
 	float dist;
@@ -35,14 +35,14 @@ float ProjectRadius( float r, vec3_t location )
 	float width;
 	float depth;
 
-	c = DotProduct( tr.viewParms.ori.axis[0], tr.viewParms.ori.origin );
-	dist = DotProduct( tr.viewParms.ori.axis[0], location ) - c;
+	c = DotProduct(tr.viewParms.ori.axis[0], tr.viewParms.ori.origin);
+	dist = DotProduct(tr.viewParms.ori.axis[0], location) - c;
 
-	if ( dist <= 0 )
+	if (dist <= 0)
 		return 0;
 
 	p[0] = 0;
-	p[1] = Q_fabs( r );
+	p[1] = Q_fabs(r);
 	p[2] = -dist;
 
 	width = p[0] * tr.viewParms.projectionMatrix[1] +
@@ -57,7 +57,7 @@ float ProjectRadius( float r, vec3_t location )
 
 	pr = width / depth;
 
-	if ( pr > 1.0f )
+	if (pr > 1.0f)
 		pr = 1.0f;
 
 	return pr;

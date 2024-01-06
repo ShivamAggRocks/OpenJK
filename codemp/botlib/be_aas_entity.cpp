@@ -368,9 +368,9 @@ void AAS_UnlinkInvalidEntities(void)
 		ent = &aasworld.entities[i];
 		if (!ent->i.valid)
 		{
-			AAS_UnlinkFromAreas( ent->areas );
+			AAS_UnlinkFromAreas(ent->areas);
 			ent->areas = NULL;
-			AAS_UnlinkFromBSPLeaves( ent->leaves );
+			AAS_UnlinkFromBSPLeaves(ent->leaves);
 			ent->leaves = NULL;
 		} //end for
 	} //end for

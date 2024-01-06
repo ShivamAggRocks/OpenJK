@@ -137,13 +137,13 @@ protected:
 
 public:
 
-	CEffect()			{ memset( &mRefEnt, 0, sizeof( refEntity_t )); }
+	CEffect()			{ memset(&mRefEnt, 0, sizeof(refEntity_t)); }
 	virtual ~CEffect() {}
 	virtual void Die() {}
 
 	virtual bool Update()
 	{	// Game pausing can cause dumb time things to happen, so kill the effect in this instance
-		if ( mTimeStart > theFxHelper.mTime ) {
+		if (mTimeStart > theFxHelper.mTime) {
 			return false;
 		}
 		return true;
@@ -151,16 +151,16 @@ public:
 
 	inline void SetSTScale(float s,float t)	{ mRefEnt.shaderTexCoord[0]=s;mRefEnt.shaderTexCoord[1]=t;}
 
-	inline void SetMin( const vec3_t min )		{ if(min){VectorCopy(min,mMin);}else{VectorClear(mMin);}			}
-	inline void SetMax( const vec3_t max )		{ if(max){VectorCopy(max,mMax);}else{VectorClear(mMax);}			}
-	inline void SetFlags( int flags )		{ mFlags = flags;				}
-	inline void AddFlags( int flags )		{ mFlags |= flags;				}
-	inline void ClearFlags( int flags )		{ mFlags &= ~flags;				}
-	inline void SetOrigin1( const vec3_t org )	{ if(org){VectorCopy(org,mOrigin1);}else{VectorClear(mOrigin1);}	}
-	inline void SetTimeStart( int time )	{ mTimeStart = time; if (mFlags&FX_SET_SHADER_TIME) { mRefEnt.shaderTime = cg.time * 0.001f; }}
-	inline void	SetTimeEnd( int time )		{ mTimeEnd = time;				}
-	inline void SetImpactFxID( int id )		{ mImpactFxID = id;				}
-	inline void SetDeathFxID( int id )		{ mDeathFxID = id;				}
+	inline void SetMin(const vec3_t min)		{ if(min){VectorCopy(min,mMin);}else{VectorClear(mMin);}			}
+	inline void SetMax(const vec3_t max)		{ if(max){VectorCopy(max,mMax);}else{VectorClear(mMax);}			}
+	inline void SetFlags(int flags)		{ mFlags = flags;				}
+	inline void AddFlags(int flags)		{ mFlags |= flags;				}
+	inline void ClearFlags(int flags)		{ mFlags &= ~flags;				}
+	inline void SetOrigin1(const vec3_t org)	{ if(org){VectorCopy(org,mOrigin1);}else{VectorClear(mOrigin1);}	}
+	inline void SetTimeStart(int time)	{ mTimeStart = time; if (mFlags&FX_SET_SHADER_TIME) { mRefEnt.shaderTime = cg.time * 0.001f; }}
+	inline void	SetTimeEnd(int time)		{ mTimeEnd = time;				}
+	inline void SetImpactFxID(int id)		{ mImpactFxID = id;				}
+	inline void SetDeathFxID(int id)		{ mDeathFxID = id;				}
 };
 
 
@@ -229,8 +229,8 @@ protected:
 
 	void Draw()
 	{
-		theFxHelper.AddLightToScene( mOrigin1, mRefEnt.radius,
-			mRefEnt.lightingOrigin[0], mRefEnt.lightingOrigin[1], mRefEnt.lightingOrigin[2] );
+		theFxHelper.AddLightToScene(mOrigin1, mRefEnt.radius,
+			mRefEnt.lightingOrigin[0], mRefEnt.lightingOrigin[1], mRefEnt.lightingOrigin[2]);
 	}
 
 public:
@@ -239,13 +239,13 @@ public:
 	virtual ~CLight() {}
 	virtual bool Update();
 
-	inline void SetSizeStart( float sz )	{ mSizeStart = sz;			}
-	inline void SetSizeEnd( float sz )		{ mSizeEnd = sz;			}
-	inline void SetSizeParm( float parm )	{ mSizeParm = parm;			}
+	inline void SetSizeStart(float sz)	{ mSizeStart = sz;			}
+	inline void SetSizeEnd(float sz)		{ mSizeEnd = sz;			}
+	inline void SetSizeParm(float parm)	{ mSizeParm = parm;			}
 
-	inline void SetRGBStart( vec3_t rgb )	{ if(rgb){VectorCopy(rgb,mRGBStart);}else{VectorClear(mRGBStart);}	}
-	inline void SetRGBEnd( vec3_t rgb )		{ if(rgb){VectorCopy(rgb,mRGBEnd);}else{VectorClear(mRGBEnd);}		}
-	inline void SetRGBParm( float parm )	{ mRGBParm = parm;			}
+	inline void SetRGBStart(vec3_t rgb)	{ if(rgb){VectorCopy(rgb,mRGBStart);}else{VectorClear(mRGBStart);}	}
+	inline void SetRGBEnd(vec3_t rgb)		{ if(rgb){VectorCopy(rgb,mRGBEnd);}else{VectorClear(mRGBEnd);}		}
+	inline void SetRGBParm(float parm)	{ mRGBParm = parm;			}
 };
 
 //------------------------------
@@ -262,11 +262,11 @@ public:
 
 	virtual bool Update();
 
-	inline void SetShader( qhandle_t sh )
+	inline void SetShader(qhandle_t sh)
 	{	assert(sh);
 		mRefEnt.customShader = sh;
 	}
-	void		Init( void );
+	void		Init(void);
 };
 
 //------------------------------
@@ -300,7 +300,7 @@ protected:
 	char		mBoltNum;
 
 	bool		UpdateOrigin();
-	void		UpdateVelocity() {VectorMA( mVel, theFxHelper.mFloatFrameTime, mAccel, mVel ); }
+	void		UpdateVelocity() {VectorMA(mVel, theFxHelper.mFloatFrameTime, mAccel, mVel); }
 
 	void		UpdateSize();
 	void		UpdateRGB();
@@ -318,30 +318,30 @@ public:
 	virtual void Die();
 	virtual bool Update();
 
-	inline void SetShader( qhandle_t sh )		{ mRefEnt.customShader = sh;}
+	inline void SetShader(qhandle_t sh)		{ mRefEnt.customShader = sh;}
 
-	inline void SetOrgOffset( const vec3_t o )	{ if(o){VectorCopy(o,mOrgOffset);}else{VectorClear(mOrgOffset);}}
-	inline void SetVel( const vec3_t vel )		{ if(vel){VectorCopy(vel,mVel);}else{VectorClear(mVel);}	}
-	inline void SetAccel( const vec3_t ac )		{ if(ac){VectorCopy(ac,mAccel);}else{VectorClear(mAccel);}	}
-	inline void SetGravity( float grav )		{ mGravity = grav;			}
+	inline void SetOrgOffset(const vec3_t o)	{ if(o){VectorCopy(o,mOrgOffset);}else{VectorClear(mOrgOffset);}}
+	inline void SetVel(const vec3_t vel)		{ if(vel){VectorCopy(vel,mVel);}else{VectorClear(mVel);}	}
+	inline void SetAccel(const vec3_t ac)		{ if(ac){VectorCopy(ac,mAccel);}else{VectorClear(mAccel);}	}
+	inline void SetGravity(float grav)		{ mGravity = grav;			}
 
-	inline void SetSizeStart( float sz )		{ mSizeStart = sz;			}
-	inline void SetSizeEnd( float sz )			{ mSizeEnd = sz;			}
-	inline void SetSizeParm( float parm )		{ mSizeParm = parm;			}
+	inline void SetSizeStart(float sz)		{ mSizeStart = sz;			}
+	inline void SetSizeEnd(float sz)			{ mSizeEnd = sz;			}
+	inline void SetSizeParm(float parm)		{ mSizeParm = parm;			}
 
-	inline void SetRGBStart( const vec3_t rgb )	{ if(rgb){VectorCopy(rgb,mRGBStart);}else{VectorClear(mRGBStart);}	}
-	inline void SetRGBEnd( const vec3_t rgb )	{ if(rgb){VectorCopy(rgb,mRGBEnd);}else{VectorClear(mRGBEnd);}		}
-	inline void SetRGBParm( float parm )		{ mRGBParm = parm;			}
+	inline void SetRGBStart(const vec3_t rgb)	{ if(rgb){VectorCopy(rgb,mRGBStart);}else{VectorClear(mRGBStart);}	}
+	inline void SetRGBEnd(const vec3_t rgb)	{ if(rgb){VectorCopy(rgb,mRGBEnd);}else{VectorClear(mRGBEnd);}		}
+	inline void SetRGBParm(float parm)		{ mRGBParm = parm;			}
 
-	inline void SetAlphaStart( float al )		{ mAlphaStart = al;			}
-	inline void SetAlphaEnd( float al )			{ mAlphaEnd = al;			}
-	inline void SetAlphaParm( float parm )		{ mAlphaParm = parm;		}
+	inline void SetAlphaStart(float al)		{ mAlphaStart = al;			}
+	inline void SetAlphaEnd(float al)			{ mAlphaEnd = al;			}
+	inline void SetAlphaParm(float parm)		{ mAlphaParm = parm;		}
 
-	inline void SetRotation( float rot )		{ mRefEnt.rotation = rot;	}
-	inline void SetRotationDelta( float rot )	{ mRotationDelta = rot;		}
-	inline void SetElasticity( float el )		{ mElasticity = el;			}
+	inline void SetRotation(float rot)		{ mRefEnt.rotation = rot;	}
+	inline void SetRotationDelta(float rot)	{ mRotationDelta = rot;		}
+	inline void SetElasticity(float el)		{ mElasticity = el;			}
 
-	inline void SetClient( int clientID,  int modelNum = -1, int boltNum = -1 )	{mClientID = clientID;	mModelNum = modelNum; mBoltNum = boltNum; }
+	inline void SetClient(int clientID,  int modelNum = -1, int boltNum = -1)	{mClientID = clientID;	mModelNum = modelNum; mBoltNum = boltNum; }
 };
 
 
@@ -362,7 +362,7 @@ public:
 	virtual bool Update();
 
 
-	inline void SetOrigin2( const vec3_t org2 )	{ VectorCopy( org2, mOrigin2 ); }
+	inline void SetOrigin2(const vec3_t org2)	{ VectorCopy(org2, mOrigin2); }
 };
 
 //------------------------------
@@ -388,10 +388,10 @@ public:
 
 	virtual bool Update();
 
-	inline void DrawSegment( vec3_t start, vec3_t end, float texcoord1, float texcoord2 );
+	inline void DrawSegment(vec3_t start, vec3_t end, float texcoord1, float texcoord2);
 
-	inline void SetControlPoints( const vec3_t ctrl1, const vec3_t ctrl2 )	{ VectorCopy( ctrl1, mControl1 ); VectorCopy( ctrl2, mControl2 ); }
-	inline void SetControlVel( const vec3_t ctrl1v, const vec3_t ctrl2v )	{ VectorCopy( ctrl1v, mControl1Vel ); VectorCopy( ctrl2v, mControl2Vel ); }
+	inline void SetControlPoints(const vec3_t ctrl1, const vec3_t ctrl2)	{ VectorCopy(ctrl1, mControl1); VectorCopy(ctrl2, mControl2); }
+	inline void SetControlVel(const vec3_t ctrl1v, const vec3_t ctrl2v)	{ VectorCopy(ctrl1v, mControl1Vel); VectorCopy(ctrl2v, mControl2Vel); }
 };
 
 
@@ -414,7 +414,7 @@ public:
 
 	void Initialize();
 
-	inline void SetChaos( float chaos )		{ mChaos = chaos; }
+	inline void SetChaos(float chaos)		{ mChaos = chaos; }
 };
 
 
@@ -437,8 +437,8 @@ public:
 
 	virtual bool Update();
 
-	inline void SetNormal( const vec3_t norm )	{ VectorCopy( norm, mNormal );	}
-	inline void SetNormalOffset( const vec3_t norm )	{ VectorCopy( norm, mNormalOffset );	}
+	inline void SetNormal(const vec3_t norm)	{ VectorCopy(norm, mNormal);	}
+	inline void SetNormalOffset(const vec3_t norm)	{ VectorCopy(norm, mNormalOffset);	}
 };
 
 //------------------------------
@@ -467,9 +467,9 @@ public:
 
 	virtual bool Update();
 
-	inline void SetLengthStart( float len )	{ mLengthStart = len;	}
-	inline void SetLengthEnd( float len )	{ mLengthEnd = len;	}
-	inline void SetLengthParm( float len )	{ mLengthParm = len;	}
+	inline void SetLengthStart(float len)	{ mLengthStart = len;	}
+	inline void SetLengthEnd(float len)	{ mLengthEnd = len;	}
+	inline void SetLengthParm(float len)	{ mLengthParm = len;	}
 };
 
 
@@ -493,11 +493,11 @@ public:
 
 	virtual bool Update();
 
-	inline void SetSize2Start( float sz )	{ mSize2Start = sz;			}
-	inline void SetSize2End( float sz )		{ mSize2End = sz;			}
-	inline void SetSize2Parm( float parm )	{ mSize2Parm = parm;		}
+	inline void SetSize2Start(float sz)	{ mSize2Start = sz;			}
+	inline void SetSize2End(float sz)		{ mSize2End = sz;			}
+	inline void SetSize2Parm(float parm)	{ mSize2Parm = parm;		}
 
-	inline void SetNormal( const vec3_t norm )	{ VectorCopy( norm, mRefEnt.axis[0] ); }
+	inline void SetNormal(const vec3_t norm)	{ VectorCopy(norm, mRefEnt.axis[0]); }
 };
 
 
@@ -536,15 +536,15 @@ public:
 
 	virtual bool Update();
 
-	inline void SetModel( qhandle_t model )		{ mRefEnt.hModel = model;	}
-	inline void SetAngles( const vec3_t ang )	{ if(ang){VectorCopy(ang,mAngles);}else{VectorClear(mAngles);}			}
-	inline void SetAngleDelta( const vec3_t ang){ if(ang){VectorCopy(ang,mAngleDelta);}else{VectorClear(mAngleDelta);}	}
-	inline void SetEmitterFxID( int id )		{ mEmitterFxID = id;		}
-	inline void SetDensity( float density )		{ mDensity = density;		}
-	inline void SetVariance( float var )		{ mVariance = var;			}
-	inline void SetOldTime( int time )			{ mOldTime = time;			}
-	inline void SetLastOrg( const vec3_t org )	{ if(org){VectorCopy(org,mLastOrigin);}else{VectorClear(mLastOrigin);}	}
-	inline void SetLastVel( const vec3_t vel )	{ if(vel){VectorCopy(vel,mOldVelocity);}else{VectorClear(mOldVelocity);}}
+	inline void SetModel(qhandle_t model)		{ mRefEnt.hModel = model;	}
+	inline void SetAngles(const vec3_t ang)	{ if(ang){VectorCopy(ang,mAngles);}else{VectorClear(mAngles);}			}
+	inline void SetAngleDelta(const vec3_t ang){ if(ang){VectorCopy(ang,mAngleDelta);}else{VectorClear(mAngleDelta);}	}
+	inline void SetEmitterFxID(int id)		{ mEmitterFxID = id;		}
+	inline void SetDensity(float density)		{ mDensity = density;		}
+	inline void SetVariance(float var)		{ mVariance = var;			}
+	inline void SetOldTime(int time)			{ mOldTime = time;			}
+	inline void SetLastOrg(const vec3_t org)	{ if(org){VectorCopy(org,mLastOrigin);}else{VectorClear(mLastOrigin);}	}
+	inline void SetLastVel(const vec3_t vel)	{ if(vel){VectorCopy(vel,mOldVelocity);}else{VectorClear(mOldVelocity);}}
 
 };
 
@@ -583,9 +583,9 @@ public:
 	void CalcRotateMatrix();
 	void Rotate();
 
-	inline void SetNumVerts( int c )					{ mCount = c;			}
-	inline void SetRot( vec3_t r )						{ if(r){VectorCopy(r,mRotDelta);}else{VectorClear(mRotDelta);}}
-	inline void SetMotionTimeStamp( int t )				{ mTimeStamp = theFxHelper.mTime + t; }
+	inline void SetNumVerts(int c)					{ mCount = c;			}
+	inline void SetRot(vec3_t r)						{ if(r){VectorCopy(r,mRotDelta);}else{VectorClear(mRotDelta);}}
+	inline void SetMotionTimeStamp(int t)				{ mTimeStamp = theFxHelper.mTime + t; }
 	inline int	GetMotionTimeStamp()					{ return mTimeStamp; }
 };
 

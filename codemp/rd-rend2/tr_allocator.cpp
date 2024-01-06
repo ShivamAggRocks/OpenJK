@@ -2,7 +2,7 @@
 #include "tr_allocator.h"
 #include "tr_local.h"
 
-Allocator::Allocator( void *memory, size_t memorySize, size_t alignment )
+Allocator::Allocator(void *memory, size_t memorySize, size_t alignment)
 	: alignment(alignment)
 	, ownMemory(false)
 	, unalignedBase(memory)
@@ -15,7 +15,7 @@ Allocator::Allocator( void *memory, size_t memorySize, size_t alignment )
 	assert(alignment);
 }
 
-Allocator::Allocator( size_t memorySize, size_t alignment )
+Allocator::Allocator(size_t memorySize, size_t alignment)
 	: alignment(alignment)
 	, ownMemory(true)
 #if defined(GLSL_BUILDTOOL)
@@ -34,7 +34,7 @@ Allocator::Allocator( size_t memorySize, size_t alignment )
 
 Allocator::~Allocator()
 {
-	if ( ownMemory )
+	if (ownMemory)
 	{
 #if defined(GLSL_BUILDTOOL)
 		free(unalignedBase);
@@ -54,9 +54,9 @@ size_t Allocator::GetSize() const
 	return (size_t)((char *)end - (char *)alignedBase);
 }
 
-void *Allocator::Alloc( size_t allocSize )
+void *Allocator::Alloc(size_t allocSize)
 {
-	if ( (size_t)((char *)end - (char *)mark) < allocSize )
+	if ((size_t)((char *)end - (char *)mark) < allocSize)
 	{
 		assert(!"Allocator is out of memory");
 		return nullptr;
@@ -80,7 +80,7 @@ void Allocator::Reset()
 	mark = alignedBase;
 }
 
-void Allocator::ResetTo( void *m )
+void Allocator::ResetTo(void *m)
 {
 	mark = m;
 }

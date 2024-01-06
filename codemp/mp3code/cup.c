@@ -69,7 +69,7 @@ freq_limit      input, limits bandwidth of pcm output to specified
 
 
 ---------------------------------
-void audio_decode_info( DEC_INFO *info)
+void audio_decode_info(DEC_INFO *info)
 
 information return:
           Call after audio_decode_init.  See mhead.h for
@@ -224,17 +224,17 @@ static void skip(int n)
    bitbuf -= (bitbuf >> bits) << bits;
 }
 /*--------------------------------------------------------------*/
-#define mac_load_check(n) if( bits < (n) ) {                           \
-          while( bits <= 24 ) {               \
+#define mac_load_check(n) if(bits < (n)) {                           \
+          while(bits <= 24) {               \
              bitbuf = (bitbuf << 8) | *bs_ptr++;  \
              bits += 8;                       \
           }                                   \
    }
 /*--------------------------------------------------------------*/
-#define mac_load(n) ( bits -= n,                    \
+#define mac_load(n) (bits -= n,                    \
          bitval = bitbuf >> bits,      \
          bitbuf -= bitval << bits,     \
-         bitval )
+         bitval)
 /*======================================================================*/
 static void unpack_ba()
 {

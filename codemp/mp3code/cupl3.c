@@ -480,7 +480,7 @@ static int unpack_side_MPEG1()
 	    side_info.gr[igr][ch].subblock_gain[1] = bitget(3);
 	    side_info.gr[igr][ch].subblock_gain[2] = bitget(3);
 	  /* region count set in terms of long block cb's/bands */
-	  /* r1 set so r0+r1+1 = 21 (lookup produces 576 bands ) */
+	  /* r1 set so r0+r1+1 = 21 (lookup produces 576 bands) */
 	  /* if(window_switching_flag) always 36 samples in region0 */
 	    side_info.gr[igr][ch].region0_count = (8 - 1);	/* 36 samples */
 	    side_info.gr[igr][ch].region1_count = 20 - (8 - 1);
@@ -554,7 +554,7 @@ static int unpack_side_MPEG2(int igr)
       {
 	 pMP3Stream->framebytes =
 	    2880 * mp_br_tableL3[pMP3Stream->id][br_index] / mp_sr20_table[pMP3Stream->id][pMP3Stream->sr_index];
-       //if( pMP3Stream->sr_index == 2 ) return 0;  // fail mpeg25 8khz
+       //if(pMP3Stream->sr_index == 2) return 0;  // fail mpeg25 8khz
       }
    }
    side_info.main_data_begin = bitget(8);
@@ -596,7 +596,7 @@ static int unpack_side_MPEG2(int igr)
 	 side_info.gr[igr][ch].subblock_gain[1] = bitget(3);
 	 side_info.gr[igr][ch].subblock_gain[2] = bitget(3);
        /* region count set in terms of long block cb's/bands  */
-       /* r1 set so r0+r1+1 = 21 (lookup produces 576 bands ) */
+       /* r1 set so r0+r1+1 = 21 (lookup produces 576 bands) */
        /* bt=1 or 3       54 samples */
        /* bt=2 mixed=0    36 samples */
        /* bt=2 mixed=1    54 (8 long sf) samples? or maybe 36 */
@@ -876,7 +876,7 @@ IN_OUT L3audio_decode_MPEG2(unsigned char *bs, unsigned char *pcm)
    in_out.out_bytes = 0;
    sync = bitget(12);
 
-// if( sync != 0xFFF ) return in_out;       /* sync fail */
+// if(sync != 0xFFF) return in_out;       /* sync fail */
 
    pMP3Stream->mpeg25_flag = 0;
    if (sync != 0xFFF)

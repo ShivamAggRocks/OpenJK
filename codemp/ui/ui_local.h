@@ -34,8 +34,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define XCVAR_PROTO
 	#include "ui_xcvar.h"
 #undef XCVAR_PROTO
-void UI_RegisterCvars( void );
-void UI_UpdateCvars( void );
+void UI_RegisterCvars(void);
+void UI_UpdateCvars(void);
 
 #define MAX_FORCE_CONFIGS		128
 #define MAX_SABER_HILTS			256 //64
@@ -43,12 +43,12 @@ void UI_UpdateCvars( void );
 //
 // ui_main.c
 //
-qboolean UI_FeederSelection( float feederID, int index, itemDef_t *item );
-void UI_Report( void );
-void UI_Load( void );
-void UI_LoadMenus( const char *menuFile, qboolean reset );
-void UI_LoadArenas( void );
-void UI_LoadForceConfig_List( void );
+qboolean UI_FeederSelection(float feederID, int index, itemDef_t *item);
+void UI_Report(void);
+void UI_Load(void);
+void UI_LoadMenus(const char *menuFile, qboolean reset);
+void UI_LoadArenas(void);
+void UI_LoadForceConfig_List(void);
 
 //
 // ui_players.c
@@ -388,27 +388,27 @@ typedef struct uiInfo_s {
 } uiInfo_t;
 extern uiInfo_t uiInfo;
 
-qboolean	UI_ConsoleCommand( int realTime );
-void		UI_DrawHandlePic( float x, float y, float w, float h, qhandle_t hShader );
-void		UI_FillRect( float x, float y, float width, float height, const float *color );
-char		*UI_Cvar_VariableString( const char *var_name );
+qboolean	UI_ConsoleCommand(int realTime);
+void		UI_DrawHandlePic(float x, float y, float w, float h, qhandle_t hShader);
+void		UI_FillRect(float x, float y, float width, float height, const float *color);
+char		*UI_Cvar_VariableString(const char *var_name);
 
 
 //
 // ui_gameinfo.c
 //
 
-int UI_GetNumBots( void );
-void UI_LoadBots( void );
-char *UI_GetBotNameByNumber( int num );
+int UI_GetNumBots(void);
+void UI_LoadBots(void);
+char *UI_GetBotNameByNumber(int num);
 
 
 //
 // ui_saber.c
 //
 
-qboolean UI_SaberModelForSaber( const char *saberName, char *saberModel );
-qboolean UI_SaberTypeForSaber( const char *saberName, char *saberType );
+qboolean UI_SaberModelForSaber(const char *saberName, char *saberModel);
+qboolean UI_SaberTypeForSaber(const char *saberName, char *saberType);
 
 
 // new ui

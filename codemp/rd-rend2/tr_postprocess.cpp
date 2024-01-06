@@ -264,7 +264,7 @@ static void RB_RadialBlur(FBO_t *srcFbo, FBO_t *dstFbo, int passes, float stretc
 				srcBox[3] = (t1 - t0) * glConfig.vidHeight;
 			}
 			
-			FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE );
+			FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE);
 
 			scale *= mul;
 			--passes;
@@ -323,13 +323,13 @@ void RB_SunRays(FBO_t *srcFbo, vec4i_t srcBox, FBO_t *dstFbo, vec4i_t dstBox)
 		float dist;
 		matrix_t trans, model;
 
-		Matrix16Translation( backEnd.viewParms.ori.origin, trans );
-		Matrix16Multiply( backEnd.viewParms.world.modelViewMatrix, trans, model );
+		Matrix16Translation(backEnd.viewParms.ori.origin, trans);
+		Matrix16Multiply(backEnd.viewParms.world.modelViewMatrix, trans, model);
 		Matrix16Multiply(backEnd.viewParms.projectionMatrix, model, mvp);
 
 		dist = backEnd.viewParms.zFar / 1.75;		// div sqrt(3)
 
-		VectorScale( tr.sunDirection, dist, pos );
+		VectorScale(tr.sunDirection, dist, pos);
 	}
 
 	// project sun point
@@ -443,23 +443,23 @@ static void RB_BlurAxis(FBO_t *srcFbo, FBO_t *dstFbo, float strength, qboolean h
 		VectorSet4(color, weights[0], weights[0], weights[0], 1.0f);
 		VectorSet4(srcBox, 0, 0, srcFbo->width, srcFbo->height);
 		VectorSet4(dstBox, 0, 0, dstFbo->width, dstFbo->height);
-		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, 0 );
+		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, 0);
 
 		VectorSet4(color, weights[1], weights[1], weights[1], 1.0f);
 		dx = offsets[1] * xmul;
 		dy = offsets[1] * ymul;
 		VectorSet4(srcBox, dx, dy, srcFbo->width, srcFbo->height);
-		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE );
+		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE);
 		VectorSet4(srcBox, -dx, -dy, srcFbo->width, srcFbo->height);
-		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE );
+		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE);
 
 		VectorSet4(color, weights[2], weights[2], weights[2], 1.0f);
 		dx = offsets[2] * xmul;
 		dy = offsets[2] * ymul;
 		VectorSet4(srcBox, dx, dy, srcFbo->width, srcFbo->height);
-		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE );
+		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE);
 		VectorSet4(srcBox, -dx, -dy, srcFbo->width, srcFbo->height);
-		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE );
+		FBO_Blit(srcFbo, srcBox, texScale, dstFbo, dstBox, &tr.textureColorShader, color, GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE);
 	}
 }
 

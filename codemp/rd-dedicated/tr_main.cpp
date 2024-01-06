@@ -34,26 +34,26 @@ void R_AddTerrainSurfaces(void);
 /*
 ** R_CullLocalPointAndRadius
 */
-int R_CullLocalPointAndRadius( const vec3_t pt, float radius )
+int R_CullLocalPointAndRadius(const vec3_t pt, float radius)
 {
 	vec3_t transformed;
 
-	R_LocalPointToWorld( pt, transformed );
+	R_LocalPointToWorld(pt, transformed);
 
-	return R_CullPointAndRadius( transformed, radius );
+	return R_CullPointAndRadius(transformed, radius);
 }
 
 /*
 ** R_CullPointAndRadius
 */
-int R_CullPointAndRadius( const vec3_t pt, float radius )
+int R_CullPointAndRadius(const vec3_t pt, float radius)
 {
 	int		i;
 	float	dist;
 	cplane_t	*frust;
 	qboolean mightBeClipped = qfalse;
 
-	if ( r_nocull->integer==1 ) {
+	if (r_nocull->integer==1) {
 		return CULL_CLIP;
 	}
 
@@ -62,18 +62,18 @@ int R_CullPointAndRadius( const vec3_t pt, float radius )
 	{
 		frust = &tr.viewParms.frustum[i];
 
-		dist = DotProduct( pt, frust->normal) - frust->dist;
-		if ( dist < -radius )
+		dist = DotProduct(pt, frust->normal) - frust->dist;
+		if (dist < -radius)
 		{
 			return CULL_OUT;
 		}
-		else if ( dist <= radius )
+		else if (dist <= radius)
 		{
 			mightBeClipped = qtrue;
 		}
 	}
 
-	if ( mightBeClipped )
+	if (mightBeClipped)
 	{
 		return CULL_CLIP;
 	}

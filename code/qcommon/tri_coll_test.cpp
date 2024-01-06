@@ -308,39 +308,39 @@ qboolean tri_tri_intersect(vec3_t V0,vec3_t V1,vec3_t V2,
 }
 
 
-float LineSegmentDistance( vec3_t a, vec3_t b, vec3_t c, vec3_t d )
+float LineSegmentDistance(vec3_t a, vec3_t b, vec3_t c, vec3_t d)
 {
 	vec3_t	v1, v2, v3, cross;
 	//FIXME: what if parallel or intersect?
 	//FIXME: this doesn't take into account the endpoints...
 
 	//get the two lines
-	VectorSubtract( b, a, v1 );
-	VectorSubtract( c, d, v2 );
+	VectorSubtract(b, a, v1);
+	VectorSubtract(c, d, v2);
 
 	//get their normalized cross product
-	CrossProduct( v1, v2, cross );
+	CrossProduct(v1, v2, cross);
 	/*
-	float crossLength = VectorLength( cross );
-	if ( crossLength == 0 )
+	float crossLength = VectorLength(cross);
+	if (crossLength == 0)
 	{//intersect!  Or... parallel?
 		return 0;
 	}
-	VectorScale( cross, 1/crossLength, cross );
+	VectorScale(cross, 1/crossLength, cross);
 	*/
-	VectorNormalize( cross );
+	VectorNormalize(cross);
 
 	//now get a vector from v1 to v2
-	VectorSubtract( d, a, v3 );
+	VectorSubtract(d, a, v3);
 
 	//distance is dot product of that new vector and the normalized cross product
-	float dist = fabs( DotProduct( v3, cross ) );
+	float dist = fabs(DotProduct(v3, cross));
 
 	return dist;
 }
 
-extern qboolean G_FindClosestPointOnLineSegment( const vec3_t start, const vec3_t end, const vec3_t from, vec3_t result );
-float ShortestLineSegBewteen2LineSegs( vec3_t start1, vec3_t end1, vec3_t start2, vec3_t end2, vec3_t close_pnt1, vec3_t close_pnt2 )
+extern qboolean G_FindClosestPointOnLineSegment(const vec3_t start, const vec3_t end, const vec3_t from, vec3_t result);
+float ShortestLineSegBewteen2LineSegs(vec3_t start1, vec3_t end1, vec3_t start2, vec3_t end2, vec3_t close_pnt1, vec3_t close_pnt2)
 {
 	float	current_dist, new_dist;
 	vec3_t	new_pnt;
@@ -352,61 +352,61 @@ float ShortestLineSegBewteen2LineSegs( vec3_t start1, vec3_t end1, vec3_t start2
 	//compute some temporaries:
 	//vec start_dif = start2 - start1
 	vec3_t	start_dif;
-	VectorSubtract( start2, start1, start_dif );
+	VectorSubtract(start2, start1, start_dif);
 	//vec v1 = end1 - start1
 	vec3_t	v1;
-	VectorSubtract( end1, start1, v1 );
+	VectorSubtract(end1, start1, v1);
 	//vec v2 = end2 - start2
 	vec3_t	v2;
-	VectorSubtract( end2, start2, v2 );
+	VectorSubtract(end2, start2, v2);
 	//
-	float v1v1 = DotProduct( v1, v1 );
-	float v2v2 = DotProduct( v2, v2 );
-	float v1v2 = DotProduct( v1, v2 );
+	float v1v1 = DotProduct(v1, v1);
+	float v2v2 = DotProduct(v2, v2);
+	float v1v2 = DotProduct(v1, v2);
 
 	//the main computation
 
 	float denom = (v1v2 * v1v2) - (v1v1 * v2v2);
 
 	//if denom is small, then skip all this and jump to the section marked below
-	if ( fabs(denom) > 0.001f )
+	if (fabs(denom) > 0.001f)
 	{
-		float s = -( (v2v2*DotProduct( v1, start_dif )) - (v1v2*DotProduct( v2, start_dif )) ) / denom;
-		float t = ( (v1v1*DotProduct( v2, start_dif )) - (v1v2*DotProduct( v1, start_dif )) ) / denom;
+		float s = -((v2v2*DotProduct(v1, start_dif)) - (v1v2*DotProduct(v2, start_dif))) / denom;
+		float t = ((v1v1*DotProduct(v2, start_dif)) - (v1v2*DotProduct(v1, start_dif))) / denom;
 		qboolean done = qtrue;
 
-		if ( s < 0 )
+		if (s < 0)
 		{
 			done = qfalse;
 			s = 0;// and see note below
 		}
 
-		if ( s > 1 )
+		if (s > 1)
 		{
 			done = qfalse;
 			s = 1;// and see note below
 		}
 
-		if ( t < 0 )
+		if (t < 0)
 		{
 			done = qfalse;
 			t = 0;// and see note below
 		}
 
-		if ( t > 1 )
+		if (t > 1)
 		{
 			done = qfalse;
 			t = 1;// and see note below
 		}
 
 		//vec close_pnt1 = start1 + s * v1
-		VectorMA( start1, s, v1, close_pnt1 );
+		VectorMA(start1, s, v1, close_pnt1);
 		//vec close_pnt2 = start2 + t * v2
-		VectorMA( start2, t, v2, close_pnt2 );
+		VectorMA(start2, t, v2, close_pnt2);
 
-		current_dist = Distance( close_pnt1, close_pnt2 );
+		current_dist = Distance(close_pnt1, close_pnt2);
 		//now, if none of those if's fired, you are done.
-		if ( done )
+		if (done)
 		{
 			return current_dist;
 		}
@@ -423,92 +423,92 @@ float ShortestLineSegBewteen2LineSegs( vec3_t start1, vec3_t end1, vec3_t start2
 
 	//test 2 close_pnts first
 	/*
-	G_FindClosestPointOnLineSegment( start1, end1, close_pnt2, new_pnt );
-	new_dist = Distance( close_pnt2, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start1, end1, close_pnt2, new_pnt);
+	new_dist = Distance(close_pnt2, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( new_pnt, close_pnt1 );
-		VectorCopy( close_pnt2, close_pnt2 );
+		VectorCopy(new_pnt, close_pnt1);
+		VectorCopy(close_pnt2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	G_FindClosestPointOnLineSegment( start2, end2, close_pnt1, new_pnt );
-	new_dist = Distance( close_pnt1, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start2, end2, close_pnt1, new_pnt);
+	new_dist = Distance(close_pnt1, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( close_pnt1, close_pnt1 );
-		VectorCopy( new_pnt, close_pnt2 );
+		VectorCopy(close_pnt1, close_pnt1);
+		VectorCopy(new_pnt, close_pnt2);
 		current_dist = new_dist;
 	}
 	*/
 	//test all the endpoints
-	new_dist = Distance( start1, start2 );
-	if ( new_dist < current_dist )
+	new_dist = Distance(start1, start2);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( start1, close_pnt1 );
-		VectorCopy( start2, close_pnt2 );
+		VectorCopy(start1, close_pnt1);
+		VectorCopy(start2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	new_dist = Distance( start1, end2 );
-	if ( new_dist < current_dist )
+	new_dist = Distance(start1, end2);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( start1, close_pnt1 );
-		VectorCopy( end2, close_pnt2 );
+		VectorCopy(start1, close_pnt1);
+		VectorCopy(end2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	new_dist = Distance( end1, start2 );
-	if ( new_dist < current_dist )
+	new_dist = Distance(end1, start2);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( end1, close_pnt1 );
-		VectorCopy( start2, close_pnt2 );
+		VectorCopy(end1, close_pnt1);
+		VectorCopy(start2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	new_dist = Distance( end1, end2 );
-	if ( new_dist < current_dist )
+	new_dist = Distance(end1, end2);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( end1, close_pnt1 );
-		VectorCopy( end2, close_pnt2 );
+		VectorCopy(end1, close_pnt1);
+		VectorCopy(end2, close_pnt2);
 		current_dist = new_dist;
 	}
 
 	//Then we have 4 more point / segment tests
 
-	G_FindClosestPointOnLineSegment( start2, end2, start1, new_pnt );
-	new_dist = Distance( start1, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start2, end2, start1, new_pnt);
+	new_dist = Distance(start1, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( start1, close_pnt1 );
-		VectorCopy( new_pnt, close_pnt2 );
+		VectorCopy(start1, close_pnt1);
+		VectorCopy(new_pnt, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	G_FindClosestPointOnLineSegment( start2, end2, end1, new_pnt );
-	new_dist = Distance( end1, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start2, end2, end1, new_pnt);
+	new_dist = Distance(end1, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( end1, close_pnt1 );
-		VectorCopy( new_pnt, close_pnt2 );
+		VectorCopy(end1, close_pnt1);
+		VectorCopy(new_pnt, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	G_FindClosestPointOnLineSegment( start1, end1, start2, new_pnt );
-	new_dist = Distance( start2, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start1, end1, start2, new_pnt);
+	new_dist = Distance(start2, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( new_pnt, close_pnt1 );
-		VectorCopy( start2, close_pnt2 );
+		VectorCopy(new_pnt, close_pnt1);
+		VectorCopy(start2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	G_FindClosestPointOnLineSegment( start1, end1, end2, new_pnt );
-	new_dist = Distance( end2, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start1, end1, end2, new_pnt);
+	new_dist = Distance(end2, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( new_pnt, close_pnt1 );
-		VectorCopy( end2, close_pnt2 );
+		VectorCopy(new_pnt, close_pnt1);
+		VectorCopy(end2, close_pnt2);
 		current_dist = new_dist;
 	}
 

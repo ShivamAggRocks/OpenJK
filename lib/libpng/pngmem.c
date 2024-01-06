@@ -81,7 +81,7 @@ png_malloc_base,(png_const_structrp png_ptr, png_alloc_size_t size),
 #     ifdef PNG_MAX_MALLOC_64K
          && size <= 65536U
 #     endif
-      )
+     )
    {
 #ifdef PNG_USER_MEM_SUPPORTED
       if (png_ptr != NULL && png_ptr->malloc_fn != NULL)

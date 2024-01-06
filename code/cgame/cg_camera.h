@@ -138,35 +138,35 @@ typedef struct camera_s
 extern	bool		in_camera;
 extern	camera_t	client_camera;
 
-void CGCam_Init( void );
+void CGCam_Init(void);
 
-void CGCam_Enable( void );
-void CGCam_Disable( void );
+void CGCam_Enable(void);
+void CGCam_Disable(void);
 
-void CGCam_SetPosition( vec3_t org );
-void CGCam_SetAngles( vec3_t ang );
-void CGCam_SetFOV( float FOV );
+void CGCam_SetPosition(vec3_t org);
+void CGCam_SetAngles(vec3_t ang);
+void CGCam_SetFOV(float FOV);
 
-void CGCam_Zoom( float FOV, float duration );
-void CGCam_Pan( vec3_t dest, vec3_t panDirection, float duration );
-void CGCam_Move( vec3_t dest, float duration );
-void CGCam_Fade( vec4_t source, vec4_t dest, float duration );
+void CGCam_Zoom(float FOV, float duration);
+void CGCam_Pan(vec3_t dest, vec3_t panDirection, float duration);
+void CGCam_Move(vec3_t dest, float duration);
+void CGCam_Fade(vec4_t source, vec4_t dest, float duration);
 
-void CGCam_UpdateFade( void );
+void CGCam_UpdateFade(void);
 
-void CGCam_Update( void );
-void CGCam_RenderScene( void );
-void CGCam_DrawWideScreen( void );
+void CGCam_Update(void);
+void CGCam_RenderScene(void);
+void CGCam_DrawWideScreen(void);
 
-void CGCam_Shake( float intensity, int duration );
-void CGCam_UpdateShake( vec3_t origin, vec3_t angles );
+void CGCam_Shake(float intensity, int duration);
+void CGCam_UpdateShake(vec3_t origin, vec3_t angles);
 
-void CGCam_Follow( const char *cameraGroup, float speed, float initLerp );
-void CGCam_Track( const char *trackName, float speed, float initLerp );
-void CGCam_Distance( float distance, float initLerp );
-void CGCam_Roll( float	dest, float duration );
+void CGCam_Follow(const char *cameraGroup, float speed, float initLerp);
+void CGCam_Track(const char *trackName, float speed, float initLerp);
+void CGCam_Distance(float distance, float initLerp);
+void CGCam_Roll(float	dest, float duration);
 
-void CGCam_StartRoff( char *roff );
+void CGCam_StartRoff(char *roff);
 
-void CGCam_Smooth( float intensity, int duration );
-void CGCam_UpdateSmooth( vec3_t origin, vec3_t angles );
+void CGCam_Smooth(float intensity, int duration);
+void CGCam_UpdateSmooth(vec3_t origin, vec3_t angles);

@@ -29,11 +29,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "vmachine.h"
 
-intptr_t CL_UISystemCalls( intptr_t *args );
+intptr_t CL_UISystemCalls(intptr_t *args);
 
 //prototypes
 #ifdef JK2_MODE
-extern qboolean SG_GetSaveImage( const char *psPathlessBaseName, void *pvAddress );
+extern qboolean SG_GetSaveImage(const char *psPathlessBaseName, void *pvAddress);
 #endif
 extern int SG_GetSaveGameComment(const char *psPathlessBaseName, char *sComment, char *sMapName);
 extern qboolean SG_GameAllowedToSaveHere(qboolean inCamera);
@@ -52,7 +52,7 @@ Helper functions for User Interface
 GetClientState
 ====================
 */
-static connstate_t GetClientState( void ) {
+static connstate_t GetClientState(void) {
 	return cls.state;
 }
 
@@ -61,7 +61,7 @@ static connstate_t GetClientState( void ) {
 CL_GetGlConfig
 ====================
 */
-static void UI_GetGlconfig( glconfig_t *config ) {
+static void UI_GetGlconfig(glconfig_t *config) {
 	*config = cls.glconfig;
 }
 
@@ -70,22 +70,22 @@ static void UI_GetGlconfig( glconfig_t *config ) {
 GetClipboardData
 ====================
 */
-static void GetClipboardData( char *buf, int buflen ) {
+static void GetClipboardData(char *buf, int buflen) {
 	char	*cbd, *c;
 
 	c = cbd = Sys_GetClipboardData();
-	if ( !cbd ) {
+	if (!cbd) {
 		*buf = 0;
 		return;
 	}
 
-	for ( int i = 0, end = buflen - 1; *c && i < end; i++ )
+	for (int i = 0, end = buflen - 1; *c && i < end; i++)
 	{
-		uint32_t utf32 = ConvertUTF8ToUTF32( c, &c );
-		buf[i] = ConvertUTF32ToExpectedCharset( utf32 );
+		uint32_t utf32 = ConvertUTF8ToUTF32(c, &c);
+		buf[i] = ConvertUTF32ToExpectedCharset(utf32);
 	}
 
-	Z_Free( cbd );
+	Z_Free(cbd);
 }
 
 /*
@@ -96,15 +96,15 @@ Key_KeynumToStringBuf
 // only ever called by binding-display code, therefore returns non-technical "friendly" names
 //	in any language that don't necessarily match those in the config file...
 //
-void Key_KeynumToStringBuf( int keynum, char *buf, int buflen )
+void Key_KeynumToStringBuf(int keynum, char *buf, int buflen)
 {
-	const char *psKeyName = Key_KeynumToString( keynum/*, qtrue */);
+	const char *psKeyName = Key_KeynumToString(keynum/*, qtrue */);
 
 	// see if there's a more friendly (or localised) name...
 	//
-	const char *psKeyNameFriendly = SE_GetString( va("KEYNAMES_KEYNAME_%s",psKeyName) );
+	const char *psKeyNameFriendly = SE_GetString(va("KEYNAMES_KEYNAME_%s",psKeyName));
 
-	Q_strncpyz( buf, (psKeyNameFriendly && psKeyNameFriendly[0]) ? psKeyNameFriendly : psKeyName, buflen );
+	Q_strncpyz(buf, (psKeyNameFriendly && psKeyNameFriendly[0]) ? psKeyNameFriendly : psKeyName, buflen);
 }
 
 /*
@@ -112,12 +112,12 @@ void Key_KeynumToStringBuf( int keynum, char *buf, int buflen )
 Key_GetBindingBuf
 ====================
 */
-void Key_GetBindingBuf( int keynum, char *buf, int buflen ) {
+void Key_GetBindingBuf(int keynum, char *buf, int buflen) {
 	const char	*value;
 
-	value = Key_GetBinding( keynum );
-	if ( value ) {
-		Q_strncpyz( buf, value, buflen );
+	value = Key_GetBinding(keynum);
+	if (value) {
+		Q_strncpyz(buf, value, buflen);
 	}
 	else {
 		*buf = 0;
@@ -129,15 +129,15 @@ void Key_GetBindingBuf( int keynum, char *buf, int buflen ) {
 FloatAsInt
 ====================
 */
-static int FloatAsInt( float f )
+static int FloatAsInt(float f)
 {
 	byteAlias_t fi;
 	fi.f = f;
 	return fi.i;
 }
 
-static void UI_Cvar_Create( const char *var_name, const char *var_value, int flags ) {
-	Cvar_Register( NULL, var_name, var_value, flags );
+static void UI_Cvar_Create(const char *var_name, const char *var_value, int flags) {
+	Cvar_Register(NULL, var_name, var_value, flags);
 }
 
 static int GetConfigString(int index, char *buf, int size)
@@ -151,7 +151,7 @@ static int GetConfigString(int index, char *buf, int size)
 	if (!offset)
 		return qfalse;
 
-	Q_strncpyz( buf, cl.gameState.stringData+offset, size);
+	Q_strncpyz(buf, cl.gameState.stringData+offset, size);
 
 	return qtrue;
 }
@@ -161,10 +161,10 @@ static int GetConfigString(int index, char *buf, int size)
 CL_ShutdownUI
 ====================
 */
-void UI_Shutdown( void );
-void CL_ShutdownUI( void ) {
+void UI_Shutdown(void);
+void CL_ShutdownUI(void) {
 	UI_Shutdown();
-	Key_SetCatcher( Key_GetCatcher( ) & ~KEYCATCH_UI );
+	Key_SetCatcher(Key_GetCatcher() & ~KEYCATCH_UI);
 	cls.uiStarted = qfalse;
 }
 
@@ -173,19 +173,19 @@ void CL_DrawDatapad(int HUDType)
 	switch(HUDType)
 	{
 	case DP_HUD:
-		VM_Call( CG_DRAW_DATAPAD_HUD );
+		VM_Call(CG_DRAW_DATAPAD_HUD);
 		break;
 	case DP_OBJECTIVES:
-		VM_Call( CG_DRAW_DATAPAD_OBJECTIVES );
+		VM_Call(CG_DRAW_DATAPAD_OBJECTIVES);
 		break;
 	case DP_WEAPONS:
-		VM_Call( CG_DRAW_DATAPAD_WEAPONS );
+		VM_Call(CG_DRAW_DATAPAD_WEAPONS);
 		break;
 	case DP_INVENTORY:
-		VM_Call( CG_DRAW_DATAPAD_INVENTORY );
+		VM_Call(CG_DRAW_DATAPAD_INVENTORY);
 		break;
 	case DP_FORCEPOWERS:
-		VM_Call( CG_DRAW_DATAPAD_FORCEPOWERS );
+		VM_Call(CG_DRAW_DATAPAD_FORCEPOWERS);
 		break;
 	default:
 		break;
@@ -194,21 +194,21 @@ void CL_DrawDatapad(int HUDType)
 
 }
 
-void UI_Init( int apiVersion, uiimport_t *uiimport, qboolean inGameLoad );
+void UI_Init(int apiVersion, uiimport_t *uiimport, qboolean inGameLoad);
 
 /*
 ====================
 CL_InitUI
 ====================
 */
-void CL_InitUI( void ) {
+void CL_InitUI(void) {
 #ifdef JK2_MODE
 	JK2SP_Register("keynames", 0	/*SP_REGISTER_REQUIRED*/);		// reference is KEYNAMES
 #endif
 
 	uiimport_t	uii;
 
-	memset( &uii, 0, sizeof( uii ) );
+	memset(&uii, 0, sizeof(uii));
 
 	uii.Printf = Com_Printf;
 	uii.Error = Com_Error;
@@ -311,12 +311,12 @@ void CL_InitUI( void ) {
 
 	UI_Init(UI_API_VERSION, &uii, (qboolean)(cls.state > CA_DISCONNECTED && cls.state <= CA_ACTIVE));
 
-//	uie->UI_Init( UI_API_VERSION, &uii );
+//	uie->UI_Init(UI_API_VERSION, &uii);
 
 }
 
 
-qboolean UI_GameCommand( void ) {
+qboolean UI_GameCommand(void) {
 	if (!cls.uiStarted)
 	{
 		return qfalse;
@@ -327,7 +327,7 @@ qboolean UI_GameCommand( void ) {
 
 void CL_GenericMenu_f(void)
 {
-	const char *arg = Cmd_Argv( 1 );
+	const char *arg = Cmd_Argv(1);
 
 	if (cls.uiStarted) {
 		UI_SetActiveMenu("ingame",arg);
@@ -342,7 +342,7 @@ void CL_EndScreenDissolve_f(void)
 
 void CL_DataPad_f(void)
 {
-	if (cls.uiStarted && cls.cgameStarted && (cls.state == CA_ACTIVE) ) {
+	if (cls.uiStarted && cls.cgameStarted && (cls.state == CA_ACTIVE)) {
 		UI_SetActiveMenu("datapad",NULL);
 	}
 }
@@ -352,7 +352,7 @@ void CL_DataPad_f(void)
 CL_GetGlConfig
 ====================
 */
-static void CL_GetGlconfig( glconfig_t *config )
+static void CL_GetGlconfig(glconfig_t *config)
 {
 	*config = cls.glconfig;
 }
@@ -367,53 +367,53 @@ CL_UISystemCalls
 The ui module is making a system call
 ====================
 */
-intptr_t CL_UISystemCalls( intptr_t *args )
+intptr_t CL_UISystemCalls(intptr_t *args)
 {
 
-	switch( args[0] )
+	switch(args[0])
 	{
 	case UI_ERROR:
-		Com_Error( ERR_DROP, "%s", VMA(1) );
+		Com_Error(ERR_DROP, "%s", VMA(1));
 		return 0;
 
 	case UI_CVAR_REGISTER:
-		Cvar_Register( (vmCvar_t *)VMA(1),(const char *) VMA(2),(const char *) VMA(3), args[4] );
+		Cvar_Register((vmCvar_t *)VMA(1),(const char *) VMA(2),(const char *) VMA(3), args[4]);
 		return 0;
 
 	case UI_CVAR_SET:
-		Cvar_Set( (const char *) VMA(1), (const char *) VMA(2) );
+		Cvar_Set((const char *) VMA(1), (const char *) VMA(2));
 		return 0;
 
 	case UI_CVAR_SETVALUE:
-		Cvar_SetValue( (const char *) VMA(1), VMF(2) );
+		Cvar_SetValue((const char *) VMA(1), VMF(2));
 		return 0;
 
 	case UI_CVAR_UPDATE:
-		Cvar_Update( (vmCvar_t *) VMA(1) );
+		Cvar_Update((vmCvar_t *) VMA(1));
 		return 0;
 
 	case UI_R_REGISTERMODEL:
-		return re.RegisterModel((const char *) VMA(1) );
+		return re.RegisterModel((const char *) VMA(1));
 
 	case UI_R_REGISTERSHADERNOMIP:
-		return re.RegisterShaderNoMip((const char *) VMA(1) );
+		return re.RegisterShaderNoMip((const char *) VMA(1));
 
 	case UI_GETGLCONFIG:
-		CL_GetGlconfig( ( glconfig_t *) VMA(1) );
+		CL_GetGlconfig((glconfig_t *) VMA(1));
 		return 0;
 
 	case UI_CMD_EXECUTETEXT:
-		Cbuf_ExecuteText( args[1], (const char *) VMA(2) );
+		Cbuf_ExecuteText(args[1], (const char *) VMA(2));
 		return 0;
 
 	case UI_CVAR_VARIABLEVALUE:
-		return FloatAsInt( Cvar_VariableValue( (const char *) VMA(1) ) );
+		return FloatAsInt(Cvar_VariableValue((const char *) VMA(1)));
 
 	case UI_FS_GETFILELIST:
-		return FS_GetFileList( (const char *) VMA(1), (const char *) VMA(2), (char *) VMA(3), args[4] );
+		return FS_GetFileList((const char *) VMA(1), (const char *) VMA(2), (char *) VMA(3), args[4]);
 
 	case UI_KEY_SETCATCHER:
-		Key_SetCatcher( args[1] );
+		Key_SetCatcher(args[1]);
 		return 0;
 
 	case UI_KEY_CLEARSTATES:
@@ -421,19 +421,19 @@ intptr_t CL_UISystemCalls( intptr_t *args )
 		return 0;
 
 	case UI_R_SETCOLOR:
-		re.SetColor( (const float *) VMA(1) );
+		re.SetColor((const float *) VMA(1));
 		return 0;
 
 	case UI_R_DRAWSTRETCHPIC:
-		re.DrawStretchPic( VMF(1), VMF(2), VMF(3), VMF(4), VMF(5), VMF(6), VMF(7), VMF(8), args[9] );
+		re.DrawStretchPic(VMF(1), VMF(2), VMF(3), VMF(4), VMF(5), VMF(6), VMF(7), VMF(8), args[9]);
 		return 0;
 
 	case UI_CVAR_VARIABLESTRINGBUFFER:
-		Cvar_VariableStringBuffer( (const char *) VMA(1), (char *) VMA(2), args[3] );
+		Cvar_VariableStringBuffer((const char *) VMA(1), (char *) VMA(2), args[3]);
 		return 0;
 
   case UI_R_MODELBOUNDS:
-		re.ModelBounds( args[1], (float *) VMA(2),(float *) VMA(3) );
+		re.ModelBounds(args[1], (float *) VMA(2),(float *) VMA(3));
 		return 0;
 
 	case UI_R_CLEARSCENE:
@@ -445,10 +445,10 @@ intptr_t CL_UISystemCalls( intptr_t *args )
 //		return 0;
 
 //	case UI_PC_READ_TOKEN:
-//		return PC_ReadTokenHandle( args[1], VMA(2) );
+//		return PC_ReadTokenHandle(args[1], VMA(2));
 
 //	case UI_PC_SOURCE_FILE_AND_LINE:
-//		return PC_SourceFileAndLine( args[1], VMA(2), VMA(3) );
+//		return PC_SourceFileAndLine(args[1], VMA(2), VMA(3));
 
 	case UI_KEY_GETCATCHER:
 		return Key_GetCatcher();
@@ -460,11 +460,11 @@ intptr_t CL_UISystemCalls( intptr_t *args )
 		return S_RegisterSound((const char *) VMA(1));
 
 	case UI_S_STARTLOCALSOUND:
-		S_StartLocalSound( args[1], args[2] );
+		S_StartLocalSound(args[1], args[2]);
 		return 0;
 
 //	case UI_R_REGISTERFONT:
-//		re.RegisterFont( VMA(1), args[2], VMA(3));
+//		re.RegisterFont(VMA(1), args[2], VMA(3));
 //		return 0;
 
 	case UI_CIN_PLAYCINEMATIC:
@@ -482,11 +482,11 @@ intptr_t CL_UISystemCalls( intptr_t *args )
 	  return 0;
 
 	case UI_KEY_SETBINDING:
-		Key_SetBinding( args[1], (const char *) VMA(2) );
+		Key_SetBinding(args[1], (const char *) VMA(2));
 		return 0;
 
 	case UI_KEY_KEYNUMTOSTRINGBUF:
-		Key_KeynumToStringBuf( args[1],(char *) VMA(2), args[3] );
+		Key_KeynumToStringBuf(args[1],(char *) VMA(2), args[3]);
 		return 0;
 
 	case UI_CIN_SETEXTENTS:
@@ -494,12 +494,12 @@ intptr_t CL_UISystemCalls( intptr_t *args )
 	  return 0;
 
 	case UI_KEY_GETBINDINGBUF:
-		Key_GetBindingBuf( args[1], (char *) VMA(2), args[3] );
+		Key_GetBindingBuf(args[1], (char *) VMA(2), args[3]);
 		return 0;
 
 
 	default:
-		Com_Error( ERR_DROP, "Bad UI system trap: %i", args[0] );
+		Com_Error(ERR_DROP, "Bad UI system trap: %i", args[0]);
 
 	}
 

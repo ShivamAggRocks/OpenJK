@@ -55,7 +55,7 @@ typedef struct TGAHeader_s {
 //  returns false if found but had a format error, else true for either OK or not-found (there's a reason for this)
 //
 
-void LoadTGA ( const char *name, byte **pic, int *width, int *height)
+void LoadTGA (const char *name, byte **pic, int *width, int *height)
 {
 	char sErrorString[1024];
 	bool bFormatErrors = false;
@@ -70,13 +70,13 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 	*pic = NULL;
 
 #define TGA_FORMAT_ERROR(blah) {sprintf(sErrorString,blah); bFormatErrors = true; goto TGADone;}
-//#define TGA_FORMAT_ERROR(blah) Com_Error( ERR_DROP, blah );
+//#define TGA_FORMAT_ERROR(blah) Com_Error(ERR_DROP, blah);
 
 	//
 	// load the file
 	//
 	byte *pTempLoadedBuffer = 0;
-	ri.FS_ReadFile ( ( char * ) name, (void **)&pTempLoadedBuffer);
+	ri.FS_ReadFile ((char *) name, (void **)&pTempLoadedBuffer);
 	if (!pTempLoadedBuffer) {
 		return;
 	}
@@ -89,7 +89,7 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 
 	if (pHeader->byColourmapType!=0)
 	{
-		TGA_FORMAT_ERROR("LoadTGA: colourmaps not supported\n" );
+		TGA_FORMAT_ERROR("LoadTGA: colourmaps not supported\n");
 	}
 
 	if (pHeader->byImageType != 2 && pHeader->byImageType != 3 && pHeader->byImageType != 10)
@@ -99,20 +99,20 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 
 	if (pHeader->w1stColourMapEntry != 0)
 	{
-		TGA_FORMAT_ERROR("LoadTGA: colourmaps not supported\n" );
+		TGA_FORMAT_ERROR("LoadTGA: colourmaps not supported\n");
 	}
 
 	if (pHeader->wColourMapLength !=0 && pHeader->wColourMapLength != 256)
 	{
-		TGA_FORMAT_ERROR("LoadTGA: ColourMapLength must be either 0 or 256\n" );
+		TGA_FORMAT_ERROR("LoadTGA: ColourMapLength must be either 0 or 256\n");
 	}
 
 	if (pHeader->byColourMapEntrySize != 0 && pHeader->byColourMapEntrySize != 24)
 	{
-		TGA_FORMAT_ERROR("LoadTGA: ColourMapEntrySize must be either 0 or 24\n" );
+		TGA_FORMAT_ERROR("LoadTGA: ColourMapEntrySize must be either 0 or 24\n");
 	}
 
-	if ( ( pHeader->byImagePlanes != 24 && pHeader->byImagePlanes != 32) && (pHeader->byImagePlanes != 8 && pHeader->byImageType != 3))
+	if ((pHeader->byImagePlanes != 24 && pHeader->byImagePlanes != 32) && (pHeader->byImagePlanes != 8 && pHeader->byImageType != 3))
 	{
 		TGA_FORMAT_ERROR("LoadTGA: Only type 2 (RGB), 3 (gray), and 10 (RGB) TGA images supported\n");
 	}
@@ -130,7 +130,7 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 
 	// these last checks are so i can use ID's RLE-code. I don't dare fiddle with it or it'll probably break...
 	//
-	if ( pHeader->byImageType == 10)
+	if (pHeader->byImageType == 10)
 	{
 		if ((pHeader->byScanLineOrder & 0x30) != 0x00)
 		{
@@ -215,7 +215,7 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 
 	byte red,green,blue,alpha;
 
-	if ( pHeader->byImageType == 2 || pHeader->byImageType == 3 )	// RGB or greyscale
+	if (pHeader->byImageType == 2 || pHeader->byImageType == 3)	// RGB or greyscale
 	{
 		for (int y=iYStart, iYCount=0; iYCount<pHeader->wImageHeight; y+=iYStep, iYCount++)
 		{
@@ -379,7 +379,7 @@ TGADone:
 
 	if (bFormatErrors)
 	{
-		Com_Error( ERR_DROP, "%s( File: \"%s\" )\n",sErrorString,name);
+		Com_Error(ERR_DROP, "%s(File: \"%s\")\n",sErrorString,name);
 	}
 }
 

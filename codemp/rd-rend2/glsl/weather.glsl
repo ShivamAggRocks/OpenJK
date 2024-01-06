@@ -63,9 +63,9 @@ void main()
 {
 	vec3 offsets[] = vec3[](
 		vec3(-u_ViewInfo.x, -u_ViewInfo.y, 0.0),
-		vec3( u_ViewInfo.x, -u_ViewInfo.y, 0.0),
+		vec3(u_ViewInfo.x, -u_ViewInfo.y, 0.0),
 		vec3(-u_ViewInfo.x,  u_ViewInfo.y, 0.0),
-		vec3( u_ViewInfo.x,  u_ViewInfo.y, 0.0)
+		vec3(u_ViewInfo.x,  u_ViewInfo.y, 0.0)
 	);
 
 	const vec2 texcoords[] = vec2[](

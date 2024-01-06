@@ -191,7 +191,7 @@ void QDECL G_LogWeaponKill(int client, int mod)
 void QDECL G_LogWeaponFrag(int attacker, int deadguy)
 {
 #ifdef LOGGING_WEAPONS
-	if ( (attacker>=MAX_CLIENTS) || (deadguy>=MAX_CLIENTS) )
+	if ((attacker>=MAX_CLIENTS) || (deadguy>=MAX_CLIENTS))
 		return;
 	G_WeaponLogFrags[attacker][deadguy]++;
 	G_WeaponLogClientTouch[attacker] = qtrue;
@@ -274,7 +274,7 @@ void G_LogWeaponOutput(void)
 		return;
 	}
 
-	G_LogPrintf("*****************************Weapon Log:\n" );
+	G_LogPrintf("*****************************Weapon Log:\n");
 
 	memset(totalpickups, 0, sizeof(totalpickups));
 	memset(totaltime, 0, sizeof(totaltime));
@@ -316,14 +316,14 @@ void G_LogWeaponOutput(void)
 		}
 	}
 
-	G_LogPrintf(  "\n****Data by Weapon:\n" );
+	G_LogPrintf( "\n****Data by Weapon:\n");
 	for (j=0; j<WP_NUM_WEAPONS; j++)
 	{
 		G_LogPrintf("%15s:  Pickups: %4d,  Time:  %5d,  Deaths: %5d\n",
 				weaponNameFromIndex[j], totalpickups[j], (int)(totaltime[j]/1000), totaldeaths[j]);
 	}
 
-	G_LogPrintf(  "\n****Combat Data by Weapon:\n" );
+	G_LogPrintf( "\n****Combat Data by Weapon:\n");
 	for (j=0; j<WP_NUM_WEAPONS; j++)
 	{
 		if (totalshots[j] > 0)
@@ -338,7 +338,7 @@ void G_LogWeaponOutput(void)
 				weaponNameFromIndex[j], totaldamage[j], totalkills[j], pershot);
 	}
 
-	G_LogPrintf(  "\n****Combat Data By Damage Type:\n" );
+	G_LogPrintf( "\n****Combat Data By Damage Type:\n");
 	for (j=0; j<MOD_MAX; j++)
 	{
 		G_LogPrintf("%25s:  Damage: %6d,  Kills: %5d\n",
@@ -348,24 +348,24 @@ void G_LogWeaponOutput(void)
 	G_LogPrintf("\n");
 
 	// Write the whole weapon statistic log out to a file.
-	trap->FS_Open( g_statLogFile.string, &weaponfile, FS_APPEND );
+	trap->FS_Open(g_statLogFile.string, &weaponfile, FS_APPEND);
 	if (!weaponfile) {	//failed to open file, let's not crash, shall we?
 		return;
 	}
 
 	// Write out the level name
 	trap->GetServerinfo(info, sizeof(info));
-	Q_strncpyz(mapname, Info_ValueForKey( info, "mapname" ), sizeof(mapname));
+	Q_strncpyz(mapname, Info_ValueForKey(info, "mapname"), sizeof(mapname));
 
 	Com_sprintf(string, sizeof(string), "\n\n\nLevel:\t%s\n\n\n", mapname);
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 
 	// Combat data per character
 
 	// Start with Pickups per character
 	Com_sprintf(string, sizeof(string), "Weapon Pickups per Player:\n\n");
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 	Com_sprintf(string, sizeof(string), "Player");
 	trap->FS_Write(string, strlen(string), weaponfile);
@@ -383,7 +383,7 @@ void G_LogWeaponOutput(void)
 	{
 		if (G_WeaponLogClientTouch[i])
 		{	// Ignore any entity/clients we don't care about!
-			if ( g_entities[i].client )
+			if (g_entities[i].client)
 			{
 				nameptr = g_entities[i].client->pers.netname;
 			}
@@ -420,7 +420,7 @@ void G_LogWeaponOutput(void)
 
 	// Weapon fires per character
 	Com_sprintf(string, sizeof(string), "Weapon Shots per Player:\n\n");
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 	Com_sprintf(string, sizeof(string), "Player");
 	trap->FS_Write(string, strlen(string), weaponfile);
@@ -438,7 +438,7 @@ void G_LogWeaponOutput(void)
 	{
 		if (G_WeaponLogClientTouch[i])
 		{	// Ignore any entity/clients we don't care about!
-			if ( g_entities[i].client )
+			if (g_entities[i].client)
 			{
 				nameptr = g_entities[i].client->pers.netname;
 			}
@@ -475,7 +475,7 @@ void G_LogWeaponOutput(void)
 
 	// Weapon time per character
 	Com_sprintf(string, sizeof(string), "Weapon Use Time per Player:\n\n");
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 	Com_sprintf(string, sizeof(string), "Player");
 	trap->FS_Write(string, strlen(string), weaponfile);
@@ -493,7 +493,7 @@ void G_LogWeaponOutput(void)
 	{
 		if (G_WeaponLogClientTouch[i])
 		{	// Ignore any entity/clients we don't care about!
-			if ( g_entities[i].client )
+			if (g_entities[i].client)
 			{
 				nameptr = g_entities[i].client->pers.netname;
 			}
@@ -531,7 +531,7 @@ void G_LogWeaponOutput(void)
 
 	// Weapon deaths per character
 	Com_sprintf(string, sizeof(string), "Weapon Deaths per Player:\n\n");
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 	Com_sprintf(string, sizeof(string), "Player");
 	trap->FS_Write(string, strlen(string), weaponfile);
@@ -549,7 +549,7 @@ void G_LogWeaponOutput(void)
 	{
 		if (G_WeaponLogClientTouch[i])
 		{	// Ignore any entity/clients we don't care about!
-			if ( g_entities[i].client )
+			if (g_entities[i].client)
 			{
 				nameptr = g_entities[i].client->pers.netname;
 			}
@@ -589,7 +589,7 @@ void G_LogWeaponOutput(void)
 	// Weapon damage per character
 
 	Com_sprintf(string, sizeof(string), "Weapon Damage per Player:\n\n");
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 	Com_sprintf(string, sizeof(string), "Player");
 	trap->FS_Write(string, strlen(string), weaponfile);
@@ -619,7 +619,7 @@ void G_LogWeaponOutput(void)
 				}
 			}
 
-			if ( g_entities[i].client )
+			if (g_entities[i].client)
 			{
 				nameptr = g_entities[i].client->pers.netname;
 			}
@@ -658,7 +658,7 @@ void G_LogWeaponOutput(void)
 	// Weapon kills per character
 
 	Com_sprintf(string, sizeof(string), "Weapon Kills per Player:\n\n");
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 	Com_sprintf(string, sizeof(string), "Player");
 	trap->FS_Write(string, strlen(string), weaponfile);
@@ -688,7 +688,7 @@ void G_LogWeaponOutput(void)
 				}
 			}
 
-			if ( g_entities[i].client )
+			if (g_entities[i].client)
 			{
 				nameptr = g_entities[i].client->pers.netname;
 			}
@@ -726,7 +726,7 @@ void G_LogWeaponOutput(void)
 
 	// Damage type damage per character
 	Com_sprintf(string, sizeof(string), "Typed Damage per Player:\n\n");
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 	Com_sprintf(string, sizeof(string), "Player");
 	trap->FS_Write(string, strlen(string), weaponfile);
@@ -744,7 +744,7 @@ void G_LogWeaponOutput(void)
 	{
 		if (G_WeaponLogClientTouch[i])
 		{	// Ignore any entity/clients we don't care about!
-			if ( g_entities[i].client )
+			if (g_entities[i].client)
 			{
 				nameptr = g_entities[i].client->pers.netname;
 			}
@@ -782,7 +782,7 @@ void G_LogWeaponOutput(void)
 
 	// Damage type kills per character
 	Com_sprintf(string, sizeof(string), "Damage-Typed Kills per Player:\n\n");
-	trap->FS_Write( string, strlen( string ), weaponfile);
+	trap->FS_Write(string, strlen(string), weaponfile);
 
 	Com_sprintf(string, sizeof(string), "Player");
 	trap->FS_Write(string, strlen(string), weaponfile);
@@ -800,7 +800,7 @@ void G_LogWeaponOutput(void)
 	{
 		if (G_WeaponLogClientTouch[i])
 		{	// Ignore any entity/clients we don't care about!
-			if ( g_entities[i].client )
+			if (g_entities[i].client)
 			{
 				nameptr = g_entities[i].client->pers.netname;
 			}
@@ -857,7 +857,7 @@ qboolean CalculateEfficiency(gentity_t *ent, int *efficiency)
 			continue;
 		nShotsFired = player->client->accuracy_shots; //player->client->ps.persistant[PERS_ACCURACY_SHOTS];
 		nShotsHit = player->client->accuracy_hits; //player->client->ps.persistant[PERS_ACCURACY_HITS];
-		fAccuracyRatio = ( ((float)nShotsHit)/((float)nShotsFired) );
+		fAccuracyRatio = (((float)nShotsHit)/((float)nShotsFired));
 		if (fAccuracyRatio > fBestRatio)
 		{
 			fBestRatio = fAccuracyRatio;
@@ -892,7 +892,7 @@ qboolean CalculateSharpshooter(gentity_t *ent, int *frags)
 	gentity_t	*player = NULL;
 
 	// if this guy didn't get one kill per minute, reject him right now
-	if ( ((float)(G_WeaponLogKills[ent-g_entities][MOD_DISRUPTOR_SNIPER]))/((float)(playTime)) < 1.0 )
+	if (((float)(G_WeaponLogKills[ent-g_entities][MOD_DISRUPTOR_SNIPER]))/((float)(playTime)) < 1.0)
 	{
 		return qfalse;
 	}
@@ -930,12 +930,12 @@ qboolean CalculateUntouchable(gentity_t *ent)
 	int			playTime;
 	playTime = (level.time - ent->client->pers.enterTime)/60000;
 
-	if ( level.gametype == GT_JEDIMASTER && ent->client->ps.isJediMaster )
+	if (level.gametype == GT_JEDIMASTER && ent->client->ps.isJediMaster)
 	{//Jedi Master can only be killed once anyway
 		return qfalse;
 	}
 	//------------------------------------------------------ MUST HAVE ACHIEVED 2 KILLS PER MINUTE
-	if ( ((float)ent->client->ps.persistant[PERS_SCORE])/((float)(playTime)) < 2.0  || playTime==0)
+	if (((float)ent->client->ps.persistant[PERS_SCORE])/((float)(playTime)) < 2.0  || playTime==0)
 		return qfalse;
 	//------------------------------------------------------ MUST HAVE ACHIEVED 2 KILLS PER MINUTE
 
@@ -979,7 +979,7 @@ qboolean CalculateLogistics(gentity_t *ent, int *stuffUsed)
 			}
 			nStuffUsed += G_WeaponLogItems[i][j];
 		}
-		if ( (nDifferent >= 4) && (nDifferent >= nMostDifferent) )
+		if ((nDifferent >= 4) && (nDifferent >= nMostDifferent))
 		{
 			if (nStuffUsed > nMostStuffUsed)
 			{
@@ -1016,11 +1016,11 @@ qboolean CalculateTactician(gentity_t *ent, int *kills)
 	int			killsWithWeapon[WP_NUM_WEAPONS];
 	int			playTime = (level.time - ent->client->pers.enterTime)/60000;
 
-	if ( HasSetSaberOnly() )
+	if (HasSetSaberOnly())
 	{//duh, only 1 weapon
 		return qfalse;
 	}
-	if ( level.gametype == GT_JEDIMASTER && ent->client->ps.isJediMaster )
+	if (level.gametype == GT_JEDIMASTER && ent->client->ps.isJediMaster)
 	{//Jedi Master has only 1 weapon
 		return qfalse;
 	}
@@ -1028,7 +1028,7 @@ qboolean CalculateTactician(gentity_t *ent, int *kills)
 	if (playTime<0.3)
 		return qfalse;
 
-	if ( ((float)ent->client->ps.persistant[PERS_SCORE])/((float)(playTime)) < 2.0 )
+	if (((float)ent->client->ps.persistant[PERS_SCORE])/((float)(playTime)) < 2.0)
 		return qfalse;
 	//------------------------------------------------------ MUST HAVE ACHIEVED 2 KILLS PER MINUTE
 
@@ -1070,7 +1070,7 @@ qboolean CalculateTactician(gentity_t *ent, int *kills)
 
 		weapon=WP_STUN_BATON;		// Start At Stun Baton
 		//   keep looking through weapons if weapon is not on map, or if it is and we used it
-		while( weapon<WP_NUM_WEAPONS && (!wasPickedUpBySomeone[weapon] || killsWithWeapon[weapon]>0) )
+		while(weapon<WP_NUM_WEAPONS && (!wasPickedUpBySomeone[weapon] || killsWithWeapon[weapon]>0))
 		{
 			weapon++;
 			nKills+=killsWithWeapon[weapon];							//  Update the number of kills
@@ -1130,7 +1130,7 @@ qboolean CalculateDemolitionist(gentity_t *ent, int *kills)
 		nKills += G_WeaponLogKills[i][MOD_DET_PACK_SPLASH];
 
 		// if this guy didn't get two explosive kills per minute, reject him right now
-		if ( ((float)nKills)/((float)(playTime)) < 2.0 )
+		if (((float)nKills)/((float)(playTime)) < 2.0)
 		{
 			continue;
 		}
@@ -1445,7 +1445,7 @@ int CalculateTeamAward(gentity_t *ent)
 			teamAwards |= (1<<TEAM_INTERCEPTOR);
 		}
 	}
-	if ( !teamAwards && CalculateTeamRedShirt(ent) )
+	if (!teamAwards && CalculateTeamRedShirt(ent))
 	{//if you got nothing else and died a lot, at least get bravery
 		teamAwards |= (1<<TEAM_BRAVERY);
 	}
@@ -1552,8 +1552,8 @@ void CalculateAwards(gentity_t *ent, char *msg)
 		strcpy(buf2, buf1);
 		Com_sprintf(buf1, AWARDS_MSG_LENGTH, "%s %d", buf2, 0);
 	}
-	Q_strncpyz( buf2, msg, sizeof( buf2 ) );
-	Com_sprintf( msg, AWARDS_MSG_LENGTH, "%s %d%s", buf2, awardFlags, buf1);
+	Q_strncpyz(buf2, msg, sizeof(buf2));
+	Com_sprintf(msg, AWARDS_MSG_LENGTH, "%s %d%s", buf2, awardFlags, buf1);
 #endif // LOGGING_WEAPONS
 }
 
@@ -1626,8 +1626,8 @@ int GetWorstEnemyForClient(int nClient)
 		// over the client...  I.E. Most deaths should not tie with yourself and
 		// have yourself show up...
 
-		if ( G_WeaponLogFrags[i][nClient] > nMostDeaths ||
-			(G_WeaponLogFrags[i][nClient]== nMostDeaths && i!=nClient && nMostDeaths!=0) )
+		if (G_WeaponLogFrags[i][nClient] > nMostDeaths ||
+			(G_WeaponLogFrags[i][nClient]== nMostDeaths && i!=nClient && nMostDeaths!=0))
 		{
 			nMostDeaths = G_WeaponLogFrags[i][nClient];
 			nWorstEnemy = i;

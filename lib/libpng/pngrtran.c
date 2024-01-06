@@ -1566,7 +1566,7 @@ png_init_read_transformations(png_structrp png_ptr)
          || (png_ptr->background_gamma_type == PNG_BACKGROUND_GAMMA_UNIQUE &&
            png_gamma_significant(png_ptr->background_gamma) != 0)
 #  endif
-        )) || ((png_ptr->transformations & PNG_ENCODE_ALPHA) != 0 &&
+       )) || ((png_ptr->transformations & PNG_ENCODE_ALPHA) != 0 &&
        png_gamma_significant(png_ptr->screen_gamma) != 0))
    {
       png_build_gamma_table(png_ptr, png_ptr->bit_depth);
@@ -1805,7 +1805,7 @@ png_init_read_transformations(png_structrp png_ptr)
          && ((png_ptr->transformations & PNG_EXPAND) == 0 ||
          (png_ptr->transformations & PNG_RGB_TO_GRAY) == 0)
 #endif
-         )
+        )
       {
          png_colorp palette = png_ptr->palette;
          int num_palette = png_ptr->num_palette;
@@ -2933,7 +2933,7 @@ png_do_gray_to_rgb(png_row_infop row_info, png_bytep row)
  * <http://www.inforamp.net/~poynton/>  (THIS LINK IS DEAD June 2008 but
  * versions dated 1998 through November 2002 have been archived at
  * http://web.archive.org/web/20000816232553/http://www.inforamp.net/
- * ~poynton/notes/colour_and_gamma/ColorFAQ.txt )
+ * ~poynton/notes/colour_and_gamma/ColorFAQ.txt)
  * Charles Poynton poynton at poynton.com
  *
  *     Y = 0.212671 * R + 0.715160 * G + 0.072169 * B
@@ -4064,10 +4064,10 @@ png_do_gamma(png_row_infop row_info, png_bytep row, png_structrp png_ptr)
                   int d = *sp & 0x03;
 
                   *sp = (png_byte)(
-                      ((((int)gamma_table[a|(a>>2)|(a>>4)|(a>>6)])   ) & 0xc0)|
+                      ((((int)gamma_table[a|(a>>2)|(a>>4)|(a>>6)])  ) & 0xc0)|
                       ((((int)gamma_table[(b<<2)|b|(b>>2)|(b>>4)])>>2) & 0x30)|
                       ((((int)gamma_table[(c<<4)|(c<<2)|c|(c>>2)])>>4) & 0x0c)|
-                      ((((int)gamma_table[(d<<6)|(d<<4)|(d<<2)|d])>>6) ));
+                      ((((int)gamma_table[(d<<6)|(d<<4)|(d<<2)|d])>>6)));
                   sp++;
                }
             }
@@ -4539,7 +4539,7 @@ png_do_expand(png_row_infop row_info, png_bytep row,
                    *(sp - 3) == green_high &&
                    *(sp - 2) == green_low &&
                    *(sp - 1) == blue_high &&
-                   *(sp    ) == blue_low)
+                   *(sp   ) == blue_low)
                {
                   *dp-- = 0;
                   *dp-- = 0;

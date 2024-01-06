@@ -36,7 +36,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 extern vmCvar_t	fx_debug;
 extern vmCvar_t	fx_freeze;
 
-extern void	CG_CalcEntityLerpPositions( centity_t * );
+extern void	CG_CalcEntityLerpPositions(centity_t *);
 
 struct SFxHelper
 {
@@ -45,37 +45,37 @@ struct SFxHelper
 	float	mFloatFrameTime;
 
 	void	Init();
-	void	AdjustTime( int time );
+	void	AdjustTime(int time);
 
 	// These functions are wrapped and used by the fx system in case it makes things a bit more portable
-	void	Print( const char *msg, ... );
+	void	Print(const char *msg, ...);
 
 	// File handling
-	int		OpenFile( const char *path, fileHandle_t *fh, int mode );
-	int		ReadFile( void *data, int len, fileHandle_t fh );
-	void	CloseFile( fileHandle_t fh );
+	int		OpenFile(const char *path, fileHandle_t *fh, int mode);
+	int		ReadFile(void *data, int len, fileHandle_t fh);
+	void	CloseFile(fileHandle_t fh);
 
 	// Sound
-	void	PlaySound( const vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx );
-	void	PlayLocalSound( sfxHandle_t sfx, int channelNum );
-	int		RegisterSound( const gsl::cstring_span& sound );
+	void	PlaySound(const vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx);
+	void	PlayLocalSound(sfxHandle_t sfx, int channelNum);
+	int		RegisterSound(const gsl::cstring_span& sound);
 
 	//G2
 	int		GetOriginAxisFromBolt(const centity_t &cent, int modelNum, int boltNum, vec3_t /*out*/origin, vec3_t /*out*/*axis);
 
 	// Physics/collision
-	void	Trace( trace_t *tr, vec3_t start, vec3_t min, vec3_t max, vec3_t end, int skipEntNum, int flags );
-	void	G2Trace( trace_t *tr, vec3_t start, vec3_t min, vec3_t max, vec3_t end, int skipEntNum, int flags );
+	void	Trace(trace_t *tr, vec3_t start, vec3_t min, vec3_t max, vec3_t end, int skipEntNum, int flags);
+	void	G2Trace(trace_t *tr, vec3_t start, vec3_t min, vec3_t max, vec3_t end, int skipEntNum, int flags);
 
-	void	AddFxToScene( refEntity_t *ent );
-	void	AddLightToScene( vec3_t org, float radius, float red, float green, float blue );
+	void	AddFxToScene(refEntity_t *ent);
+	void	AddLightToScene(vec3_t org, float radius, float red, float green, float blue);
 
-	int		RegisterShader( const gsl::cstring_span& shader );
-	int		RegisterModel( const gsl::cstring_span& model );
+	int		RegisterShader(const gsl::cstring_span& shader);
+	int		RegisterModel(const gsl::cstring_span& model);
 
-	void	AddPolyToScene( int shader, int count, polyVert_t *verts );
+	void	AddPolyToScene(int shader, int count, polyVert_t *verts);
 
-	void	CameraShake( vec3_t origin, float intensity, int radius, int time );
+	void	CameraShake(vec3_t origin, float intensity, int radius, int time);
 };
 
 extern SFxHelper	theFxHelper;

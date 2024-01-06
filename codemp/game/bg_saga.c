@@ -262,7 +262,7 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 
 				isGroup = qfalse;
 
-				while ( buf[i] && (buf[i] == ' ' || buf[i] == SIEGECHAR_TAB || buf[i] == '\n' || buf[i] == '\r') )
+				while (buf[i] && (buf[i] == ' ' || buf[i] == SIEGECHAR_TAB || buf[i] == '\n' || buf[i] == '\r'))
 				{ //parse to the next valid character
 					i++;
 				}
@@ -520,7 +520,7 @@ int BG_SiegeGetPairedValue(char *buf, char *key, char *outbuf)
 								}
 
 								j = 0;
-								while ( ((!parseToQuote && buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\r') || (parseToQuote && buf[i] != '\"')) )
+								while (((!parseToQuote && buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\r') || (parseToQuote && buf[i] != '\"')))
 								{
 									if (buf[i] == '/' &&
 										buf[i+1] == '/')
@@ -780,19 +780,19 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 	char classInfo[4096];
 	char parseBuf[4096];
 
-	len = trap->FS_Open( filename, &f, FS_READ );
+	len = trap->FS_Open(filename, &f, FS_READ);
 
 	if (!f) {
 		return;
 	}
 	if (len >= 4096) {
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 		return;
 	}
 
-	trap->FS_Read( classInfo, len, f );
+	trap->FS_Read(classInfo, len, f);
 
-	trap->FS_Close( f );
+	trap->FS_Close(f);
 
 	classInfo[len] = 0;
 
@@ -1021,11 +1021,11 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		#elif defined(UI_BUILD)
 			bgSiegeClasses[bgNumSiegeClasses].classShader = trap->R_RegisterShaderNoMip(parseBuf);
 		#endif
-		assert( bgSiegeClasses[bgNumSiegeClasses].classShader );
-		if ( !bgSiegeClasses[bgNumSiegeClasses].classShader )
+		assert(bgSiegeClasses[bgNumSiegeClasses].classShader);
+		if (!bgSiegeClasses[bgNumSiegeClasses].classShader)
 		{
-			//Com_Error( ERR_DROP, "ERROR: could not find class_shader %s for class %s\n", parseBuf, bgSiegeClasses[bgNumSiegeClasses].name );
-			Com_Printf( "ERROR: could not find class_shader %s for class %s\n", parseBuf, bgSiegeClasses[bgNumSiegeClasses].name );
+			//Com_Error(ERR_DROP, "ERROR: could not find class_shader %s for class %s\n", parseBuf, bgSiegeClasses[bgNumSiegeClasses].name);
+			Com_Printf("ERROR: could not find class_shader %s for class %s\n", parseBuf, bgSiegeClasses[bgNumSiegeClasses].name);
 		}
 		// A very hacky way to determine class . . .
 		else
@@ -1045,7 +1045,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 					break;
 				}
 
-				holdBuf = parseBuf + ( titleLength - arrayTitleLength);
+				holdBuf = parseBuf + (titleLength - arrayTitleLength);
 				if (!strcmp(holdBuf,classTitles[i]))
 				{
 					bgSiegeClasses[bgNumSiegeClasses].playerClass = i;
@@ -1062,8 +1062,8 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 	}
 	else
 	{ //No entry!  Bad bad bad
-		//Com_Error( ERR_DROP, "ERROR: no class_shader defined for class %s\n", bgSiegeClasses[bgNumSiegeClasses].name );
-		Com_Printf( "ERROR: no class_shader defined for class %s\n", bgSiegeClasses[bgNumSiegeClasses].name );
+		//Com_Error(ERR_DROP, "ERROR: no class_shader defined for class %s\n", bgSiegeClasses[bgNumSiegeClasses].name);
+		Com_Printf("ERROR: no class_shader defined for class %s\n", bgSiegeClasses[bgNumSiegeClasses].name);
 	}
 
 	//Parse holdable items to use
@@ -1212,7 +1212,7 @@ void BG_SiegeLoadClasses(siegeClassDesc_t *descBuffer)
 
 	bgNumSiegeClasses = 0;
 
-	numFiles = trap->FS_GetFileList("ext_data/Siege/Classes", ".scl", filelist, sizeof( filelist ) );
+	numFiles = trap->FS_GetFileList("ext_data/Siege/Classes", ".scl", filelist, sizeof(filelist));
 
 	fileptr = filelist;
 
@@ -1272,12 +1272,12 @@ void BG_SiegeParseTeamFile(const char *filename)
 		return;
 	}
 	if (len >= 2048) {
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 		return;
 	}
 
-	trap->FS_Read( teamInfo, len, f );
-	trap->FS_Close( f );
+	trap->FS_Read(teamInfo, len, f);
+	trap->FS_Close(f);
 
 	teamInfo[len] = 0;
 
@@ -1317,7 +1317,7 @@ void BG_SiegeParseTeamFile(const char *filename)
 
 			if (!bgSiegeTeams[bgNumSiegeTeams].classes[bgSiegeTeams[bgNumSiegeTeams].numClasses])
 			{
-				Com_Printf( "Invalid class specified: '%s'\n", parseBuf);
+				Com_Printf("Invalid class specified: '%s'\n", parseBuf);
 			}
 
 			bgSiegeTeams[bgNumSiegeTeams].numClasses++;
@@ -1346,7 +1346,7 @@ void BG_SiegeLoadTeams(void)
 
 	bgNumSiegeTeams = 0;
 
-	numFiles = trap->FS_GetFileList("ext_data/Siege/Teams", ".team", filelist, sizeof( filelist ) );
+	numFiles = trap->FS_GetFileList("ext_data/Siege/Teams", ".team", filelist, sizeof(filelist));
 
 	fileptr = filelist;
 
@@ -1382,7 +1382,7 @@ siegeTeam_t *BG_SiegeFindThemeForTeam(int team)
 
 #if defined(_GAME) || defined(_CGAME) //only for game/cgame
 //precache all the sabers for the active classes for the team
-extern qboolean WP_SaberParseParms( const char *saberName, saberInfo_t *saber ); //bg_saberLoad.cpp
+extern qboolean WP_SaberParseParms(const char *saberName, saberInfo_t *saber); //bg_saberLoad.cpp
 extern int BG_ModelCache(const char *modelName, const char *skinName); //bg_misc.c
 
 void BG_PrecacheSabersForSiegeTeam(int team)

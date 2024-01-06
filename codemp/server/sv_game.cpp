@@ -35,15 +35,15 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 // these functions must be used instead of pointer arithmetic, because
 // the game allocates gentities with private information after the server shared part
-int	SV_NumForGentity( sharedEntity_t *ent ) {
+int	SV_NumForGentity(sharedEntity_t *ent) {
 	int		num;
 
-	num = ( (byte *)ent - (byte *)sv.gentities ) / sv.gentitySize;
+	num = ((byte *)ent - (byte *)sv.gentities) / sv.gentitySize;
 
 	return num;
 }
 
-sharedEntity_t *SV_GentityNum( int num ) {
+sharedEntity_t *SV_GentityNum(int num) {
 	sharedEntity_t *ent;
 
 	ent = (sharedEntity_t *)((byte *)sv.gentities + sv.gentitySize*(num));
@@ -51,7 +51,7 @@ sharedEntity_t *SV_GentityNum( int num ) {
 	return ent;
 }
 
-playerState_t *SV_GameClientNum( int num ) {
+playerState_t *SV_GameClientNum(int num) {
 	playerState_t	*ps;
 
 	ps = (playerState_t *)((byte *)sv.gameClients + sv.gameClientSize*(num));
@@ -59,18 +59,18 @@ playerState_t *SV_GameClientNum( int num ) {
 	return ps;
 }
 
-svEntity_t	*SV_SvEntityForGentity( sharedEntity_t *gEnt ) {
-	if ( !gEnt || gEnt->s.number < 0 || gEnt->s.number >= MAX_GENTITIES ) {
-		Com_Error( ERR_DROP, "SV_SvEntityForGentity: bad gEnt" );
+svEntity_t	*SV_SvEntityForGentity(sharedEntity_t *gEnt) {
+	if (!gEnt || gEnt->s.number < 0 || gEnt->s.number >= MAX_GENTITIES) {
+		Com_Error(ERR_DROP, "SV_SvEntityForGentity: bad gEnt");
 	}
 	return &sv.svEntities[ gEnt->s.number ];
 }
 
-sharedEntity_t *SV_GEntityForSvEntity( svEntity_t *svEnt ) {
+sharedEntity_t *SV_GEntityForSvEntity(svEntity_t *svEnt) {
 	int		num;
 
 	num = svEnt - sv.svEntities;
-	return SV_GentityNum( num );
+	return SV_GentityNum(num);
 }
 
 /*
@@ -95,7 +95,7 @@ qboolean SV_inPVS (const vec3_t p1, const vec3_t p2)
 	leafnum = CM_PointLeafnum (p2);
 	cluster = CM_LeafCluster (leafnum);
 	area2 = CM_LeafArea (leafnum);
-	if ( mask && (!(mask[cluster>>3] & (1<<(cluster&7)) ) ) )
+	if (mask && (!(mask[cluster>>3] & (1<<(cluster&7)))))
 		return qfalse;
 	if (!CM_AreasConnected (area1, area2))
 		return qfalse;		// a door blocks sight
@@ -111,8 +111,8 @@ SV_ShutdownGameProgs
 Called every time a map changes
 ===============
 */
-void SV_ShutdownGameProgs( void ) {
-	if ( !svs.gameStarted ) {
+void SV_ShutdownGameProgs(void) {
+	if (!svs.gameStarted) {
 		return;
 	}
 	SV_UnbindGame();
@@ -126,17 +126,17 @@ Called on a normal map change, not on a map_restart
 ===============
 */
 
-void SV_InitGameProgs( void ) {
+void SV_InitGameProgs(void) {
 	//FIXME these are temp while I make bots run in vm
 	extern int	bot_enable;
 
-	cvar_t *var = Cvar_Get( "bot_enable", "1", CVAR_LATCH );
+	cvar_t *var = Cvar_Get("bot_enable", "1", CVAR_LATCH);
 	bot_enable = var ? var->integer : 0;
 
 	svs.gameStarted = qtrue;
 	SV_BindGame();
 
-	SV_InitGame( qfalse );
+	SV_InitGame(qfalse);
 }
 
 
@@ -147,8 +147,8 @@ SV_GameCommand
 See if the current console command is claimed by the game
 ====================
 */
-qboolean SV_GameCommand( void ) {
-	if ( sv.state != SS_GAME ) {
+qboolean SV_GameCommand(void) {
+	if (sv.state != SS_GAME) {
 		return qfalse;
 	}
 

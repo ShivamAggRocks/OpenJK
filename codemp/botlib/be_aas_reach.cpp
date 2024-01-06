@@ -270,15 +270,15 @@ int AAS_GetJumpPadInfo(int ent, vec3_t areastart, vec3_t absmins, vec3_t absmaxs
 	//
 	height = ent2origin[2] - origin[2];
 	gravity = aassettings.phys_gravity;
-	time = sqrt( height / ( 0.5 * gravity ) );
+	time = sqrt(height / (0.5 * gravity));
 	if (!time)
 	{
 		botimport.Print(PRT_MESSAGE, "trigger_push without time\n");
 		return qfalse;
 	} //end if
 	// set s.origin2 to the push velocity
-	VectorSubtract ( ent2origin, origin, velocity);
-	dist = VectorNormalize( velocity);
+	VectorSubtract (ent2origin, origin, velocity);
+	dist = VectorNormalize(velocity);
 	forward = dist / time;
 	//FIXME: why multiply by 1.1
 	forward *= 1.1f;
@@ -3572,15 +3572,15 @@ void AAS_Reachability_JumpPad(void)
 		//
 		height = ent2origin[2] - origin[2];
 		gravity = aassettings.sv_gravity;
-		time = sqrt( height / ( 0.5 * gravity ) );
+		time = sqrt(height / (0.5 * gravity));
 		if (!time)
 		{
 			botimport.Print(PRT_MESSAGE, "trigger_push without time\n");
 			continue;
 		} //end if
 		// set s.origin2 to the push velocity
-		VectorSubtract ( ent2origin, origin, velocity);
-		dist = VectorNormalize( velocity);
+		VectorSubtract (ent2origin, origin, velocity);
+		dist = VectorNormalize(velocity);
 		forward = dist / time;
 		//FIXME: why multiply by 1.1
 		forward *= 1.1;

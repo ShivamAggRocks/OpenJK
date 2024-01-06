@@ -1382,14 +1382,14 @@ png_XYZ_from_xy(png_XYZ *XYZ, const png_xy *xy)
     * Hence:
     *
     *    red-scale =
-    *          ( (green-x - blue-x) * (white-y - blue-y) -
-    *            (green-y - blue-y) * (white-x - blue-x) ) / white-y
+    *          ((green-x - blue-x) * (white-y - blue-y) -
+    *            (green-y - blue-y) * (white-x - blue-x)) / white-y
     * -------------------------------------------------------------------------
     *  (green-x - blue-x)*(red-y - blue-y)-(green-y - blue-y)*(red-x - blue-x)
     *
     *    green-scale =
-    *          ( (red-y - blue-y) * (white-x - blue-x) -
-    *            (red-x - blue-x) * (white-y - blue-y) ) / white-y
+    *          ((red-y - blue-y) * (white-x - blue-x) -
+    *            (red-x - blue-x) * (white-y - blue-y)) / white-y
     * -------------------------------------------------------------------------
     *  (green-x - blue-x)*(red-y - blue-y)-(green-y - blue-y)*(red-x - blue-x)
     *
@@ -1760,7 +1760,7 @@ png_icc_tag_name(char *name, png_uint_32 tag)
    name[1] = png_icc_tag_char(tag >> 24);
    name[2] = png_icc_tag_char(tag >> 16);
    name[3] = png_icc_tag_char(tag >>  8);
-   name[4] = png_icc_tag_char(tag      );
+   name[4] = png_icc_tag_char(tag     );
    name[5] = '\'';
 }
 

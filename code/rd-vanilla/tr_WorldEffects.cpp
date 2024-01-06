@@ -33,7 +33,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////////////////////
 // Externs & Fwd Decl.
 ////////////////////////////////////////////////////////////////////////////////////////
-extern void			SetViewportAndScissor( void );
+extern void			SetViewportAndScissor(void);
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Includes
@@ -71,7 +71,7 @@ int			mParticlesRendered;
 ////////////////////////////////////////////////////////////////////////////////////////
 // Handy Functions
 ////////////////////////////////////////////////////////////////////////////////////////
-inline void		VectorMA( vec3_t vecAdd, const float scale, const vec3_t vecScale)
+inline void		VectorMA(vec3_t vecAdd, const float scale, const vec3_t vecScale)
 {
 	vecAdd[0] += (scale * vecScale[0]);
 	vecAdd[1] += (scale * vecScale[1]);
@@ -461,16 +461,16 @@ private:
 		int			mHeight;
 		int			mDepth;
 
-		void WriteToDisk( fileHandle_t f )
+		void WriteToDisk(fileHandle_t f)
 		{
 			ri.FS_Write(&mMarkedOutside,sizeof(mMarkedOutside),f);
-			ri.FS_Write( mPointCache, miPointCacheByteSize, f );
+			ri.FS_Write(mPointCache, miPointCacheByteSize, f);
 		}
 
-		void ReadFromDisk( fileHandle_t f )
+		void ReadFromDisk(fileHandle_t f)
 		{
 			ri.FS_Read(&mMarkedOutside,sizeof(mMarkedOutside),f);
-			ri.FS_Read( mPointCache, miPointCacheByteSize, f);
+			ri.FS_Read(mPointCache, miPointCacheByteSize, f);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
@@ -609,7 +609,7 @@ public:
 			Wz.mDepth		= ((int)(Wz.mSize.mMaxs[2] - Wz.mSize.mMins[2]) + 31) >> 5;
 
 			Wz.miPointCacheByteSize = (Wz.mWidth * Wz.mHeight * Wz.mDepth) * sizeof(uint32_t);
-			Wz.mPointCache  = (uint32_t *)R_Malloc( Wz.miPointCacheByteSize, TAG_POINTCACHE, qtrue );
+			Wz.mPointCache  = (uint32_t *)R_Malloc(Wz.miPointCacheByteSize, TAG_POINTCACHE, qtrue);
 		}
 		else
 		{
@@ -636,9 +636,9 @@ public:
 		}
 	};
 
-	fileHandle_t WriteCachedWeatherFile( void )
+	fileHandle_t WriteCachedWeatherFile(void)
 	{
-		fileHandle_t f = ri.FS_FOpenFileWrite( GenCachedWeatherFilename(), qtrue );
+		fileHandle_t f = ri.FS_FOpenFileWrite(GenCachedWeatherFilename(), qtrue);
 		if (f)
 		{
 			WeatherFileHeader_t WeatherFileHeader;
@@ -648,7 +648,7 @@ public:
 		}
 		else
 		{
-			ri.Printf( PRINT_WARNING, "(Unable to open weather file \"%s\" for writing!)\n",GenCachedWeatherFilename());
+			ri.Printf(PRINT_WARNING, "(Unable to open weather file \"%s\" for writing!)\n",GenCachedWeatherFilename());
 		}
 
 		return 0;
@@ -656,11 +656,11 @@ public:
 
 	// returns 0 for not-found or invalid file, else open handle to continue read from (which you then close yourself)...
 	//
-	fileHandle_t ReadCachedWeatherFile( void )
+	fileHandle_t ReadCachedWeatherFile(void)
 	{
 		fileHandle_t f = 0;
-		ri.FS_FOpenFileRead( GenCachedWeatherFilename(), &f, qfalse );
-		if ( f )
+		ri.FS_FOpenFileRead(GenCachedWeatherFilename(), &f, qfalse);
+		if (f)
 		{
 			// ok, it exists, but is it valid for this map?...
 			//
@@ -676,12 +676,12 @@ public:
 				return f;
 			}
 
-            ri.Printf( PRINT_WARNING, "( Cached weather file \"%s\" out of date, regenerating... )\n",GenCachedWeatherFilename());
-			ri.FS_FCloseFile( f );
+            ri.Printf(PRINT_WARNING, "(Cached weather file \"%s\" out of date, regenerating...)\n",GenCachedWeatherFilename());
+			ri.FS_FCloseFile(f);
 		}
 		else
 		{
-			ri.Printf( PRINT_WARNING, "( No cached weather file found, generating... )\n");
+			ri.Printf(PRINT_WARNING, "(No cached weather file found, generating...)\n");
 		}
 
 		return 0;
@@ -700,12 +700,12 @@ public:
 		// all this piece of code does really is fill in the bool "SWeatherZone::mMarkedOutside", plus the mPointCache[] for each zone,
 		//	so we can diskload those. Maybe.
 		fileHandle_t f = ReadCachedWeatherFile();
-		if ( f )
+		if (f)
 		{
 			for (int iZone=0; iZone<mWeatherZones.size(); iZone++)
 			{
 				SWeatherZone wz = mWeatherZones[iZone];
-				wz.ReadFromDisk( f );
+				wz.ReadFromDisk(f);
 			}
 
 			mCacheInit = true;
@@ -776,7 +776,7 @@ public:
 									else if (SWeatherZone::mMarkedOutside!=curPosOutside)
 									{
 										assert(0);
-										Com_Error (ERR_DROP, "Weather Effect: Both Indoor and Outdoor brushs encountered in map.\n" );
+										Com_Error (ERR_DROP, "Weather Effect: Both Indoor and Outdoor brushs encountered in map.\n");
 										return;
 									}
 
@@ -791,7 +791,7 @@ public:
 
 				if (f)
 				{
-					mWeatherZones[ zone ].WriteToDisk( f );
+					mWeatherZones[ zone ].WriteToDisk(f);
 				}
 			}
 		}
@@ -929,7 +929,7 @@ bool R_SetTempGlobalFogColor(vec3_t color)
 												color[0] * tr.identityLight,
 												color[1] * tr.identityLight,
 												color[2] * tr.identityLight,
-												1.0 );
+												1.0);
 		}
 
 		// If Unable TO Parse The Command Color Vector, Restore The Previous Fog Color
@@ -1525,28 +1525,28 @@ public:
 			else
 			{
 				// Left bottom.
-				qglTexCoord2f( 0.0, 0.0 );
+				qglTexCoord2f(0.0, 0.0);
 				qglVertex3f(part->mPosition[0] - mCameraLeftMinusUp[0],
 							part->mPosition[1] - mCameraLeftMinusUp[1],
-							part->mPosition[2] - mCameraLeftMinusUp[2] );
+							part->mPosition[2] - mCameraLeftMinusUp[2]);
 
 				// Right bottom.
-				qglTexCoord2f( 1.0, 0.0 );
+				qglTexCoord2f(1.0, 0.0);
 				qglVertex3f(part->mPosition[0] - mCameraLeftPlusUp[0],
 							part->mPosition[1] - mCameraLeftPlusUp[1],
-							part->mPosition[2] - mCameraLeftPlusUp[2] );
+							part->mPosition[2] - mCameraLeftPlusUp[2]);
 
 				// Right top.
-				qglTexCoord2f( 1.0, 1.0 );
+				qglTexCoord2f(1.0, 1.0);
 				qglVertex3f(part->mPosition[0] + mCameraLeftMinusUp[0],
 							part->mPosition[1] + mCameraLeftMinusUp[1],
-							part->mPosition[2] + mCameraLeftMinusUp[2] );
+							part->mPosition[2] + mCameraLeftMinusUp[2]);
 
 				// Left top.
-				qglTexCoord2f( 0.0, 1.0 );
+				qglTexCoord2f(0.0, 1.0);
 				qglVertex3f(part->mPosition[0] + mCameraLeftPlusUp[0],
 							part->mPosition[1] + mCameraLeftPlusUp[1],
-							part->mPosition[2] + mCameraLeftPlusUp[2] );
+							part->mPosition[2] + mCameraLeftPlusUp[2]);
 			}
 		}
 		qglEnd();
@@ -1656,7 +1656,7 @@ void RB_RenderWorldEffects(void)
 		}
 		if (false)
 		{
-			Com_Printf( "Weather: %d Particles Rendered\n", mParticlesRendered);
+			Com_Printf("Weather: %d Particles Rendered\n", mParticlesRendered);
 		}
 	}
 }
@@ -1679,32 +1679,32 @@ Imported from MP/Ensiform's fixes --eez
 ==================
 */
 
-qboolean WE_ParseVector( const char **text, int count, float *v ) {
+qboolean WE_ParseVector(const char **text, int count, float *v) {
 	char	*token;
 	int		i;
 	// FIXME: spaces are currently required after parens, should change parseext...
 	COM_BeginParseSession();
-	token = COM_ParseExt( text, qfalse );
-	if ( strcmp( token, "(" ) ) {
-		Com_Printf ("^3WARNING: missing parenthesis in weather effect\n" );
+	token = COM_ParseExt(text, qfalse);
+	if (strcmp(token, "(")) {
+		Com_Printf ("^3WARNING: missing parenthesis in weather effect\n");
 		COM_EndParseSession();
 		return qfalse;
 	}
 
-	for ( i = 0 ; i < count ; i++ ) {
-		token = COM_ParseExt( text, qfalse );
-		if ( !token[0] ) {
-			Com_Printf ("^3WARNING: missing vector element in weather effect\n" );
+	for (i = 0 ; i < count ; i++) {
+		token = COM_ParseExt(text, qfalse);
+		if (!token[0]) {
+			Com_Printf ("^3WARNING: missing vector element in weather effect\n");
 			COM_EndParseSession();
 			return qfalse;
 		}
-		v[i] = atof( token );
+		v[i] = atof(token);
 	}
 
-	token = COM_ParseExt( text, qfalse );
+	token = COM_ParseExt(text, qfalse);
 	COM_EndParseSession();
-	if ( strcmp( token, ")" ) ) {
-		Com_Printf ("^3WARNING: missing parenthesis in weather effect\n" );
+	if (strcmp(token, ")")) {
+		Com_Printf ("^3WARNING: missing parenthesis in weather effect\n");
 		return qfalse;
 	}
 	return qtrue;
@@ -1713,7 +1713,7 @@ qboolean WE_ParseVector( const char **text, int count, float *v ) {
 
 void R_WorldEffectCommand(const char *command)
 {
-	if ( !command )
+	if (!command)
 	{
 		return;
 	}
@@ -1724,7 +1724,7 @@ void R_WorldEffectCommand(const char *command)
 
 	token = COM_ParseExt(&command, qfalse);
 
-	if ( !token )
+	if (!token)
 	{
 		COM_EndParseSession();
 		return;
@@ -2127,26 +2127,26 @@ void R_WorldEffectCommand(const char *command)
 	}
 	else
 	{
-		Com_Printf( "Weather Effect: Please enter a valid command.\n" );
-		Com_Printf( "	clear\n" );
-		Com_Printf( "	freeze\n" );
-		Com_Printf( "	zone (mins) (maxs)\n" );
-		Com_Printf( "	wind\n" );
-		Com_Printf( "	constantwind (velocity)\n" );
-		Com_Printf( "	gustingwind\n" );
-		Com_Printf( "	windzone (mins) (maxs) (velocity)\n" );
-		Com_Printf( "	lightrain\n" );
-		Com_Printf( "	rain\n" );
-		Com_Printf( "	acidrain\n" );
-		Com_Printf( "	heavyrain\n" );
-		Com_Printf( "	snow\n" );
-		Com_Printf( "	spacedust\n" );
-		Com_Printf( "	sand\n" );
-		Com_Printf( "	fog\n" );
-		Com_Printf( "	heavyrainfog\n" );
-		Com_Printf( "	light_fog\n" );
-		Com_Printf( "	outsideshake\n" );
-		Com_Printf( "	outsidepain\n" );
+		Com_Printf("Weather Effect: Please enter a valid command.\n");
+		Com_Printf("	clear\n");
+		Com_Printf("	freeze\n");
+		Com_Printf("	zone (mins) (maxs)\n");
+		Com_Printf("	wind\n");
+		Com_Printf("	constantwind (velocity)\n");
+		Com_Printf("	gustingwind\n");
+		Com_Printf("	windzone (mins) (maxs) (velocity)\n");
+		Com_Printf("	lightrain\n");
+		Com_Printf("	rain\n");
+		Com_Printf("	acidrain\n");
+		Com_Printf("	heavyrain\n");
+		Com_Printf("	snow\n");
+		Com_Printf("	spacedust\n");
+		Com_Printf("	sand\n");
+		Com_Printf("	fog\n");
+		Com_Printf("	heavyrainfog\n");
+		Com_Printf("	light_fog\n");
+		Com_Printf("	outsideshake\n");
+		Com_Printf("	outsidepain\n");
 	}
 	COM_EndParseSession();
 }

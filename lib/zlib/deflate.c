@@ -712,7 +712,7 @@ int ZEXPORT deflate (strm, flush)
                             (s->gzhead->extra == Z_NULL ? 0 : 4) +
                             (s->gzhead->name == Z_NULL ? 0 : 8) +
                             (s->gzhead->comment == Z_NULL ? 0 : 16)
-                        );
+                       );
                 put_byte(s, (Byte)(s->gzhead->time & 0xff));
                 put_byte(s, (Byte)((s->gzhead->time >> 8) & 0xff));
                 put_byte(s, (Byte)((s->gzhead->time >> 16) & 0xff));
@@ -1776,7 +1776,7 @@ local block_state deflate_slow(s, flush)
                 || (s->match_length == MIN_MATCH &&
                     s->strstart - s->match_start > TOO_FAR)
 #endif
-                )) {
+               )) {
 
                 /* If prev_match is also MIN_MATCH, match_start is garbage
                  * but we will ignore the current match anyway.

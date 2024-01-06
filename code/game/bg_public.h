@@ -153,14 +153,14 @@ typedef struct {
 
 	// callbacks to test the world
 	// these will be different functions during game and cgame
-	void		(*trace)( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
-						const int passEntityNum, const int contentMask, const EG2_Collision eG2TraceType, const int useLod );
-	int			(*pointcontents)( const vec3_t point, int passEntityNum );
+	void		(*trace)(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
+						const int passEntityNum, const int contentMask, const EG2_Collision eG2TraceType, const int useLod);
+	int			(*pointcontents)(const vec3_t point, int passEntityNum);
 } pmove_t;
 
 // if a full pmove isn't done on the client, you can just update the angles
-void PM_UpdateViewAngles( playerState_t *ps, usercmd_t *cmd, gentity_t *gent );
-void Pmove( pmove_t *pmove );
+void PM_UpdateViewAngles(playerState_t *ps, usercmd_t *cmd, gentity_t *gent);
+void Pmove(pmove_t *pmove);
 
 
 #define SETANIM_TORSO 1
@@ -701,13 +701,13 @@ extern ammoData_t ammoData[AMMO_MAX];
 
 //==============================================================================
 
-gitem_t	*FindItem( const char *className );
-gitem_t	*FindItemForWeapon( weapon_t weapon );
-gitem_t	*FindItemForInventory( int inv );
+gitem_t	*FindItem(const char *className);
+gitem_t	*FindItemForWeapon(weapon_t weapon);
+gitem_t	*FindItemForInventory(int inv);
 
 #define	ITEM_INDEX(x) ((x)-bg_itemlist)
 
-qboolean	BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *ps );
+qboolean	BG_CanItemBeGrabbed(const entityState_t *ent, const playerState_t *ps);
 
 
 // content masks
@@ -752,14 +752,14 @@ typedef enum {
 
 
 
-void	EvaluateTrajectory( const trajectory_t *tr, int atTime, vec3_t result );
-void	EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result );
+void	EvaluateTrajectory(const trajectory_t *tr, int atTime, vec3_t result);
+void	EvaluateTrajectoryDelta(const trajectory_t *tr, int atTime, vec3_t result);
 
-void AddEventToPlayerstate( int newEvent, int eventParm, playerState_t *ps );
-int	CurrentPlayerstateEvent( playerState_t *ps );
+void AddEventToPlayerstate(int newEvent, int eventParm, playerState_t *ps);
+int	CurrentPlayerstateEvent(playerState_t *ps);
 
-void PlayerStateToEntityState( playerState_t *ps, entityState_t *s );
+void PlayerStateToEntityState(playerState_t *ps, entityState_t *s);
 
-qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime );
+qboolean	BG_PlayerTouchesItem(playerState_t *ps, entityState_t *item, int atTime);
 
 #endif//#ifndef __BG_PUBLIC_H__

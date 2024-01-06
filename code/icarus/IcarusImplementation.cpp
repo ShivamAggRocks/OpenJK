@@ -36,8 +36,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "../qcommon/qcommon.h"
 #include "qcommon/ojk_saved_game_helper.h"
 
-#define STL_ITERATE( a, b )		for ( a = b.begin(); a != b.end(); ++a )
-#define STL_INSERT( a, b )		a.insert( a.end(), b );
+#define STL_ITERATE(a, b)		for (a = b.begin(); a != b.end(); ++a)
+#define STL_INSERT(a, b)		a.insert(a.end(), b);
 
 
 
@@ -58,11 +58,11 @@ IIcarusInterface* IIcarusInterface::GetIcarus(int flavor,bool constructIfNecessa
 		for (int index = 0; index < CIcarus::s_flavorsAvailable; index++)
 		{
 			CIcarus::s_instances[index] = new CIcarus(index);
-			//OutputDebugString( "ICARUS flavor successfully created\n" );
+			//OutputDebugString("ICARUS flavor successfully created\n");
 		}
 	}
 
-	if(flavor >= CIcarus::s_flavorsAvailable || !CIcarus::s_instances )
+	if(flavor >= CIcarus::s_flavorsAvailable || !CIcarus::s_instances)
 	{
 		return NULL;
 	}
@@ -122,53 +122,53 @@ CIcarus::~CIcarus()
 	Delete();
 }
 
-void CIcarus::Delete( void )
+void CIcarus::Delete(void)
 {
 
 	Free();
 
 #ifdef _DEBUG
 
-	Com_Printf( "ICARUS Instance Debug Info:\n" );
-	Com_Printf( "---------------------------\n" );
-	Com_Printf( "Sequencers Allocated:\t%d\n", m_DEBUG_NumSequencerAlloc );
-	Com_Printf( "Sequencers Freed:\t\t%d\n", m_DEBUG_NumSequencerFreed );
-	Com_Printf( "Sequencers Residual:\t%d\n\n", m_DEBUG_NumSequencerResidual );
-	Com_Printf( "Sequences Allocated:\t%d\n", m_DEBUG_NumSequenceAlloc );
-	Com_Printf( "Sequences Freed:\t\t%d\n", m_DEBUG_NumSequenceFreed );
-	Com_Printf( "Sequences Residual:\t\t%d\n\n", m_DEBUG_NumSequenceResidual );
+	Com_Printf("ICARUS Instance Debug Info:\n");
+	Com_Printf("---------------------------\n");
+	Com_Printf("Sequencers Allocated:\t%d\n", m_DEBUG_NumSequencerAlloc);
+	Com_Printf("Sequencers Freed:\t\t%d\n", m_DEBUG_NumSequencerFreed);
+	Com_Printf("Sequencers Residual:\t%d\n\n", m_DEBUG_NumSequencerResidual);
+	Com_Printf("Sequences Allocated:\t%d\n", m_DEBUG_NumSequenceAlloc);
+	Com_Printf("Sequences Freed:\t\t%d\n", m_DEBUG_NumSequenceFreed);
+	Com_Printf("Sequences Residual:\t\t%d\n\n", m_DEBUG_NumSequenceResidual);
 
 #endif
 }
 
-void CIcarus::Signal( const char *identifier )
+void CIcarus::Signal(const char *identifier)
 {
 	m_signals[ identifier ] = 1;
 }
 
-bool CIcarus::CheckSignal( const char *identifier )
+bool CIcarus::CheckSignal(const char *identifier)
 {
 	signal_m::iterator	smi;
 
-	smi = m_signals.find( identifier );
+	smi = m_signals.find(identifier);
 
-	if ( smi == m_signals.end() )
+	if (smi == m_signals.end())
 		return false;
 
 	return true;
 }
 
-void CIcarus::ClearSignal( const char *identifier )
+void CIcarus::ClearSignal(const char *identifier)
 {
-	m_signals.erase( identifier );
+	m_signals.erase(identifier);
 }
 
-void CIcarus::Free( void )
+void CIcarus::Free(void)
 {
 	sequencer_l::iterator	sri;
 
 	//Delete any residual sequencers
-	STL_ITERATE( sri, m_sequencers )
+	STL_ITERATE(sri, m_sequencers)
 	{
 		(*sri)->Free(this);
 
@@ -186,7 +186,7 @@ void CIcarus::Free( void )
 	sequence_l::iterator	si;
 
 	//Delete any residual sequences
-	STL_ITERATE( si, m_sequences )
+	STL_ITERATE(si, m_sequences)
 	{
 		(*si)->Delete(this);
 		delete (*si);
@@ -204,16 +204,16 @@ void CIcarus::Free( void )
 	m_sequencerMap.clear();
 }
 
-int CIcarus::GetIcarusID( int gameID )
+int CIcarus::GetIcarusID(int gameID)
 {
 	CSequencer		*sequencer = CSequencer::Create();
 	CTaskManager	*taskManager = CTaskManager::Create();
 
-	sequencer->Init( gameID, taskManager );
+	sequencer->Init(gameID, taskManager);
 
-	taskManager->Init( sequencer );
+	taskManager->Init(sequencer);
 
-	STL_INSERT( m_sequencers, sequencer );
+	STL_INSERT(m_sequencers, sequencer);
 
 	m_sequencerMap[sequencer->GetID()] = sequencer;
 
@@ -226,7 +226,7 @@ int CIcarus::GetIcarusID( int gameID )
 	return sequencer->GetID();
 }
 
-void CIcarus::DeleteIcarusID( int& icarusID )
+void CIcarus::DeleteIcarusID(int& icarusID)
 {
 	CSequencer* sequencer = FindSequencer(icarusID);
 	if(!sequencer)
@@ -238,7 +238,7 @@ void CIcarus::DeleteIcarusID( int& icarusID )
 	CTaskManager	*taskManager = sequencer->GetTaskManager();
 	if (taskManager->IsResident())
 	{
-		IGameInterface::GetGame()->DebugPrint( IGameInterface::WL_ERROR, "Refusing DeleteIcarusID(%d) because it is running!\n", icarusID);
+		IGameInterface::GetGame()->DebugPrint(IGameInterface::WL_ERROR, "Refusing DeleteIcarusID(%d) because it is running!\n", icarusID);
 		assert(0);
 		return;
 	}
@@ -249,13 +249,13 @@ void CIcarus::DeleteIcarusID( int& icarusID )
 	sequencer->Recall(this);
 
 
-	if ( taskManager )
+	if (taskManager)
 	{
 		taskManager->Free();
 		delete taskManager;
 	}
 
-	m_sequencers.remove( sequencer );
+	m_sequencers.remove(sequencer);
 
 	sequencer->Free(this);
 
@@ -267,14 +267,14 @@ void CIcarus::DeleteIcarusID( int& icarusID )
 	icarusID = -1;
 }
 
-CSequence *CIcarus::GetSequence( void )
+CSequence *CIcarus::GetSequence(void)
 {
 	CSequence	*sequence = CSequence::Create();
 
 	//Assign the GUID
-	sequence->SetID( m_GUID++ );
+	sequence->SetID(m_GUID++);
 
-	STL_INSERT( m_sequences, sequence );
+	STL_INSERT(m_sequences, sequence);
 
 #ifdef _DEBUG
 
@@ -285,21 +285,21 @@ CSequence *CIcarus::GetSequence( void )
 	return sequence;
 }
 
-CSequence *CIcarus::GetSequence( int id )
+CSequence *CIcarus::GetSequence(int id)
 {
 	sequence_l::iterator	si;
-	STL_ITERATE( si, m_sequences )
+	STL_ITERATE(si, m_sequences)
 	{
-		if ( (*si)->GetID() == id )
+		if ((*si)->GetID() == id)
 			return (*si);
 	}
 
 	return NULL;
 }
 
-void CIcarus::DeleteSequence( CSequence *sequence )
+void CIcarus::DeleteSequence(CSequence *sequence)
 {
-	m_sequences.remove( sequence );
+	m_sequences.remove(sequence);
 
 	sequence->Delete(this);
 	delete sequence;
@@ -311,22 +311,22 @@ void CIcarus::DeleteSequence( CSequence *sequence )
 #endif
 }
 
-int CIcarus::AllocateSequences( int numSequences, int *idTable )
+int CIcarus::AllocateSequences(int numSequences, int *idTable)
 {
 	CSequence	*sequence;
 
-	for ( int i = 0; i < numSequences; i++ )
+	for (int i = 0; i < numSequences; i++)
 	{
 		//If the GUID of this sequence is higher than the current, take this a the "current" GUID
-		if ( idTable[i] > m_GUID )
+		if (idTable[i] > m_GUID)
 			m_GUID = idTable[i];
 
 		//Allocate the container sequence
-		if ( ( sequence = GetSequence() ) == NULL )
+		if ((sequence = GetSequence()) == NULL)
 			return false;
 
 		//Override the given GUID with the real one
-		sequence->SetID( idTable[i] );
+		sequence->SetID(idTable[i]);
 	}
 
 	return true;
@@ -339,28 +339,28 @@ void CIcarus::Precache(char* buffer, long length)
 	CBlockMember	*blockMember;
 	CBlock			block;
 
-	if ( stream.Open( buffer, length ) == 0 )
+	if (stream.Open(buffer, length) == 0)
 		return;
 
 	const char	*sVal1, *sVal2;
 
 	//Now iterate through all blocks of the script, searching for keywords
-	while ( stream.BlockAvailable() )
+	while (stream.BlockAvailable())
 	{
 		//Get a block
-		if ( stream.ReadBlock( &block, this ) == 0 )
+		if (stream.ReadBlock(&block, this) == 0)
 			return;
 
 		//Determine what type of block this is
-		switch( block.GetBlockID() )
+		switch(block.GetBlockID())
 		{
 		case ID_CAMERA:	// to cache ROFF files
 			{
-				float f = *(float *) block.GetMemberData( 0 );
+				float f = *(float *) block.GetMemberData(0);
 
 				if (f == TYPE_PATH)
 				{
-					sVal1 = (const char *) block.GetMemberData( 1 );
+					sVal1 = (const char *) block.GetMemberData(1);
 
 					game->PrecacheRoff(sVal1);
 				}
@@ -369,11 +369,11 @@ void CIcarus::Precache(char* buffer, long length)
 
 		case ID_PLAY:	// to cache ROFF files
 
-			sVal1 = (const char *) block.GetMemberData( 0 );
+			sVal1 = (const char *) block.GetMemberData(0);
 
 			if (!Q_stricmp(sVal1,"PLAY_ROFF"))
 			{
-				sVal1 = (const char *) block.GetMemberData( 1 );
+				sVal1 = (const char *) block.GetMemberData(1);
 
 				game->PrecacheRoff(sVal1);
 			}
@@ -381,27 +381,27 @@ void CIcarus::Precache(char* buffer, long length)
 
 		//Run commands
 		case ID_RUN:
-			sVal1 = (const char *) block.GetMemberData( 0 );
-			game->PrecacheScript( sVal1 );
+			sVal1 = (const char *) block.GetMemberData(0);
+			game->PrecacheScript(sVal1);
 			break;
 
 		case ID_SOUND:
-			sVal1 = (const char *) block.GetMemberData( 1 );	//0 is channel, 1 is filename
+			sVal1 = (const char *) block.GetMemberData(1);	//0 is channel, 1 is filename
 			game->PrecacheSound(sVal1);
 			break;
 
 		case ID_SET:
-			blockMember = block.GetMember( 0 );
+			blockMember = block.GetMember(0);
 
 			//NOTENOTE: This will not catch special case get() inlines! (There's not really a good way to do that)
 
 			//Make sure we're testing against strings
-			if ( blockMember->GetID() == TK_STRING )
+			if (blockMember->GetID() == TK_STRING)
 			{
-				sVal1 = (const char *) block.GetMemberData( 0 );
-				sVal2 = (const char *) block.GetMemberData( 1 );
+				sVal1 = (const char *) block.GetMemberData(0);
+				sVal2 = (const char *) block.GetMemberData(1);
 
-				game->PrecacheFromSet( sVal1 , sVal2);
+				game->PrecacheFromSet(sVal1 , sVal2);
 			}
 			break;
 
@@ -419,9 +419,9 @@ void CIcarus::Precache(char* buffer, long length)
 
 CSequencer* CIcarus::FindSequencer(int sequencerID)
 {
-	sequencer_m::iterator mi = m_sequencerMap.find( sequencerID );
+	sequencer_m::iterator mi = m_sequencerMap.find(sequencerID);
 
-	if ( mi == m_sequencerMap.end() )
+	if (mi == m_sequencerMap.end())
 		return NULL;
 
 	return (*mi).second;
@@ -442,7 +442,7 @@ int CIcarus::SaveSequenceIDTable()
 	//Save out the number of sequences to follow
 	int		numSequences = m_sequences.size();
 
-	BufferWrite( &numSequences, sizeof( numSequences ) );
+	BufferWrite(&numSequences, sizeof(numSequences));
 
 	//Sequences are saved first, by ID and information
 	sequence_l::iterator	sqi;
@@ -451,16 +451,16 @@ int CIcarus::SaveSequenceIDTable()
 	int	*idTable = new int[ numSequences ];
 	int	itr = 0;
 
-	if ( idTable == NULL )
+	if (idTable == NULL)
 		return false;
 
-	STL_ITERATE( sqi, m_sequences )
+	STL_ITERATE(sqi, m_sequences)
 	{
 		idTable[itr++] = (*sqi)->GetID();
 	}
 
-	//game->WriteSaveData( INT_ID('S','Q','T','B'), idTable, sizeof( int ) * numSequences );
-	BufferWrite( idTable, sizeof( int ) * numSequences );
+	//game->WriteSaveData(INT_ID('S','Q','T','B'), idTable, sizeof(int) * numSequences);
+	BufferWrite(idTable, sizeof(int) * numSequences);
 
 	delete[] idTable;
 
@@ -474,7 +474,7 @@ int CIcarus::SaveSequences()
 
 	//Save all the information in order
 	sequence_l::iterator	sqi;
-	STL_ITERATE( sqi, m_sequences )
+	STL_ITERATE(sqi, m_sequences)
 	{
 		(*sqi)->Save();
 	}
@@ -486,18 +486,18 @@ int CIcarus::SaveSequencers()
 {
 	//Save out the number of sequences to follow
 	int		numSequencers = m_sequencers.size();
-	BufferWrite( &numSequencers, sizeof( numSequencers ) );
+	BufferWrite(&numSequencers, sizeof(numSequencers));
 
 	//The sequencers are then saved
 	int sequencessaved = 0;
 	sequencer_l::iterator	si;
-	STL_ITERATE( si, m_sequencers )
+	STL_ITERATE(si, m_sequencers)
 	{
 		(*si)->Save();
 		sequencessaved++;
 	}
 
-	assert( sequencessaved == numSequencers );
+	assert(sequencessaved == numSequencers);
 
 	return true;
 }
@@ -506,22 +506,22 @@ int CIcarus::SaveSignals()
 {
 	int	numSignals = m_signals.size();
 
-	//game->WriteSaveData( INT_ID('I','S','I','G'), &numSignals, sizeof( numSignals ) );
-	BufferWrite( &numSignals, sizeof( numSignals ) );
+	//game->WriteSaveData(INT_ID('I','S','I','G'), &numSignals, sizeof(numSignals));
+	BufferWrite(&numSignals, sizeof(numSignals));
 
 	signal_m::iterator	si;
-	STL_ITERATE( si, m_signals )
+	STL_ITERATE(si, m_signals)
 	{
-		//game->WriteSaveData( INT_ID('I','S','I','G'), &numSignals, sizeof( numSignals ) );
+		//game->WriteSaveData(INT_ID('I','S','I','G'), &numSignals, sizeof(numSignals));
 		const char *name = ((*si).first).c_str();
 
-		int length = strlen( name ) + 1;
+		int length = strlen(name) + 1;
 
 		//Save out the string size
-		BufferWrite( &length, sizeof( length ) );
+		BufferWrite(&length, sizeof(length));
 
 		//Write out the string
-		BufferWrite( (void *) name, length );
+		BufferWrite((void *) name, length);
 	}
 
 	return true;
@@ -551,21 +551,21 @@ int CIcarus::Save()
 		version);
 
 	//Save out the signals
-	if ( SaveSignals() == false )
+	if (SaveSignals() == false)
 	{
 		DestroyBuffer();
 		return false;
 	}
 
 	//Save out the sequences
-	if ( SaveSequences() == false )
+	if (SaveSequences() == false)
 	{
 		DestroyBuffer();
 		return false;
 	}
 
 	//Save out the sequencers
-	if ( SaveSequencers() == false )
+	if (SaveSequencers() == false)
 	{
 		DestroyBuffer();
 		return false;
@@ -587,21 +587,21 @@ int CIcarus::LoadSignals()
 {
 	int numSignals;
 
-	BufferRead( &numSignals, sizeof( numSignals ) );
+	BufferRead(&numSignals, sizeof(numSignals));
 
-	for ( int i = 0; i < numSignals; i++ )
+	for (int i = 0; i < numSignals; i++)
 	{
 		char	buffer[1024];
 		int		length = 0;
 
 		//Get the size of the string
-		BufferRead( &length, sizeof( length ) );
+		BufferRead(&length, sizeof(length));
 
 		//Get the string
-		BufferRead( &buffer, length );
+		BufferRead(&buffer, length);
 
 		//Turn it on and add it to the system
-		Signal( (const char *) &buffer );
+		Signal((const char *) &buffer);
 	}
 
 	return true;
@@ -615,7 +615,7 @@ int CIcarus::LoadSequence()
 	sequence->Load(this);
 
 	//If this sequence had a higher GUID than the current, save it
-	if ( sequence->GetID() > m_GUID )
+	if (sequence->GetID() > m_GUID)
 		m_GUID = sequence->GetID();
 
 	return true;
@@ -627,29 +627,29 @@ int CIcarus::LoadSequences()
 	int			numSequences;
 
 	//Get the number of sequences to read in
-	BufferRead( &numSequences, sizeof( numSequences ) );
+	BufferRead(&numSequences, sizeof(numSequences));
 
 	int	*idTable = new int[ numSequences ];
 
-	if ( idTable == NULL )
+	if (idTable == NULL)
 		return false;
 
 	//Load the sequencer ID table
-	BufferRead( idTable, sizeof( int ) * numSequences );
+	BufferRead(idTable, sizeof(int) * numSequences);
 
 	//First pass, allocate all container sequences and give them their proper IDs
-	if ( AllocateSequences( numSequences, idTable ) == false )
+	if (AllocateSequences(numSequences, idTable) == false)
 		return false;
 
 	//Second pass, load all sequences
-	for ( int i = 0; i < numSequences; i++ )
+	for (int i = 0; i < numSequences; i++)
 	{
 		//Get the proper sequence for this load
-		if ( ( sequence = GetSequence( idTable[i] ) ) == NULL )
+		if ((sequence = GetSequence(idTable[i])) == NULL)
 			return false;
 
 		//Load the sequence
-		if ( ( sequence->Load(this) ) == false )
+		if ((sequence->Load(this)) == false)
 			return false;
 	}
 
@@ -666,17 +666,17 @@ int CIcarus::LoadSequencers()
 	IGameInterface* game = IGameInterface::GetGame(m_flavor);
 
 	//Get the number of sequencers to load
-	BufferRead( &numSequencers, sizeof( numSequencers ) );
+	BufferRead(&numSequencers, sizeof(numSequencers));
 
 	//Load all sequencers
-	for ( int i = 0; i < numSequencers; i++ )
+	for (int i = 0; i < numSequencers; i++)
 	{
 		//NOTENOTE: The ownerID will be replaced in the loading process
 		int sequencerID = GetIcarusID(-1);
-		if ( ( sequencer = FindSequencer(sequencerID) ) == NULL )
+		if ((sequencer = FindSequencer(sequencerID)) == NULL)
 			return false;
 
-		if ( sequencer->Load(this, game) == false )
+		if (sequencer->Load(this, game) == false)
 			return false;
 	}
 
@@ -703,10 +703,10 @@ int CIcarus::Load()
 		version);
 
 	//Versions must match!
-	if ( version != ICARUS_VERSION )
+	if (version != ICARUS_VERSION)
 	{
 		DestroyBuffer();
-		game->DebugPrint( IGameInterface::WL_ERROR, "save game data contains outdated ICARUS version information!\n");
+		game->DebugPrint(IGameInterface::WL_ERROR, "save game data contains outdated ICARUS version information!\n");
 		return false;
 	}
 
@@ -722,7 +722,7 @@ int CIcarus::Load()
 	if (sg_buffer_size < 0 || static_cast<size_t>(sg_buffer_size) > MAX_BUFFER_SIZE)
 	{
 		DestroyBuffer();
-		game->DebugPrint( IGameInterface::WL_ERROR, "invalid ISEQ length: %d bytes\n", sg_buffer_size);
+		game->DebugPrint(IGameInterface::WL_ERROR, "invalid ISEQ length: %d bytes\n", sg_buffer_size);
 		return false;
 	}
 
@@ -732,26 +732,26 @@ int CIcarus::Load()
 		m_byBuffer);
 
 	//Load all signals
-	if ( LoadSignals() == false )
+	if (LoadSignals() == false)
 	{
 		DestroyBuffer();
-		game->DebugPrint( IGameInterface::WL_ERROR, "failed to load signals from save game!\n");
+		game->DebugPrint(IGameInterface::WL_ERROR, "failed to load signals from save game!\n");
 		return false;
 	}
 
 	//Load in all sequences
-	if ( LoadSequences() == false )
+	if (LoadSequences() == false)
 	{
 		DestroyBuffer();
-		game->DebugPrint( IGameInterface::WL_ERROR, "failed to load sequences from save game!\n");
+		game->DebugPrint(IGameInterface::WL_ERROR, "failed to load sequences from save game!\n");
 		return false;
 	}
 
 	//Load in all sequencers
-	if ( LoadSequencers() == false )
+	if (LoadSequencers() == false)
 	{
 		DestroyBuffer();
-		game->DebugPrint( IGameInterface::WL_ERROR, "failed to load sequencers from save game!\n");
+		game->DebugPrint(IGameInterface::WL_ERROR, "failed to load sequencers from save game!\n");
 		return false;
 	}
 
@@ -780,7 +780,7 @@ int CIcarus::IsRunning(int icarusID)
 	return false;
 }
 
-void CIcarus::Completed( int icarusID, int taskID )
+void CIcarus::Completed(int icarusID, int taskID)
 {
 	CSequencer* sequencer = FindSequencer(icarusID);
 	if(sequencer)
@@ -792,9 +792,9 @@ void CIcarus::Completed( int icarusID, int taskID )
 // Destroy the File Buffer.
 void CIcarus::DestroyBuffer()
 {
-	if ( m_byBuffer )
+	if (m_byBuffer)
 	{
-		IGameInterface::GetGame()->Free( m_byBuffer );
+		IGameInterface::GetGame()->Free(m_byBuffer);
 		m_byBuffer = NULL;
 	}
 }
@@ -803,20 +803,20 @@ void CIcarus::DestroyBuffer()
 void CIcarus::CreateBuffer()
 {
 	DestroyBuffer();
-	m_byBuffer = (unsigned char *)IGameInterface::GetGame()->Malloc( MAX_BUFFER_SIZE );
+	m_byBuffer = (unsigned char *)IGameInterface::GetGame()->Malloc(MAX_BUFFER_SIZE);
 	m_ulBufferCurPos = 0;
 }
 
 // Write to a buffer.
-void CIcarus::BufferWrite( void *pSrcData, unsigned long ulNumBytesToWrite )
+void CIcarus::BufferWrite(void *pSrcData, unsigned long ulNumBytesToWrite)
 {
-	if ( !pSrcData )
+	if (!pSrcData)
 		return;
 
 	// Make sure we have enough space in the buffer to write to.
-	if ( MAX_BUFFER_SIZE - m_ulBufferCurPos < ulNumBytesToWrite )
+	if (MAX_BUFFER_SIZE - m_ulBufferCurPos < ulNumBytesToWrite)
 	{	// Write out the buffer with all our collected data so far...
-		IGameInterface::GetGame()->DebugPrint( IGameInterface::WL_ERROR, "BufferWrite: Out of buffer space, Flushing." );
+		IGameInterface::GetGame()->DebugPrint(IGameInterface::WL_ERROR, "BufferWrite: Out of buffer space, Flushing.");
 
 		ojk::SavedGameHelper saved_game(
 			IGameInterface::GetGame()->get_saved_game_file());
@@ -829,23 +829,23 @@ void CIcarus::BufferWrite( void *pSrcData, unsigned long ulNumBytesToWrite )
 		m_ulBufferCurPos = 0;	//reset buffer
 	}
 
-	assert( MAX_BUFFER_SIZE - m_ulBufferCurPos >= ulNumBytesToWrite );
+	assert(MAX_BUFFER_SIZE - m_ulBufferCurPos >= ulNumBytesToWrite);
 	{
-		memcpy( m_byBuffer + m_ulBufferCurPos, pSrcData, ulNumBytesToWrite );
+		memcpy(m_byBuffer + m_ulBufferCurPos, pSrcData, ulNumBytesToWrite);
 		m_ulBufferCurPos += ulNumBytesToWrite;
 	}
 }
 
 // Read from a buffer.
-void CIcarus::BufferRead( void *pDstBuff, unsigned long ulNumBytesToRead )
+void CIcarus::BufferRead(void *pDstBuff, unsigned long ulNumBytesToRead)
 {
-	if ( !pDstBuff )
+	if (!pDstBuff)
 		return;
 
 	// If we can read this data...
-	if ( m_ulBytesRead + ulNumBytesToRead > MAX_BUFFER_SIZE )
+	if (m_ulBytesRead + ulNumBytesToRead > MAX_BUFFER_SIZE)
 	{// We've tried to read past the buffer...
-		IGameInterface::GetGame()->DebugPrint( IGameInterface::WL_ERROR, "BufferRead: Buffer underflow, Looking for new block." );
+		IGameInterface::GetGame()->DebugPrint(IGameInterface::WL_ERROR, "BufferRead: Buffer underflow, Looking for new block.");
 		// Read in the next block.
 
 		ojk::SavedGameHelper saved_game(
@@ -861,7 +861,7 @@ void CIcarus::BufferRead( void *pDstBuff, unsigned long ulNumBytesToRead )
 
 		if (sg_buffer_size < 0 || static_cast<size_t>(sg_buffer_size) > MAX_BUFFER_SIZE)
 		{
-			IGameInterface::GetGame()->DebugPrint( IGameInterface::WL_ERROR, "invalid ISEQ length: %d bytes\n", sg_buffer_size);
+			IGameInterface::GetGame()->DebugPrint(IGameInterface::WL_ERROR, "invalid ISEQ length: %d bytes\n", sg_buffer_size);
 			return;
 		}
 
@@ -875,7 +875,7 @@ void CIcarus::BufferRead( void *pDstBuff, unsigned long ulNumBytesToRead )
 
 	assert(m_ulBytesRead + ulNumBytesToRead <= MAX_BUFFER_SIZE);
 	{
-		memcpy( pDstBuff, m_byBuffer + m_ulBytesRead, ulNumBytesToRead );
+		memcpy(pDstBuff, m_byBuffer + m_ulBytesRead, ulNumBytesToRead);
 		m_ulBytesRead += ulNumBytesToRead;
 	}
 }

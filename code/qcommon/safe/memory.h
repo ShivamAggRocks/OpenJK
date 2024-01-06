@@ -13,20 +13,20 @@ namespace Zone
 {
 	namespace detail
 	{
-		inline void* Malloc( int iSize, memtag_t eTag, qboolean bZeroit = qfalse )
+		inline void* Malloc(int iSize, memtag_t eTag, qboolean bZeroit = qfalse)
 		{
 #ifdef _JK2EXE
-			return Z_Malloc( iSize, eTag, bZeroit );
+			return Z_Malloc(iSize, eTag, bZeroit);
 #else
-			return gi.Malloc( iSize, eTag, bZeroit );
+			return gi.Malloc(iSize, eTag, bZeroit);
 #endif
 		}
-		inline int Free( void* pvAddress )
+		inline int Free(void* pvAddress)
 		{
 #ifdef _JK2EXE
-			return Z_Free( pvAddress );
+			return Z_Free(pvAddress);
 #else
-			return gi.Free( pvAddress );
+			return gi.Free(pvAddress);
 #endif
 		}
 	}
@@ -35,9 +35,9 @@ namespace Zone
 	*/
 	struct Deleter
 	{
-		void operator()( void* memory ) const NOEXCEPT
+		void operator()(void* memory) const NOEXCEPT
 		{
-			detail::Free( memory );
+			detail::Free(memory);
 		}
 	};
 
@@ -49,27 +49,27 @@ namespace Zone
 	{
 		Allocator() = default;
 		template< typename U >
-		Allocator( const Allocator< U, tag >& )
+		Allocator(const Allocator< U, tag >&)
 		{
 		};
 		using value_type = T;
 		using is_always_equal = std::true_type;
-		T* allocate( std::size_t n ) const
+		T* allocate(std::size_t n) const
 		{
-			void* mem = detail::Malloc( n * sizeof( T ), tag );
-			return static_cast< T* >( mem );
+			void* mem = detail::Malloc(n * sizeof(T), tag);
+			return static_cast< T* >(mem);
 		}
-		void deallocate( T* mem, std::size_t n ) const NOEXCEPT
+		void deallocate(T* mem, std::size_t n) const NOEXCEPT
 		{
-			Deleter{}( mem );
+			Deleter{}(mem);
 		}
 		template< typename T2, memtag_t tag2 >
-		bool operator==( const Allocator< T2, tag2 >& ) const NOEXCEPT
+		bool operator==(const Allocator< T2, tag2 >&) const NOEXCEPT
 		{
 			return true; // free works regardless of size and tag
 		}
 		template< typename T2, memtag_t tag2 >
-		bool operator!=( const Allocator< T2, tag2 >& ) const NOEXCEPT
+		bool operator!=(const Allocator< T2, tag2 >&) const NOEXCEPT
 		{
 			return false;
 		}
@@ -88,12 +88,12 @@ namespace Zone
 	make_unique using Zone Allocations (with appropriate deleter)
 	*/
 	template< typename T, memtag_t tag, typename... Args >
-	inline UniquePtr< T > make_unique( Args&&... args )
+	inline UniquePtr< T > make_unique(Args&&... args)
 	{
-		UniquePtr< void > memory( Allocator< T, tag >{}.allocate( 1 ) );
+		UniquePtr< void > memory(Allocator< T, tag >{}.allocate(1));
 		// placement new. may throw, in which case the unique_ptr will take care of freeing the memory.
-		T* obj = new( memory )T( std::forward< Args >( args )... );
+		T* obj = new(memory)T(std::forward< Args >(args)...);
 		memory.release();
-		return UniquePtr< T >( obj );
+		return UniquePtr< T >(obj);
 	}
 }

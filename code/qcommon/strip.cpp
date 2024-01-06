@@ -60,7 +60,7 @@ static cvar_t	*sp_leet;
 #define SP_PACKAGE		0xff00
 #define SP_STRING		0x00ff
 
-#define SP_GET_PACKAGE(x) ( (x & SP_PACKAGE) >> 8 )
+#define SP_GET_PACKAGE(x) ((x & SP_PACKAGE) >> 8)
 
 // Flags
 #define SP_FLAG1				0x00000001	// CENTERED
@@ -119,11 +119,11 @@ public:
 	char			*GetReference(void) { return Reference; }
 	const char		*GetName(void) const { return(name.c_str()); }
 
-	virtual bool	UnderstandToken(char *&Data, int &Size, int token, char *data );
+	virtual bool	UnderstandToken(char *&Data, int &Size, int token, char *data);
 #if 0
-	virtual bool	Load(char *FileName );
+	virtual bool	Load(char *FileName);
 #endif
-	virtual bool	Load(char *Data, int &Size );
+	virtual bool	Load(char *Data, int &Size);
 };
 
 
@@ -141,7 +141,7 @@ public:
 	cStringsSingle	*FindString(char *ReferenceLookup);
 	int				FindStringID(const char *ReferenceLookup);
 
-	virtual bool	UnderstandToken(char *&Data, int &Size, int token, char *data );
+	virtual bool	UnderstandToken(char *&Data, int &Size, int token, char *data);
 };
 
 
@@ -504,7 +504,7 @@ void cStrings::SetReference(char *newReference)
 	strcpy(Reference, newReference);
 }
 
-bool cStrings::UnderstandToken(int token, char *data )
+bool cStrings::UnderstandToken(int token, char *data)
 {
 	sFlagPair		*FlagPair;
 
@@ -554,7 +554,7 @@ bool cStrings::UnderstandToken(int token, char *data )
  *	done or not
  *
  ************************************************************************************************/
-bool cStrings::Load(char *&Data, int &Size )
+bool cStrings::Load(char *&Data, int &Size)
 {
 	int				token;
 	char			*data;
@@ -568,7 +568,7 @@ bool cStrings::Load(char *&Data, int &Size )
 	}
 
 	GetLine(Data, Size, token, data);
-	while (UnderstandToken(token, data) )
+	while (UnderstandToken(token, data))
 	{
 		GetLine(Data, Size, token, data);
 	}
@@ -725,7 +725,7 @@ static void FixIllegalChars(char *psText)
 	}
 }
 
-bool cStringsSingle::UnderstandToken(int token, char *data )
+bool cStringsSingle::UnderstandToken(int token, char *data)
 {
 	sFlagPair		*LanguagePair;
 
@@ -762,7 +762,7 @@ bool cStringsSingle::UnderstandToken(int token, char *data )
 				}
 			}
 
-			return cStrings::UnderstandToken(token, data );
+			return cStrings::UnderstandToken(token, data);
 //	}
 }
 
@@ -805,7 +805,7 @@ void cStringPackage::SetReference(char *newReference)
 }
 
 
-bool cStringPackage::UnderstandToken(char *&Data, int &Size, int token, char *data )
+bool cStringPackage::UnderstandToken(char *&Data, int &Size, int token, char *data)
 {
 	switch(token)
 	{
@@ -831,7 +831,7 @@ bool cStringPackage::UnderstandToken(char *&Data, int &Size, int token, char *da
 
 
 #if 0
-bool cStringPackage::Load(char *FileName )
+bool cStringPackage::Load(char *FileName)
 {
 	FILE	*FH;
 	int		Size;
@@ -851,7 +851,7 @@ bool cStringPackage::Load(char *FileName )
 	fread(buffer, 1, Size, FH);
 	fclose(FH);
 
-	Load(buffer, Size );
+	Load(buffer, Size);
 
 	delete[] buffer;
 
@@ -859,7 +859,7 @@ bool cStringPackage::Load(char *FileName )
 }
 #endif
 
-bool cStringPackage::Load(char *Data, int &Size )
+bool cStringPackage::Load(char *Data, int &Size)
 {
 	char	*token_data;
 	int		token;
@@ -871,7 +871,7 @@ bool cStringPackage::Load(char *Data, int &Size )
 	}
 
 	GetLine(Data, Size, token, token_data);
-	while (UnderstandToken(Data, Size, token, token_data) )
+	while (UnderstandToken(Data, Size, token, token_data))
 	{
 		GetLine(Data, Size, token, token_data);
 	}
@@ -934,7 +934,7 @@ int cStringPackageSingle::FindStringID(const char *ReferenceLookup)
 	return -1;
 }
 
-bool cStringPackageSingle::UnderstandToken(char *&Data, int &Size, int token, char *data )
+bool cStringPackageSingle::UnderstandToken(char *&Data, int &Size, int token, char *data)
 {
 	int		count, i, pos;
 	char	*ReferenceLookup;
@@ -1012,7 +1012,7 @@ qboolean JK2SP_Register(const char *inPackage, unsigned char Registration)
 		size = FS_ReadFile(va("strip/%s.sp", Package), (void **)&buffer);
 		if (size == -1)
 		{
-			if ( Registration & SP_REGISTER_REQUIRED )
+			if (Registration & SP_REGISTER_REQUIRED)
 			{
 				Com_Error(ERR_FATAL, "Could not open string package '%s'", Package);
 			}
@@ -1021,7 +1021,7 @@ qboolean JK2SP_Register(const char *inPackage, unsigned char Registration)
 
 		// Create the new string package
 		new_sp = new cStringPackageSingle(Package);
-		new_sp->Load(buffer, size );
+		new_sp->Load(buffer, size);
 		FS_FreeFile(buffer);
 
 		if (Registration & SP_REGISTER_CLIENT)

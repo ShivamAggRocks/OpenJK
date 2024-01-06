@@ -48,8 +48,8 @@ static char cgParseObjectives[MAX_SIEGE_INFO_SIZE];
 
 extern void CG_LoadCISounds(clientInfo_t *ci, qboolean modelloaded); //cg_players.c
 
-void CG_DrawSiegeMessage( const char *str, int objectiveScreen );
-void CG_DrawSiegeMessageNonMenu( const char *str );
+void CG_DrawSiegeMessage(const char *str, int objectiveScreen);
+void CG_DrawSiegeMessageNonMenu(const char *str);
 void CG_SiegeBriefingDisplay(int team, int dontshow);
 
 void CG_PrecacheSiegeObjectiveAssetsForTeam(int myTeam)
@@ -60,7 +60,7 @@ void CG_PrecacheSiegeObjectiveAssetsForTeam(int myTeam)
 
 	if (!siege_valid)
 	{
-		trap->Error( ERR_DROP, "Siege data does not exist on client!\n");
+		trap->Error(ERR_DROP, "Siege data does not exist on client!\n");
 		return;
 	}
 
@@ -188,11 +188,11 @@ void CG_InitSiegeMode(void)
 
 	len = trap->FS_Open(levelname, &f, FS_READ);
 
-	if ( !f ) {
+	if (!f) {
 		goto failure;
 	}
-	if ( len >= MAX_SIEGE_INFO_SIZE ) {
-		trap->FS_Close( f );
+	if (len >= MAX_SIEGE_INFO_SIZE) {
+		trap->FS_Close(f);
 		goto failure;
 	}
 
@@ -250,20 +250,20 @@ void CG_InitSiegeMode(void)
 	}
 	else
 	{
-		trap->Error( ERR_DROP, "Siege teams not defined");
+		trap->Error(ERR_DROP, "Siege teams not defined");
 	}
 
 	if (BG_SiegeGetValueGroup(siege_info, team1, teamInfo))
 	{
 		if (BG_SiegeGetPairedValue(teamInfo, "TeamIcon", teamIcon))
 		{
-			trap->Cvar_Set( "team1_icon", teamIcon);
+			trap->Cvar_Set("team1_icon", teamIcon);
 		}
 
 		if (BG_SiegeGetPairedValue(teamInfo, "Timed", btime))
 		{
 			team1Timed = atoi(btime)*1000;
-			CG_SetSiegeTimerCvar ( team1Timed );
+			CG_SetSiegeTimerCvar (team1Timed);
 		}
 		else
 		{
@@ -272,7 +272,7 @@ void CG_InitSiegeMode(void)
 	}
 	else
 	{
-		trap->Error( ERR_DROP, "No team entry for '%s'\n", team1);
+		trap->Error(ERR_DROP, "No team entry for '%s'\n", team1);
 	}
 
 	if (BG_SiegeGetPairedValue(siege_info, "mapgraphic", teamInfo))
@@ -297,13 +297,13 @@ void CG_InitSiegeMode(void)
 	{
 		if (BG_SiegeGetPairedValue(teamInfo, "TeamIcon", teamIcon))
 		{
-			trap->Cvar_Set( "team2_icon", teamIcon);
+			trap->Cvar_Set("team2_icon", teamIcon);
 		}
 
 		if (BG_SiegeGetPairedValue(teamInfo, "Timed", btime))
 		{
 			team2Timed = atoi(btime)*1000;
-			CG_SetSiegeTimerCvar ( team2Timed );
+			CG_SetSiegeTimerCvar (team2Timed);
 		}
 		else
 		{
@@ -312,7 +312,7 @@ void CG_InitSiegeMode(void)
 	}
 	else
 	{
-		trap->Error( ERR_DROP, "No team entry for '%s'\n", team2);
+		trap->Error(ERR_DROP, "No team entry for '%s'\n", team2);
 	}
 
 	//Load the player class types
@@ -320,7 +320,7 @@ void CG_InitSiegeMode(void)
 
 	if (!bgNumSiegeClasses)
 	{ //We didn't find any?!
-		trap->Error( ERR_DROP, "Couldn't find any player classes for Siege");
+		trap->Error(ERR_DROP, "Couldn't find any player classes for Siege");
 	}
 
 	//Now load the teams since we have class data.
@@ -328,7 +328,7 @@ void CG_InitSiegeMode(void)
 
 	if (!bgNumSiegeTeams)
 	{ //React same as with classes.
-		trap->Error( ERR_DROP, "Couldn't find any player teams for Siege");
+		trap->Error(ERR_DROP, "Couldn't find any player teams for Siege");
 	}
 
 	//Get and set the team themes for each team. This will control which classes can be
@@ -583,7 +583,7 @@ void CG_SiegeRoundOver(centity_t *ent, int won)
 
 	if (!siege_valid)
 	{
-		trap->Error( ERR_DROP, "ERROR: Siege data does not exist on client!\n");
+		trap->Error(ERR_DROP, "ERROR: Siege data does not exist on client!\n");
 		return;
 	}
 
@@ -697,7 +697,7 @@ void CG_SiegeGetObjectiveDescription(int team, int objective, char *buffer)
 	}
 }
 
-int CG_SiegeGetObjectiveFinal(int team, int objective )
+int CG_SiegeGetObjectiveFinal(int team, int objective)
 {
 	char finalStr[64];
 	char teamstr[1024];
@@ -718,7 +718,7 @@ int CG_SiegeGetObjectiveFinal(int team, int objective )
 		{ //found the objective group
 			//Parse the name right into the buffer.
 			BG_SiegeGetPairedValue(objectiveStr, "final", finalStr);
-			return (atoi( finalStr ));
+			return (atoi(finalStr));
 		}
 	}
 	return 0;
@@ -832,7 +832,7 @@ void CG_SiegeBriefingDisplay(int team, int dontshow)
 
 		if (objectiveDesc[0])
 		{ //found a valid objective description
-			if ( primary )
+			if (primary)
 			{
 				trap->Cvar_Set(va("siege_primobj_desc"), objectiveDesc);
 				//this one is marked not in use because it gets primobj
@@ -895,7 +895,7 @@ void CG_SiegeObjectiveCompleted(centity_t *ent, int won, int objectivenum)
 
 	if (!siege_valid)
 	{
-		trap->Error( ERR_DROP, "Siege data does not exist on client!\n");
+		trap->Error(ERR_DROP, "Siege data does not exist on client!\n");
 		return;
 	}
 
@@ -1048,11 +1048,11 @@ void CG_ParseSiegeExtendedDataEntry(const char *conStr)
 	cent = &cg_entities[clNum];
 
 	maxAmmo = ammoData[weaponData[cent->currentState.weapon].ammoIndex].max;
-	if ( (cent->currentState.eFlags & EF_DOUBLE_AMMO) )
+	if ((cent->currentState.eFlags & EF_DOUBLE_AMMO))
 	{
 		maxAmmo *= 2.0f;
 	}
-	if (ammo >= 0 && ammo <= maxAmmo )
+	if (ammo >= 0 && ammo <= maxAmmo)
 	{ //assure the weapon number is valid and not over max
 		//keep the weapon so if it changes before our next ext data update we'll know
 		//that the ammo is not applicable.
@@ -1085,7 +1085,7 @@ void CG_ParseSiegeExtendedData(void)
 	}
 }
 
-void CG_SetSiegeTimerCvar ( int msec )
+void CG_SetSiegeTimerCvar (int msec)
 {
 	int seconds;
 	int mins;
@@ -1097,5 +1097,5 @@ void CG_SetSiegeTimerCvar ( int msec )
 	tens = seconds / 10;
 	seconds -= tens * 10;
 
-	trap->Cvar_Set("ui_siegeTimer", va( "%i:%i%i", mins, tens, seconds ) );
+	trap->Cvar_Set("ui_siegeTimer", va("%i:%i%i", mins, tens, seconds));
 }

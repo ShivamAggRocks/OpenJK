@@ -32,9 +32,9 @@ GoreTextureCoordinates::GoreTextureCoordinates()
 
 GoreTextureCoordinates::~GoreTextureCoordinates()
 {
-	for ( int i = 0; i < MAX_LODS; i++ )
+	for (int i = 0; i < MAX_LODS; i++)
 	{
-		if ( tex[i] )
+		if (tex[i])
 		{
 			ri.Z_Free(tex[i]);
 			tex[i] = NULL;

@@ -2635,7 +2635,7 @@ PNG_EXPORT(216, png_uint_32, png_get_io_chunk_type,
  * column version.  The mask has the appropriate bit set for each column in
  * the tile.
  */
-#define PNG_PASS_MASK(pass,off) ( \
+#define PNG_PASS_MASK(pass,off) (\
    ((0x110145AF>>(((7-(off))-(pass))<<2)) & 0xF) | \
    ((0x01145AF0>>(((7-(off))-(pass))<<2)) & 0xF0))
 

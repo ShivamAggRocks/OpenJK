@@ -39,11 +39,11 @@ int numImageLoaders;
 Finds the image loader associated with the given extension.
 =================
 */
-const ImageLoaderMap *FindImageLoader ( const char *extension )
+const ImageLoaderMap *FindImageLoader (const char *extension)
 {
-	for ( int i = 0; i < numImageLoaders; i++ )
+	for (int i = 0; i < numImageLoaders; i++)
 	{
-		if ( Q_stricmp (extension, imageLoaders[i].extension) == 0 )
+		if (Q_stricmp (extension, imageLoaders[i].extension) == 0)
 		{
 			return &imageLoaders[i];
 		}
@@ -58,15 +58,15 @@ Adds a new image loader to load the specified image file extension.
 The 'extension' string should not begin with a period (full stop).
 =================
 */
-qboolean R_ImageLoader_Add ( const char *extension, ImageLoaderFn imageLoader )
+qboolean R_ImageLoader_Add (const char *extension, ImageLoaderFn imageLoader)
 {
-	if ( numImageLoaders >= MAX_IMAGE_LOADERS )
+	if (numImageLoaders >= MAX_IMAGE_LOADERS)
 	{
 		ri.Printf (PRINT_DEVELOPER, "R_AddImageLoader: Cannot add any more image loaders (maximum %d).\n", MAX_IMAGE_LOADERS);
 		return qfalse;
 	}
 
-	if ( FindImageLoader (extension) != NULL )
+	if (FindImageLoader (extension) != NULL)
 	{
 		ri.Printf (PRINT_DEVELOPER, "R_AddImageLoader: Image loader already exists for extension \"%s\".\n", extension);
 		return qfalse;
@@ -103,7 +103,7 @@ Loads any of the supported image types into a cannonical
 32 bit format.
 =================
 */
-void R_LoadImage( const char *shortname, byte **pic, int *width, int *height ) {
+void R_LoadImage(const char *shortname, byte **pic, int *width, int *height) {
 	*pic = NULL;
 	*width = 0;
 	*height = 0;
@@ -111,10 +111,10 @@ void R_LoadImage( const char *shortname, byte **pic, int *width, int *height ) {
 	// Try loading the image with the original extension (if possible).
 	const char *extension = COM_GetExtension (shortname);
 	const ImageLoaderMap *imageLoader = FindImageLoader (extension);
-	if ( imageLoader != NULL )
+	if (imageLoader != NULL)
 	{
 		imageLoader->loader (shortname, pic, width, height);
-		if ( *pic )
+		if (*pic)
 		{
 			return;
 		}
@@ -122,11 +122,11 @@ void R_LoadImage( const char *shortname, byte **pic, int *width, int *height ) {
 
 	// Loop through all the image loaders trying to load this image.
 	char extensionlessName[MAX_QPATH];
-	COM_StripExtension(shortname, extensionlessName, sizeof( extensionlessName ));
-	for ( int i = 0; i < numImageLoaders; i++ )
+	COM_StripExtension(shortname, extensionlessName, sizeof(extensionlessName));
+	for (int i = 0; i < numImageLoaders; i++)
 	{
 		const ImageLoaderMap *tryLoader = &imageLoaders[i];
-		if ( tryLoader == imageLoader )
+		if (tryLoader == imageLoader)
 		{
 			// Already tried this one.
 			continue;
@@ -134,7 +134,7 @@ void R_LoadImage( const char *shortname, byte **pic, int *width, int *height ) {
 
 		const char *name = va ("%s.%s", extensionlessName, tryLoader->extension);
 		tryLoader->loader (name, pic, width, height);
-		if ( *pic )
+		if (*pic)
 		{
 			return;
 		}

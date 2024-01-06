@@ -248,7 +248,7 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////
 	void			operator+=(const string_vs &o)
 	{
-		if ( (str::len(mData)+o.length())<CAPACITY )		// Only If It Is Safe
+		if ((str::len(mData)+o.length())<CAPACITY)		// Only If It Is Safe
 		{
 			str::cat(mData, o.c_str());
 		}
@@ -263,7 +263,7 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////
 	void			operator+=(const char *s)
 	{
-		if ( (str::len(mData)+str::len(s))<CAPACITY )		// Only If It Is Safe
+		if ((str::len(mData)+str::len(s))<CAPACITY)		// Only If It Is Safe
 		{
 			str::cat(mData, s);
 		}

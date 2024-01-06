@@ -110,9 +110,9 @@ void misc_camera_track_think (gentity_t *self)
 		}
 	}
 
-	if( !self->enemy)
+	if(!self->enemy)
 	{
-		if( self->target && self->target[0] )
+		if(self->target && self->target[0])
 		{//Find out next path_corner
 			self->enemy = G_Find(NULL, FOFS(targetname), self->target);
 			if(self->enemy)
@@ -201,40 +201,40 @@ void SP_misc_camera_track (gentity_t *self)
 //	Bezier camera stuff
 //-------------------------------------------------
 
-void cam_point_link( gentity_t *ent )
+void cam_point_link(gentity_t *ent)
 {
 
 }
 
-void cam_ctrl_point_link( gentity_t *ent )
+void cam_ctrl_point_link(gentity_t *ent)
 {
 /*	gentity_t	*target2 = NULL;
 
-	target2 = G_Find( NULL, FOFS(targetname), ent->target2 );
+	target2 = G_Find(NULL, FOFS(targetname), ent->target2);
 
-	if ( !target2 )
+	if (!target2)
 	{
 		// Bah, you fool!  Target2 not found
-		Com_Printf( "cam_point_link: target2 specified but not found: %s\n", ent->target2 );
-		G_FreeEntity( ent );
+		Com_Printf("cam_point_link: target2 specified but not found: %s\n", ent->target2);
+		G_FreeEntity(ent);
 		return;
 	}
 
 	// Store the control point here
-	VectorCopy( target2->s.origin, ent->pos1 );
+	VectorCopy(target2->s.origin, ent->pos1);
 
 	//---------------------
-	if ( ent->target )
+	if (ent->target)
 	{
 		gentity_t	*target = NULL;
 
-		target = G_Find( NULL, FOFS(targetname), ent->target );
+		target = G_Find(NULL, FOFS(targetname), ent->target);
 
-		if ( !target )
+		if (!target)
 		{
 			// Bah, you fool!  Target not found
-			Com_Printf( "cam_point_link: target specified but not found: %s\n", ent->target );
-			G_FreeEntity( ent );
+			Com_Printf("cam_point_link: target specified but not found: %s\n", ent->target);
+			G_FreeEntity(ent);
 			return;
 		}
 
@@ -249,13 +249,13 @@ A camera point used to construct a camera bezier path
 
 Every cam_point MUST be targeted (target2) at one and only one control point
 */
-void SP_cam_point( gentity_t *ent )
+void SP_cam_point(gentity_t *ent)
 {
-/*	if ( !ent->target2 )
+/*	if (!ent->target2)
 	{
 		// Bah, you fool!  Target2 not found so we have no idea how to make the curve
-		Com_Printf( "cam_point_link: target2 was required but not found\n" );
-		G_FreeEntity( ent );
+		Com_Printf("cam_point_link: target2 was required but not found\n");
+		G_FreeEntity(ent);
 		return;
 
 	}
@@ -265,7 +265,7 @@ void SP_cam_point( gentity_t *ent )
 	ent->nextthink = level.time + 200;
 
 	// Save our position and link us up!
-	G_SetOrigin( ent, ent->s.origin );
-	gi.linkentity( ent );
+	G_SetOrigin(ent, ent->s.origin);
+	gi.linkentity(ent);
 */
 }

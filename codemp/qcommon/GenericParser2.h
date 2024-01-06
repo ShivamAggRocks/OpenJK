@@ -70,7 +70,7 @@ protected:
 
 public:
 				CGPObject(const char *initName);
-		virtual	~CGPObject( void ) {}
+		virtual	~CGPObject(void) {}
 
 	const char	*GetName(void) { return mName; }
 

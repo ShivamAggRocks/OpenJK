@@ -528,7 +528,7 @@ png_set_PLTE(png_structrp png_ptr, png_inforp info_ptr,
 #        ifdef PNG_MNG_FEATURES_SUPPORTED
             && (png_ptr->mng_features_permitted & PNG_FLAG_MNG_EMPTY_PLTE) == 0
 #        endif
-      ))
+     ))
    {
       png_error(png_ptr, "Invalid palette");
       return;

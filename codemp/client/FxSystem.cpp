@@ -55,25 +55,25 @@ void SFxHelper::ReInit(refdef_t* pRefdef)
 }
 
 //------------------------------------------------------
-void SFxHelper::Print( const char *msg, ... )
+void SFxHelper::Print(const char *msg, ...)
 {
 	va_list		argptr;
 	char		text[1024];
 
-	va_start( argptr, msg );
+	va_start(argptr, msg);
 	Q_vsnprintf(text, sizeof(text), msg, argptr);
-	va_end( argptr );
+	va_end(argptr);
 
-	Com_DPrintf( text );
+	Com_DPrintf(text);
 }
 
 //------------------------------------------------------
-void SFxHelper::AdjustTime( int frametime )
+void SFxHelper::AdjustTime(int frametime)
 {
 #ifdef _DEBUG
-	if ( fx_freeze->integer || ( frametime <= 0 ))
+	if (fx_freeze->integer || (frametime <= 0))
 #else
-	if ( frametime <= 0 )
+	if (frametime <= 0)
 #endif
 	{
 		// Allow no time progression when we are paused.
@@ -98,7 +98,7 @@ void SFxHelper::AdjustTime( int frametime )
 }
 
 //------------------------------------------------------
-void SFxHelper::CameraShake( vec3_t origin, float intensity, int radius, int time )
+void SFxHelper::CameraShake(vec3_t origin, float intensity, int radius, int time)
 {
 	TCGCameraShake	*data = (TCGCameraShake *)cl.mSharedMemory;
 

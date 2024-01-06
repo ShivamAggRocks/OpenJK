@@ -170,7 +170,7 @@ public:
 	int		reserve()
 	{
 		assert(mRegionCount < (MAXREGIONS-1));
-		if (mRegionCount >= (MAXREGIONS-1) )
+		if (mRegionCount >= (MAXREGIONS-1))
 		{//stop adding points, we're full, you MUST increase MAXREGIONS for this to work
 			return NULL_REGION;
 		}
@@ -211,7 +211,7 @@ public:
 			if (mRegions[CurNodeIndex] == NULL_REGION)
 			{
 				assert(mRegionCount < (MAXREGIONS-1));
-				if (mRegionCount >= (MAXREGIONS-1) )
+				if (mRegionCount >= (MAXREGIONS-1))
 				{//stop adding points, we're full, you MUST increase MAXREGIONS for this to work
 					return false;
 				}

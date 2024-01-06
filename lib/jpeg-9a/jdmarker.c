@@ -125,13 +125,13 @@ typedef my_marker_reader * my_marker_ptr;
 
 /* Unload the local copies --- do this only at a restart boundary */
 #define INPUT_SYNC(cinfo)  \
-	( datasrc->next_input_byte = next_input_byte,  \
-	  datasrc->bytes_in_buffer = bytes_in_buffer )
+	(datasrc->next_input_byte = next_input_byte,  \
+	  datasrc->bytes_in_buffer = bytes_in_buffer)
 
 /* Reload the local copies --- used only in MAKE_BYTE_AVAIL */
 #define INPUT_RELOAD(cinfo)  \
-	( next_input_byte = datasrc->next_input_byte,  \
-	  bytes_in_buffer = datasrc->bytes_in_buffer )
+	(next_input_byte = datasrc->next_input_byte,  \
+	  bytes_in_buffer = datasrc->bytes_in_buffer)
 
 /* Internal macro for INPUT_BYTE and INPUT_2BYTES: make a byte available.
  * Note we do *not* do INPUT_SYNC before calling fill_input_buffer,
@@ -148,20 +148,20 @@ typedef my_marker_reader * my_marker_ptr;
  * If must suspend, take the specified action (typically "return FALSE").
  */
 #define INPUT_BYTE(cinfo,V,action)  \
-	MAKESTMT( MAKE_BYTE_AVAIL(cinfo,action); \
+	MAKESTMT(MAKE_BYTE_AVAIL(cinfo,action); \
 		  bytes_in_buffer--; \
-		  V = GETJOCTET(*next_input_byte++); )
+		  V = GETJOCTET(*next_input_byte++);)
 
 /* As above, but read two bytes interpreted as an unsigned 16-bit integer.
  * V should be declared unsigned int or perhaps INT32.
  */
 #define INPUT_2BYTES(cinfo,V,action)  \
-	MAKESTMT( MAKE_BYTE_AVAIL(cinfo,action); \
+	MAKESTMT(MAKE_BYTE_AVAIL(cinfo,action); \
 		  bytes_in_buffer--; \
 		  V = ((unsigned int) GETJOCTET(*next_input_byte++)) << 8; \
 		  MAKE_BYTE_AVAIL(cinfo,action); \
 		  bytes_in_buffer--; \
-		  V += GETJOCTET(*next_input_byte++); )
+		  V += GETJOCTET(*next_input_byte++);)
 
 
 /*
@@ -303,7 +303,7 @@ get_sof (j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
     compptr->component_index = ci;
     INPUT_BYTE(cinfo, c, return FALSE);
     compptr->h_samp_factor = (c >> 4) & 15;
-    compptr->v_samp_factor = (c     ) & 15;
+    compptr->v_samp_factor = (c    ) & 15;
     INPUT_BYTE(cinfo, compptr->quant_tbl_no, return FALSE);
 
     TRACEMS4(cinfo, 1, JTRC_SOF_COMPONENT,
@@ -378,7 +378,7 @@ get_sos (j_decompress_ptr cinfo)
     cinfo->cur_comp_info[i] = compptr;
     INPUT_BYTE(cinfo, c, return FALSE);
     compptr->dc_tbl_no = (c >> 4) & 15;
-    compptr->ac_tbl_no = (c     ) & 15;
+    compptr->ac_tbl_no = (c    ) & 15;
 
     TRACEMS3(cinfo, 1, JTRC_SOS_COMPONENT, compptr->component_id,
 	     compptr->dc_tbl_no, compptr->ac_tbl_no);
@@ -391,7 +391,7 @@ get_sos (j_decompress_ptr cinfo)
   cinfo->Se = c;
   INPUT_BYTE(cinfo, c, return FALSE);
   cinfo->Ah = (c >> 4) & 15;
-  cinfo->Al = (c     ) & 15;
+  cinfo->Al = (c    ) & 15;
 
   TRACEMS4(cinfo, 1, JTRC_SOS_PARAMS, cinfo->Ss, cinfo->Se,
 	   cinfo->Ah, cinfo->Al);

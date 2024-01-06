@@ -54,7 +54,7 @@ void BubbleShield_TurnOn()
 	{
 		NPC->flags |= FL_SHIELDED;
 		NPC->client->ps.powerups[PW_GALAK_SHIELD] = Q3_INFINITE;
-		gi.G2API_SetSurfaceOnOff( &NPC->ghoul2[NPC->playerModel], "force_shield", TURN_ON );
+		gi.G2API_SetSurfaceOnOff(&NPC->ghoul2[NPC->playerModel], "force_shield", TURN_ON);
 	}
 }
 
@@ -63,11 +63,11 @@ void BubbleShield_TurnOn()
 ////////////////////////////////////////////////////////////////////////////////////////
 void BubbleShield_TurnOff()
 {
-	if ( BubbleShield_IsOn())
+	if (BubbleShield_IsOn())
 	{
 		NPC->flags &= ~FL_SHIELDED;
 		NPC->client->ps.powerups[PW_GALAK_SHIELD] = 0;
-		gi.G2API_SetSurfaceOnOff( &NPC->ghoul2[NPC->playerModel], "force_shield", TURN_OFF );
+		gi.G2API_SetSurfaceOnOff(&NPC->ghoul2[NPC->playerModel], "force_shield", TURN_OFF);
 	}
 }
 
@@ -77,7 +77,7 @@ void BubbleShield_TurnOff()
 ////////////////////////////////////////////////////////////////////////////////////////
 void BubbleShield_PushEnt(gentity_t* pushed, vec3_t smackDir)
 {
-	G_Damage(pushed, NPC, NPC, smackDir, NPC->currentOrigin, (g_spskill->integer+1)*Q_irand( 5, 10), DAMAGE_NO_KNOCKBACK, MOD_ELECTROCUTE);
+	G_Damage(pushed, NPC, NPC, smackDir, NPC->currentOrigin, (g_spskill->integer+1)*Q_irand(5, 10), DAMAGE_NO_KNOCKBACK, MOD_ELECTROCUTE);
 	G_Throw(pushed, smackDir, 10);
 
 	// Make Em Electric
@@ -101,7 +101,7 @@ void BubbleShield_PushRadiusEnts()
 	vec3_t		smackDir;
 	float		smackDist;
 
-	for (int i = 0; i < 3; i++ )
+	for (int i = 0; i < 3; i++)
 	{
 		mins[i] = NPC->currentOrigin[i] - radius;
 		maxs[i] = NPC->currentOrigin[i] + radius;

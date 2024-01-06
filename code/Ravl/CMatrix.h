@@ -85,22 +85,22 @@ public:
 		switch(axis)
 		{
 		case 0:
-			v[0].Set( 1, 0, 0, 0);
-			v[1].Set( 0, c,-s, 0);
-			v[2].Set( 0, s, c, 0);
+			v[0].Set(1, 0, 0, 0);
+			v[1].Set(0, c,-s, 0);
+			v[2].Set(0, s, c, 0);
 			break;
 		case 1:
-			v[0].Set( c, 0, s, 0);
-			v[1].Set( 0, 1, 0, 0);
+			v[0].Set(c, 0, s, 0);
+			v[1].Set(0, 1, 0, 0);
 			v[2].Set(-s, 0, c, 0);
 			break;
 		case 2:
-			v[0].Set( c,-s, 0, 0);
-			v[1].Set( s, c, 0, 0);
-			v[2].Set( 0, 0, 1, 0);
+			v[0].Set(c,-s, 0, 0);
+			v[1].Set(s, c, 0, 0);
+			v[2].Set(0, 0, 1, 0);
 			break;
 		}
-		v[3].Set( 0, 0, 0, 1);
+		v[3].Set(0, 0, 0, 1);
 	}
 
 

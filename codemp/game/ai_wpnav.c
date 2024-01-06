@@ -41,7 +41,7 @@ int nodenum; //so we can connect broken trails
 
 int gLevelFlags = 0;
 
-char *GetFlagStr( int flags )
+char *GetFlagStr(int flags)
 {
 	char *flagstr;
 	int i;
@@ -232,7 +232,7 @@ void G_TestLine(vec3_t start, vec3_t end, int color, int time)
 {
 	gentity_t *te;
 
-	te = G_TempEntity( start, EV_TESTLINE );
+	te = G_TempEntity(start, EV_TESTLINE);
 	VectorCopy(start, te->s.origin);
 	VectorCopy(end, te->s.origin2);
 	te->s.time2 = time;
@@ -274,7 +274,7 @@ void BotWaypointRender(void)
 	{
 		if (gWPArray[i] && gWPArray[i]->inuse)
 		{
-			plum = G_TempEntity( gWPArray[i]->origin, EV_SCOREPLUM );
+			plum = G_TempEntity(gWPArray[i]->origin, EV_SCOREPLUM);
 			plum->r.svFlags |= SVF_BROADCAST;
 			plum->s.time = i;
 
@@ -355,7 +355,7 @@ checkprint:
 		//GetFlagStr allocates 128 bytes for this, if it's changed then obviously this must be as well
 		B_TempFree(128); //flagstr
 
-		plum = G_TempEntity( gWPArray[bestindex]->origin, EV_SCOREPLUM );
+		plum = G_TempEntity(gWPArray[bestindex]->origin, EV_SCOREPLUM);
 		plum->r.svFlags |= SVF_BROADCAST;
 		plum->s.time = bestindex; //render it once
 	}
@@ -489,7 +489,7 @@ void RemoveWP(void)
 	//B_Free((wpobject_t *)gWPArray[gWPNum]);
 	if (gWPArray[gWPNum])
 	{
-		memset( gWPArray[gWPNum], 0, sizeof(*gWPArray[gWPNum]) );
+		memset(gWPArray[gWPNum], 0, sizeof(*gWPArray[gWPNum]));
 	}
 
 	//gWPArray[gWPNum] = NULL;
@@ -552,7 +552,7 @@ void RemoveWP_InTrail(int afterindex)
 			//B_Free(gWPArray[i]);
 
 			//Keep reusing the memory
-			memset( gWPArray[i], 0, sizeof(*gWPArray[i]) );
+			memset(gWPArray[i], 0, sizeof(*gWPArray[i]));
 
 			//gWPArray[i] = NULL;
 			gWPArray[i]->inuse = 0;
@@ -564,7 +564,7 @@ void RemoveWP_InTrail(int afterindex)
 			//B_Free(gWPArray[i]);
 
 			//Keep reusing the memory
-			memset( gWPArray[i], 0, sizeof(*gWPArray[i]) );
+			memset(gWPArray[i], 0, sizeof(*gWPArray[i]));
 
 			//gWPArray[i] = NULL;
 			gWPArray[i]->inuse = 0;
@@ -1034,7 +1034,7 @@ int ConnectTrail(int startindex, int endindex, qboolean behindTheScenes)
 	vec3_t validspotpos;
 	trace_t tr;
 
-	memset( extendednodes, 0, sizeof( extendednodes ) );
+	memset(extendednodes, 0, sizeof(extendednodes));
 
 	if (RMG.integer)
 	{ //this might be temporary. Or not.
@@ -1383,7 +1383,7 @@ int ConnectTrail(int startindex, int endindex, qboolean behindTheScenes)
 	while (failsafe < MAX_NODETABLE_SIZE && i < MAX_NODETABLE_SIZE && i >= 0)
 	{
 		VectorSubtract(validspotpos, nodetable[i].origin, a);
-		if (!nodetable[nodetable[i].neighbornum].inuse || !CanGetToVectorTravel(validspotpos, /*nodetable[nodetable[i].neighbornum].origin*/nodetable[i].origin, mins, maxs) || VectorLength(a) > maxDistFactor || (!CanGetToVectorTravel(validspotpos, gWPArray[endindex]->origin, mins, maxs) && CanGetToVectorTravel(nodetable[i].origin, gWPArray[endindex]->origin, mins, maxs)) )
+		if (!nodetable[nodetable[i].neighbornum].inuse || !CanGetToVectorTravel(validspotpos, /*nodetable[nodetable[i].neighbornum].origin*/nodetable[i].origin, mins, maxs) || VectorLength(a) > maxDistFactor || (!CanGetToVectorTravel(validspotpos, gWPArray[endindex]->origin, mins, maxs) && CanGetToVectorTravel(nodetable[i].origin, gWPArray[endindex]->origin, mins, maxs)))
 		{
 			nodetable[i].flags |= WPFLAG_CALCULATED;
 			if (!CreateNewWP_InTrail(nodetable[i].origin, nodetable[i].flags, insertindex))
@@ -1511,7 +1511,7 @@ int RepairPaths(qboolean behindTheScenes)
 				!(gWPArray[i+1]->flags & WPFLAG_JUMP) && //don't calculate on jump points because they might not always want to be visible (in cases of force jumping)
 				!(gWPArray[i]->flags & WPFLAG_CALCULATED) && //don't calculate it again
 				!OpposingEnds(i, i+1) &&
-				((bot_wp_distconnect.value && VectorLength(a) > maxDistFactor) || (!OrgVisible(gWPArray[i]->origin, gWPArray[i+1]->origin, ENTITYNUM_NONE) && bot_wp_visconnect.value) ) &&
+				((bot_wp_distconnect.value && VectorLength(a) > maxDistFactor) || (!OrgVisible(gWPArray[i]->origin, gWPArray[i+1]->origin, ENTITYNUM_NONE) && bot_wp_visconnect.value)) &&
 				!DoorBlockingSection(i, i+1))
 			{
 				/*ctRet = */ConnectTrail(i, i+1, behindTheScenes);
@@ -1523,7 +1523,7 @@ int RepairPaths(qboolean behindTheScenes)
 				}
 
 				/* we still want to write it..
-				if ( !ctRet )
+				if (!ctRet)
 					return 0;
 				*/
 			}
@@ -1733,7 +1733,7 @@ gentity_t *GetObjectThatTargets(gentity_t *ent)
 		return NULL;
 	}
 
-	next = G_Find( next, FOFS(target), ent->targetname );
+	next = G_Find(next, FOFS(target), ent->targetname);
 
 	if (next)
 	{
@@ -2047,7 +2047,7 @@ int LoadPathData(const char *filename)
 	if (len >= 524288)
 	{
 		trap->Print(S_COLOR_RED "Route file exceeds maximum length\n");
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 		return 0;
 	}
 
@@ -2700,7 +2700,7 @@ void G_DebugNodeFile()
 	int i = 0;
 	float placeX;
 	char fileString[131072];
-	gentity_t *terrain = G_Find( NULL, FOFS(classname), "terrain" );
+	gentity_t *terrain = G_Find(NULL, FOFS(classname), "terrain");
 
 	fileString[0] = 0;
 
@@ -2743,7 +2743,7 @@ void CreateAsciiTableRepresentation()
 	int oldY;
 	char fileString[ALLOWABLE_DEBUG_FILE_SIZE];
 	char bChr = '+';
-	gentity_t *terrain = G_Find( NULL, FOFS(classname), "terrain" );
+	gentity_t *terrain = G_Find(NULL, FOFS(classname), "terrain");
 
 	placeX = terrain->r.absmin[0];
 	placeY = terrain->r.absmin[1];
@@ -2866,7 +2866,7 @@ void CreateAsciiNodeTableRepresentation(int start, int end)
 	int oldX;
 	int oldY;
 	char fileString[ALLOWABLE_DEBUG_FILE_SIZE];
-	gentity_t *terrain = G_Find( NULL, FOFS(classname), "terrain" );
+	gentity_t *terrain = G_Find(NULL, FOFS(classname), "terrain");
 
 	placeX = terrain->r.absmin[0];
 	placeY = terrain->r.absmin[1];
@@ -3065,7 +3065,7 @@ void G_RMGPathing(void)
 #endif
 	vec3_t downVec, trMins, trMaxs;
 	trace_t tr;
-	gentity_t *terrain = G_Find( NULL, FOFS(classname), "terrain" );
+	gentity_t *terrain = G_Find(NULL, FOFS(classname), "terrain");
 
 	if (!terrain || !terrain->inuse || terrain->s.eType != ET_TERRAIN)
 	{
@@ -3285,7 +3285,7 @@ void LoadPath_ThisLevel(void)
 	int			i = 0;
 	gentity_t	*ent = NULL;
 
-	trap->Cvar_Register( &mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM );
+	trap->Cvar_Register(&mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
 
 	if (RMG.integer)
 	{ //If RMG, generate the path on-the-fly
@@ -3362,7 +3362,7 @@ gentity_t *GetClosestSpawn(gentity_t *ent)
 	{
 		spawn = &g_entities[i];
 
-		if (spawn && spawn->inuse && (!Q_stricmp(spawn->classname, "info_player_start") || !Q_stricmp(spawn->classname, "info_player_deathmatch")) )
+		if (spawn && spawn->inuse && (!Q_stricmp(spawn->classname, "info_player_start") || !Q_stricmp(spawn->classname, "info_player_deathmatch")))
 		{
 			float checkDist;
 			vec3_t vSub;
@@ -3395,7 +3395,7 @@ gentity_t *GetNextSpawnInIndex(gentity_t *currentSpawn)
 	{
 		spawn = &g_entities[i];
 
-		if (spawn && spawn->inuse && (!Q_stricmp(spawn->classname, "info_player_start") || !Q_stricmp(spawn->classname, "info_player_deathmatch")) )
+		if (spawn && spawn->inuse && (!Q_stricmp(spawn->classname, "info_player_start") || !Q_stricmp(spawn->classname, "info_player_deathmatch")))
 		{
 			nextSpawn = spawn;
 			break;
@@ -3412,7 +3412,7 @@ gentity_t *GetNextSpawnInIndex(gentity_t *currentSpawn)
 		{
 			spawn = &g_entities[i];
 
-			if (spawn && spawn->inuse && (!Q_stricmp(spawn->classname, "info_player_start") || !Q_stricmp(spawn->classname, "info_player_deathmatch")) )
+			if (spawn && spawn->inuse && (!Q_stricmp(spawn->classname, "info_player_start") || !Q_stricmp(spawn->classname, "info_player_deathmatch")))
 			{
 				nextSpawn = spawn;
 				break;
@@ -3467,7 +3467,7 @@ int AcceptBotCommand(char *cmd, gentity_t *pl)
 	if (Q_stricmp (cmd, "bot_wp_add") == 0)
 	{
 		gDeactivated = 1;
-		OptionalSArgument = ConcatArgs( 1 );
+		OptionalSArgument = ConcatArgs(1);
 
 		if (OptionalSArgument)
 		{
@@ -3489,7 +3489,7 @@ int AcceptBotCommand(char *cmd, gentity_t *pl)
 	{
 		gDeactivated = 1;
 
-		OptionalSArgument = ConcatArgs( 1 );
+		OptionalSArgument = ConcatArgs(1);
 
 		if (OptionalSArgument)
 		{
@@ -3511,7 +3511,7 @@ int AcceptBotCommand(char *cmd, gentity_t *pl)
 	if (Q_stricmp (cmd, "bot_wp_tele") == 0)
 	{
 		gDeactivated = 1;
-		OptionalSArgument = ConcatArgs( 1 );
+		OptionalSArgument = ConcatArgs(1);
 
 		if (OptionalSArgument)
 		{
@@ -3552,7 +3552,7 @@ int AcceptBotCommand(char *cmd, gentity_t *pl)
 	{
 		gDeactivated = 1;
 
-		RequiredSArgument = ConcatArgs( 1 );
+		RequiredSArgument = ConcatArgs(1);
 
 		if (!RequiredSArgument || !RequiredSArgument[0])
 		{
@@ -3606,7 +3606,7 @@ int AcceptBotCommand(char *cmd, gentity_t *pl)
 			i++;
 		}
 
-		OptionalSArgument = ConcatArgs( 2 );
+		OptionalSArgument = ConcatArgs(2);
 
 		if (OptionalSArgument)
 		{
@@ -3628,7 +3628,7 @@ int AcceptBotCommand(char *cmd, gentity_t *pl)
 	{
 		gDeactivated = 1;
 
-		RequiredSArgument = ConcatArgs( 1 );
+		RequiredSArgument = ConcatArgs(1);
 
 		if (!RequiredSArgument || !RequiredSArgument[0])
 		{
@@ -3682,7 +3682,7 @@ int AcceptBotCommand(char *cmd, gentity_t *pl)
 			i++;
 		}
 
-		OptionalSArgument = ConcatArgs( 2 );
+		OptionalSArgument = ConcatArgs(2);
 
 		if (OptionalSArgument)
 		{
@@ -3727,7 +3727,7 @@ int AcceptBotCommand(char *cmd, gentity_t *pl)
 	if (Q_stricmp (cmd, "bot_wp_save") == 0)
 	{
 		gDeactivated = 0;
-		trap->Cvar_Register( &mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM );
+		trap->Cvar_Register(&mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
 		SavePathData(mapname.string);
 		return 1;
 	}

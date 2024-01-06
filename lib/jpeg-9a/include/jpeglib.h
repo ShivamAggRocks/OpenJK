@@ -435,7 +435,7 @@ struct jpeg_compress_struct {
 
   int block_size;		/* the basic DCT block size: 1..16 */
   const int * natural_order;	/* natural-order position array */
-  int lim_Se;			/* min( Se, DCTSIZE2-1 ) */
+  int lim_Se;			/* min(Se, DCTSIZE2-1) */
 
   /*
    * Links to compression subobjects (methods and private variables of modules)
@@ -664,7 +664,7 @@ struct jpeg_decompress_struct {
    */
   int block_size;		/* the basic DCT block size: 1..16 */
   const int * natural_order; /* natural-order position array for entropy decode */
-  int lim_Se;			/* min( Se, DCTSIZE2-1 ) for entropy decode */
+  int lim_Se;			/* min(Se, DCTSIZE2-1) for entropy decode */
 
   /* This field is shared between entropy decoder and marker parser.
    * It is either zero or the code of a JPEG marker that has been

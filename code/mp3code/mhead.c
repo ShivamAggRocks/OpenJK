@@ -108,8 +108,8 @@ int head_info(unsigned char *buf, unsigned int n, MPEG_HEAD * h)
    h->emphasis = (buf[0+3] & 0x03);
 
 
-// if( mpeg25_flag ) {
- //    if( h->sr_index == 2 ) return 0;   // fail 8khz
+// if(mpeg25_flag) {
+ //    if(h->sr_index == 2) return 0;   // fail 8khz
  //}
 
 

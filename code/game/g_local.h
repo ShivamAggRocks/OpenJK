@@ -78,14 +78,14 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
 //Pointer safety utilities
-#define VALID( a )		( a != NULL )
-#define	VALIDATE( a )	( assert( a ) )
+#define VALID(a)		(a != NULL)
+#define	VALIDATE(a)	(assert(a))
 
-#define	VALIDATEV( a )	if ( a == NULL ) {	assert(0);	return;			}
-#define	VALIDATEB( a )	if ( a == NULL ) {	assert(0);	return qfalse;	}
-#define VALIDATEP( a )	if ( a == NULL ) {	assert(0);	return NULL;	}
+#define	VALIDATEV(a)	if (a == NULL) {	assert(0);	return;			}
+#define	VALIDATEB(a)	if (a == NULL) {	assert(0);	return qfalse;	}
+#define VALIDATEP(a)	if (a == NULL) {	assert(0);	return NULL;	}
 
-#define VALIDSTRING( a )	( ( a != NULL ) && ( a[0] != '\0' ) )
+#define VALIDSTRING(a)	((a != NULL) && (a[0] != '\0'))
 
 //animations
 class animFileSet_t
@@ -368,15 +368,15 @@ extern gentity_t *player;
 //
 // g_spawn.c
 //
-qboolean	G_SpawnField( unsigned int uiField, char **ppKey, char **ppValue );
-qboolean	G_SpawnString( const char *key, const char *defaultString, char **out );
+qboolean	G_SpawnField(unsigned int uiField, char **ppKey, char **ppValue);
+qboolean	G_SpawnString(const char *key, const char *defaultString, char **out);
 // spawn string returns a temporary reference, you must CopyString() if you want to keep it
-qboolean	G_SpawnFloat( const char *key, const char *defaultString, float *out );
-qboolean	G_SpawnInt( const char *key, const char *defaultString, int *out );
-qboolean	G_SpawnVector( const char *key, const char *defaultString, float *out );
-qboolean	G_SpawnVector4( const char *key, const char *defaultString, float *out );
-qboolean	G_SpawnAngleHack( const char *key, const char *defaultString, float *out );
-void		G_SpawnEntitiesFromString( const char *entities );
+qboolean	G_SpawnFloat(const char *key, const char *defaultString, float *out);
+qboolean	G_SpawnInt(const char *key, const char *defaultString, int *out);
+qboolean	G_SpawnVector(const char *key, const char *defaultString, float *out);
+qboolean	G_SpawnVector4(const char *key, const char *defaultString, float *out);
+qboolean	G_SpawnAngleHack(const char *key, const char *defaultString, float *out);
+void		G_SpawnEntitiesFromString(const char *entities);
 
 //
 // g_cmds.c
@@ -386,72 +386,72 @@ void Cmd_Score_f (gentity_t *ent);
 //
 // g_items.c
 //
-void G_RunItem( gentity_t *ent );
-void RespawnItem( gentity_t *ent );
-gentity_t *Drop_Item( gentity_t *ent, gitem_t *item, float angle, qboolean copytarget );
+void G_RunItem(gentity_t *ent);
+void RespawnItem(gentity_t *ent);
+gentity_t *Drop_Item(gentity_t *ent, gitem_t *item, float angle, qboolean copytarget);
 void G_SpawnItem (gentity_t *ent, gitem_t *item);
-void FinishSpawningItem( gentity_t *ent );
+void FinishSpawningItem(gentity_t *ent);
 void	Add_Ammo (gentity_t *ent, int weapon, int count);
 void Touch_Item (gentity_t *ent, gentity_t *other, trace_t *trace);
 
-void ClearRegisteredItems( void );
-void RegisterItem( gitem_t *item );
-void SaveRegisteredItems( void );
+void ClearRegisteredItems(void);
+void RegisterItem(gitem_t *item);
+void SaveRegisteredItems(void);
 
 //
 // g_utils.c
 //
-int G_ModelIndex( const char *name );
-int	G_SoundIndex( const char *name );
+int G_ModelIndex(const char *name);
+int	G_SoundIndex(const char *name);
 /*
 Ghoul2 Insert Start
 */
-int G_SkinIndex( const char *name );
-void	G_SetBoltSurfaceRemoval( const int entNum, const int modelIndex, const int boltIndex, const int surfaceIndex = -1, float duration = 5000 );
+int G_SkinIndex(const char *name);
+void	G_SetBoltSurfaceRemoval(const int entNum, const int modelIndex, const int boltIndex, const int surfaceIndex = -1, float duration = 5000);
 /*
 Ghoul2 Insert End
 */
 
-int G_EffectIndex( const char *name );
-void G_PlayEffect( const char *name, const vec3_t origin );
-void G_PlayEffect( const char *name, int clientNum );
-void G_PlayEffect( const char *name, const vec3_t origin, const vec3_t fwd );
-void G_PlayEffect( const char *name, const vec3_t origin, const vec3_t axis[3] );
-void G_PlayEffect( int fxID, const vec3_t origin );
-void G_PlayEffect( int fxID, const vec3_t origin, const vec3_t fwd );
-void G_PlayEffect( int fxID, const vec3_t origin, const vec3_t axis[3] );
-void G_PlayEffect( int fxID, const int modelIndex, const int boltIndex, const int entNum, const vec3_t origin, int iLoopTime = qfalse, qboolean isRelative = qfalse );//iLoopTime 0 = not looping, 1 for infinite, else duration
-void G_PlayEffect( int fxID, int entNum, const vec3_t fwd );
-void G_StopEffect( int fxID, const int modelIndex, const int boltIndex, const int entNum );
-void G_StopEffect(const char *name, const int modelIndex, const int boltIndex, const int entNum );
+int G_EffectIndex(const char *name);
+void G_PlayEffect(const char *name, const vec3_t origin);
+void G_PlayEffect(const char *name, int clientNum);
+void G_PlayEffect(const char *name, const vec3_t origin, const vec3_t fwd);
+void G_PlayEffect(const char *name, const vec3_t origin, const vec3_t axis[3]);
+void G_PlayEffect(int fxID, const vec3_t origin);
+void G_PlayEffect(int fxID, const vec3_t origin, const vec3_t fwd);
+void G_PlayEffect(int fxID, const vec3_t origin, const vec3_t axis[3]);
+void G_PlayEffect(int fxID, const int modelIndex, const int boltIndex, const int entNum, const vec3_t origin, int iLoopTime = qfalse, qboolean isRelative = qfalse);//iLoopTime 0 = not looping, 1 for infinite, else duration
+void G_PlayEffect(int fxID, int entNum, const vec3_t fwd);
+void G_StopEffect(int fxID, const int modelIndex, const int boltIndex, const int entNum);
+void G_StopEffect(const char *name, const int modelIndex, const int boltIndex, const int entNum);
 
-int G_BSPIndex( char *name );
+int G_BSPIndex(char *name);
 
 void	G_KillBox (gentity_t *ent);
 gentity_t *G_Find (gentity_t *from, int fieldofs, const char *match);
-int		G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean takeDamage, gentity_t *ent_list[MAX_GENTITIES]);
+int		G_RadiusList (vec3_t origin, float radius,	gentity_t *ignore, qboolean takeDamage, gentity_t *ent_list[MAX_GENTITIES]);
 gentity_t *G_PickTarget (char *targetname);
 void	G_UseTargets (gentity_t *ent, gentity_t *activator);
 void	G_UseTargets2 (gentity_t *ent, gentity_t *activator, const char *string);
-void	G_SetMovedir ( vec3_t angles, vec3_t movedir);
+void	G_SetMovedir (vec3_t angles, vec3_t movedir);
 
-void	G_InitGentity( gentity_t *e, qboolean bFreeG2 );
+void	G_InitGentity(gentity_t *e, qboolean bFreeG2);
 gentity_t	*G_Spawn (void);
-gentity_t *G_TempEntity( const vec3_t origin, int event );
-void	G_Sound( gentity_t *ent, int soundIndex );
-void	G_FreeEntity( gentity_t *e );
+gentity_t *G_TempEntity(const vec3_t origin, int event);
+void	G_Sound(gentity_t *ent, int soundIndex);
+void	G_FreeEntity(gentity_t *e);
 
 void	G_TouchTriggers (gentity_t *ent);
 void	G_TouchTeamClients (gentity_t *ent);
 void	G_TouchSolids (gentity_t *ent);
 
-char	*vtos( const vec3_t v );
+char	*vtos(const vec3_t v);
 
-float vectoyaw( const vec3_t vec );
+float vectoyaw(const vec3_t vec);
 
-void G_AddEvent( gentity_t *ent, int event, int eventParm );
-void G_SetOrigin( gentity_t *ent, const vec3_t origin );
-void G_SetAngles( gentity_t *ent, const vec3_t angles );
+void G_AddEvent(gentity_t *ent, int event, int eventParm);
+void G_SetOrigin(gentity_t *ent, const vec3_t origin);
+void G_SetAngles(gentity_t *ent, const vec3_t angles);
 
 void	G_DebugLine(vec3_t A, vec3_t B, int duration, int color, qboolean deleteornot);
 
@@ -459,14 +459,14 @@ void	G_DebugLine(vec3_t A, vec3_t B, int duration, int color, qboolean deleteorn
 // g_combat.c
 //
 qboolean CanDamage (gentity_t *targ, const vec3_t origin);
-void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, const vec3_t dir, const vec3_t point, int damage, int dflags, int mod, int hitLoc=HL_NONE );
+void G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, const vec3_t dir, const vec3_t point, int damage, int dflags, int mod, int hitLoc=HL_NONE);
 void G_RadiusDamage (const vec3_t origin, gentity_t *attacker, float damage, float radius, gentity_t *ignore, int mod);
-gentity_t *TossClientItems( gentity_t *self );
-void ExplodeDeath_Wait( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath,int dFlags,int hitLoc );
-void ExplodeDeath( gentity_t *self );
-void GoExplodeDeath( gentity_t *self, gentity_t *other, gentity_t *activator);
-void G_ApplyKnockback( gentity_t *targ, const vec3_t newDir, float knockback );
-void G_Throw( gentity_t *targ, const vec3_t newDir, float push );
+gentity_t *TossClientItems(gentity_t *self);
+void ExplodeDeath_Wait(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath,int dFlags,int hitLoc);
+void ExplodeDeath(gentity_t *self);
+void GoExplodeDeath(gentity_t *self, gentity_t *other, gentity_t *activator);
+void G_ApplyKnockback(gentity_t *targ, const vec3_t newDir, float knockback);
+void G_Throw(gentity_t *targ, const vec3_t newDir, float push);
 
 // damage flags
 #define DAMAGE_RADIUS			0x00000001	// damage was indirect
@@ -491,7 +491,7 @@ void G_Throw( gentity_t *targ, const vec3_t newDir, float push );
 //
 // g_missile.c
 //
-void G_RunMissile( gentity_t *ent );
+void G_RunMissile(gentity_t *ent);
 
 //
 // g_mover.c
@@ -504,13 +504,13 @@ void G_RunMissile( gentity_t *ent );
 #define MOVER_GOODIE		32
 #define MOVER_PLAYER_USE	64
 #define MOVER_INACTIVE		128
-void G_RunMover( gentity_t *ent );
+void G_RunMover(gentity_t *ent);
 
 
 //
 // g_misc.c
 //
-void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles );
+void TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles);
 
 
 //
@@ -518,29 +518,29 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles );
 //
 void WP_LoadWeaponParms (void);
 
-void IT_LoadItemParms( void );
+void IT_LoadItemParms(void);
 
 //
 // g_client.c
 //
-void SetClientViewAngle( gentity_t *ent, vec3_t angle );
-gentity_t *SelectSpawnPoint ( vec3_t avoidPoint, team_t team, vec3_t origin, vec3_t angles );
+void SetClientViewAngle(gentity_t *ent, vec3_t angle);
+gentity_t *SelectSpawnPoint (vec3_t avoidPoint, team_t team, vec3_t origin, vec3_t angles);
 void respawn (gentity_t *ent);
-qboolean ClientSpawn( gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded );
+qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded);
 void player_die (gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int mod, int dFlags, int hitLoc);
-void AddScore( gentity_t *ent, int score );
-qboolean SpotWouldTelefrag( gentity_t *spot, team_t checkteam );
-void G_RemoveWeaponModels( gentity_t *ent );
+void AddScore(gentity_t *ent, int score);
+qboolean SpotWouldTelefrag(gentity_t *spot, team_t checkteam);
+void G_RemoveWeaponModels(gentity_t *ent);
 
 //
 // g_svcmds.c
 //
-qboolean	ConsoleCommand( void );
+qboolean	ConsoleCommand(void);
 
 //
 // g_weapon.c
 //
-void FireWeapon( gentity_t *ent, qboolean alt_fire );
+void FireWeapon(gentity_t *ent, qboolean alt_fire);
 
 //
 // p_hud.c
@@ -552,7 +552,7 @@ void DeathmatchScoreboardMessage (gentity_t *client);
 //
 // g_cmds.c
 //
-void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, const char *name, const char *message );
+void G_SayTo(gentity_t *ent, gentity_t *other, int mode, int color, const char *name, const char *message);
 
 //
 // g_pweapon.c
@@ -563,7 +563,7 @@ void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, const char 
 // g_main.c
 //
 void G_RunThink (gentity_t *ent);
-void NORETURN QDECL G_Error( const char *fmt, ... );
+void NORETURN QDECL G_Error(const char *fmt, ...);
 void SetInUse(gentity_t *ent);
 void ClearInUse(gentity_t *ent);
 qboolean PInUse(unsigned int entNum);
@@ -588,8 +588,8 @@ void Svcmd_Form_f (void);
 // g_utils.cpp
 //
 void Svcmd_Use_f (void);
-extern void G_SoundOnEnt( gentity_t *ent, soundChannel_t channel, const char *soundPath );
-extern void G_SoundIndexOnEnt( gentity_t *ent, soundChannel_t channel, int index );
+extern void G_SoundOnEnt(gentity_t *ent, soundChannel_t channel, const char *soundPath);
+extern void G_SoundIndexOnEnt(gentity_t *ent, soundChannel_t channel, int index);
 
 //
 // g_weapons.cpp
@@ -598,64 +598,64 @@ extern void G_SoundIndexOnEnt( gentity_t *ent, soundChannel_t channel, int index
 //
 // g_client.c
 //
-char *ClientConnect( int clientNum, qboolean firstTime, SavedGameJustLoaded_e eSavedGameJustLoaded );
-void ClientUserinfoChanged( int clientNum );
-void ClientDisconnect( int clientNum );
-void ClientBegin( int clientNum, usercmd_t *cmd, SavedGameJustLoaded_e eSavedGameJustLoaded );
-void ClientCommand( int clientNum );
+char *ClientConnect(int clientNum, qboolean firstTime, SavedGameJustLoaded_e eSavedGameJustLoaded);
+void ClientUserinfoChanged(int clientNum);
+void ClientDisconnect(int clientNum);
+void ClientBegin(int clientNum, usercmd_t *cmd, SavedGameJustLoaded_e eSavedGameJustLoaded);
+void ClientCommand(int clientNum);
 
 //
 // g_active.c
 //
-void ClientThink( int clientNum, usercmd_t *cmd );
+void ClientThink(int clientNum, usercmd_t *cmd);
 void ClientEndFrame (gentity_t *ent);
 
 //
 // g_inventory.cpp
 //
-extern qboolean INV_GoodieKeyGive( gentity_t *target );
-extern qboolean INV_GoodieKeyTake( gentity_t *target );
-extern int INV_GoodieKeyCheck( gentity_t *target );
-extern qboolean INV_SecurityKeyGive( gentity_t *target, const char *keyname );
-extern void INV_SecurityKeyTake( gentity_t *target, const char *keyname );
-extern qboolean INV_SecurityKeyCheck( gentity_t *target, const char *keyname );
+extern qboolean INV_GoodieKeyGive(gentity_t *target);
+extern qboolean INV_GoodieKeyTake(gentity_t *target);
+extern int INV_GoodieKeyCheck(gentity_t *target);
+extern qboolean INV_SecurityKeyGive(gentity_t *target, const char *keyname);
+extern void INV_SecurityKeyTake(gentity_t *target, const char *keyname);
+extern qboolean INV_SecurityKeyCheck(gentity_t *target, const char *keyname);
 
 //
 // g_team.c
 //
-qboolean OnSameTeam( gentity_t *ent1, gentity_t *ent2 );
+qboolean OnSameTeam(gentity_t *ent1, gentity_t *ent2);
 
 
 //
 // g_mem.c
 //
-void *G_Alloc( int size );
-void G_InitMemory( void );
-void Svcmd_GameMem_f( void );
+void *G_Alloc(int size);
+void G_InitMemory(void);
+void Svcmd_GameMem_f(void);
 
 //
 // g_session.c
 //
-void G_ReadSessionData( gclient_t *client );
-void G_InitSessionData( gclient_t *client, char *userinfo );
+void G_ReadSessionData(gclient_t *client);
+void G_InitSessionData(gclient_t *client, char *userinfo);
 
-void G_InitWorldSession( void );
-void G_WriteSessionData( void );
+void G_InitWorldSession(void);
+void G_WriteSessionData(void);
 
 
 //
 // NPC_senses.cpp
 //
-extern void AddSightEvent( gentity_t *owner, vec3_t position, float radius, alertEventLevel_e alertLevel, float addLight=0.0f );
-extern void AddSoundEvent( gentity_t *owner, vec3_t position, float radius, alertEventLevel_e alertLevel, qboolean needLOS = qfalse, qboolean onGround = qfalse );
-extern qboolean G_CheckForDanger( gentity_t *self, int alertEvent );
-extern int G_CheckAlertEvents( gentity_t *self, qboolean checkSight, qboolean checkSound, float maxSeeDist, float maxHearDist, int ignoreAlert = -1, qboolean mustHaveOwner = qfalse, int minAlertLevel = AEL_MINOR, qboolean onGroundOnly = qfalse );
-extern qboolean G_CheckForDanger( gentity_t *self, int alertEvent );
-extern qboolean G_ClearLOS( gentity_t *self, const vec3_t start, const vec3_t end );
-extern qboolean G_ClearLOS( gentity_t *self, gentity_t *ent, const vec3_t end );
-extern qboolean G_ClearLOS( gentity_t *self, const vec3_t start, gentity_t *ent );
-extern qboolean G_ClearLOS( gentity_t *self, gentity_t *ent );
-extern qboolean G_ClearLOS( gentity_t *self, const vec3_t end );
+extern void AddSightEvent(gentity_t *owner, vec3_t position, float radius, alertEventLevel_e alertLevel, float addLight=0.0f);
+extern void AddSoundEvent(gentity_t *owner, vec3_t position, float radius, alertEventLevel_e alertLevel, qboolean needLOS = qfalse, qboolean onGround = qfalse);
+extern qboolean G_CheckForDanger(gentity_t *self, int alertEvent);
+extern int G_CheckAlertEvents(gentity_t *self, qboolean checkSight, qboolean checkSound, float maxSeeDist, float maxHearDist, int ignoreAlert = -1, qboolean mustHaveOwner = qfalse, int minAlertLevel = AEL_MINOR, qboolean onGroundOnly = qfalse);
+extern qboolean G_CheckForDanger(gentity_t *self, int alertEvent);
+extern qboolean G_ClearLOS(gentity_t *self, const vec3_t start, const vec3_t end);
+extern qboolean G_ClearLOS(gentity_t *self, gentity_t *ent, const vec3_t end);
+extern qboolean G_ClearLOS(gentity_t *self, const vec3_t start, gentity_t *ent);
+extern qboolean G_ClearLOS(gentity_t *self, gentity_t *ent);
+extern qboolean G_ClearLOS(gentity_t *self, const vec3_t end);
 
 //============================================================================
 
@@ -678,19 +678,19 @@ typedef struct reference_tag_s
 	int		radius;	//For nav goals
 } reference_tag_t;
 
-extern	void TAG_Init( void );
-extern	reference_tag_t	*TAG_Add( const char *name, const char *owner, vec3_t origin, vec3_t angles, int radius, int flags );
+extern	void TAG_Init(void);
+extern	reference_tag_t	*TAG_Add(const char *name, const char *owner, vec3_t origin, vec3_t angles, int radius, int flags);
 
-extern	int	TAG_GetOrigin( const char *owner, const char *name, vec3_t origin );
-extern	int	TAG_GetAngles( const char *owner, const char *name, vec3_t angles );
-extern	int TAG_GetRadius( const char *owner, const char *name );
-extern	int TAG_GetFlags( const char *owner, const char *name );
+extern	int	TAG_GetOrigin(const char *owner, const char *name, vec3_t origin);
+extern	int	TAG_GetAngles(const char *owner, const char *name, vec3_t angles);
+extern	int TAG_GetRadius(const char *owner, const char *name);
+extern	int TAG_GetFlags(const char *owner, const char *name);
 
-void TAG_ShowTags( int flags );
+void TAG_ShowTags(int flags);
 
 // Reference tags END
 
-extern char *G_NewString( const char *string );
+extern char *G_NewString(const char *string);
 
 // some stuff for savegames...
 //
@@ -698,22 +698,22 @@ void WriteLevel(qboolean qbAutosave);
 void ReadLevel(qboolean qbAutosave, qboolean qbLoadTransition);
 qboolean GameAllowedToSaveHere(void);
 
-extern qboolean G_ActivateBehavior( gentity_t *ent, int bset );
+extern qboolean G_ActivateBehavior(gentity_t *ent, int bset);
 
 //Timing information
-void		TIMER_Clear( void );
-void		TIMER_Clear( int idx );
-void		TIMER_Save( void );
-void		TIMER_Load( void );
-void		TIMER_Set( gentity_t *ent, const char *identifier, int duration );
-int			TIMER_Get( gentity_t *ent, const char *identifier );
-qboolean	TIMER_Done( gentity_t *ent, const char *identifier );
-qboolean	TIMER_Start( gentity_t *self, const char *identifier, int duration );
-qboolean	TIMER_Done2( gentity_t *ent, const char *identifier, qboolean remove = qfalse );
-qboolean	TIMER_Exists( gentity_t *ent, const char *identifier );
-void		TIMER_Remove( gentity_t *ent, const char *identifier );
+void		TIMER_Clear(void);
+void		TIMER_Clear(int idx);
+void		TIMER_Save(void);
+void		TIMER_Load(void);
+void		TIMER_Set(gentity_t *ent, const char *identifier, int duration);
+int			TIMER_Get(gentity_t *ent, const char *identifier);
+qboolean	TIMER_Done(gentity_t *ent, const char *identifier);
+qboolean	TIMER_Start(gentity_t *self, const char *identifier, int duration);
+qboolean	TIMER_Done2(gentity_t *ent, const char *identifier, qboolean remove = qfalse);
+qboolean	TIMER_Exists(gentity_t *ent, const char *identifier);
+void		TIMER_Remove(gentity_t *ent, const char *identifier);
 
-float NPC_GetHFOVPercentage( vec3_t spot, vec3_t from, vec3_t facing, float hFOV );
-float NPC_GetVFOVPercentage( vec3_t spot, vec3_t from, vec3_t facing, float vFOV );
+float NPC_GetHFOVPercentage(vec3_t spot, vec3_t from, vec3_t facing, float hFOV);
+float NPC_GetVFOVPercentage(vec3_t spot, vec3_t from, vec3_t facing, float vFOV);
 
 #endif//#ifndef __G_LOCAL_H__

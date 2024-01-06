@@ -36,9 +36,9 @@ extern void OBJ_LoadTacticalInfo(void);
 
 extern void G_LoadSave_WriteMiscData(void);
 extern void G_LoadSave_ReadMiscData(void);
-extern void G_ReloadSaberData( gentity_t *ent );
-extern void FX_Read( void );
-extern void FX_Write( void );
+extern void G_ReloadSaberData(gentity_t *ent);
+extern void FX_Read(void);
+extern void FX_Write(void);
 
 
 static const save_field_t savefields_gEntity[] =
@@ -165,7 +165,7 @@ static std::list<sstring_t> strList;
 //
 static int GetStringNum(const char *psString)
 {
-	assert( psString != (char *)0xcdcdcdcd );
+	assert(psString != (char *)0xcdcdcdcd);
 
 	// NULL ptrs I'll write out as a strlen of -1...
 	//
@@ -174,7 +174,7 @@ static int GetStringNum(const char *psString)
 		return -1;
 	}
 
-	strList.push_back( psString );
+	strList.push_back(psString);
 	return strlen(psString) + 1;	// this gives us the chunk length for the reader later
 }
 
@@ -222,7 +222,7 @@ static char *GetStringPtr(int iStrlen, char *psOriginal/*may be NULL*/)
 //
 static intptr_t GetGEntityNum(gentity_t* ent)
 {
-	assert( ent != (gentity_t *) 0xcdcdcdcd);
+	assert(ent != (gentity_t *) 0xcdcdcdcd);
 
 	if (ent == NULL)
 	{
@@ -260,7 +260,7 @@ static gentity_t *GetGEntityPtr(intptr_t iEntNum)
 
 static intptr_t GetGroupNumber(AIGroupInfo_t *pGroup)
 {
-	assert( pGroup != (AIGroupInfo_t *) 0xcdcdcdcd);
+	assert(pGroup != (AIGroupInfo_t *) 0xcdcdcdcd);
 
 	if (pGroup == NULL)
 	{
@@ -268,7 +268,7 @@ static intptr_t GetGroupNumber(AIGroupInfo_t *pGroup)
 	}
 
 	int iReturnIndex = pGroup - level.groups;
-	if (iReturnIndex < 0 || iReturnIndex >= (int)(sizeof(level.groups) / sizeof(level.groups[0])) )
+	if (iReturnIndex < 0 || iReturnIndex >= (int)(sizeof(level.groups) / sizeof(level.groups[0])))
 	{
 		iReturnIndex = -1;	// will get a NULL ptr on reload
 	}
@@ -476,14 +476,14 @@ static void EnumerateField(const save_field_t *pField, const byte *pbBase)
 		{
 			animFileSet_t* p = (animFileSet_t *) pv;
 
-			for ( int i = 0; i < MAX_ANIM_FILES; i++ ) {
-				for ( int j = 0; j < MAX_ANIM_EVENTS; j++ ) {
+			for (int i = 0; i < MAX_ANIM_FILES; i++) {
+				for (int j = 0; j < MAX_ANIM_EVENTS; j++) {
 					byteAlias_t *baTorso = (byteAlias_t *)&p[i].torsoAnimEvents[j].stringData,
 						*baLegs = (byteAlias_t *)&p[i].legsAnimEvents[j].stringData;
 					const char *ptAnimEventStringData = p[i].torsoAnimEvents[j].stringData;
-					baTorso->i = GetStringNum( ptAnimEventStringData );
+					baTorso->i = GetStringNum(ptAnimEventStringData);
 					const char *plAnimEventStringData = p[i].legsAnimEvents[j].stringData;
-					baLegs->i = GetStringNum( plAnimEventStringData );
+					baLegs->i = GetStringNum(plAnimEventStringData);
 				}
 			}
 		}
@@ -637,7 +637,7 @@ static void EvaluateField(const save_field_t *pField, byte *pbBase, byte *pbOrig
 			char *pO;
 			for (int i=0; i<MAX_ANIM_FILES; i++)
 			{
-				for ( int j=0; j<MAX_ANIM_EVENTS; j++ )
+				for (int j=0; j<MAX_ANIM_EVENTS; j++)
 				{
 					pO = pbOriginalRefData ? level.knownAnimFileSets[i].torsoAnimEvents[j].stringData : NULL;
 					p[i].torsoAnimEvents[j].stringData = GetStringPtr((intptr_t)p[i].torsoAnimEvents[j].stringData, pO);
@@ -663,17 +663,17 @@ static void EvaluateField(const save_field_t *pField, byte *pbBase, byte *pbOrig
 
 
 // copy of function in sv_savegame
-static const char *SG_GetChidText( unsigned int chid ) {
+static const char *SG_GetChidText(unsigned int chid) {
 	static char	chidtext[5];
 
 	byteAlias_t *ba = (byteAlias_t *)&chidtext;
-	ba->ui = BigLong( chid );
+	ba->ui = BigLong(chid);
 	chidtext[4] = '\0';
 
 	return chidtext;
 }
 
-extern void WP_SaberSetDefaults( saberInfo_t *saber, qboolean setColors);
+extern void WP_SaberSetDefaults(saberInfo_t *saber, qboolean setColors);
 
 void saberInfoRetail_t::sg_export(
 	saberInfo_t& dst) const
@@ -893,7 +893,7 @@ static void WriteGEntities(qboolean qbAutosave)
 	{
 		gentity_t* ent = &g_entities[i];
 
-		if ( ent->inuse )
+		if (ent->inuse)
 		{
 			iCount++;
 		}
@@ -910,20 +910,20 @@ static void WriteGEntities(qboolean qbAutosave)
 	{
 		gentity_t* ent = &g_entities[i];
 
-		if ( ent->inuse)
+		if (ent->inuse)
 		{
 			saved_game.write_chunk<int32_t>(
 				INT_ID('E', 'D', 'N', 'M'),
 				i);
 
 			qboolean qbLinked = ent->linked;
-			gi.unlinkentity( ent );
+			gi.unlinkentity(ent);
 			gentity_t tempEnt = *ent;	// make local copy
 			tempEnt.linked = qbLinked;
 
 			if (qbLinked)
 			{
-				gi.linkentity( ent );
+				gi.linkentity(ent);
 			}
 
 			EnumerateFields(savefields_gEntity, &tempEnt, INT_ID('G','E','N','T'));
@@ -981,7 +981,7 @@ static void WriteGEntities(qboolean qbAutosave)
 			INT_ID('I', 'C', 'O', 'K'),
 			iBlah);
 	}
-	if (!qbAutosave )//really shouldn't need to write these bits at all, just restore them from the ents...
+	if (!qbAutosave)//really shouldn't need to write these bits at all, just restore them from the ents...
 	{
 		WriteInUseBits();
 	}
@@ -1017,7 +1017,7 @@ static void ReadGEntities(qboolean qbAutosave)
 		{
 			for (int j=iPreviousEntRead+1; j!=iEntIndex; j++)
 			{
-				if ( g_entities[j].inuse )		// not actually necessary
+				if (g_entities[j].inuse)		// not actually necessary
 				{
 					G_FreeEntity(&g_entities[j]);
 				}
@@ -1034,7 +1034,7 @@ static void ReadGEntities(qboolean qbAutosave)
 
 		pEntOriginal->ghoul2.kill();
 		gi.unlinkentity(pEnt);
-		Quake3Game()->FreeEntity( pEnt );
+		Quake3Game()->FreeEntity(pEnt);
 
 		//
 		// sneaky:  destroy the ghoul2 object within this struct before binary-loading over the top of it...
@@ -1074,10 +1074,10 @@ static void ReadGEntities(qboolean qbAutosave)
 
 			//FIXME: do we need to do these too?
 			/*
-			if ( pEnt->s.number )
+			if (pEnt->s.number)
 			{//not player
-				G_LoadAnimFileSet( *pEnt, *pEnt->NPC_type );
-				G_SetSkin( *pEnt, *pEnt->NPC_type, NULL );//  it probably wasn't the default skin, do we need this at all?
+				G_LoadAnimFileSet(*pEnt, *pEnt->NPC_type);
+				G_SetSkin(*pEnt, *pEnt->NPC_type, NULL);//  it probably wasn't the default skin, do we need this at all?
 			}
 			*/
 		}
@@ -1107,9 +1107,9 @@ static void ReadGEntities(qboolean qbAutosave)
 			//
 			*pEnt->client = tempGClient;	// struct copy
 
-			if ( pEnt->s.number )
+			if (pEnt->s.number)
 			{//not player
-				G_ReloadSaberData( pEnt );
+				G_ReloadSaberData(pEnt);
 			}
 		}
 
@@ -1161,7 +1161,7 @@ static void ReadGEntities(qboolean qbAutosave)
 			{
 				// original didn't have one, so make a new one...
 				//
-				pEnt->m_pVehicle = (Vehicle_t *) gi.Malloc( sizeof(Vehicle_t), TAG_G_ALLOC, qfalse );
+				pEnt->m_pVehicle = (Vehicle_t *) gi.Malloc(sizeof(Vehicle_t), TAG_G_ALLOC, qfalse);
 			}
 
 			// copy over the one we've just loaded...
@@ -1179,7 +1179,7 @@ static void ReadGEntities(qboolean qbAutosave)
 		}
 
 //		gi.unlinkentity (pEntOriginal);
-//		ICARUS_FreeEnt( pEntOriginal );
+//		ICARUS_FreeEnt(pEntOriginal);
 //		*pEntOriginal = *pEnt;	// struct copy
 //		qboolean qbLinked = pEntOriginal->linked;
 //		pEntOriginal->linked = qfalse;
@@ -1192,10 +1192,10 @@ static void ReadGEntities(qboolean qbAutosave)
 		//
 		if (pEnt->s.eType == ET_MOVER && pEnt->s.loopSound>0)
 		{
-			if ( VALIDSTRING( pEnt->soundSet ))
+			if (VALIDSTRING(pEnt->soundSet))
 			{
 				extern int BMS_MID;	// from g_mover
-				pEnt->s.loopSound = CAS_GetBModelSound( pEnt->soundSet, BMS_MID );
+				pEnt->s.loopSound = CAS_GetBModelSound(pEnt->soundSet, BMS_MID);
 				if (pEnt->s.loopSound == -1)
 				{
 					pEnt->s.loopSound = 0;
@@ -1224,7 +1224,7 @@ static void ReadGEntities(qboolean qbAutosave)
 		//
 		for (i=iPreviousEntRead+1; i<globals.num_entities; i++)
 		{
-			if ( g_entities[i].inuse )	// not actually necessary
+			if (g_entities[i].inuse)	// not actually necessary
 			{
 				G_FreeEntity(&g_entities[i]);
 			}
@@ -1292,7 +1292,7 @@ void ReadLevel(qboolean qbAutosave, qboolean qbLoadTransition)
 	ojk::SavedGameHelper saved_game(
 		::gi.saved_game);
 
-	if ( qbLoadTransition )
+	if (qbLoadTransition)
 	{
 		// I STRONGLY SUSPECT THAT THIS WILL JUST ERR_DROP BECAUSE OF THE LOAD SWAPPING OF THE CHUNK-ORDER
 		//	BELOW BETWEEN OBJECTIVES AND LEVEL_LOCALS, SO I'M GUESSING THIS IS SOME OLD EF1 JUNK?
@@ -1323,7 +1323,7 @@ void ReadLevel(qboolean qbAutosave, qboolean qbLoadTransition)
 	}
 	else
 	{
-		if (!qbAutosave )//always load the client unless it's an autosave
+		if (!qbAutosave)//always load the client unless it's an autosave
 		{
 			assert(level.maxclients == 1);	// I'll need to know if this changes, otherwise I'll need to change the way things work
 

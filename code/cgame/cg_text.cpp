@@ -46,7 +46,7 @@ extern vec4_t textcolor_scroll;
 //
 // (coords are in the usual 640x480 virtual space)...
 //
-// ( if you get the same char * returned as what you passed in, then none of it fitted at all (box too small) )
+// (if you get the same char * returned as what you passed in, then none of it fitted at all (box too small))
 //
 		// this is execrable, and should NOT have had to've been done now, but...
 		//
@@ -58,12 +58,12 @@ const char *CG_DisplayBoxedText(int iBoxX, int iBoxY, int iBoxWidth, int iBoxHei
 								const vec4_t v4Color)
 {
 	giLinesOutput = 0;
-	cgi_R_SetColor( v4Color );
+	cgi_R_SetColor(v4Color);
 
 	// Setup a reasonable vertical spacing (taiwanese & japanese need 1.5 fontheight, so use that for all)...
 	//
 	const int iFontHeight		 = cgi_R_Font_HeightPixels(iFontHandle, fScale);
-	const int iFontHeightAdvance = (int) ( ((gfAdvanceHack == 0.0f) ? 1.5f : gfAdvanceHack) * (float) iFontHeight);
+	const int iFontHeightAdvance = (int) (((gfAdvanceHack == 0.0f) ? 1.5f : gfAdvanceHack) * (float) iFontHeight);
 	int iYpos = iBoxY;	// start print pos
 
 	// this could probably be simplified now, but it was converted from something else I didn't originally write,
@@ -73,7 +73,7 @@ const char *CG_DisplayBoxedText(int iBoxX, int iBoxY, int iBoxWidth, int iBoxHei
 	const char *psReadPosAtLineStart = psCurrentTextReadPos;
 	const char *psBestLineBreakSrcPos = psCurrentTextReadPos;
 	const char *psLastGood_s;	// needed if we get a full screen of chars with no punctuation or space (see usage notes)
-	while( *psCurrentTextReadPos && (iYpos + iFontHeight < (iBoxY + iBoxHeight)) )
+	while(*psCurrentTextReadPos && (iYpos + iFontHeight < (iBoxY + iBoxHeight)))
 	{
 		char sLineForDisplay[2048];	// ott
 
@@ -81,7 +81,7 @@ const char *CG_DisplayBoxedText(int iBoxX, int iBoxY, int iBoxWidth, int iBoxHei
 		//
 		psCurrentTextReadPos = psReadPosAtLineStart;
 		sLineForDisplay[0] = '\0';
-		while ( *psCurrentTextReadPos )
+		while (*psCurrentTextReadPos)
 		{
 			psLastGood_s = psCurrentTextReadPos;
 
@@ -119,7 +119,7 @@ const char *CG_DisplayBoxedText(int iBoxX, int iBoxY, int iBoxWidth, int iBoxHei
 				break;	// print this line
 			}
 			else
-			if ( cgi_R_Font_StrLenPixels(sLineForDisplay, iFontHandle, fScale) >= iBoxWidth )
+			if (cgi_R_Font_StrLenPixels(sLineForDisplay, iFontHandle, fScale) >= iBoxWidth)
 			{
 				// reached screen edge, so cap off string at bytepos after last good position...
 				//
@@ -165,9 +165,9 @@ const char *CG_DisplayBoxedText(int iBoxX, int iBoxY, int iBoxWidth, int iBoxHei
 
 		// and echo to console in dev mode...
 		//
-		if ( cg_developer.integer )
+		if (cg_developer.integer)
 		{
-//			Com_Printf( "%psCurrentTextReadPos\n", sLineForDisplay );
+//			Com_Printf("%psCurrentTextReadPos\n", sLineForDisplay);
 		}
 	}
 	return psReadPosAtLineStart;
@@ -191,7 +191,7 @@ void CG_CaptionTextStop(void)
 //
 // returns 0 if failed, else strlen...
 //
-static int cg_SP_GetStringTextStringWithRetry( const char *psReference, char *psDest, int iSizeofDest)
+static int cg_SP_GetStringTextStringWithRetry(const char *psReference, char *psDest, int iSizeofDest)
 {
 	int iReturn;
 
@@ -199,14 +199,14 @@ static int cg_SP_GetStringTextStringWithRetry( const char *psReference, char *ps
 	{
 		// then we know the striped package name is already built in, so do NOT try prepending anything else...
 		//
-		return cgi_SP_GetStringTextString( va("%s",psReference+1), psDest, iSizeofDest );
+		return cgi_SP_GetStringTextString(va("%s",psReference+1), psDest, iSizeofDest);
 	}
 
 	for (int i=0; i<STRIPED_LEVELNAME_VARIATIONS; i++)
 	{
 		if (cgs.stripLevelName[i][0])	// entry present?
 		{
-			iReturn = cgi_SP_GetStringTextString( va("%s_%s",cgs.stripLevelName[i],psReference), psDest, iSizeofDest );
+			iReturn = cgi_SP_GetStringTextString(va("%s_%s",cgs.stripLevelName[i],psReference), psDest, iSizeofDest);
 			if (iReturn)
 			{
 				return iReturn;
@@ -221,7 +221,7 @@ static int cg_SP_GetStringTextStringWithRetry( const char *psReference, char *ps
 //	the "filename" part of which should be the same as the StripEd reference we're looking for in the current
 //	level's string package...
 //
-void CG_CaptionText( const char *str, int sound)
+void CG_CaptionText(const char *str, int sound)
 {
 	const char	*s, *holds;
 	int i;
@@ -238,7 +238,7 @@ void CG_CaptionText( const char *str, int sound)
 #endif
 		return;
 	}
-	i = cg_SP_GetStringTextStringWithRetry( holds+1, text, sizeof(text) );
+	i = cg_SP_GetStringTextStringWithRetry(holds+1, text, sizeof(text));
 	//ensure we found a match
 	if (!i)
 	{
@@ -291,7 +291,7 @@ void CG_CaptionText( const char *str, int sound)
 
 	const char *psBestLineBreakSrcPos = s;
 	const char *psLastGood_s;	// needed if we get a full screen of chars with no punctuation or space (see usage notes)
-	while( *s )
+	while(*s)
 	{
 		psLastGood_s = s;
 
@@ -330,7 +330,7 @@ void CG_CaptionText( const char *str, int sound)
 			cg.scrollTextLines++;
 		}
 		else
-		if ( cgi_R_Font_StrLenPixels(cg.captionText[i], cgs.media.qhFontMedium, fFontScale) >= SCREEN_WIDTH)
+		if (cgi_R_Font_StrLenPixels(cg.captionText[i], cgs.media.qhFontMedium, fFontScale) >= SCREEN_WIDTH)
 		{
 			// reached screen edge, so cap off string at bytepos after last good position...
 			//
@@ -382,9 +382,9 @@ void CG_CaptionText( const char *str, int sound)
 	cg.scrollTextTime = 0;	// No scrolling during captions
 
 	//Echo to console in dev mode
-	if ( cg_developer.integer )
+	if (cg_developer.integer)
 	{
-		Com_Printf( "%s\n", cg.captionText[0] );	// ste:  was [i], but surely sentence 0 is more useful than last?
+		Com_Printf("%s\n", cg.captionText[0]);	// ste:  was [i], but surely sentence 0 is more useful than last?
 	}
 }
 
@@ -395,7 +395,7 @@ void CG_DrawCaptionText(void)
 	int		x, y, w;
 	int	holdTime;
 
-	if ( !cg.captionTextTime )
+	if (!cg.captionTextTime)
 	{
 		return;
 	}
@@ -408,7 +408,7 @@ void CG_DrawCaptionText(void)
 		return;
 	}
 
-	if ( cg.captionNextTextTime < cg.time )
+	if (cg.captionNextTextTime < cg.time)
 	{
 		cg.captionTextCurrentLine += 2;
 
@@ -422,7 +422,7 @@ void CG_DrawCaptionText(void)
 			holdTime = strlen(cg.captionText[cg.captionTextCurrentLine]);
 			if (cg.scrollTextLines >= cg.captionTextCurrentLine)
 			{
-				// ( strlen is also good for MBCS in this instance, since it's for timing -ste)
+				// (strlen is also good for MBCS in this instance, since it's for timing -ste)
 				//
 				holdTime += strlen(cg.captionText[cg.captionTextCurrentLine + 1]);
 			}
@@ -435,7 +435,7 @@ void CG_DrawCaptionText(void)
 	if((textcolor_caption[0] == 0) && (textcolor_caption[1] == 0) &&
 		(textcolor_caption[2] == 0) && (textcolor_caption[3] == 0))
 	{
-		VectorCopy4( colorTable[CT_WHITE], textcolor_caption );
+		VectorCopy4(colorTable[CT_WHITE], textcolor_caption);
 	}
 
 	cgi_R_SetColor(textcolor_caption);
@@ -444,7 +444,7 @@ void CG_DrawCaptionText(void)
 	// (this all works, please don't mess with it)
 	const int fontHeight = (int) ((cgi_Language_IsAsian() ? 1.4f : 1.0f) * (float) cgi_R_Font_HeightPixels(cgs.media.qhFontMedium, fFontScale));
 	const bool bPrinting2Lines = !!(cg.captionText[ cg.captionTextCurrentLine+1 ][0]);
-	y = cg.captionTextY - ( (float)fontHeight * (bPrinting2Lines ? 1 : 0.5f));	// captionTextY was a centered Y pos, not a top one
+	y = cg.captionTextY - ((float)fontHeight * (bPrinting2Lines ? 1 : 0.5f));	// captionTextY was a centered Y pos, not a top one
 	y -= cgi_Language_IsAsian() ? 0 : 4;
 
 	for (i=	cg.captionTextCurrentLine;i< cg.captionTextCurrentLine + 2;++i)
@@ -458,7 +458,7 @@ void CG_DrawCaptionText(void)
 		}
 	}
 
-	cgi_R_SetColor( NULL );
+	cgi_R_SetColor(NULL);
 }
 
 /*
@@ -474,7 +474,7 @@ CG_ScrollText - split text up into seperate lines
 
 */
 int giScrollTextPixelWidth = SCREEN_WIDTH;
-void CG_ScrollText( const char *str, int iPixelWidth )
+void CG_ScrollText(const char *str, int iPixelWidth)
 {
 	const char	*s,*holds;
 	int i;//, len;//, numChars;
@@ -483,7 +483,7 @@ void CG_ScrollText( const char *str, int iPixelWidth )
 
 	// first, ask the strlen of the final string...
 	//
-	i = cgi_SP_GetStringTextString( str, NULL, 0 );
+	i = cgi_SP_GetStringTextString(str, NULL, 0);
 
 	//ensure we found a match
 	if (!i)
@@ -496,11 +496,11 @@ void CG_ScrollText( const char *str, int iPixelWidth )
 	//
 	// malloc space to hold it...
 	//
-	char *psText = (char *) cgi_Z_Malloc( i+1, TAG_TEMP_WORKSPACE );
+	char *psText = (char *) cgi_Z_Malloc(i+1, TAG_TEMP_WORKSPACE);
 	//
 	// now get the string...
 	//
-	i = cgi_SP_GetStringTextString( str, psText, i+1 );
+	i = cgi_SP_GetStringTextString(str, psText, i+1);
 	//ensure we found a match
 	if (!i)
 	{
@@ -522,7 +522,7 @@ void CG_ScrollText( const char *str, int iPixelWidth )
 
 	const char *psBestLineBreakSrcPos = s;
 	const char *psLastGood_s;	// needed if we get a full screen of chars with no punctuation or space (see usage notes)
-	while( *s )
+	while(*s)
 	{
 		psLastGood_s = s;
 
@@ -563,8 +563,8 @@ void CG_ScrollText( const char *str, int iPixelWidth )
 			//
 			cg.printText[i][ strlen(cg.printText[i])-1 ] = '\0';	// kill the CR
 			i++;
-			assert (i < (int)(sizeof(cg.printText)/sizeof(cg.printText[0])) );
-			if (i >= (int)(sizeof(cg.printText)/sizeof(cg.printText[0])) )
+			assert (i < (int)(sizeof(cg.printText)/sizeof(cg.printText[0])));
+			if (i >= (int)(sizeof(cg.printText)/sizeof(cg.printText[0])))
 			{
 				break;
 			}
@@ -572,7 +572,7 @@ void CG_ScrollText( const char *str, int iPixelWidth )
 			cg.scrollTextLines++;
 		}
 		else
-		if ( cgi_R_Font_StrLenPixels(cg.printText[i], cgs.media.qhFontMedium, 1.0f) >= iPixelWidth)
+		if (cgi_R_Font_StrLenPixels(cg.printText[i], cgs.media.qhFontMedium, 1.0f) >= iPixelWidth)
 		{
 			// reached screen edge, so cap off string at bytepos after last good position...
 			//
@@ -591,7 +591,7 @@ void CG_ScrollText( const char *str, int iPixelWidth )
 			cg.printText[i][ psBestLineBreakSrcPos - holds ] = '\0';
 			holds = s = psBestLineBreakSrcPos;
 			i++;
-			assert (i < (int)(sizeof(cg.printText)/sizeof(cg.printText[0])) );
+			assert (i < (int)(sizeof(cg.printText)/sizeof(cg.printText[0])));
 			cg.scrollTextLines++;
 		}
 	}
@@ -610,12 +610,12 @@ void CG_DrawScrollText(void)
 	int		x,y;
 	const int fontHeight = (int) (1.5f * (float) cgi_R_Font_HeightPixels(cgs.media.qhFontMedium, 1.0f));	// taiwanese & japanese need 1.5 fontheight spacing
 
-	if ( !cg.scrollTextTime )
+	if (!cg.scrollTextTime)
 	{
 		return;
 	}
 
-	cgi_R_SetColor( textcolor_scroll );
+	cgi_R_SetColor(textcolor_scroll);
 
 	y = cg.printTextY - (cg.time - cg.scrollTextTime) * SCROLL_LPM;
 
@@ -652,7 +652,7 @@ void CG_DrawScrollText(void)
 		}
 	}
 
-	cgi_R_SetColor( NULL );
+	cgi_R_SetColor(NULL);
 }
 
 
@@ -673,7 +673,7 @@ Called for important messages that should stay in the center of the screen
 for a few moments
 ==============
 */
-void CG_CenterPrint( const char *str, int y) {
+void CG_CenterPrint(const char *str, int y) {
 	char	*s;
 
 	// Find text to match the str given
@@ -681,17 +681,17 @@ void CG_CenterPrint( const char *str, int y) {
 	{
 		int i;
 
-		i = cgi_SP_GetStringTextString( str+1, cg.centerPrint, sizeof(cg.centerPrint) );
+		i = cgi_SP_GetStringTextString(str+1, cg.centerPrint, sizeof(cg.centerPrint));
 
 		if (!i)
 		{
 			Com_Printf (S_COLOR_RED"CG_CenterPrint: cannot find reference '%s' in StringPackage!\n",str);
-			Q_strncpyz( cg.centerPrint, str, sizeof(cg.centerPrint) );
+			Q_strncpyz(cg.centerPrint, str, sizeof(cg.centerPrint));
 		}
 	}
 	else
 	{
-		Q_strncpyz( cg.centerPrint, str, sizeof(cg.centerPrint) );
+		Q_strncpyz(cg.centerPrint, str, sizeof(cg.centerPrint));
 	}
 
 	cg.centerPrintTime = cg.time;
@@ -700,7 +700,7 @@ void CG_CenterPrint( const char *str, int y) {
 	// count the number of lines for centering
 	cg.centerPrintLines = 1;
 	s = cg.centerPrint;
-	while( *s ) {
+	while(*s) {
 		if (*s == '\n')
 			cg.centerPrintLines++;
 		s++;
@@ -714,26 +714,26 @@ void CG_CenterPrint( const char *str, int y) {
 CG_DrawCenterString
 ===================
 */
-void CG_DrawCenterString( void )
+void CG_DrawCenterString(void)
 {
 	char	*start;
 	unsigned int l;
 	int		x, y, w;
 	float	*color;
 
-	if ( !cg.centerPrintTime ) {
+	if (!cg.centerPrintTime) {
 		return;
 	}
 
-	color = CG_FadeColor( cg.centerPrintTime, 1000 * 3 );
-	if ( !color ) {
+	color = CG_FadeColor(cg.centerPrintTime, 1000 * 3);
+	if (!color) {
 		return;
 	}
 
 	if((textcolor_center[0] == 0) && (textcolor_center[1] == 0) &&
 		(textcolor_center[2] == 0) && (textcolor_center[3] == 0))
 	{
-		VectorCopy4( colorTable[CT_WHITE], textcolor_center );
+		VectorCopy4(colorTable[CT_WHITE], textcolor_center);
 	}
 
 	start = cg.centerPrint;
@@ -741,14 +741,14 @@ void CG_DrawCenterString( void )
 	const int fontHeight = cgi_R_Font_HeightPixels(cgs.media.qhFontMedium, 1.0f);
 	y = cg.centerPrintY - (cg.centerPrintLines * fontHeight) / 2;
 
-	while ( 1 ) {
+	while (1) {
 		char linebuffer[1024];
 
 		// this is kind of unpleasant when dealing with MBCS, but...
 		//
 		const char *psString = start;
 		int iOutIndex = 0;
-		for ( l = 0; l < sizeof(linebuffer)-1; l++ ) {
+		for (l = 0; l < sizeof(linebuffer)-1; l++) {
 			int iAdvanceCount;
 			unsigned int uiLetter = cgi_AnyLanguage_ReadCharFromString(psString, &iAdvanceCount);
 			psString += iAdvanceCount;
@@ -769,16 +769,16 @@ void CG_DrawCenterString( void )
 
 		w = cgi_R_Font_StrLenPixels(linebuffer, cgs.media.qhFontMedium, 1.0f);
 
-		x = ( SCREEN_WIDTH - w ) / 2;
+		x = (SCREEN_WIDTH - w) / 2;
 
 		cgi_R_Font_DrawString(x,y,linebuffer, textcolor_center, cgs.media.qhFontMedium, -1, 1.0f);
 
 		y += fontHeight;
 
-		while ( *start && ( *start != '\n' ) ) {
+		while (*start && (*start != '\n')) {
 			start++;
 		}
-		if ( !*start ) {
+		if (!*start) {
 			break;
 		}
 		start++;

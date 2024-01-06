@@ -202,8 +202,8 @@ static unsigned int bitget_1bit()
 */
 /*========================================================*/
 /*========================================================*/
-#define mac_bitget_check(n) if( bitdat.bits < (n) ) {                   \
-    while( bitdat.bits <= 24 ) {            \
+#define mac_bitget_check(n) if(bitdat.bits < (n)) {                   \
+    while(bitdat.bits <= 24) {            \
         bitdat.bitbuf = (bitdat.bitbuf << 8) | *bitdat.bs_ptr++; \
         bitdat.bits += 8;                   \
     }                                       \
@@ -211,18 +211,18 @@ static unsigned int bitget_1bit()
 /*---------------------------------------------------------*/
 #define mac_bitget2(n)  (bitdat.bitbuf >> (bitdat.bits-n));
 /*---------------------------------------------------------*/
-#define mac_bitget(n) ( bitdat.bits -= n,           \
+#define mac_bitget(n) (bitdat.bits -= n,           \
          code  = bitdat.bitbuf >> bitdat.bits,     \
          bitdat.bitbuf -= code << bitdat.bits,     \
-         code )
+         code)
 /*---------------------------------------------------------*/
 #define mac_bitget_purge(n) bitdat.bits -= n,                    \
     bitdat.bitbuf -= (bitdat.bitbuf >> bitdat.bits) << bitdat.bits;
 /*---------------------------------------------------------*/
-#define mac_bitget_1bit() ( bitdat.bits--,                           \
+#define mac_bitget_1bit() (bitdat.bits--,                           \
          code  = bitdat.bitbuf >> bitdat.bits,    \
          bitdat.bitbuf -= code << bitdat.bits,  \
-         code )
+         code)
 /*========================================================*/
 /*========================================================*/
 void unpack_huff(int xy[][2], int n, int ntable)
