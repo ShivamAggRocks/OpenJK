@@ -184,7 +184,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 	#define DLL_EXT ".so"
 #endif
 
-#if (defined( _MSC_VER ) && (_MSC_VER < 1900)) || (defined(__GNUC__))
+#if (defined(_MSC_VER) && (_MSC_VER < 1900)) || (defined(__GNUC__))
 // VS2013, which for some reason we still support, does not support noexcept
 // GCC GNU has the same problem: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=52869
 #define NOEXCEPT
@@ -312,12 +312,12 @@ static inline uint32_t LongSwap(uint32_t v)
 }
 #endif
 
-static QINLINE void CopyShortSwap( void *dest, const void *src )
+static QINLINE void CopyShortSwap(void *dest, const void *src)
 {
     *(uint16_t*)dest = ShortSwap(*(uint16_t*)src);
 }
 
-static QINLINE void CopyLongSwap( void *dest, const void *src )
+static QINLINE void CopyLongSwap(void *dest, const void *src)
 {
     *(uint32_t*)dest = LongSwap(*(uint32_t*)src);
 }
@@ -332,23 +332,23 @@ static QINLINE float FloatSwap(float f)
 #if defined(Q3_BIG_ENDIAN) && defined(Q3_LITTLE_ENDIAN)
 	#error "Endianness defined as both big and little"
 #elif defined(Q3_BIG_ENDIAN)
-	#define CopyLittleShort( dest, src )	CopyShortSwap( dest, src )
-	#define CopyLittleLong( dest, src )		CopyLongSwap( dest, src )
-	#define LittleShort( x )				ShortSwap( x )
-	#define LittleLong( x )					LongSwap( x )
-	#define LittleFloat( x )				FloatSwap( x )
+	#define CopyLittleShort(dest, src)	CopyShortSwap(dest, src)
+	#define CopyLittleLong(dest, src)		CopyLongSwap(dest, src)
+	#define LittleShort(x)				ShortSwap(x)
+	#define LittleLong(x)					LongSwap(x)
+	#define LittleFloat(x)				FloatSwap(x)
 	#define BigShort
 	#define BigLong
 	#define BigFloat
-#elif defined( Q3_LITTLE_ENDIAN )
-	#define CopyLittleShort( dest, src )	Com_Memcpy(dest, src, 2)
-	#define CopyLittleLong( dest, src )		Com_Memcpy(dest, src, 4)
+#elif defined(Q3_LITTLE_ENDIAN)
+	#define CopyLittleShort(dest, src)	Com_Memcpy(dest, src, 2)
+	#define CopyLittleLong(dest, src)		Com_Memcpy(dest, src, 4)
 	#define LittleShort
 	#define LittleLong
 	#define LittleFloat
-	#define BigShort( x )					ShortSwap( x )
-	#define BigLong( x )					LongSwap( x )
-	#define BigFloat( x )					FloatSwap( x )
+	#define BigShort(x)					ShortSwap(x)
+	#define BigLong(x)					LongSwap(x)
+	#define BigFloat(x)					FloatSwap(x)
 #else
 	#error "Endianness not defined"
 #endif
@@ -357,7 +357,7 @@ typedef unsigned char byte;
 typedef unsigned short word;
 typedef unsigned long ulong;
 
-typedef enum { qfalse, qtrue } qboolean;
+typedef enum {qfalse, qtrue} qboolean;
 
 // 32 bit field aliasing
 typedef union byteAlias_u {

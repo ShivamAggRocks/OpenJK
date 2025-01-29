@@ -545,7 +545,7 @@ int PS_ReadName(script_t *script, token_t *token)
 			return 0;
 		} //end if
 		c = *script->script_p;
-   } while ((c >= 'a' && c <= 'z') ||
+  } while ((c >= 'a' && c <= 'z') ||
 				(c >= 'A' && c <= 'Z') ||
 				(c >= '0' && c <= '9') ||
 				c == '_');
@@ -713,14 +713,14 @@ int PS_ReadNumber(script_t *script, token_t *token)
 	{
 		c = *script->script_p;
 		//check for a LONG number
-		if ( (c == 'l' || c == 'L') // bk001204 - brackets
+		if ((c == 'l' || c == 'L') // bk001204 - brackets
 		     && !(token->subtype & TT_LONG))
 		{
 			script->script_p++;
 			token->subtype |= TT_LONG;
 		} //end if
 		//check for an UNSIGNED number
-		else if ( (c == 'u' || c == 'U') // bk001204 - brackets
+		else if ((c == 'u' || c == 'U') // bk001204 - brackets
 			  && !(token->subtype & (TT_UNSIGNED | TT_FLOAT)))
 		{
 			script->script_p++;
@@ -1347,7 +1347,7 @@ script_t *LoadScriptFile(const char *filename)
 		Com_sprintf(pathname, sizeof(pathname), "%s/%s", basefolder, filename);
 	else
 		Com_sprintf(pathname, sizeof(pathname), "%s", filename);
-	length = botimport.FS_FOpenFile( pathname, &fp, FS_READ );
+	length = botimport.FS_FOpenFile(pathname, &fp, FS_READ);
 	if (!fp) return NULL;
 #else
 	fp = fopen(filename, "rb");

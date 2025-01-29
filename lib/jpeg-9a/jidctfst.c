@@ -217,7 +217,7 @@ jpeg_idct_ifast (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       quantptr++;
       wsptr++;
       continue;
-    }
+   }
     
     /* Even part */
 
@@ -272,7 +272,7 @@ jpeg_idct_ifast (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     inptr++;			/* advance pointers to next column */
     quantptr++;
     wsptr++;
-  }
+ }
   
   /* Pass 2: process rows from work array, store into output array. */
   /* Note that we must descale the results by a factor of 8 == 2**3, */
@@ -307,7 +307,7 @@ jpeg_idct_ifast (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 
       wsptr += DCTSIZE;		/* advance pointer to next row */
       continue;
-    }
+   }
 #endif
     
     /* Even part */
@@ -362,7 +362,7 @@ jpeg_idct_ifast (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 }
 
 #endif /* DCT_IFAST_SUPPORTED */

@@ -51,8 +51,8 @@ cvar_t		*con_timestamps;
 #define CON_MIN_WIDTH			20
 
 
-static const conChar_t CON_WRAP = { { ColorIndex(COLOR_GREY), '\\' } };
-static const conChar_t CON_BLANK = { { ColorIndex(COLOR_WHITE), CON_BLANK_CHAR } };
+static const conChar_t CON_WRAP = {{ColorIndex(COLOR_GREY), '\\'}};
+static const conChar_t CON_BLANK = {{ColorIndex(COLOR_WHITE), CON_BLANK_CHAR}};
 
 vec4_t	console_color = {0.509f, 0.609f, 0.847f, 1.0f};
 
@@ -63,17 +63,17 @@ Con_ToggleConsole_f
 */
 void Con_ToggleConsole_f (void) {
 	// closing a full screen console restarts the demo loop
-	if ( cls.state == CA_DISCONNECTED && Key_GetCatcher( ) == KEYCATCH_CONSOLE ) {
+	if (cls.state == CA_DISCONNECTED && Key_GetCatcher() == KEYCATCH_CONSOLE) {
 		CL_StartDemoLoop();
 		return;
 	}
 
-	if( con_autoclear->integer )
-		Field_Clear( &g_consoleField );
+	if(con_autoclear->integer)
+		Field_Clear(&g_consoleField);
 	g_consoleField.widthInChars = g_console_field_width;
 
 	Con_ClearNotify ();
-	Key_SetCatcher( Key_GetCatcher( ) ^ KEYCATCH_CONSOLE );
+	Key_SetCatcher(Key_GetCatcher() ^ KEYCATCH_CONSOLE);
 }
 
 /*
@@ -81,9 +81,9 @@ void Con_ToggleConsole_f (void) {
 Con_ToggleMenu_f
 ===================
 */
-void Con_ToggleMenu_f( void ) {
-	CL_KeyEvent( A_ESCAPE, qtrue, Sys_Milliseconds() );
-	CL_KeyEvent( A_ESCAPE, qfalse, Sys_Milliseconds() );
+void Con_ToggleMenu_f(void) {
+	CL_KeyEvent(A_ESCAPE, qtrue, Sys_Milliseconds());
+	CL_KeyEvent(A_ESCAPE, qfalse, Sys_Milliseconds());
 }
 
 /*
@@ -94,10 +94,10 @@ Con_MessageMode_f
 void Con_MessageMode_f (void) {	//yell
 	chat_playerNum = -1;
 	chat_team = qfalse;
-	Field_Clear( &chatField );
+	Field_Clear(&chatField);
 	chatField.widthInChars = 30;
 
-	Key_SetCatcher( Key_GetCatcher( ) ^ KEYCATCH_MESSAGE );
+	Key_SetCatcher(Key_GetCatcher() ^ KEYCATCH_MESSAGE);
 }
 
 /*
@@ -108,9 +108,9 @@ Con_MessageMode2_f
 void Con_MessageMode2_f (void) {	//team chat
 	chat_playerNum = -1;
 	chat_team = qtrue;
-	Field_Clear( &chatField );
+	Field_Clear(&chatField);
 	chatField.widthInChars = 25;
-	Key_SetCatcher( Key_GetCatcher( ) ^ KEYCATCH_MESSAGE );
+	Key_SetCatcher(Key_GetCatcher() ^ KEYCATCH_MESSAGE);
 }
 
 /*
@@ -127,14 +127,14 @@ void Con_MessageMode3_f (void)
 	}
 
 	chat_playerNum = CGVM_CrosshairPlayer();
-	if ( chat_playerNum < 0 || chat_playerNum >= MAX_CLIENTS ) {
+	if (chat_playerNum < 0 || chat_playerNum >= MAX_CLIENTS) {
 		chat_playerNum = -1;
 		return;
 	}
 	chat_team = qfalse;
-	Field_Clear( &chatField );
+	Field_Clear(&chatField);
 	chatField.widthInChars = 30;
-	Key_SetCatcher( Key_GetCatcher( ) ^ KEYCATCH_MESSAGE );
+	Key_SetCatcher(Key_GetCatcher() ^ KEYCATCH_MESSAGE);
 }
 
 /*
@@ -151,14 +151,14 @@ void Con_MessageMode4_f (void)
 	}
 
 	chat_playerNum = CGVM_LastAttacker();
-	if ( chat_playerNum < 0 || chat_playerNum >= MAX_CLIENTS ) {
+	if (chat_playerNum < 0 || chat_playerNum >= MAX_CLIENTS) {
 		chat_playerNum = -1;
 		return;
 	}
 	chat_team = qfalse;
-	Field_Clear( &chatField );
+	Field_Clear(&chatField);
 	chatField.widthInChars = 30;
-	Key_SetCatcher( Key_GetCatcher( ) ^ KEYCATCH_MESSAGE );
+	Key_SetCatcher(Key_GetCatcher() ^ KEYCATCH_MESSAGE);
 }
 
 /*
@@ -169,7 +169,7 @@ Con_Clear_f
 void Con_Clear_f (void) {
 	int		i;
 
-	for ( i = 0 ; i < CON_TEXTSIZE ; i++ ) {
+	for (i = 0 ; i < CON_TEXTSIZE ; i++) {
 		con.text[i] = CON_BLANK;
 	}
 
@@ -204,23 +204,23 @@ void Con_Dump_f (void)
 		return;
 	}
 
-	Q_strncpyz( filename, Cmd_Argv( 1 ), sizeof( filename ) );
-	COM_DefaultExtension( filename, sizeof( filename ), ".txt" );
+	Q_strncpyz(filename, Cmd_Argv(1), sizeof(filename));
+	COM_DefaultExtension(filename, sizeof(filename), ".txt");
 
 	if(!COM_CompareExtension(filename, ".txt"))
 	{
-		Com_Printf( "Con_Dump_f: Only the \".txt\" extension is supported by this command!\n" );
+		Com_Printf("Con_Dump_f: Only the \".txt\" extension is supported by this command!\n");
 		return;
 	}
 
-	f = FS_FOpenFileWrite( filename );
+	f = FS_FOpenFileWrite(filename);
 	if (!f)
 	{
 		Com_Printf ("ERROR: couldn't open %s.\n", filename);
 		return;
 	}
 
-	Com_Printf ("Dumped console text to %s.\n", filename );
+	Com_Printf ("Dumped console text to %s.\n", filename);
 
 	// skip empty lines
 	for (l = 1, empty = qtrue ; l < con.totallines && empty ; l++)
@@ -232,7 +232,7 @@ void Con_Dump_f (void)
 				empty = qfalse;
 	}
 
-	for ( ; l < con.totallines ; l++)
+	for (; l < con.totallines ; l++)
 	{
 		lineLen = 0;
 		i = 0;
@@ -248,7 +248,7 @@ void Con_Dump_f (void)
 		}
 
 		// Concatenate wrapped lines
-		for ( ; l < con.totallines ; l++)
+		for (; l < con.totallines ; l++)
 		{
 			line = ((con.current + l) % con.totallines) * con.rowwidth;
 
@@ -276,7 +276,7 @@ void Con_Dump_f (void)
 #endif
 	}
 
-	FS_FCloseFile( f );
+	FS_FCloseFile(f);
 }
 
 
@@ -285,10 +285,10 @@ void Con_Dump_f (void)
 Con_ClearNotify
 ================
 */
-void Con_ClearNotify( void ) {
+void Con_ClearNotify(void) {
 	int		i;
 
-	for ( i = 0 ; i < NUM_CON_TIMES ; i++ ) {
+	for (i = 0 ; i < NUM_CON_TIMES ; i++) {
 		con.times[i] = 0;
 	}
 }
@@ -475,9 +475,9 @@ void Con_CheckResize (void)
 Cmd_CompleteTxtName
 ==================
 */
-void Cmd_CompleteTxtName( char *args, int argNum ) {
-	if ( argNum == 2 )
-		Field_CompleteFilename( "", "txt", qfalse, qtrue );
+void Cmd_CompleteTxtName(char *args, int argNum) {
+	if (argNum == 2)
+		Field_CompleteFilename("", "txt", qfalse, qtrue);
 }
 
 /*
@@ -499,22 +499,22 @@ void Con_Init (void) {
 	con_scale = Cvar_Get ("con_scale", "1", CVAR_ARCHIVE_ND, "Scale console font");
 	con_timestamps = Cvar_Get ("con_timestamps", "0", CVAR_ARCHIVE_ND, "Display timestamps infront of console lines");
 
-	Field_Clear( &g_consoleField );
+	Field_Clear(&g_consoleField);
 	g_consoleField.widthInChars = g_console_field_width;
-	for ( i = 0 ; i < COMMAND_HISTORY ; i++ ) {
-		Field_Clear( &historyEditLines[i] );
+	for (i = 0 ; i < COMMAND_HISTORY ; i++) {
+		Field_Clear(&historyEditLines[i]);
 		historyEditLines[i].widthInChars = g_console_field_width;
 	}
 
-	Cmd_AddCommand( "toggleconsole", Con_ToggleConsole_f, "Show/hide console" );
-	Cmd_AddCommand( "togglemenu", Con_ToggleMenu_f, "Show/hide the menu" );
-	Cmd_AddCommand( "messagemode", Con_MessageMode_f, "Global Chat" );
-	Cmd_AddCommand( "messagemode2", Con_MessageMode2_f, "Team Chat" );
-	Cmd_AddCommand( "messagemode3", Con_MessageMode3_f, "Private Chat with Target Player" );
-	Cmd_AddCommand( "messagemode4", Con_MessageMode4_f, "Private Chat with Last Attacker" );
-	Cmd_AddCommand( "clear", Con_Clear_f, "Clear console text" );
-	Cmd_AddCommand( "condump", Con_Dump_f, "Dump console text to file" );
-	Cmd_SetCommandCompletionFunc( "condump", Cmd_CompleteTxtName );
+	Cmd_AddCommand("toggleconsole", Con_ToggleConsole_f, "Show/hide console");
+	Cmd_AddCommand("togglemenu", Con_ToggleMenu_f, "Show/hide the menu");
+	Cmd_AddCommand("messagemode", Con_MessageMode_f, "Global Chat");
+	Cmd_AddCommand("messagemode2", Con_MessageMode2_f, "Team Chat");
+	Cmd_AddCommand("messagemode3", Con_MessageMode3_f, "Private Chat with Target Player");
+	Cmd_AddCommand("messagemode4", Con_MessageMode4_f, "Private Chat with Last Attacker");
+	Cmd_AddCommand("clear", Con_Clear_f, "Clear console text");
+	Cmd_AddCommand("condump", Con_Dump_f, "Dump console text to file");
+	Cmd_SetCommandCompletionFunc("condump", Cmd_CompleteTxtName);
 
 	//Initialize values on first print
 	con.initialized = qfalse;
@@ -549,16 +549,16 @@ static void Con_Linefeed (qboolean skipnotify)
 
 	// print timestamp on the PREVIOUS line
 	{
-		time_t t = time( NULL );
-		struct tm *tms = localtime( &t );
+		time_t t = time(NULL);
+		struct tm *tms = localtime(&t);
 		char	timestamp[CON_TIMESTAMP_LEN + 1];
 		const unsigned char color = ColorIndex(COLOR_GREY);
 
 		Com_sprintf(timestamp, sizeof(timestamp), "[%02d:%02d:%02d] ",
 			tms->tm_hour, tms->tm_min, tms->tm_sec);
 
-		for ( i = 0; i < CON_TIMESTAMP_LEN; i++ ) {
-			con.text[line + i].f = { color, timestamp[i] };
+		for (i = 0; i < CON_TIMESTAMP_LEN; i++) {
+			con.text[line + i].f = {color, timestamp[i]};
 		}
 	}
 
@@ -574,7 +574,7 @@ static void Con_Linefeed (qboolean skipnotify)
 
 	line = (con.current % con.totallines) * con.rowwidth;
 
-	for ( i = 0; i < con.rowwidth; i++ )
+	for (i = 0; i < con.rowwidth; i++)
 		con.text[line + i] = CON_BLANK;
 }
 
@@ -587,7 +587,7 @@ All console printing must go through this in order to be logged to disk
 If no console is visible, the text will appear at the top of the game window
 ================
 */
-void CL_ConsolePrint( const char *txt) {
+void CL_ConsolePrint(const char *txt) {
 	int		y;
 	char			c;
 	unsigned char	color;
@@ -596,17 +596,17 @@ void CL_ConsolePrint( const char *txt) {
 
 	// TTimo - prefix for text that shows up in console but not in notify
 	// backported from RTCW
-	if ( !Q_strncmp( txt, "[skipnotify]", 12 ) ) {
+	if (!Q_strncmp(txt, "[skipnotify]", 12)) {
 		skipnotify = qtrue;
 		txt += 12;
 	}
-	if ( txt[0] == '*' ) {
+	if (txt[0] == '*') {
 		skipnotify = qtrue;
 		txt += 1;
 	}
 
 	// for some demos we don't want to ever show anything on the console
-	if ( cl_noprint && cl_noprint->integer ) {
+	if (cl_noprint && cl_noprint->integer) {
 		return;
 	}
 
@@ -616,9 +616,9 @@ void CL_ConsolePrint( const char *txt) {
 
 	color = ColorIndex(COLOR_WHITE);
 
-	while ( (c = (unsigned char) *txt) != 0 ) {
-		if ( Q_IsColorString( (unsigned char*) txt ) ) {
-			color = ColorIndex( *(txt+1) );
+	while ((c = (unsigned char) *txt) != 0) {
+		if (Q_IsColorString((unsigned char*) txt)) {
+			color = ColorIndex(*(txt+1));
 			txt += 2;
 			continue;
 		}
@@ -638,11 +638,11 @@ void CL_ConsolePrint( const char *txt) {
 
 			if (con.x == con.rowwidth - CON_TIMESTAMP_LEN - 1) {
 				con.text[y * con.rowwidth + CON_TIMESTAMP_LEN + con.x] = CON_WRAP;
-				Con_Linefeed( skipnotify );
+				Con_Linefeed(skipnotify);
 				y = con.current % con.totallines;
 			}
 
-			con.text[y * con.rowwidth + CON_TIMESTAMP_LEN + con.x].f = { color, c };
+			con.text[y * con.rowwidth + CON_TIMESTAMP_LEN + con.x].f = {color, c};
 			con.x++;
 			break;
 		}
@@ -651,12 +651,12 @@ void CL_ConsolePrint( const char *txt) {
 
 	// mark time for transparent overlay
 
-	if (con.current >= 0 )
+	if (con.current >= 0)
 	{
 		// NERVE - SMF
-		if ( skipnotify ) {
+		if (skipnotify) {
 			prev = con.current % NUM_CON_TIMES - 1;
-			if ( prev < 0 )
+			if (prev < 0)
 				prev = NUM_CON_TIMES - 1;
 			con.times[prev] = 0;
 		}
@@ -686,27 +686,27 @@ Draw the editline after a ] prompt
 void Con_DrawInput (void) {
 	int		y;
 
-	if ( cls.state != CA_DISCONNECTED && !(Key_GetCatcher( ) & KEYCATCH_CONSOLE ) ) {
+	if (cls.state != CA_DISCONNECTED && !(Key_GetCatcher() & KEYCATCH_CONSOLE)) {
 		return;
 	}
 
-	y = con.vislines - ( con.charHeight * (re->Language_IsAsian() ? 1.5 : 2) );
+	y = con.vislines - (con.charHeight * (re->Language_IsAsian() ? 1.5 : 2));
 
-	re->SetColor( con.color );
+	re->SetColor(con.color);
 
-	Field_Draw( &g_consoleField, 2 * con.charWidth, y, qtrue, qtrue );
+	Field_Draw(&g_consoleField, 2 * con.charWidth, y, qtrue, qtrue);
 
-	SCR_DrawSmallChar( con.charWidth, y, CONSOLE_PROMPT_CHAR );
+	SCR_DrawSmallChar(con.charWidth, y, CONSOLE_PROMPT_CHAR);
 
-	re->SetColor( g_color_table[ColorIndex(COLOR_GREY)] );
+	re->SetColor(g_color_table[ColorIndex(COLOR_GREY)]);
 
-	if ( g_consoleField.scroll > 0 )
-		SCR_DrawSmallChar( 0, y, CON_SCROLL_L_CHAR );
+	if (g_consoleField.scroll > 0)
+		SCR_DrawSmallChar(0, y, CON_SCROLL_L_CHAR);
 
-	int len = Q_PrintStrlen( g_consoleField.buffer );
-	int pos = Q_PrintStrLenTo( g_consoleField.buffer, g_consoleField.scroll, NULL );
-	if ( pos + g_consoleField.widthInChars < len )
-		SCR_DrawSmallChar( cls.glconfig.vidWidth - con.charWidth, y, CON_SCROLL_R_CHAR );
+	int len = Q_PrintStrlen(g_consoleField.buffer);
+	int pos = Q_PrintStrLenTo(g_consoleField.buffer, g_consoleField.scroll, NULL);
+	if (pos + g_consoleField.widthInChars < len)
+		SCR_DrawSmallChar(cls.glconfig.vidWidth - con.charWidth, y, CON_SCROLL_R_CHAR);
 }
 
 
@@ -730,7 +730,7 @@ void Con_DrawNotify (void)
 	const char* chattext;
 
 	currentColor = 7;
-	re->SetColor( g_color_table[currentColor] );
+	re->SetColor(g_color_table[currentColor]);
 
 	int iFontIndex = cls.consoleFont;
 	float fFontScale = 1.0f;
@@ -758,7 +758,7 @@ void Con_DrawNotify (void)
 		if (!con_timestamps->integer)
 			text += CON_TIMESTAMP_LEN;
 
-		if (cl.snap.ps.pm_type != PM_INTERMISSION && Key_GetCatcher( ) & (KEYCATCH_UI | KEYCATCH_CGAME) ) {
+		if (cl.snap.ps.pm_type != PM_INTERMISSION && Key_GetCatcher() & (KEYCATCH_UI | KEYCATCH_CGAME)) {
 			continue;
 		}
 
@@ -780,9 +780,9 @@ void Con_DrawNotify (void)
 			sTemp[0] = '\0';
 			for (x = 0 ; x < con.linewidth ; x++)
 			{
-				if ( text[x].f.color != currentColor ) {
+				if (text[x].f.color != currentColor) {
 					currentColor = text[x].f.color;
-					strcat(sTemp,va("^%i", currentColor ));
+					strcat(sTemp,va("^%i", currentColor));
 				}
 				strcat(sTemp,va("%c",text[x].f.character));
 			}
@@ -797,47 +797,47 @@ void Con_DrawNotify (void)
 		else
 		{
 			for (x = 0 ; x < con.linewidth ; x++) {
-				if ( text[x].f.character == ' ' ) {
+				if (text[x].f.character == ' ') {
 					continue;
 				}
-				if ( text[x].f.color != currentColor ) {
+				if (text[x].f.color != currentColor) {
 					currentColor = text[x].f.color;
-					re->SetColor( g_color_table[currentColor] );
+					re->SetColor(g_color_table[currentColor]);
 				}
 				if (!cl_conXOffset)
 				{
 					cl_conXOffset = Cvar_Get ("cl_conXOffset", "0", 0);
 				}
-				SCR_DrawSmallChar( (int)(cl_conXOffset->integer + (x+1)*con.charWidth), v, text[x].f.character );
+				SCR_DrawSmallChar((int)(cl_conXOffset->integer + (x+1)*con.charWidth), v, text[x].f.character);
 			}
 
 			v += con.charHeight;
 		}
 	}
 
-	re->SetColor( NULL );
+	re->SetColor(NULL);
 
-	if (Key_GetCatcher( ) & (KEYCATCH_UI | KEYCATCH_CGAME) ) {
+	if (Key_GetCatcher() & (KEYCATCH_UI | KEYCATCH_CGAME)) {
 		return;
 	}
 
 	// draw the chat line
-	if ( Key_GetCatcher( ) & KEYCATCH_MESSAGE )
+	if (Key_GetCatcher() & KEYCATCH_MESSAGE)
 	{
 		if (chat_team)
 		{
 			chattext = SE_GetString("MP_SVGAME", "SAY_TEAM");
-			SCR_DrawBigString (8, v, chattext, 1.0f, qfalse );
+			SCR_DrawBigString (8, v, chattext, 1.0f, qfalse);
 			skip = strlen(chattext)+1;
 		}
 		else
 		{
 			chattext = SE_GetString("MP_SVGAME", "SAY");
-			SCR_DrawBigString (8, v, chattext, 1.0f, qfalse );
+			SCR_DrawBigString (8, v, chattext, 1.0f, qfalse);
 			skip = strlen(chattext)+1;
 		}
 
-		Field_BigDraw( &chatField, skip * BIGCHAR_WIDTH, v, qtrue, qtrue );
+		Field_BigDraw(&chatField, skip * BIGCHAR_WIDTH, v, qtrue, qtrue);
 
 		v += BIGCHAR_HEIGHT;
 	}
@@ -851,7 +851,7 @@ Con_DrawSolidConsole
 Draws the console with the solid background
 ================
 */
-void Con_DrawSolidConsole( float frac ) {
+void Con_DrawSolidConsole(float frac) {
 	int				i, x, y;
 	int				rows;
 	conChar_t		*text;
@@ -864,12 +864,12 @@ void Con_DrawSolidConsole( float frac ) {
 	if (lines <= 0)
 		return;
 
-	if (lines > cls.glconfig.vidHeight )
+	if (lines > cls.glconfig.vidHeight)
 		lines = cls.glconfig.vidHeight;
 
 	// draw the background
 	y = (int) (frac * SCREEN_HEIGHT - 2);
-	if ( y < 1 ) {
+	if (y < 1) {
 		y = 0;
 	}
 	else {
@@ -884,19 +884,19 @@ void Con_DrawSolidConsole( float frac ) {
 		{
 			re->SetColor(NULL);
 		}
-		SCR_DrawPic( 0, 0, SCREEN_WIDTH, (float) y, cls.consoleShader );
+		SCR_DrawPic(0, 0, SCREEN_WIDTH, (float) y, cls.consoleShader);
 	}
 
 	// draw the bottom bar and version number
 
-	re->SetColor( console_color );
-	re->DrawStretchPic( 0, y, SCREEN_WIDTH, 2, 0, 0, 0, 0, cls.whiteShader );
+	re->SetColor(console_color);
+	re->DrawStretchPic(0, y, SCREEN_WIDTH, 2, 0, 0, 0, 0, cls.whiteShader);
 
-	i = strlen( JK_VERSION );
+	i = strlen(JK_VERSION);
 
 	for (x=0 ; x<i ; x++) {
-		SCR_DrawSmallChar( cls.glconfig.vidWidth - ( i - x + 1 ) * con.charWidth,
-			(lines-(con.charHeight+con.charHeight/2)), JK_VERSION[x] );
+		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x + 1) * con.charWidth,
+			(lines-(con.charHeight+con.charHeight/2)), JK_VERSION[x]);
 	}
 
 	// draw the input prompt, user text, and cursor if desired
@@ -912,21 +912,21 @@ void Con_DrawSolidConsole( float frac ) {
 	if (con.display != con.current)
 	{
 	// draw arrows to show the buffer is backscrolled
-		re->SetColor( console_color );
+		re->SetColor(console_color);
 		for (x=0 ; x<con.linewidth ; x+=4)
-			SCR_DrawSmallChar( (x+1)*con.charWidth, y, '^' );
+			SCR_DrawSmallChar((x+1)*con.charWidth, y, '^');
 		y -= con.charHeight;
 		rows--;
 	}
 
 	row = con.display;
 
-	if ( con.x == 0 ) {
+	if (con.x == 0) {
 		row--;
 	}
 
 	currentColor = 7;
-	re->SetColor( g_color_table[currentColor] );
+	re->SetColor(g_color_table[currentColor]);
 
 	int iFontIndex = cls.consoleFont;
 	float fFontScale = 1.0f;
@@ -964,9 +964,9 @@ void Con_DrawSolidConsole( float frac ) {
 			sTemp[0] = '\0';
 			for (x = 0 ; x < con.linewidth + 1 ; x++)
 			{
-				if ( text[x].f.color != currentColor ) {
+				if (text[x].f.color != currentColor) {
 					currentColor = text[x].f.color;
-					strcat(sTemp,va("^%i", currentColor ));
+					strcat(sTemp,va("^%i", currentColor));
 				}
 				strcat(sTemp,va("%c",text[x].f.character));
 			}
@@ -979,20 +979,20 @@ void Con_DrawSolidConsole( float frac ) {
 		else
 		{
 			for (x = 0; x < con.linewidth + 1 ; x++) {
-				if ( text[x].f.character == ' ' ) {
+				if (text[x].f.character == ' ') {
 					continue;
 				}
 
-				if ( text[x].f.color != currentColor ) {
+				if (text[x].f.color != currentColor) {
 					currentColor = text[x].f.color;
-					re->SetColor( g_color_table[currentColor] );
+					re->SetColor(g_color_table[currentColor]);
 				}
-				SCR_DrawSmallChar( (x+1)*con.charWidth, y, text[x].f.character );
+				SCR_DrawSmallChar((x+1)*con.charWidth, y, text[x].f.character);
 			}
 		}
 	}
 
-	re->SetColor( NULL );
+	re->SetColor(NULL);
 }
 
 
@@ -1002,23 +1002,23 @@ void Con_DrawSolidConsole( float frac ) {
 Con_DrawConsole
 ==================
 */
-void Con_DrawConsole( void ) {
+void Con_DrawConsole(void) {
 	// check for console width changes from a vid mode change
 	Con_CheckResize ();
 
 	// if disconnected, render console full screen
-	if ( cls.state == CA_DISCONNECTED ) {
-		if ( !( Key_GetCatcher( ) & (KEYCATCH_UI | KEYCATCH_CGAME)) ) {
-			Con_DrawSolidConsole( 1.0 );
+	if (cls.state == CA_DISCONNECTED) {
+		if (!(Key_GetCatcher() & (KEYCATCH_UI | KEYCATCH_CGAME))) {
+			Con_DrawSolidConsole(1.0);
 			return;
 		}
 	}
 
-	if ( con.displayFrac ) {
-		Con_DrawSolidConsole( con.displayFrac );
+	if (con.displayFrac) {
+		Con_DrawSolidConsole(con.displayFrac);
 	} else {
 		// draw notify lines
-		if ( cls.state == CA_ACTIVE ) {
+		if (cls.state == CA_ACTIVE) {
 			Con_DrawNotify ();
 		}
 	}
@@ -1035,7 +1035,7 @@ Scroll it up or down
 */
 void Con_RunConsole (void) {
 	// decide on the destination height of the console
-	if ( Key_GetCatcher( ) & KEYCATCH_CONSOLE )
+	if (Key_GetCatcher() & KEYCATCH_CONSOLE)
 		con.finalFrac = con_height->value;
 	else
 		con.finalFrac = 0;				// none visible
@@ -1058,39 +1058,39 @@ void Con_RunConsole (void) {
 }
 
 
-void Con_PageUp( void ) {
+void Con_PageUp(void) {
 	con.display -= 2;
-	if ( con.current - con.display >= con.totallines ) {
+	if (con.current - con.display >= con.totallines) {
 		con.display = con.current - con.totallines + 1;
 	}
 }
 
-void Con_PageDown( void ) {
+void Con_PageDown(void) {
 	con.display += 2;
 	if (con.display > con.current) {
 		con.display = con.current;
 	}
 }
 
-void Con_Top( void ) {
+void Con_Top(void) {
 	con.display = con.totallines;
-	if ( con.current - con.display >= con.totallines ) {
+	if (con.current - con.display >= con.totallines) {
 		con.display = con.current - con.totallines + 1;
 	}
 }
 
-void Con_Bottom( void ) {
+void Con_Bottom(void) {
 	con.display = con.current;
 }
 
 
-void Con_Close( void ) {
-	if ( !com_cl_running->integer ) {
+void Con_Close(void) {
+	if (!com_cl_running->integer) {
 		return;
 	}
-	Field_Clear( &g_consoleField );
+	Field_Clear(&g_consoleField);
 	Con_ClearNotify ();
-	Key_SetCatcher( Key_GetCatcher( ) & ~KEYCATCH_CONSOLE );
+	Key_SetCatcher(Key_GetCatcher() & ~KEYCATCH_CONSOLE);
 	con.finalFrac = 0;				// none visible
 	con.displayFrac = 0;
 }

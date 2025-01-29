@@ -116,7 +116,7 @@ emit_byte (j_compress_ptr cinfo, int val)
   if (--dest->free_in_buffer == 0) {
     if (! (*dest->empty_output_buffer) (cinfo))
       ERREXIT(cinfo, JERR_CANT_SUSPEND);
-  }
+ }
 }
 
 
@@ -158,7 +158,7 @@ emit_dqt (j_compress_ptr cinfo, int index)
   for (i = 0; i <= cinfo->lim_Se; i++) {
     if (qtbl->quantval[cinfo->natural_order[i]] > 255)
       prec = 1;
-  }
+ }
 
   if (! qtbl->sent_table) {
     emit_marker(cinfo, M_DQT);
@@ -174,10 +174,10 @@ emit_dqt (j_compress_ptr cinfo, int index)
       if (prec)
 	emit_byte(cinfo, (int) (qval >> 8));
       emit_byte(cinfo, (int) (qval & 0xFF));
-    }
+   }
 
     qtbl->sent_table = TRUE;
-  }
+ }
 
   return prec;
 }
@@ -193,9 +193,9 @@ emit_dht (j_compress_ptr cinfo, int index, boolean is_ac)
   if (is_ac) {
     htbl = cinfo->ac_huff_tbl_ptrs[index];
     index += 0x10;		/* output index has AC bit set */
-  } else {
+ } else {
     htbl = cinfo->dc_huff_tbl_ptrs[index];
-  }
+ }
 
   if (htbl == NULL)
     ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, index);
@@ -217,7 +217,7 @@ emit_dht (j_compress_ptr cinfo, int index, boolean is_ac)
       emit_byte(cinfo, htbl->huffval[i]);
     
     htbl->sent_table = TRUE;
-  }
+ }
 }
 
 
@@ -244,7 +244,7 @@ emit_dac (j_compress_ptr cinfo)
     /* AC needs no table when not present */
     if (cinfo->Se)
       ac_in_use[compptr->ac_tbl_no] = 1;
-  }
+ }
 
   length = 0;
   for (i = 0; i < NUM_ARITH_TBLS; i++)
@@ -259,13 +259,13 @@ emit_dac (j_compress_ptr cinfo)
       if (dc_in_use[i]) {
 	emit_byte(cinfo, i);
 	emit_byte(cinfo, cinfo->arith_dc_L[i] + (cinfo->arith_dc_U[i]<<4));
-      }
+     }
       if (ac_in_use[i]) {
 	emit_byte(cinfo, i + 0x10);
 	emit_byte(cinfo, cinfo->arith_ac_K[i]);
-      }
-    }
-  }
+     }
+   }
+ }
 #endif /* C_ARITH_CODING_SUPPORTED */
 }
 
@@ -340,7 +340,7 @@ emit_sof (j_compress_ptr cinfo, JPEG_MARKER code)
     emit_byte(cinfo, compptr->component_id);
     emit_byte(cinfo, (compptr->h_samp_factor << 4) + compptr->v_samp_factor);
     emit_byte(cinfo, compptr->quant_tbl_no);
-  }
+ }
 }
 
 
@@ -371,7 +371,7 @@ emit_sos (j_compress_ptr cinfo)
     ta = cinfo->Se ? compptr->ac_tbl_no : 0;
 
     emit_byte(cinfo, (td << 4) + ta);
-  }
+ }
 
   emit_byte(cinfo, cinfo->Ss);
   emit_byte(cinfo, cinfo->Se);
@@ -472,7 +472,7 @@ emit_adobe_app14 (j_compress_ptr cinfo)
   default:
     emit_byte(cinfo, 0);	/* Color transform = 0 */
     break;
-  }
+ }
 }
 
 
@@ -555,7 +555,7 @@ write_frame_header (j_compress_ptr cinfo)
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
        ci++, compptr++) {
     prec += emit_dqt(cinfo, compptr->quant_tbl_no);
-  }
+ }
   /* now prec is nonzero iff there are any 16-bit quant tables. */
 
   /* Check for a non-baseline specification.
@@ -564,19 +564,19 @@ write_frame_header (j_compress_ptr cinfo)
   if (cinfo->arith_code || cinfo->progressive_mode ||
       cinfo->data_precision != 8 || cinfo->block_size != DCTSIZE) {
     is_baseline = FALSE;
-  } else {
+ } else {
     is_baseline = TRUE;
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
 	 ci++, compptr++) {
       if (compptr->dc_tbl_no > 1 || compptr->ac_tbl_no > 1)
 	is_baseline = FALSE;
-    }
+   }
     if (prec && is_baseline) {
       is_baseline = FALSE;
       /* If it's baseline except for quantizer size, warn the user */
       TRACEMS(cinfo, 0, JTRC_16BIT_TABLES);
-    }
-  }
+   }
+ }
 
   /* Emit the proper SOF marker */
   if (cinfo->arith_code) {
@@ -584,14 +584,14 @@ write_frame_header (j_compress_ptr cinfo)
       emit_sof(cinfo, M_SOF10); /* SOF code for progressive arithmetic */
     else
       emit_sof(cinfo, M_SOF9);  /* SOF code for sequential arithmetic */
-  } else {
+ } else {
     if (cinfo->progressive_mode)
       emit_sof(cinfo, M_SOF2);	/* SOF code for progressive Huffman */
     else if (is_baseline)
       emit_sof(cinfo, M_SOF0);	/* SOF code for baseline implementation */
     else
       emit_sof(cinfo, M_SOF1);	/* SOF code for non-baseline Huffman file */
-  }
+ }
 
   /* Check to emit LSE inverse color transform specification marker */
   if (cinfo->color_transform)
@@ -622,7 +622,7 @@ write_scan_header (j_compress_ptr cinfo)
      * worth worrying about.
      */
     emit_dac(cinfo);
-  } else {
+ } else {
     /* Emit Huffman tables.
      * Note that emit_dht() suppresses any duplicate tables.
      */
@@ -634,8 +634,8 @@ write_scan_header (j_compress_ptr cinfo)
       /* AC needs no table when not present */
       if (cinfo->Se)
 	emit_dht(cinfo, compptr->ac_tbl_no, TRUE);
-    }
-  }
+   }
+ }
 
   /* Emit DRI if required --- note that DRI value could change for each scan.
    * We avoid wasting space with unnecessary DRIs, however.
@@ -643,7 +643,7 @@ write_scan_header (j_compress_ptr cinfo)
   if (cinfo->restart_interval != marker->last_restart_interval) {
     emit_dri(cinfo);
     marker->last_restart_interval = cinfo->restart_interval;
-  }
+ }
 
   emit_sos(cinfo);
 }
@@ -677,7 +677,7 @@ write_tables_only (j_compress_ptr cinfo)
   for (i = 0; i < NUM_QUANT_TBLS; i++) {
     if (cinfo->quant_tbl_ptrs[i] != NULL)
       (void) emit_dqt(cinfo, i);
-  }
+ }
 
   if (! cinfo->arith_code) {
     for (i = 0; i < NUM_HUFF_TBLS; i++) {
@@ -685,8 +685,8 @@ write_tables_only (j_compress_ptr cinfo)
 	emit_dht(cinfo, i, FALSE);
       if (cinfo->ac_huff_tbl_ptrs[i] != NULL)
 	emit_dht(cinfo, i, TRUE);
-    }
-  }
+   }
+ }
 
   emit_marker(cinfo, M_EOI);
 }

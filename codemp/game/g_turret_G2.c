@@ -24,10 +24,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "ghoul2/G2.h"
 #include "qcommon/q_shared.h"
 
-void G_SetEnemy( gentity_t *self, gentity_t *enemy );
-void finish_spawning_turretG2( gentity_t *base );
-void ObjectDie (gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath );
-void turretG2_base_use( gentity_t *self, gentity_t *other, gentity_t *activator );
+void G_SetEnemy(gentity_t *self, gentity_t *enemy);
+void finish_spawning_turretG2(gentity_t *base);
+void ObjectDie (gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath);
+void turretG2_base_use(gentity_t *self, gentity_t *other, gentity_t *activator);
 
 
 #define SPF_TURRETG2_CANRESPAWN	4
@@ -56,14 +56,14 @@ void G2Tur_SetBoneAngles(gentity_t *ent, char *bone, vec3_t angles)
 	while (thebone)
 	{
 		if (!*thebone && !firstFree)
-		{ //if the value is 0 then this index is clear, we can use it if we don't find the bone we want already existing.
+		{//if the value is 0 then this index is clear, we can use it if we don't find the bone we want already existing.
 			firstFree = thebone;
 			freeBoneVec = boneVector;
 		}
 		else if (*thebone)
 		{
 			if (*thebone == boneIndex)
-			{ //this is it
+			{//this is it
 				break;
 			}
 		}
@@ -92,9 +92,9 @@ void G2Tur_SetBoneAngles(gentity_t *ent, char *bone, vec3_t angles)
 	}
 
 	if (!thebone)
-	{ //didn't find it, create it
+	{//didn't find it, create it
 		if (!firstFree)
-		{ //no free bones.. can't do a thing then.
+		{//no free bones.. can't do a thing then.
 			Com_Printf("WARNING: NPC has no free bone indexes\n");
 			return;
 		}
@@ -126,7 +126,7 @@ void G2Tur_SetBoneAngles(gentity_t *ent, char *bone, vec3_t angles)
 	//first 3 bits is forward, second 3 bits is right, third 3 bits is up
 	ent->s.boneOrient = ((forward)|(right<<3)|(up<<6));
 
-	trap->G2API_SetBoneAngles( ent->ghoul2,
+	trap->G2API_SetBoneAngles(ent->ghoul2,
 					0,
 					bone,
 					angles,
@@ -136,24 +136,24 @@ void G2Tur_SetBoneAngles(gentity_t *ent, char *bone, vec3_t angles)
 					forward,
 					NULL,
 					100,
-					level.time );
+					level.time);
 }
 
-void turretG2_set_models( gentity_t *self, qboolean dying )
+void turretG2_set_models(gentity_t *self, qboolean dying)
 {
-	if ( dying )
+	if (dying)
 	{
-		if ( !(self->spawnflags&SPF_TURRETG2_TURBO) )
+		if (!(self->spawnflags&SPF_TURRETG2_TURBO))
 		{
-			self->s.modelindex = G_ModelIndex( name2 );
-			self->s.modelindex2 = G_ModelIndex( name );
+			self->s.modelindex = G_ModelIndex(name2);
+			self->s.modelindex2 = G_ModelIndex(name);
 		}
 
-		trap->G2API_RemoveGhoul2Model( &self->ghoul2, 0 );
-		G_KillG2Queue( self->s.number );
+		trap->G2API_RemoveGhoul2Model(&self->ghoul2, 0);
+		G_KillG2Queue(self->s.number);
 		self->s.modelGhoul2 = 0;
 		/*
-		trap->G2API_InitGhoul2Model( &self->ghoul2,
+		trap->G2API_InitGhoul2Model(&self->ghoul2,
 									name2,
 									0, //base->s.modelindex,
 									//note, this is not the same kind of index - this one's referring to the actual
@@ -167,12 +167,12 @@ void turretG2_set_models( gentity_t *self, qboolean dying )
 	}
 	else
 	{
-		if ( !(self->spawnflags&SPF_TURRETG2_TURBO) )
+		if (!(self->spawnflags&SPF_TURRETG2_TURBO))
 		{
-			self->s.modelindex = G_ModelIndex( name );
-			self->s.modelindex2 = G_ModelIndex( name2 );
+			self->s.modelindex = G_ModelIndex(name);
+			self->s.modelindex2 = G_ModelIndex(name2);
 			//set the new onw
-			trap->G2API_InitGhoul2Model( &self->ghoul2,
+			trap->G2API_InitGhoul2Model(&self->ghoul2,
 										name,
 										0, //base->s.modelindex,
 										//note, this is not the same kind of index - this one's referring to the actual
@@ -185,9 +185,9 @@ void turretG2_set_models( gentity_t *self, qboolean dying )
 		}
 		else
 		{
-			self->s.modelindex = G_ModelIndex( name3 );
+			self->s.modelindex = G_ModelIndex(name3);
 			//set the new onw
-			trap->G2API_InitGhoul2Model( &self->ghoul2,
+			trap->G2API_InitGhoul2Model(&self->ghoul2,
 										name3,
 										0, //base->s.modelindex,
 										//note, this is not the same kind of index - this one's referring to the actual
@@ -200,7 +200,7 @@ void turretG2_set_models( gentity_t *self, qboolean dying )
 		}
 
 		self->s.modelGhoul2 = 1;
-		if ( (self->spawnflags&SPF_TURRETG2_TURBO) )
+		if ((self->spawnflags&SPF_TURRETG2_TURBO))
 		{//larger
 			self->s.g2radius = 128;
 		}
@@ -209,22 +209,22 @@ void turretG2_set_models( gentity_t *self, qboolean dying )
 			self->s.g2radius = 80;
 		}
 
-		if ( (self->spawnflags&SPF_TURRETG2_TURBO) )
+		if ((self->spawnflags&SPF_TURRETG2_TURBO))
 		{//different pitch bone and muzzle flash points
 			G2Tur_SetBoneAngles(self, "pitch", vec3_origin);
-			self->genericValue11 = trap->G2API_AddBolt( self->ghoul2, 0, "*muzzle1" );
-			self->genericValue12 = trap->G2API_AddBolt( self->ghoul2, 0, "*muzzle2" );
+			self->genericValue11 = trap->G2API_AddBolt(self->ghoul2, 0, "*muzzle1");
+			self->genericValue12 = trap->G2API_AddBolt(self->ghoul2, 0, "*muzzle2");
 		}
 		else
 		{
 			G2Tur_SetBoneAngles(self, "Bone_body", vec3_origin);
-			self->genericValue11 = trap->G2API_AddBolt( self->ghoul2, 0, "*flash03" );
+			self->genericValue11 = trap->G2API_AddBolt(self->ghoul2, 0, "*flash03");
 		}
 	}
 }
 
 //------------------------------------------------------------------------------------------------------------
-void TurretG2Pain( gentity_t *self, gentity_t *attacker, int damage )
+void TurretG2Pain(gentity_t *self, gentity_t *attacker, int damage)
 //------------------------------------------------------------------------------------------------------------
 {
 	if (self->paintarget && self->paintarget[0])
@@ -236,24 +236,24 @@ void TurretG2Pain( gentity_t *self, gentity_t *attacker, int damage )
 		}
 	}
 
-	if ( attacker->client && attacker->client->ps.weapon == WP_DEMP2 )
+	if (attacker->client && attacker->client->ps.weapon == WP_DEMP2)
 	{
 		self->attackDebounceTime = level.time + 2000 + Q_flrand(0.0f, 1.0f) * 500;
 		self->painDebounceTime = self->attackDebounceTime;
 	}
-	if ( !self->enemy )
+	if (!self->enemy)
 	{//react to being hit
-		G_SetEnemy( self, attacker );
+		G_SetEnemy(self, attacker);
 	}
 	//self->s.health = self->health;
 	//mmm..yes..bad.
 }
 
 //------------------------------------------------------------------------------------------------------------
-void turretG2_die ( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath )
+void turretG2_die (gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath)
 //------------------------------------------------------------------------------------------------------------
 {
-	vec3_t	forward = { 0,0,-1 }, pos;
+	vec3_t	forward = {0,0,-1}, pos;
 
 	// Turn off the thinking of the base & use it's targets
 	//self->think = NULL;
@@ -269,58 +269,58 @@ void turretG2_die ( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, 
 	//self->s.owner = MAX_CLIENTS; //not owned by any client
 
 	// hack the effect angle so that explode death can orient the effect properly
-	if ( self->spawnflags & 2 )
+	if (self->spawnflags & 2)
 	{
-		VectorSet( forward, 0, 0, 1 );
+		VectorSet(forward, 0, 0, 1);
 	}
 
-//	VectorCopy( self->r.currentOrigin, self->s.pos.trBase );
+//	VectorCopy(self->r.currentOrigin, self->s.pos.trBase);
 
-	VectorMA( self->r.currentOrigin, 12, forward, pos );
-	G_PlayEffect( EFFECT_EXPLOSION_TURRET, pos, forward );
+	VectorMA(self->r.currentOrigin, 12, forward, pos);
+	G_PlayEffect(EFFECT_EXPLOSION_TURRET, pos, forward);
 
-	if ( self->splashDamage > 0 && self->splashRadius > 0 )
+	if (self->splashDamage > 0 && self->splashRadius > 0)
 	{
-		G_RadiusDamage( self->r.currentOrigin,
+		G_RadiusDamage(self->r.currentOrigin,
 						attacker,
 						self->splashDamage,
 						self->splashRadius,
 						attacker,
 						NULL,
-						MOD_UNKNOWN );
+						MOD_UNKNOWN);
 	}
 
-	if ( self->s.eFlags & EF_SHADER_ANIM )
+	if (self->s.eFlags & EF_SHADER_ANIM)
 	{
 		self->s.frame = 1; // black
 	}
 
 	self->s.weapon = 0; // crosshair code uses this to mark crosshair red
 
-	if ( self->s.modelindex2 )
+	if (self->s.modelindex2)
 	{
 		// switch to damage model if we should
-		turretG2_set_models( self, qtrue );
+		turretG2_set_models(self, qtrue);
 
-		VectorCopy( self->r.currentAngles, self->s.apos.trBase );
-		VectorClear( self->s.apos.trDelta );
+		VectorCopy(self->r.currentAngles, self->s.apos.trBase);
+		VectorClear(self->s.apos.trDelta);
 
-		if ( self->target )
+		if (self->target)
 		{
-			G_UseTargets( self, attacker );
+			G_UseTargets(self, attacker);
 		}
 
 		if (self->spawnflags & SPF_TURRETG2_CANRESPAWN)
 		{//respawn
 			if (self->health < 1 && !self->genericValue5)
-			{ //we are dead, set our respawn delay if we have one
+			{//we are dead, set our respawn delay if we have one
 				self->genericValue5 = level.time + self->count;
 			}
 		}
 	}
 	else
 	{
-		ObjectDie( self, inflictor, attacker, damage, meansOfDeath );
+		ObjectDie(self, inflictor, attacker, damage, meansOfDeath);
 	}
 }
 
@@ -333,7 +333,7 @@ void TurboLaser_SetBoneAnim(gentity_t *eweb, int startFrame, int endFrame)
 	eweb->s.eFlags |= EF_G2ANIMATING;
 
 	if (eweb->s.torsoAnim == startFrame && eweb->s.legsAnim == endFrame)
-	{ //already playing this anim, let's flag it to restart
+	{//already playing this anim, let's flag it to restart
 		eweb->s.torsoFlip = !eweb->s.torsoFlip;
 	}
 	else
@@ -348,48 +348,48 @@ void TurboLaser_SetBoneAnim(gentity_t *eweb, int startFrame, int endFrame)
 		(BONE_ANIM_OVERRIDE_FREEZE|BONE_ANIM_BLEND), 1.0f, level.time, -1, 100);
 }
 
-extern void WP_FireTurboLaserMissile( gentity_t *ent, vec3_t start, vec3_t dir );
+extern void WP_FireTurboLaserMissile(gentity_t *ent, vec3_t start, vec3_t dir);
 //----------------------------------------------------------------
-static void turretG2_fire ( gentity_t *ent, vec3_t start, vec3_t dir )
+static void turretG2_fire (gentity_t *ent, vec3_t start, vec3_t dir)
 //----------------------------------------------------------------
 {
 	vec3_t		org, ang;
 	gentity_t	*bolt;
 
-	if ( (trap->PointContents( start, ent->s.number )&MASK_SHOT) )
+	if ((trap->PointContents(start, ent->s.number)&MASK_SHOT))
 	{
 		return;
 	}
 
-	VectorMA( start, -START_DIS, dir, org ); // dumb....
+	VectorMA(start, -START_DIS, dir, org); // dumb....
 
-	if ( ent->random )
+	if (ent->random)
 	{
-		vectoangles( dir, ang );
-		ang[PITCH] += flrand( -ent->random, ent->random );
-		ang[YAW] += flrand( -ent->random, ent->random );
-		AngleVectors( ang, dir, NULL, NULL );
+		vectoangles(dir, ang);
+		ang[PITCH] += flrand(-ent->random, ent->random);
+		ang[YAW] += flrand(-ent->random, ent->random);
+		AngleVectors(ang, dir, NULL, NULL);
 	}
 
 	vectoangles(dir, ang);
 
-	if ( (ent->spawnflags&SPF_TURRETG2_TURBO) )
+	if ((ent->spawnflags&SPF_TURRETG2_TURBO))
 	{
 		//muzzle flash
-		G_PlayEffectID( ent->genericValue13, org, ang );
-		WP_FireTurboLaserMissile( ent, start, dir );
-		if ( ent->alt_fire )
+		G_PlayEffectID(ent->genericValue13, org, ang);
+		WP_FireTurboLaserMissile(ent, start, dir);
+		if (ent->alt_fire)
 		{
-			TurboLaser_SetBoneAnim( ent, 2, 3 );
+			TurboLaser_SetBoneAnim(ent, 2, 3);
 		}
 		else
 		{
-			TurboLaser_SetBoneAnim( ent, 0, 1 );
+			TurboLaser_SetBoneAnim(ent, 0, 1);
 		}
 	}
 	else
 	{
-		G_PlayEffectID( G_EffectIndex("blaster/muzzle_flash"), org, ang );
+		G_PlayEffectID(G_EffectIndex("blaster/muzzle_flash"), org, ang);
 		bolt = G_Spawn();
 
 		bolt->classname = "turret_proj";
@@ -409,18 +409,18 @@ static void turretG2_fire ( gentity_t *ent, vec3_t start, vec3_t dir )
 		bolt->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
 		//bolt->trigger_formation = qfalse;		// don't draw tail on first frame
 
-		VectorSet( bolt->r.maxs, 1.5, 1.5, 1.5 );
-		VectorScale( bolt->r.maxs, -1, bolt->r.mins );
+		VectorSet(bolt->r.maxs, 1.5, 1.5, 1.5);
+		VectorScale(bolt->r.maxs, -1, bolt->r.mins);
 		bolt->s.pos.trType = TR_LINEAR;
 		bolt->s.pos.trTime = level.time;
-		VectorCopy( start, bolt->s.pos.trBase );
-		VectorScale( dir, ent->mass, bolt->s.pos.trDelta );
-		SnapVector( bolt->s.pos.trDelta );		// save net bandwidth
-		VectorCopy( start, bolt->r.currentOrigin);
+		VectorCopy(start, bolt->s.pos.trBase);
+		VectorScale(dir, ent->mass, bolt->s.pos.trDelta);
+		SnapVector(bolt->s.pos.trDelta);		// save net bandwidth
+		VectorCopy(start, bolt->r.currentOrigin);
 	}
 }
 
-void turretG2_respawn( gentity_t *self )
+void turretG2_respawn(gentity_t *self)
 {
 	self->use = turretG2_base_use;
 	self->pain = TurretG2Pain;
@@ -428,13 +428,13 @@ void turretG2_respawn( gentity_t *self )
 	self->takedamage = qtrue;
 	self->s.shouldtarget = qtrue;
 	//self->s.owner = MAX_CLIENTS; //not owned by any client
-	if ( self->s.eFlags & EF_SHADER_ANIM )
+	if (self->s.eFlags & EF_SHADER_ANIM)
 	{
 		self->s.frame = 0; // normal
 	}
 	self->s.weapon = WP_TURRET; // crosshair code uses this to mark crosshair red
 
-	turretG2_set_models( self, qfalse );
+	turretG2_set_models(self, qfalse);
 	self->s.health = self->health = self->genericValue6;
 	if (self->maxHealth) {
 		G_ScaleNetHealth(self);
@@ -443,13 +443,13 @@ void turretG2_respawn( gentity_t *self )
 }
 
 //-----------------------------------------------------
-void turretG2_head_think( gentity_t *self )
+void turretG2_head_think(gentity_t *self)
 //-----------------------------------------------------
 {
 	// if it's time to fire and we have an enemy, then gun 'em down!  pushDebounce time controls next fire time
-	if ( self->enemy
+	if (self->enemy
 		&& self->setTime < level.time
-		&& self->attackDebounceTime < level.time )
+		&& self->attackDebounceTime < level.time)
 	{
 		vec3_t		fwd, org;
 		mdxaBone_t	boltMatrix;
@@ -458,7 +458,7 @@ void turretG2_head_think( gentity_t *self )
 		self->setTime = level.time + self->wait;
 
 		// Getting the flash bolt here
-		trap->G2API_GetBoltMatrix( self->ghoul2,
+		trap->G2API_GetBoltMatrix(self->ghoul2,
 					0,
 					(self->alt_fire?self->genericValue12:self->genericValue11),
 					&boltMatrix,
@@ -466,32 +466,32 @@ void turretG2_head_think( gentity_t *self )
 					self->r.currentOrigin,
 					level.time,
 					NULL,
-					self->modelScale );
-		if ( (self->spawnflags&SPF_TURRETG2_TURBO) )
+					self->modelScale);
+		if ((self->spawnflags&SPF_TURRETG2_TURBO))
 		{
 			self->alt_fire = !self->alt_fire;
 		}
 
-		BG_GiveMeVectorFromMatrix( &boltMatrix, ORIGIN, org );
-		//BG_GiveMeVectorFromMatrix( &boltMatrix, POSITIVE_Y, fwd );
-		if ( (self->spawnflags&SPF_TURRETG2_TURBO) )
+		BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, org);
+		//BG_GiveMeVectorFromMatrix(&boltMatrix, POSITIVE_Y, fwd);
+		if ((self->spawnflags&SPF_TURRETG2_TURBO))
 		{
-			BG_GiveMeVectorFromMatrix( &boltMatrix, POSITIVE_X, fwd );
+			BG_GiveMeVectorFromMatrix(&boltMatrix, POSITIVE_X, fwd);
 		}
 		else
 		{
-			BG_GiveMeVectorFromMatrix( &boltMatrix, NEGATIVE_X, fwd );
+			BG_GiveMeVectorFromMatrix(&boltMatrix, NEGATIVE_X, fwd);
 		}
 
-		VectorMA( org, START_DIS, fwd, org );
+		VectorMA(org, START_DIS, fwd, org);
 
-		turretG2_fire( self, org, fwd );
+		turretG2_fire(self, org, fwd);
 		self->fly_sound_debounce_time = level.time;//used as lastShotTime
 	}
 }
 
 //-----------------------------------------------------
-static void turretG2_aim( gentity_t *self )
+static void turretG2_aim(gentity_t *self)
 //-----------------------------------------------------
 {
 	vec3_t	enemyDir, org, org2;
@@ -501,24 +501,24 @@ static void turretG2_aim( gentity_t *self )
 	float	maxPitchSpeed = (self->spawnflags&SPF_TURRETG2_TURBO)?15.0f:3.0f;
 
 	// move our gun base yaw to where we should be at this time....
-	BG_EvaluateTrajectory( &self->s.apos, level.time, self->r.currentAngles );
-	self->r.currentAngles[YAW] = AngleNormalize360( self->r.currentAngles[YAW] );
-	self->speed = AngleNormalize360( self->speed );
+	BG_EvaluateTrajectory(&self->s.apos, level.time, self->r.currentAngles);
+	self->r.currentAngles[YAW] = AngleNormalize360(self->r.currentAngles[YAW]);
+	self->speed = AngleNormalize360(self->speed);
 
-	if ( self->enemy )
+	if (self->enemy)
 	{
 		mdxaBone_t	boltMatrix;
 		// ...then we'll calculate what new aim adjustments we should attempt to make this frame
 		// Aim at enemy
-		if ( self->enemy->client )
+		if (self->enemy->client)
 		{
-			VectorCopy( self->enemy->client->renderInfo.eyePoint, org );
+			VectorCopy(self->enemy->client->renderInfo.eyePoint, org);
 		}
 		else
 		{
-			VectorCopy( self->enemy->r.currentOrigin, org );
+			VectorCopy(self->enemy->r.currentOrigin, org);
 		}
-		if ( self->spawnflags & 2 )
+		if (self->spawnflags & 2)
 		{
 			org[2] -= 15;
 		}
@@ -527,25 +527,25 @@ static void turretG2_aim( gentity_t *self )
 			org[2] -= 5;
 		}
 
-		if ( (self->spawnflags&SPF_TURRETG2_LEAD_ENEMY) )
+		if ((self->spawnflags&SPF_TURRETG2_LEAD_ENEMY))
 		{//we want to lead them a bit
 			vec3_t diff, velocity;
 			float dist;
-			VectorSubtract( org, self->s.origin, diff );
-			dist = VectorNormalize( diff );
-			if ( self->enemy->client )
+			VectorSubtract(org, self->s.origin, diff);
+			dist = VectorNormalize(diff);
+			if (self->enemy->client)
 			{
-				VectorCopy( self->enemy->client->ps.velocity, velocity );
+				VectorCopy(self->enemy->client->ps.velocity, velocity);
 			}
 			else
 			{
-				VectorCopy( self->enemy->s.pos.trDelta, velocity );
+				VectorCopy(self->enemy->s.pos.trDelta, velocity);
 			}
-			VectorMA( org, (dist/self->mass), velocity, org );
+			VectorMA(org, (dist/self->mass), velocity, org);
 		}
 
 		// Getting the "eye" here
-		trap->G2API_GetBoltMatrix( self->ghoul2,
+		trap->G2API_GetBoltMatrix(self->ghoul2,
 					0,
 					(self->alt_fire?self->genericValue12:self->genericValue11),
 					&boltMatrix,
@@ -553,42 +553,42 @@ static void turretG2_aim( gentity_t *self )
 					self->s.origin,
 					level.time,
 					NULL,
-					self->modelScale );
+					self->modelScale);
 
-		BG_GiveMeVectorFromMatrix( &boltMatrix, ORIGIN, org2 );
+		BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, org2);
 
-		VectorSubtract( org, org2, enemyDir );
-		vectoangles( enemyDir, desiredAngles );
+		VectorSubtract(org, org2, enemyDir);
+		vectoangles(enemyDir, desiredAngles);
 
-		diffYaw = AngleSubtract( self->r.currentAngles[YAW], desiredAngles[YAW] );
-		diffPitch = AngleSubtract( self->speed, desiredAngles[PITCH] );
+		diffYaw = AngleSubtract(self->r.currentAngles[YAW], desiredAngles[YAW]);
+		diffPitch = AngleSubtract(self->speed, desiredAngles[PITCH]);
 	}
 	else
 	{
 		// no enemy, so make us slowly sweep back and forth as if searching for a new one
-//		diffYaw = sin( level.time * 0.0001f + self->count ) * 5.0f;	// don't do this for now since it can make it go into walls.
+//		diffYaw = sin(level.time * 0.0001f + self->count) * 5.0f;	// don't do this for now since it can make it go into walls.
 	}
 
-	if ( diffYaw )
+	if (diffYaw)
 	{
 		// cap max speed....
-		if ( fabs(diffYaw) > maxYawSpeed )
+		if (fabs(diffYaw) > maxYawSpeed)
 		{
-			diffYaw = ( diffYaw >= 0 ? maxYawSpeed : -maxYawSpeed );
+			diffYaw = (diffYaw >= 0 ? maxYawSpeed : -maxYawSpeed);
 		}
 
 		// ...then set up our desired yaw
-		VectorSet( setAngle, 0.0f, diffYaw, 0.0f );
+		VectorSet(setAngle, 0.0f, diffYaw, 0.0f);
 
-		VectorCopy( self->r.currentAngles, self->s.apos.trBase );
-		VectorScale( setAngle,- 5, self->s.apos.trDelta );
+		VectorCopy(self->r.currentAngles, self->s.apos.trBase);
+		VectorScale(setAngle,- 5, self->s.apos.trDelta);
 		self->s.apos.trTime = level.time;
 		self->s.apos.trType = TR_LINEAR;
 	}
 
-	if ( diffPitch )
+	if (diffPitch)
 	{
-		if ( fabs(diffPitch) > maxPitchSpeed )
+		if (fabs(diffPitch) > maxPitchSpeed)
 		{
 			// cap max speed
 			self->speed += (diffPitch > 0.0f) ? -maxPitchSpeed : maxPitchSpeed;
@@ -596,36 +596,36 @@ static void turretG2_aim( gentity_t *self )
 		else
 		{
 			// small enough, so just add half the diff so we smooth out the stopping
-			self->speed -= ( diffPitch );//desiredAngles[PITCH];
+			self->speed -= (diffPitch);//desiredAngles[PITCH];
 		}
 
 		// Note that this is NOT interpolated, so it will be less smooth...On the other hand, it does use Ghoul2 to blend, so it may smooth it out a bit?
-		if ( (self->spawnflags&SPF_TURRETG2_TURBO) )
+		if ((self->spawnflags&SPF_TURRETG2_TURBO))
 		{
-			if ( self->spawnflags & 2 )
+			if (self->spawnflags & 2)
 			{
-				VectorSet( desiredAngles, 0.0f, 0.0f, -self->speed );
+				VectorSet(desiredAngles, 0.0f, 0.0f, -self->speed);
 			}
 			else
 			{
-				VectorSet( desiredAngles, 0.0f, 0.0f, self->speed );
+				VectorSet(desiredAngles, 0.0f, 0.0f, self->speed);
 			}
 			G2Tur_SetBoneAngles(self, "pitch", desiredAngles);
 		}
 		else
 		{
-			if ( self->spawnflags & 2 )
+			if (self->spawnflags & 2)
 			{
-				VectorSet( desiredAngles, self->speed, 0.0f, 0.0f );
+				VectorSet(desiredAngles, self->speed, 0.0f, 0.0f);
 			}
 			else
 			{
-				VectorSet( desiredAngles, -self->speed, 0.0f, 0.0f );
+				VectorSet(desiredAngles, -self->speed, 0.0f, 0.0f);
 			}
 			G2Tur_SetBoneAngles(self, "Bone_body", desiredAngles);
 		}
 		/*
-		trap->G2API_SetBoneAngles( self->ghoul2,
+		trap->G2API_SetBoneAngles(self->ghoul2,
 						0,
 						"Bone_body",
 						desiredAngles,
@@ -635,19 +635,19 @@ static void turretG2_aim( gentity_t *self )
 						POSITIVE_X,
 						NULL,
 						100,
-						level.time );
+						level.time);
 						*/
 	}
 
-	if ( diffYaw || diffPitch )
+	if (diffYaw || diffPitch)
 	{//FIXME: turbolaser sounds
-		if ( (self->spawnflags&SPF_TURRETG2_TURBO) )
+		if ((self->spawnflags&SPF_TURRETG2_TURBO))
 		{
-			self->s.loopSound = G_SoundIndex( "sound/vehicles/weapons/turbolaser/turn.wav" );
+			self->s.loopSound = G_SoundIndex("sound/vehicles/weapons/turbolaser/turn.wav");
 		}
 		else
 		{
-			self->s.loopSound = G_SoundIndex( "sound/chars/turret/move.wav" );
+			self->s.loopSound = G_SoundIndex("sound/chars/turret/move.wav");
 		}
 	}
 	else
@@ -657,22 +657,22 @@ static void turretG2_aim( gentity_t *self )
 }
 
 //-----------------------------------------------------
-static void turretG2_turnoff( gentity_t *self )
+static void turretG2_turnoff(gentity_t *self)
 //-----------------------------------------------------
 {
-	if ( self->enemy == NULL )
+	if (self->enemy == NULL)
 	{
 		// we don't need to turnoff
 		return;
 	}
-	if ( (self->spawnflags&SPF_TURRETG2_TURBO) )
+	if ((self->spawnflags&SPF_TURRETG2_TURBO))
 	{
-		TurboLaser_SetBoneAnim( self, 4, 5 );
+		TurboLaser_SetBoneAnim(self, 4, 5);
 	}
 	// shut-down sound
-	if ( !(self->spawnflags&SPF_TURRETG2_TURBO) )
+	if (!(self->spawnflags&SPF_TURRETG2_TURBO))
 	{
-		G_Sound( self, CHAN_BODY, G_SoundIndex( "sound/chars/turret/shutdown.wav" ));
+		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/chars/turret/shutdown.wav"));
 	}
 
 	// make turret play ping sound for 5 seconds
@@ -683,7 +683,7 @@ static void turretG2_turnoff( gentity_t *self )
 }
 
 //-----------------------------------------------------
-static qboolean turretG2_find_enemies( gentity_t *self )
+static qboolean turretG2_find_enemies(gentity_t *self)
 //-----------------------------------------------------
 {
 	qboolean	found = qfalse;
@@ -694,21 +694,21 @@ static qboolean turretG2_find_enemies( gentity_t *self )
 	qboolean	foundClient = qfalse;
 	gentity_t	*entity_list[MAX_GENTITIES], *target, *bestTarget = NULL;
 
-	if ( self->aimDebounceTime > level.time ) // time since we've been shut off
+	if (self->aimDebounceTime > level.time) // time since we've been shut off
 	{
 		// We were active and alert, i.e. had an enemy in the last 3 secs
-		if ( self->painDebounceTime < level.time )
+		if (self->painDebounceTime < level.time)
 		{
-			if ( !(self->spawnflags&SPF_TURRETG2_TURBO) )
+			if (!(self->spawnflags&SPF_TURRETG2_TURBO))
 			{
-				G_Sound(self, CHAN_BODY, G_SoundIndex( "sound/chars/turret/ping.wav" ));
+				G_Sound(self, CHAN_BODY, G_SoundIndex("sound/chars/turret/ping.wav"));
 			}
 			self->painDebounceTime = level.time + 1000;
 		}
 	}
 
-	VectorCopy( self->r.currentOrigin, org2 );
-	if ( self->spawnflags & 2 )
+	VectorCopy(self->r.currentOrigin, org2);
+	if (self->spawnflags & 2)
 	{
 		org2[2] += 20;
 	}
@@ -717,67 +717,67 @@ static qboolean turretG2_find_enemies( gentity_t *self )
 		org2[2] -= 20;
 	}
 
-	count = G_RadiusList( org2, self->radius, self, qtrue, entity_list );
+	count = G_RadiusList(org2, self->radius, self, qtrue, entity_list);
 
-	for ( i = 0; i < count; i++ )
+	for (i = 0; i < count; i++)
 	{
 		trace_t	tr;
 		target = entity_list[i];
 
-		if ( !target->client )
+		if (!target->client)
 		{
 			// only attack clients
-			if ( !(target->flags&FL_BBRUSH)//not a breakable brush
+			if (!(target->flags&FL_BBRUSH)//not a breakable brush
 				|| !target->takedamage//is a bbrush, but invincible
-				|| (target->NPC_targetname&&self->targetname&&Q_stricmp(target->NPC_targetname,self->targetname)!=0) )//not in invicible bbrush, but can only be broken by an NPC that is not me
+				|| (target->NPC_targetname&&self->targetname&&Q_stricmp(target->NPC_targetname,self->targetname)!=0))//not in invicible bbrush, but can only be broken by an NPC that is not me
 			{
 				continue;
 			}
 			//else: we will shoot at bbrushes!
 		}
-		if ( target == self || !target->takedamage || target->health <= 0 || ( target->flags & FL_NOTARGET ))
+		if (target == self || !target->takedamage || target->health <= 0 || (target->flags & FL_NOTARGET))
 		{
 			continue;
 		}
-		if ( target->client && target->client->sess.sessionTeam == TEAM_SPECTATOR )
+		if (target->client && target->client->sess.sessionTeam == TEAM_SPECTATOR)
 		{
 			continue;
 		}
-		if ( target->client && target->client->tempSpectate >= level.time )
+		if (target->client && target->client->tempSpectate >= level.time)
 		{
 			continue;
 		}
-		if ( self->alliedTeam )
+		if (self->alliedTeam)
 		{
-			if ( target->client )
+			if (target->client)
 			{
-				if ( target->client->sess.sessionTeam == self->alliedTeam )
+				if (target->client->sess.sessionTeam == self->alliedTeam)
 				{
 					// A bot/client/NPC we don't want to shoot
 					continue;
 				}
 			}
-			else if ( target->teamnodmg == self->alliedTeam )
+			else if (target->teamnodmg == self->alliedTeam)
 			{
 				// An ent we don't want to shoot
 				continue;
 			}
 		}
-		if ( !trap->InPVS( org2, target->r.currentOrigin ))
+		if (!trap->InPVS(org2, target->r.currentOrigin))
 		{
 			continue;
 		}
 
-		if ( target->client )
+		if (target->client)
 		{
-			VectorCopy( target->client->renderInfo.eyePoint, org );
+			VectorCopy(target->client->renderInfo.eyePoint, org);
 		}
 		else
 		{
-			VectorCopy( target->r.currentOrigin, org );
+			VectorCopy(target->r.currentOrigin, org);
 		}
 
-		if ( self->spawnflags & 2 )
+		if (self->spawnflags & 2)
 		{
 			org[2] -= 15;
 		}
@@ -786,22 +786,22 @@ static qboolean turretG2_find_enemies( gentity_t *self )
 			org[2] += 5;
 		}
 
-		trap->Trace( &tr, org2, NULL, NULL, org, self->s.number, MASK_SHOT, qfalse, 0, 0 );
+		trap->Trace(&tr, org2, NULL, NULL, org, self->s.number, MASK_SHOT, qfalse, 0, 0);
 
-		if ( !tr.allsolid && !tr.startsolid && ( tr.fraction == 1.0 || tr.entityNum == target->s.number ))
+		if (!tr.allsolid && !tr.startsolid && (tr.fraction == 1.0 || tr.entityNum == target->s.number))
 		{
 			// Only acquire if have a clear shot, Is it in range and closer than our best?
-			VectorSubtract( target->r.currentOrigin, self->r.currentOrigin, enemyDir );
-			enemyDist = VectorLengthSquared( enemyDir );
+			VectorSubtract(target->r.currentOrigin, self->r.currentOrigin, enemyDir);
+			enemyDist = VectorLengthSquared(enemyDir);
 
-			if ( enemyDist < bestDist || (target->client && !foundClient))// all things equal, keep current
+			if (enemyDist < bestDist || (target->client && !foundClient))// all things equal, keep current
 			{
-				if ( self->attackDebounceTime < level.time )
+				if (self->attackDebounceTime < level.time)
 				{
 					// We haven't fired or acquired an enemy in the last 2 seconds-start-up sound
-					if ( !(self->spawnflags&SPF_TURRETG2_TURBO) )
+					if (!(self->spawnflags&SPF_TURRETG2_TURBO))
 					{
-						G_Sound( self, CHAN_BODY, G_SoundIndex( "sound/chars/turret/startup.wav" ));
+						G_Sound(self, CHAN_BODY, G_SoundIndex("sound/chars/turret/startup.wav"));
 					}
 
 					// Wind up turrets for a bit
@@ -811,7 +811,7 @@ static qboolean turretG2_find_enemies( gentity_t *self )
 				bestTarget = target;
 				bestDist = enemyDist;
 				found = qtrue;
-				if ( target->client )
+				if (target->client)
 				{//prefer clients over non-clients
 					foundClient = qtrue;
 				}
@@ -819,19 +819,19 @@ static qboolean turretG2_find_enemies( gentity_t *self )
 		}
 	}
 
-	if ( found )
+	if (found)
 	{
 		/*
-		if ( !self->enemy )
+		if (!self->enemy)
 		{//just aquired one
-			AddSoundEvent( bestTarget, self->r.currentOrigin, 256, AEL_DISCOVERED );
-			AddSightEvent( bestTarget, self->r.currentOrigin, 512, AEL_DISCOVERED, 20 );
+			AddSoundEvent(bestTarget, self->r.currentOrigin, 256, AEL_DISCOVERED);
+			AddSightEvent(bestTarget, self->r.currentOrigin, 512, AEL_DISCOVERED, 20);
 		}
 		*/
-		G_SetEnemy( self, bestTarget );
-		if ( VALIDSTRING( self->target2 ))
+		G_SetEnemy(self, bestTarget);
+		if (VALIDSTRING(self->target2))
 		{
-			G_UseTargets2( self, self, self->target2 );
+			G_UseTargets2(self, self, self->target2);
 		}
 	}
 
@@ -839,7 +839,7 @@ static qboolean turretG2_find_enemies( gentity_t *self )
 }
 
 //-----------------------------------------------------
-void turretG2_base_think( gentity_t *self )
+void turretG2_base_think(gentity_t *self)
 //-----------------------------------------------------
 {
 	qboolean	turnOff = qtrue;
@@ -848,21 +848,21 @@ void turretG2_base_think( gentity_t *self )
 
 	self->nextthink = level.time + FRAMETIME;
 
-	if ( self->health <= 0 )
+	if (self->health <= 0)
 	{//dead
 		if (self->spawnflags & SPF_TURRETG2_CANRESPAWN)
 		{//can respawn
-			if ( self->genericValue5 && self->genericValue5 < level.time )
-			{ //we are dead, see if it's time to respawn
-				turretG2_respawn( self );
+			if (self->genericValue5 && self->genericValue5 < level.time)
+			{//we are dead, see if it's time to respawn
+				turretG2_respawn(self);
 			}
 		}
 		return;
 	}
-	else if ( self->spawnflags & 1 )
+	else if (self->spawnflags & 1)
 	{// not turned on
-		turretG2_turnoff( self );
-		turretG2_aim( self );
+		turretG2_turnoff(self);
+		turretG2_aim(self);
 
 		// No target
 		self->flags |= FL_NOTARGET;
@@ -874,21 +874,21 @@ void turretG2_base_think( gentity_t *self )
 		self->flags &= ~FL_NOTARGET;
 	}
 
-	if ( self->enemy )
+	if (self->enemy)
 	{
-		if ( self->enemy->health < 0
-			|| !self->enemy->inuse )
+		if (self->enemy->health < 0
+			|| !self->enemy->inuse)
 		{
 			self->enemy = NULL;
 		}
 	}
 
-	if ( self->last_move_time < level.time )
+	if (self->last_move_time < level.time)
 	{//MISNOMER: used a enemy recalcing debouncer
-		if ( turretG2_find_enemies( self ) )
+		if (turretG2_find_enemies(self))
 		{//found one
 			turnOff = qfalse;
-			if ( self->enemy && self->enemy->client )
+			if (self->enemy && self->enemy->client)
 			{//hold on to clients for a min of 3 seconds
 				self->last_move_time = level.time + 3000;
 			}
@@ -899,40 +899,40 @@ void turretG2_base_think( gentity_t *self )
 		}
 	}
 
-	if ( self->enemy != NULL )
+	if (self->enemy != NULL)
 	{
-		if ( self->enemy->client && self->enemy->client->sess.sessionTeam == TEAM_SPECTATOR )
+		if (self->enemy->client && self->enemy->client->sess.sessionTeam == TEAM_SPECTATOR)
 		{//don't keep going after spectators
 			self->enemy = NULL;
 		}
-		else if ( self->enemy->client && self->enemy->client->tempSpectate >= level.time )
+		else if (self->enemy->client && self->enemy->client->tempSpectate >= level.time)
 		{//don't keep going after spectators
 			self->enemy = NULL;
 		}
 		else
 		{//FIXME: remain single-minded or look for a new enemy every now and then?
 			// enemy is alive
-			VectorSubtract( self->enemy->r.currentOrigin, self->r.currentOrigin, enemyDir );
-			enemyDist = VectorLengthSquared( enemyDir );
+			VectorSubtract(self->enemy->r.currentOrigin, self->r.currentOrigin, enemyDir);
+			enemyDist = VectorLengthSquared(enemyDir);
 
-			if ( enemyDist < self->radius * self->radius )
+			if (enemyDist < self->radius * self->radius)
 			{
 				// was in valid radius
-				if ( trap->InPVS( self->r.currentOrigin, self->enemy->r.currentOrigin ) )
+				if (trap->InPVS(self->r.currentOrigin, self->enemy->r.currentOrigin))
 				{
 					// Every now and again, check to see if we can even trace to the enemy
 					trace_t tr;
 
-					if ( self->enemy->client )
+					if (self->enemy->client)
 					{
-						VectorCopy( self->enemy->client->renderInfo.eyePoint, org );
+						VectorCopy(self->enemy->client->renderInfo.eyePoint, org);
 					}
 					else
 					{
-						VectorCopy( self->enemy->r.currentOrigin, org );
+						VectorCopy(self->enemy->r.currentOrigin, org);
 					}
-					VectorCopy( self->r.currentOrigin, org2 );
-					if ( self->spawnflags & 2 )
+					VectorCopy(self->r.currentOrigin, org2);
+					if (self->spawnflags & 2)
 					{
 						org2[2] += 10;
 					}
@@ -940,9 +940,9 @@ void turretG2_base_think( gentity_t *self )
 					{
 						org2[2] -= 10;
 					}
-					trap->Trace( &tr, org2, NULL, NULL, org, self->s.number, MASK_SHOT, qfalse, 0, 0 );
+					trap->Trace(&tr, org2, NULL, NULL, org, self->s.number, MASK_SHOT, qfalse, 0, 0);
 
-					if ( !tr.allsolid && !tr.startsolid && tr.entityNum == self->enemy->s.number )
+					if (!tr.allsolid && !tr.startsolid && tr.entityNum == self->enemy->s.number)
 					{
 						turnOff = qfalse;	// Can see our enemy
 					}
@@ -952,11 +952,11 @@ void turretG2_base_think( gentity_t *self )
 		}
 	}
 
-	if ( turnOff )
+	if (turnOff)
 	{
-		if ( self->bounceCount < level.time ) // bounceCount is used to keep the thing from ping-ponging from on to off
+		if (self->bounceCount < level.time) // bounceCount is used to keep the thing from ping-ponging from on to off
 		{
-			turretG2_turnoff( self );
+			turretG2_turnoff(self);
 		}
 	}
 	else
@@ -965,21 +965,21 @@ void turretG2_base_think( gentity_t *self )
 		self->bounceCount = level.time + 2000 + Q_flrand(0.0f, 1.0f) * 150;
 	}
 
-	turretG2_aim( self );
-	if ( !turnOff )
+	turretG2_aim(self);
+	if (!turnOff)
 	{
-		turretG2_head_think( self );
+		turretG2_head_think(self);
 	}
 }
 
 //-----------------------------------------------------------------------------
-void turretG2_base_use( gentity_t *self, gentity_t *other, gentity_t *activator )
+void turretG2_base_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 //-----------------------------------------------------------------------------
 {
 	// Toggle on and off
 	self->spawnflags = (self->spawnflags ^ 1);
 
-	if (( self->s.eFlags & EF_SHADER_ANIM ) && ( self->spawnflags & 1 )) // Start_Off
+	if ((self->s.eFlags & EF_SHADER_ANIM) && (self->spawnflags & 1)) // Start_Off
 	{
 		self->s.frame = 1; // black
 	}
@@ -1043,13 +1043,13 @@ Turret that hangs from the ceiling, will aim and shoot at enemies
 "icon" - icon that represents the objective on the radar
 */
 //-----------------------------------------------------
-void SP_misc_turretG2( gentity_t *base )
+void SP_misc_turretG2(gentity_t *base)
 //-----------------------------------------------------
 {
 	int customscaleVal;
 	char* s;
 
-	turretG2_set_models( base, qfalse );
+	turretG2_set_models(base, qfalse);
 
 	G_SpawnInt("painwait", "0", &base->genericValue4);
 	base->genericValue8 = 0;
@@ -1065,7 +1065,7 @@ void SP_misc_turretG2( gentity_t *base )
 		base->modelScale[0] = base->modelScale[1] = base->modelScale[2] = base->s.iModelScale/100.0f;
 	}
 
-	G_SpawnString( "icon", "", &s );
+	G_SpawnString("icon", "", &s);
 	if (s && s[0])
 	{
 		// We have an icon, so index it now.  We are reusing the genericenemyindex
@@ -1073,9 +1073,9 @@ void SP_misc_turretG2( gentity_t *base )
 		base->s.genericenemyindex = G_IconIndex(s);
 	}
 
-	finish_spawning_turretG2( base );
+	finish_spawning_turretG2(base);
 
-	if (( base->spawnflags & 1 )) // Start_Off
+	if ((base->spawnflags & 1)) // Start_Off
 	{
 		base->s.frame = 1; // black
 	}
@@ -1083,7 +1083,7 @@ void SP_misc_turretG2( gentity_t *base )
 	{
 		base->s.frame = 0; // glow
 	}
-	if ( !(base->spawnflags&SPF_TURRETG2_TURBO) )
+	if (!(base->spawnflags&SPF_TURRETG2_TURBO))
 	{
 		base->s.eFlags |= EF_SHADER_ANIM;
 	}
@@ -1098,25 +1098,25 @@ void SP_misc_turretG2( gentity_t *base )
 }
 
 //-----------------------------------------------------
-void finish_spawning_turretG2( gentity_t *base )
+void finish_spawning_turretG2(gentity_t *base)
 {
 	vec3_t		fwd;
 	int			t;
 
-	if ( (base->spawnflags&2) )
+	if ((base->spawnflags&2))
 	{
 		base->s.angles[ROLL] += 180;
 		base->s.origin[2] -= 22.0f;
 	}
 
-	G_SetAngles( base, base->s.angles );
-	AngleVectors( base->r.currentAngles, fwd, NULL, NULL );
+	G_SetAngles(base, base->s.angles);
+	AngleVectors(base->r.currentAngles, fwd, NULL, NULL);
 
 	G_SetOrigin(base, base->s.origin);
 
 	base->s.eType = ET_GENERAL;
 
-	if ( base->team && base->team[0] && //level.gametype == GT_SIEGE &&
+	if (base->team && base->team[0] && //level.gametype == GT_SIEGE &&
 		!base->teamnodmg)
 	{
 		base->teamnodmg = atoi(base->team);
@@ -1124,8 +1124,8 @@ void finish_spawning_turretG2( gentity_t *base )
 	base->team = NULL;
 
 	// Set up our explosion effect for the ExplodeDeath code....
-	G_EffectIndex( "turret/explode" );
-	G_EffectIndex( "sparks/spark_exp_nosnd" );
+	G_EffectIndex("turret/explode");
+	G_EffectIndex("sparks/spark_exp_nosnd");
 
 	base->use = turretG2_base_use;
 	base->pain = TurretG2Pain;
@@ -1138,65 +1138,65 @@ void finish_spawning_turretG2( gentity_t *base )
 	base->speed = 0;
 
 	// respawn time defaults to 20 seconds
-	if ( (base->spawnflags&SPF_TURRETG2_CANRESPAWN) && !base->count )
+	if ((base->spawnflags&SPF_TURRETG2_CANRESPAWN) && !base->count)
 	{
 		base->count = 20000;
 	}
 
-	G_SpawnFloat( "shotspeed", "0", &base->mass );
-	if ( (base->spawnflags&SPF_TURRETG2_TURBO) )
+	G_SpawnFloat("shotspeed", "0", &base->mass);
+	if ((base->spawnflags&SPF_TURRETG2_TURBO))
 	{
-		if ( !base->random )
+		if (!base->random)
 		{//error worked into projectile direction
 			base->random = 2.0f;
 		}
 
-		if ( !base->mass )
+		if (!base->mass)
 		{//misnomer: speed of projectile
 			base->mass = 20000;
 		}
 
-		if ( !base->health )
+		if (!base->health)
 		{
 			base->health = 2000;
 		}
 
 		// search radius
-		if ( !base->radius )
+		if (!base->radius)
 		{
 			base->radius = 32768;
 		}
 
 		// How quickly to fire
-		if ( !base->wait )
+		if (!base->wait)
 		{
 			base->wait = 1000;// + Q_flrand(0.0f, 1.0f) * 500;
 		}
 
-		if ( !base->splashDamage )
+		if (!base->splashDamage)
 		{
 			base->splashDamage = 200;
 		}
 
-		if ( !base->splashRadius )
+		if (!base->splashRadius)
 		{
 			base->splashRadius = 500;
 		}
 
 		// how much damage each shot does
-		if ( !base->damage )
+		if (!base->damage)
 		{
 			base->damage = 500;
 		}
 
-		if ( (base->spawnflags&SPF_TURRETG2_TURBO) )
+		if ((base->spawnflags&SPF_TURRETG2_TURBO))
 		{
-			VectorSet( base->r.maxs, 64.0f, 64.0f, 30.0f );
-			VectorSet( base->r.mins, -64.0f, -64.0f, -30.0f );
+			VectorSet(base->r.maxs, 64.0f, 64.0f, 30.0f);
+			VectorSet(base->r.mins, -64.0f, -64.0f, -30.0f);
 		}
 		//start in "off" anim
-		TurboLaser_SetBoneAnim( base, 4, 5 );
-		if ( level.gametype == GT_SIEGE )
+		TurboLaser_SetBoneAnim(base, 4, 5);
+		if (level.gametype == GT_SIEGE)
 		{//FIXME: designer-specified?
 			//FIXME: put on other entities, too, particularly siege objectives and bbrushes...
 			base->s.eFlags2 |= EF2_BRACKET_ENTITY;
@@ -1204,67 +1204,67 @@ void finish_spawning_turretG2( gentity_t *base )
 	}
 	else
 	{
-		if ( !base->random )
+		if (!base->random)
 		{//error worked into projectile direction
 			base->random = 2.0f;
 		}
 
-		if ( !base->mass )
+		if (!base->mass)
 		{//misnomer: speed of projectile
 			base->mass = 1100;
 		}
 
-		if ( !base->health )
+		if (!base->health)
 		{
 			base->health = 100;
 		}
 
 		// search radius
-		if ( !base->radius )
+		if (!base->radius)
 		{
 			base->radius = 512;
 		}
 
 		// How quickly to fire
-		if ( !base->wait )
+		if (!base->wait)
 		{
 			base->wait = 150 + Q_flrand(0.0f, 1.0f) * 55;
 		}
 
-		if ( !base->splashDamage )
+		if (!base->splashDamage)
 		{
 			base->splashDamage = 10;
 		}
 
-		if ( !base->splashRadius )
+		if (!base->splashRadius)
 		{
 			base->splashRadius = 25;
 		}
 
 		// how much damage each shot does
-		if ( !base->damage )
+		if (!base->damage)
 		{
 			base->damage = 5;
 		}
 
-		if ( base->spawnflags & 2 )
+		if (base->spawnflags & 2)
 		{//upside-down, invert r.mins and maxe
-			VectorSet( base->r.maxs, 10.0f, 10.0f, 30.0f );
-			VectorSet( base->r.mins, -10.0f, -10.0f, 0.0f );
+			VectorSet(base->r.maxs, 10.0f, 10.0f, 30.0f);
+			VectorSet(base->r.mins, -10.0f, -10.0f, 0.0f);
 		}
 		else
 		{
-			VectorSet( base->r.maxs, 10.0f, 10.0f, 0.0f );
-			VectorSet( base->r.mins, -10.0f, -10.0f, -30.0f );
+			VectorSet(base->r.maxs, 10.0f, 10.0f, 0.0f);
+			VectorSet(base->r.mins, -10.0f, -10.0f, -30.0f);
 		}
 	}
 
 	//stash health off for respawn.  NOTE: cannot use maxhealth because that might not be set if not showing the health bar
 	base->genericValue6 = base->health;
 
-	G_SpawnInt( "showhealth", "0", &t );
+	G_SpawnInt("showhealth", "0", &t);
 	if (t)
-	{ //a non-0 maxhealth value will mean we want to show the health on the hud
+	{//a non-0 maxhealth value will mean we want to show the health on the hud
 		base->maxHealth = base->health;
 		G_ScaleNetHealth(base);
 		base->s.shouldtarget = qtrue;
@@ -1272,27 +1272,27 @@ void finish_spawning_turretG2( gentity_t *base )
 	}
 
 	if (base->s.iModelScale)
-	{ //let's scale the bbox too...
+	{//let's scale the bbox too...
 		float fScale = base->s.iModelScale/100.0f;
 		VectorScale(base->r.mins, fScale, base->r.mins);
 		VectorScale(base->r.maxs, fScale, base->r.maxs);
 	}
 
 	// Precache special FX and moving sounds
-	if ( (base->spawnflags&SPF_TURRETG2_TURBO) )
+	if ((base->spawnflags&SPF_TURRETG2_TURBO))
 	{
-		base->genericValue13 = G_EffectIndex( "turret/turb_muzzle_flash" );
-		base->genericValue14 = G_EffectIndex( "turret/turb_shot" );
-		base->genericValue15 = G_EffectIndex( "turret/turb_impact" );
+		base->genericValue13 = G_EffectIndex("turret/turb_muzzle_flash");
+		base->genericValue14 = G_EffectIndex("turret/turb_shot");
+		base->genericValue15 = G_EffectIndex("turret/turb_impact");
 		//FIXME: Turbo Laser Cannon sounds!
-		G_SoundIndex( "sound/vehicles/weapons/turbolaser/turn.wav" );
+		G_SoundIndex("sound/vehicles/weapons/turbolaser/turn.wav");
 	}
 	else
 	{
-		G_SoundIndex( "sound/chars/turret/startup.wav" );
-		G_SoundIndex( "sound/chars/turret/shutdown.wav" );
-		G_SoundIndex( "sound/chars/turret/ping.wav" );
-		G_SoundIndex( "sound/chars/turret/move.wav" );
+		G_SoundIndex("sound/chars/turret/startup.wav");
+		G_SoundIndex("sound/chars/turret/shutdown.wav");
+		G_SoundIndex("sound/chars/turret/ping.wav");
+		G_SoundIndex("sound/chars/turret/move.wav");
 	}
 
 	base->r.contents = CONTENTS_BODY|CONTENTS_PLAYERCLIP|CONTENTS_MONSTERCLIP|CONTENTS_SHOTCLIP;
@@ -1305,10 +1305,10 @@ void finish_spawning_turretG2( gentity_t *base )
 	//base->r.svFlags |= SVF_NO_TELEPORT|SVF_NONNPC_ENEMY|SVF_SELF_ANIMATING;
 
 	// Register this so that we can use it for the missile effect
-	RegisterItem( BG_FindItemForWeapon( WP_BLASTER ));
+	RegisterItem(BG_FindItemForWeapon(WP_BLASTER));
 
 	// But set us as a turret so that we can be identified as a turret
 	base->s.weapon = WP_TURRET;
 
-	trap->LinkEntity( (sharedEntity_t *)base );
+	trap->LinkEntity((sharedEntity_t *)base);
 }

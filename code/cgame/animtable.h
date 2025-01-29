@@ -1274,10 +1274,10 @@ stringID_table_t animTable [MAX_ANIMATIONS+1] =
 
 	// Added 2/26/02 by Aurelio.
 	//* #sep BOTH_ FIGHTER ANIMS
-	ENUM2STRING( BOTH_GEARS_OPEN ),
-	ENUM2STRING( BOTH_GEARS_CLOSE ),
-	ENUM2STRING( BOTH_WINGS_OPEN ),
-	ENUM2STRING( BOTH_WINGS_CLOSE ),
+	ENUM2STRING(BOTH_GEARS_OPEN),
+	ENUM2STRING(BOTH_GEARS_CLOSE),
+	ENUM2STRING(BOTH_WINGS_OPEN),
+	ENUM2STRING(BOTH_WINGS_CLOSE),
 
 	///////////////////////////////////
 
@@ -1810,5 +1810,5 @@ stringID_table_t animTable [MAX_ANIMATIONS+1] =
 	ENUM2STRING(BOTH_CIN_50),		//# Level specific cinematic
 
 	//must be terminated
-	{ NULL,-1 }
+	{NULL,-1}
 };

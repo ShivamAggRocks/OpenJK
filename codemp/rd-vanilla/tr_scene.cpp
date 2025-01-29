@@ -53,7 +53,7 @@ R_InitNextFrame
 
 ====================
 */
-void R_InitNextFrame( void ) {
+void R_InitNextFrame(void) {
 	backEndData->commands.used = 0;
 
 	r_firstSceneDrawSurf = 0;
@@ -80,7 +80,7 @@ RE_ClearScene
 
 ====================
 */
-void RE_ClearScene( void ) {
+void RE_ClearScene(void) {
 	r_firstSceneDlight = r_numdlights;
 	r_firstSceneEntity = r_numentities;
 	r_firstScenePoly = r_numpolys;
@@ -103,7 +103,7 @@ R_AddPolygonSurfaces
 Adds all the scene's polys into this view's drawsurf list
 =====================
 */
-void R_AddPolygonSurfaces( void ) {
+void R_AddPolygonSurfaces(void) {
 	int			i;
 	shader_t	*sh;
 	srfPoly_t	*poly;
@@ -111,9 +111,9 @@ void R_AddPolygonSurfaces( void ) {
 	tr.currentEntityNum = REFENTITYNUM_WORLD;
 	tr.shiftedEntityNum = tr.currentEntityNum << QSORT_REFENTITYNUM_SHIFT;
 
-	for ( i = 0, poly = tr.refdef.polys; i < tr.refdef.numPolys ; i++, poly++ ) {
-		sh = R_GetShaderByHandle( poly->hShader );
-		R_AddDrawSurf( (surfaceType_t *)poly, sh, poly->fogIndex, qfalse );
+	for (i = 0, poly = tr.refdef.polys; i < tr.refdef.numPolys ; i++, poly++) {
+		sh = R_GetShaderByHandle(poly->hShader);
+		R_AddDrawSurf((surfaceType_t *)poly, sh, poly->fogIndex, qfalse);
 	}
 }
 
@@ -123,31 +123,31 @@ RE_AddPolyToScene
 
 =====================
 */
-void RE_AddPolyToScene( qhandle_t hShader, int numVerts, const polyVert_t *verts, int numPolys ) {
+void RE_AddPolyToScene(qhandle_t hShader, int numVerts, const polyVert_t *verts, int numPolys) {
 	srfPoly_t	*poly;
 	int			i, j;
 	int			fogIndex;
 	fog_t		*fog;
 	vec3_t		bounds[2];
 
-	if ( !tr.registered ) {
+	if (!tr.registered) {
 		return;
 	}
 
-	if ( !hShader ) {
-		ri.Printf( PRINT_ALL, S_COLOR_YELLOW  "WARNING: RE_AddPolyToScene: NULL poly shader\n");
+	if (!hShader) {
+		ri.Printf(PRINT_ALL, S_COLOR_YELLOW  "WARNING: RE_AddPolyToScene: NULL poly shader\n");
 		return;
 	}
 
-	for ( j = 0; j < numPolys; j++ ) {
-		if ( r_numpolyverts + numVerts >= max_polyverts || r_numpolys >= max_polys ) {
+	for (j = 0; j < numPolys; j++) {
+		if (r_numpolyverts + numVerts >= max_polyverts || r_numpolys >= max_polys) {
       /*
       NOTE TTimo this was initially a PRINT_WARNING
       but it happens a lot with high fighting scenes and particles
       since we don't plan on changing the const and making for room for those effects
       simply cut this message to developer only
       */
-			ri.Printf( PRINT_DEVELOPER, S_COLOR_YELLOW  "WARNING: RE_AddPolyToScene: r_max_polys or r_max_polyverts reached\n");
+			ri.Printf(PRINT_DEVELOPER, S_COLOR_YELLOW  "WARNING: RE_AddPolyToScene: r_max_polys or r_max_polyverts reached\n");
 			return;
 		}
 
@@ -157,38 +157,38 @@ void RE_AddPolyToScene( qhandle_t hShader, int numVerts, const polyVert_t *verts
 		poly->numVerts = numVerts;
 		poly->verts = &backEndData->polyVerts[r_numpolyverts];
 
-		memcpy( poly->verts, &verts[numVerts*j], numVerts * sizeof( *verts ) );
+		memcpy(poly->verts, &verts[numVerts*j], numVerts * sizeof(*verts));
 
 		// done.
 		r_numpolys++;
 		r_numpolyverts += numVerts;
 
 		// if no world is loaded
-		if ( tr.world == NULL ) {
+		if (tr.world == NULL) {
 			fogIndex = 0;
 		}
 		// see if it is in a fog volume
-		else if ( tr.world->numfogs == 1 ) {
+		else if (tr.world->numfogs == 1) {
 			fogIndex = 0;
 		} else {
 			// find which fog volume the poly is in
-			VectorCopy( poly->verts[0].xyz, bounds[0] );
-			VectorCopy( poly->verts[0].xyz, bounds[1] );
-			for ( i = 1 ; i < poly->numVerts ; i++ ) {
-				AddPointToBounds( poly->verts[i].xyz, bounds[0], bounds[1] );
+			VectorCopy(poly->verts[0].xyz, bounds[0]);
+			VectorCopy(poly->verts[0].xyz, bounds[1]);
+			for (i = 1 ; i < poly->numVerts ; i++) {
+				AddPointToBounds(poly->verts[i].xyz, bounds[0], bounds[1]);
 			}
-			for ( fogIndex = 1 ; fogIndex < tr.world->numfogs ; fogIndex++ ) {
+			for (fogIndex = 1 ; fogIndex < tr.world->numfogs ; fogIndex++) {
 				fog = &tr.world->fogs[fogIndex];
-				if ( bounds[1][0] >= fog->bounds[0][0]
+				if (bounds[1][0] >= fog->bounds[0][0]
 					&& bounds[1][1] >= fog->bounds[0][1]
 					&& bounds[1][2] >= fog->bounds[0][2]
 					&& bounds[0][0] <= fog->bounds[1][0]
 					&& bounds[0][1] <= fog->bounds[1][1]
-					&& bounds[0][2] <= fog->bounds[1][2] ) {
+					&& bounds[0][2] <= fog->bounds[1][2]) {
 					break;
 				}
 			}
-			if ( fogIndex == tr.world->numfogs ) {
+			if (fogIndex == tr.world->numfogs) {
 				fogIndex = 0;
 			}
 		}
@@ -206,21 +206,21 @@ RE_AddRefEntityToScene
 
 =====================
 */
-void RE_AddRefEntityToScene( const refEntity_t *ent ) {
-	if ( !tr.registered ) {
+void RE_AddRefEntityToScene(const refEntity_t *ent) {
+	if (!tr.registered) {
 		return;
 	}
 
-	if ( r_numentities >= MAX_REFENTITIES ) {
+	if (r_numentities >= MAX_REFENTITIES) {
 		ri.Printf(PRINT_DEVELOPER, "RE_AddRefEntityToScene: Dropping refEntity, reached MAX_REFENTITIES\n");
 		return;
 	}
 
-	/*if ( Q_isnan(ent->origin[0]) || Q_isnan(ent->origin[1]) || Q_isnan(ent->origin[2]) ) {
+	/*if (Q_isnan(ent->origin[0]) || Q_isnan(ent->origin[1]) || Q_isnan(ent->origin[2])) {
 		static qboolean firstTime = qtrue;
 		if (firstTime) {
 			firstTime = qfalse;
-			ri.Printf( PRINT_WARNING, "RE_AddRefEntityToScene passed a refEntity which has an origin with a NaN component\n");
+			ri.Printf(PRINT_WARNING, "RE_AddRefEntityToScene passed a refEntity which has an origin with a NaN component\n");
 		}
 		return;
 	}*/
@@ -228,7 +228,7 @@ void RE_AddRefEntityToScene( const refEntity_t *ent ) {
 	assert(!ent || ent->renderfx >= 0);
 
 	if (ent->reType == RT_ENT_CHAIN)
-	{ //minirefents must die.
+	{//minirefents must die.
 		return;
 	}
 
@@ -239,8 +239,8 @@ void RE_AddRefEntityToScene( const refEntity_t *ent ) {
 	}
 #endif
 
-	if ( (int)ent->reType < 0 || ent->reType >= RT_MAX_REF_ENTITY_TYPE ) {
-		Com_Error( ERR_DROP, "RE_AddRefEntityToScene: bad reType %i", ent->reType );
+	if ((int)ent->reType < 0 || ent->reType >= RT_MAX_REF_ENTITY_TYPE) {
+		Com_Error(ERR_DROP, "RE_AddRefEntityToScene: bad reType %i", ent->reType);
 	}
 
 	backEndData->entities[r_numentities].e = *ent;
@@ -252,7 +252,7 @@ void RE_AddRefEntityToScene( const refEntity_t *ent ) {
 
 		if (!ghoul2[0].mModel)
 		{
-			ri.Printf( PRINT_ALL, "Your ghoul2 instance has no model!\n");
+			ri.Printf(PRINT_ALL, "Your ghoul2 instance has no model!\n");
 		}
 	}
 
@@ -286,13 +286,13 @@ void RE_AddRefEntityToScene( const refEntity_t *ent ) {
  *    none                                                                                      *
  *                                                                                              *
  ************************************************************************************************/
-void RE_AddMiniRefEntityToScene( const miniRefEntity_t *ent )
+void RE_AddMiniRefEntityToScene(const miniRefEntity_t *ent)
 {
 #if 0
 	refEntity_t		*parent;
 #endif
 
-	if ( !tr.registered )
+	if (!tr.registered)
 	{
 		return;
 	}
@@ -310,14 +310,14 @@ void RE_AddMiniRefEntityToScene( const miniRefEntity_t *ent )
 	RE_AddRefEntityToScene(&tempEnt);
 #else
 
-	if ( ent->reType < 0 || ent->reType >= RT_MAX_REF_ENTITY_TYPE )
+	if (ent->reType < 0 || ent->reType >= RT_MAX_REF_ENTITY_TYPE)
 	{
-		Com_Error( ERR_DROP, "RE_AddMiniRefEntityToScene: bad reType %i", ent->reType );
+		Com_Error(ERR_DROP, "RE_AddMiniRefEntityToScene: bad reType %i", ent->reType);
 	}
 
 	if (!r_numentities || refEntParent == -1 || r_numminientities >= MAX_MINI_ENTITIES)
-	{ //rww - add it as a refent also if we run out of minis
-//		Com_Error( ERR_DROP, "RE_AddMiniRefEntityToScene: mini without parent ref ent");
+	{//rww - add it as a refent also if we run out of minis
+//		Com_Error(ERR_DROP, "RE_AddMiniRefEntityToScene: mini without parent ref ent");
 		refEntity_t		tempEnt;
 
 		memcpy(&tempEnt, ent, sizeof(*ent));
@@ -340,16 +340,16 @@ RE_AddDynamicLightToScene
 
 =====================
 */
-void RE_AddDynamicLightToScene( const vec3_t org, float intensity, float r, float g, float b, int additive ) {
+void RE_AddDynamicLightToScene(const vec3_t org, float intensity, float r, float g, float b, int additive) {
 	dlight_t	*dl;
 
-	if ( !tr.registered ) {
+	if (!tr.registered) {
 		return;
 	}
-	if ( r_numdlights >= MAX_DLIGHTS ) {
+	if (r_numdlights >= MAX_DLIGHTS) {
 		return;
 	}
-	if ( intensity <= 0 ) {
+	if (intensity <= 0) {
 		return;
 	}
 	dl = &backEndData->dlights[r_numdlights++];
@@ -367,8 +367,8 @@ RE_AddLightToScene
 
 =====================
 */
-void RE_AddLightToScene( const vec3_t org, float intensity, float r, float g, float b ) {
-	RE_AddDynamicLightToScene( org, intensity, r, g, b, qfalse );
+void RE_AddLightToScene(const vec3_t org, float intensity, float r, float g, float b) {
+	RE_AddDynamicLightToScene(org, intensity, r, g, b, qfalse);
 }
 
 /*
@@ -377,8 +377,8 @@ RE_AddAdditiveLightToScene
 
 =====================
 */
-void RE_AddAdditiveLightToScene( const vec3_t org, float intensity, float r, float g, float b ) {
-	RE_AddDynamicLightToScene( org, intensity, r, g, b, qtrue );
+void RE_AddAdditiveLightToScene(const vec3_t org, float intensity, float r, float g, float b) {
+	RE_AddDynamicLightToScene(org, intensity, r, g, b, qtrue);
 }
 
 /*
@@ -394,27 +394,27 @@ to handle mirrors,
 */
 void RE_RenderWorldEffects(void);
 void RE_RenderAutoMap(void);
-void RE_RenderScene( const refdef_t *fd ) {
+void RE_RenderScene(const refdef_t *fd) {
 	viewParms_t		parms;
 	int				startTime;
 	static	int		lastTime = 0;
 
-	if ( !tr.registered ) {
+	if (!tr.registered) {
 		return;
 	}
-	GLimp_LogComment( "====== RE_RenderScene =====\n" );
+	GLimp_LogComment("====== RE_RenderScene =====\n");
 
-	if ( r_norefresh->integer ) {
+	if (r_norefresh->integer) {
 		return;
 	}
 
-	startTime = ri.Milliseconds()*ri.Cvar_VariableValue( "timescale" );
+	startTime = ri.Milliseconds()*ri.Cvar_VariableValue("timescale");
 
-	if (!tr.world && !( fd->rdflags & RDF_NOWORLDMODEL ) ) {
+	if (!tr.world && !(fd->rdflags & RDF_NOWORLDMODEL)) {
 		Com_Error (ERR_DROP, "R_RenderScene: NULL worldmodel");
 	}
 
-	memcpy( tr.refdef.text, fd->text, sizeof( tr.refdef.text ) );
+	memcpy(tr.refdef.text, fd->text, sizeof(tr.refdef.text));
 
 	tr.refdef.x = fd->x;
 	tr.refdef.y = fd->y;
@@ -423,10 +423,10 @@ void RE_RenderScene( const refdef_t *fd ) {
 	tr.refdef.fov_x = fd->fov_x;
 	tr.refdef.fov_y = fd->fov_y;
 
-	VectorCopy( fd->vieworg, tr.refdef.vieworg );
-	VectorCopy( fd->viewaxis[0], tr.refdef.viewaxis[0] );
-	VectorCopy( fd->viewaxis[1], tr.refdef.viewaxis[1] );
-	VectorCopy( fd->viewaxis[2], tr.refdef.viewaxis[2] );
+	VectorCopy(fd->vieworg, tr.refdef.vieworg);
+	VectorCopy(fd->viewaxis[0], tr.refdef.viewaxis[0]);
+	VectorCopy(fd->viewaxis[1], tr.refdef.viewaxis[1]);
+	VectorCopy(fd->viewaxis[2], tr.refdef.viewaxis[2]);
 
 	tr.refdef.time = fd->time;
 	tr.refdef.frametime = fd->time - lastTime;
@@ -464,7 +464,7 @@ void RE_RenderScene( const refdef_t *fd ) {
 	// copy the areamask data over and note if it has changed, which
 	// will force a reset of the visible leafs even if the view hasn't moved
 	tr.refdef.areamaskModified = qfalse;
-	if ( ! (tr.refdef.rdflags & RDF_NOWORLDMODEL) ) {
+	if (! (tr.refdef.rdflags & RDF_NOWORLDMODEL)) {
 		int		areaDiff;
 		int		i;
 
@@ -475,7 +475,7 @@ void RE_RenderScene( const refdef_t *fd ) {
 			((int *)tr.refdef.areamask)[i] = ((int *)fd->areamask)[i];
 		}
 
-		if ( areaDiff ) {
+		if (areaDiff) {
 			// a door just opened or something
 			tr.refdef.areamaskModified = qtrue;
 		}
@@ -498,9 +498,9 @@ void RE_RenderScene( const refdef_t *fd ) {
 
 	// Add the decals here because decals add polys and we need to ensure
 	// that the polys are added before the the renderer is prepared
-	if ( !(tr.refdef.rdflags & RDF_NOWORLDMODEL) )
+	if (!(tr.refdef.rdflags & RDF_NOWORLDMODEL))
 	{
-		R_AddDecals ( );
+		R_AddDecals ();
 	}
 
 	tr.refdef.numPolys = r_numpolys - r_firstScenePoly;
@@ -508,8 +508,8 @@ void RE_RenderScene( const refdef_t *fd ) {
 
 	// turn off dynamic lighting globally by clearing all the
 	// dlights if it needs to be disabled or if vertex lighting is enabled
-	if ( r_dynamiclight->integer == 0 ||
-		 r_vertexLight->integer == 1 ) {
+	if (r_dynamiclight->integer == 0 ||
+		 r_vertexLight->integer == 1) {
 		tr.refdef.num_dlights = 0;
 	}
 
@@ -527,9 +527,9 @@ void RE_RenderScene( const refdef_t *fd ) {
 	// The refdef takes 0-at-the-top y coordinates, so
 	// convert to GL's 0-at-the-bottom space
 	//
-	memset( &parms, 0, sizeof( parms ) );
+	memset(&parms, 0, sizeof(parms));
 	parms.viewportX = tr.refdef.x;
-	parms.viewportY = glConfig.vidHeight - ( tr.refdef.y + tr.refdef.height );
+	parms.viewportY = glConfig.vidHeight - (tr.refdef.y + tr.refdef.height);
 	parms.viewportWidth = tr.refdef.width;
 	parms.viewportHeight = tr.refdef.height;
 	parms.isPortal = qfalse;
@@ -537,14 +537,14 @@ void RE_RenderScene( const refdef_t *fd ) {
 	parms.fovX = tr.refdef.fov_x;
 	parms.fovY = tr.refdef.fov_y;
 
-	VectorCopy( fd->vieworg, parms.ori.origin );
-	VectorCopy( fd->viewaxis[0], parms.ori.axis[0] );
-	VectorCopy( fd->viewaxis[1], parms.ori.axis[1] );
-	VectorCopy( fd->viewaxis[2], parms.ori.axis[2] );
+	VectorCopy(fd->vieworg, parms.ori.origin);
+	VectorCopy(fd->viewaxis[0], parms.ori.axis[0]);
+	VectorCopy(fd->viewaxis[1], parms.ori.axis[1]);
+	VectorCopy(fd->viewaxis[2], parms.ori.axis[2]);
 
-	VectorCopy( fd->vieworg, parms.pvsOrigin );
+	VectorCopy(fd->vieworg, parms.pvsOrigin);
 
-	R_RenderView( &parms );
+	R_RenderView(&parms);
 
 	// the next scene rendered in this frame will tack on after this one
 	r_firstSceneDrawSurf = tr.refdef.numDrawSurfs;
@@ -555,7 +555,7 @@ void RE_RenderScene( const refdef_t *fd ) {
 
 	refEntParent = -1;
 
-	tr.frontEndMsec += ri.Milliseconds()*ri.Cvar_VariableValue( "timescale" ) - startTime;
+	tr.frontEndMsec += ri.Milliseconds()*ri.Cvar_VariableValue("timescale") - startTime;
 
 	RE_RenderWorldEffects();
 

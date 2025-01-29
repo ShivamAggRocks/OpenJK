@@ -155,32 +155,32 @@ public:
 	virtual ~CEffect() {}
 
 	virtual void Die() {}
-	virtual bool Update()	{ return true;		}
+	virtual bool Update()	{return true;		}
 	virtual	void Draw(void) {}
 
-	inline	miniRefEntity_t	&GetRefEnt(void) { return mRefEnt; }
+	inline	miniRefEntity_t	&GetRefEnt(void) {return mRefEnt;}
 
-	inline void		SetNext(CEffect *Next) { mNext = Next; }
-	inline CEffect	*GetNext(void) { return mNext; }
-	inline void		GetOrigin(vec3_t dest)		{VectorCopy( mOrigin1, dest); }
+	inline void		SetNext(CEffect *Next) {mNext = Next;}
+	inline CEffect	*GetNext(void) {return mNext;}
+	inline void		GetOrigin(vec3_t dest)		{VectorCopy(mOrigin1, dest);}
 
-	inline void SetSTScale(float s,float t)	{ mRefEnt.shaderTexCoord[0]=s;mRefEnt.shaderTexCoord[1]=t;}
+	inline void SetSTScale(float s,float t)	{mRefEnt.shaderTexCoord[0]=s;mRefEnt.shaderTexCoord[1]=t;}
 
-	inline void SetSound ( int vol, int rad) { mSoundRadius = rad; mSoundVolume = vol; }
-	inline void SetMin( vec3_t min )		{ if(min){VectorCopy(min,mMin);}else{VectorClear(mMin);}			}
-	inline void SetMax( vec3_t max )		{ if(max){VectorCopy(max,mMax);}else{VectorClear(mMax);}			}
-	inline void SetFlags( int flags )		{ mFlags = flags;				}
-	inline void AddFlags( int flags )		{ mFlags |= flags;				}
-	inline void ClearFlags( int flags )		{ mFlags &= ~flags;				}
-	inline void SetOrigin1( vec3_t org )	{ if(org){VectorCopy(org,mOrigin1);}else{VectorClear(mOrigin1);}	}
-	inline void SetTimeStart( int time )	{ mTimeStart = time; if (mFlags&FX_SET_SHADER_TIME) { mRefEnt.shaderTime = time * 0.001f; }}
-	inline void	SetTimeEnd( int time )		{ mTimeEnd = time;				}
-	inline void SetImpactFxID( int id )		{ mImpactFxID = id;				}
-	inline void SetDeathFxID( int id )		{ mDeathFxID = id;				}
-	inline EMatImpactEffect GetMatImpactFX() { return mMatImpactFX; }
-	inline int	GetMatImpactParm() { return mMatImpactParm; }
-	inline void SetMatImpactFX(EMatImpactEffect matFX) { mMatImpactFX = matFX; }
-	inline void SetMatImpactParm(int matParm) { mMatImpactParm = matParm; }
+	inline void SetSound (int vol, int rad) {mSoundRadius = rad; mSoundVolume = vol;}
+	inline void SetMin(vec3_t min)		{if(min){VectorCopy(min,mMin);}else{VectorClear(mMin);}			}
+	inline void SetMax(vec3_t max)		{if(max){VectorCopy(max,mMax);}else{VectorClear(mMax);}			}
+	inline void SetFlags(int flags)		{mFlags = flags;				}
+	inline void AddFlags(int flags)		{mFlags |= flags;				}
+	inline void ClearFlags(int flags)		{mFlags &= ~flags;				}
+	inline void SetOrigin1(vec3_t org)	{if(org){VectorCopy(org,mOrigin1);}else{VectorClear(mOrigin1);}	}
+	inline void SetTimeStart(int time)	{mTimeStart = time; if (mFlags&FX_SET_SHADER_TIME) {mRefEnt.shaderTime = time * 0.001f;}}
+	inline void	SetTimeEnd(int time)		{mTimeEnd = time;				}
+	inline void SetImpactFxID(int id)		{mImpactFxID = id;				}
+	inline void SetDeathFxID(int id)		{mDeathFxID = id;				}
+	inline EMatImpactEffect GetMatImpactFX() {return mMatImpactFX;}
+	inline int	GetMatImpactParm() {return mMatImpactParm;}
+	inline void SetMatImpactFX(EMatImpactEffect matFX) {mMatImpactFX = matFX;}
+	inline void SetMatImpactParm(int matParm) {mMatImpactParm = matParm;}
 };
 
 //---------------------------------------------------
@@ -258,7 +258,7 @@ public:
 		mEntNum = -1; mModelNum = -1; mBoltNum = -1;
 	}
 
-	inline void SetBoltinfo( CGhoul2Info_v *ghoul2,  int entNum, int modelNum = -1, int boltNum = -1 )
+	inline void SetBoltinfo(CGhoul2Info_v *ghoul2,  int entNum, int modelNum = -1, int boltNum = -1)
 	{
 		mGhoul2 = ghoul2;
 		mEntNum = entNum;
@@ -268,14 +268,14 @@ public:
 
 	virtual bool Update();
 
-	inline void SetSizeStart( float sz )	{ mSizeStart = sz;			}
-	inline void SetSizeEnd( float sz )		{ mSizeEnd = sz;			}
-	inline void SetSizeParm( float parm )	{ mSizeParm = parm;			}
+	inline void SetSizeStart(float sz)	{mSizeStart = sz;			}
+	inline void SetSizeEnd(float sz)		{mSizeEnd = sz;			}
+	inline void SetSizeParm(float parm)	{mSizeParm = parm;			}
 
-	inline void SetOrgOffset( const vec3_t o )	{ if(o){VectorCopy(o,mOrgOffset);}else{VectorClear(mOrgOffset);}}
-	inline void SetRGBStart( vec3_t rgb )	{ if(rgb){VectorCopy(rgb,mRGBStart);}else{VectorClear(mRGBStart);}	}
-	inline void SetRGBEnd( vec3_t rgb )		{ if(rgb){VectorCopy(rgb,mRGBEnd);}else{VectorClear(mRGBEnd);}		}
-	inline void SetRGBParm( float parm )	{ mRGBParm = parm;			}
+	inline void SetOrgOffset(const vec3_t o)	{if(o){VectorCopy(o,mOrgOffset);}else{VectorClear(mOrgOffset);}}
+	inline void SetRGBStart(vec3_t rgb)	{if(rgb){VectorCopy(rgb,mRGBStart);}else{VectorClear(mRGBStart);}	}
+	inline void SetRGBEnd(vec3_t rgb)		{if(rgb){VectorCopy(rgb,mRGBEnd);}else{VectorClear(mRGBEnd);}		}
+	inline void SetRGBParm(float parm)	{mRGBParm = parm;			}
 };
 
 //------------------------------
@@ -317,7 +317,7 @@ protected:
 
 public:
 
-	inline void SetBoltinfo( CGhoul2Info_v *ghoul2,  int entNum, int modelNum = -1, int boltNum = -1 )
+	inline void SetBoltinfo(CGhoul2Info_v *ghoul2,  int entNum, int modelNum = -1, int boltNum = -1)
 	{
 		mGhoul2 = ghoul2;
 		mEntNum = entNum;
@@ -336,27 +336,27 @@ public:
 	virtual bool Cull(void);
 	virtual void Draw(void);
 
-	inline void SetShader( qhandle_t sh )	{ mRefEnt.customShader = sh;		}
+	inline void SetShader(qhandle_t sh)	{mRefEnt.customShader = sh;		}
 
-	inline void SetOrgOffset( const vec3_t o )	{ if(o){VectorCopy(o,mOrgOffset);}else{VectorClear(mOrgOffset);}}
-	inline void SetVel( vec3_t vel )		{ if(vel){VectorCopy(vel,mVel);}else{VectorClear(mVel);}	}
-	inline void SetAccel( vec3_t ac )		{ if(ac){VectorCopy(ac,mAccel);}else{VectorClear(mAccel);}	}
+	inline void SetOrgOffset(const vec3_t o)	{if(o){VectorCopy(o,mOrgOffset);}else{VectorClear(mOrgOffset);}}
+	inline void SetVel(vec3_t vel)		{if(vel){VectorCopy(vel,mVel);}else{VectorClear(mVel);}	}
+	inline void SetAccel(vec3_t ac)		{if(ac){VectorCopy(ac,mAccel);}else{VectorClear(mAccel);}	}
 
-	inline void SetSizeStart( float sz )	{ mSizeStart = sz; mRefEnt.radius = sz;	}
-	inline void SetSizeEnd( float sz )		{ mSizeEnd = sz;			}
-	inline void SetSizeParm( float parm )	{ mSizeParm = parm;			}
+	inline void SetSizeStart(float sz)	{mSizeStart = sz; mRefEnt.radius = sz;	}
+	inline void SetSizeEnd(float sz)		{mSizeEnd = sz;			}
+	inline void SetSizeParm(float parm)	{mSizeParm = parm;			}
 
-	inline void SetRGBStart( vec3_t rgb )	{ if(rgb){VectorCopy(rgb,mRGBStart);}else{VectorClear(mRGBStart);}	}
-	inline void SetRGBEnd( vec3_t rgb )		{ if(rgb){VectorCopy(rgb,mRGBEnd);}else{VectorClear(mRGBEnd);}		}
-	inline void SetRGBParm( float parm )	{ mRGBParm = parm;			}
+	inline void SetRGBStart(vec3_t rgb)	{if(rgb){VectorCopy(rgb,mRGBStart);}else{VectorClear(mRGBStart);}	}
+	inline void SetRGBEnd(vec3_t rgb)		{if(rgb){VectorCopy(rgb,mRGBEnd);}else{VectorClear(mRGBEnd);}		}
+	inline void SetRGBParm(float parm)	{mRGBParm = parm;			}
 
-	inline void SetAlphaStart( float al )	{ mAlphaStart = al;			}
-	inline void SetAlphaEnd( float al )		{ mAlphaEnd = al;			}
-	inline void SetAlphaParm( float parm )	{ mAlphaParm = parm;		}
+	inline void SetAlphaStart(float al)	{mAlphaStart = al;			}
+	inline void SetAlphaEnd(float al)		{mAlphaEnd = al;			}
+	inline void SetAlphaParm(float parm)	{mAlphaParm = parm;		}
 
-	inline void SetRotation( float rot )		{ mRefEnt.rotation = rot;	}
-	inline void SetRotationDelta( float rot )	{ mRotationDelta = rot;		}
-	inline void SetElasticity( float el )		{ mElasticity = el;			}
+	inline void SetRotation(float rot)		{mRefEnt.rotation = rot;	}
+	inline void SetRotationDelta(float rot)	{mRotationDelta = rot;		}
+	inline void SetElasticity(float el)		{mElasticity = el;			}
 };
 
 //------------------------------
@@ -374,9 +374,9 @@ public:
 
 	virtual bool Update();
 	virtual void Draw(void);
-	virtual bool Cull(void) { return false; }
+	virtual bool Cull(void) {return false;}
 
-	void		Init( void );
+	void		Init(void);
 
 protected:
 	// kef -- mScreenX and mScreenY are used for flashes that are FX_LOCALIZED_FLASH
@@ -403,7 +403,7 @@ public:
 	virtual bool Update();
 	virtual bool Cull();
 
-	inline void SetOrigin2( vec3_t org2 )	{ VectorCopy( org2, mOrigin2 ); }
+	inline void SetOrigin2(vec3_t org2)	{VectorCopy(org2, mOrigin2);}
 };
 
 //------------------------------
@@ -421,7 +421,7 @@ protected:
 
 public:
 
-	CBezier(){ mInit = false; }
+	CBezier(){mInit = false;}
 	virtual ~CBezier() {}
 
 	virtual void Die() {}
@@ -429,10 +429,10 @@ public:
 	virtual bool Cull(void);
 	virtual void Draw(void);
 
-	void DrawSegment( vec3_t start, vec3_t end, float texcoord1, float texcoord2, float segPercent, float lastSegPercent );
+	void DrawSegment(vec3_t start, vec3_t end, float texcoord1, float texcoord2, float segPercent, float lastSegPercent);
 
-	inline void SetControlPoints( vec3_t ctrl1, vec3_t ctrl2 )	{ VectorCopy( ctrl1, mControl1 ); VectorCopy( ctrl2, mControl2 ); }
-	inline void SetControlVel( vec3_t ctrl1v, vec3_t ctrl2v )	{ VectorCopy( ctrl1v, mControl1Vel ); VectorCopy( ctrl2v, mControl2Vel ); }
+	inline void SetControlPoints(vec3_t ctrl1, vec3_t ctrl2)	{VectorCopy(ctrl1, mControl1); VectorCopy(ctrl2, mControl2);}
+	inline void SetControlVel(vec3_t ctrl1v, vec3_t ctrl2v)	{VectorCopy(ctrl1v, mControl1Vel); VectorCopy(ctrl2v, mControl2Vel);}
 };
 
 //------------------------------
@@ -454,7 +454,7 @@ public:
 
 	void Initialize();
 
-	inline void SetChaos( float chaos )		{ mChaos = chaos; }
+	inline void SetChaos(float chaos)		{mChaos = chaos;}
 };
 
 
@@ -475,7 +475,7 @@ public:
 	virtual bool Cull(void);
 	virtual void Draw(void);
 
-	inline void SetNormal( vec3_t norm )	{ VectorCopy( norm, mNormal );	}
+	inline void SetNormal(vec3_t norm)	{VectorCopy(norm, mNormal);	}
 };
 
 //------------------------------
@@ -502,9 +502,9 @@ public:
 
 	virtual bool Update();
 
-	inline void SetLengthStart( float len )	{ mLengthStart = len;	}
-	inline void SetLengthEnd( float len )	{ mLengthEnd = len;	}
-	inline void SetLengthParm( float len )	{ mLengthParm = len;	}
+	inline void SetLengthStart(float len)	{mLengthStart = len;	}
+	inline void SetLengthEnd(float len)	{mLengthEnd = len;	}
+	inline void SetLengthParm(float len)	{mLengthParm = len;	}
 };
 
 
@@ -530,12 +530,12 @@ public:
 	virtual void UpdateLength(void);
 	virtual bool Update();
 
-	inline void SetSize2Start( float sz )	{ mSize2Start = sz;			}
-	inline void SetSize2End( float sz )		{ mSize2End = sz;			}
-	inline void SetSize2Parm( float parm )	{ mSize2Parm = parm;		}
-	inline void SetTraceEnd(qboolean traceEnd) { mTraceEnd = traceEnd; }
+	inline void SetSize2Start(float sz)	{mSize2Start = sz;			}
+	inline void SetSize2End(float sz)		{mSize2End = sz;			}
+	inline void SetSize2Parm(float parm)	{mSize2Parm = parm;		}
+	inline void SetTraceEnd(qboolean traceEnd) {mTraceEnd = traceEnd;}
 
-	inline void SetNormal( vec3_t norm )	{ VectorCopy( norm, mRefEnt.axis[0] ); }
+	inline void SetNormal(vec3_t norm)	{VectorCopy(norm, mRefEnt.axis[0]);}
 };
 
 
@@ -570,15 +570,15 @@ public:
 	virtual bool Cull(void) {return false;}
 	virtual bool Update();
 
-	inline void SetModel( qhandle_t model )	{ mRefEnt.hModel = model;	}
-	inline void SetAngles( vec3_t ang )		{ if(ang){VectorCopy(ang,mAngles);}else{VectorClear(mAngles);}				}
-	inline void SetAngleDelta( vec3_t ang )	{ if(ang){VectorCopy(ang,mAngleDelta);}else{VectorClear(mAngleDelta);}		}
-	inline void SetEmitterFxID( int id )	{ mEmitterFxID = id;		}
-	inline void SetDensity( float density )	{ mDensity = density;		}
-	inline void SetVariance( float var )	{ mVariance = var;			}
-	inline void SetOldTime( int time )		{ mOldTime = time;			}
-	inline void SetLastOrg( vec3_t org )	{ if(org){VectorCopy(org,mLastOrigin);}else{VectorClear(mLastOrigin);}		}
-	inline void SetLastVel( vec3_t vel )	{ if(vel){VectorCopy(vel,mOldVelocity);}else{VectorClear(mOldVelocity);}	}
+	inline void SetModel(qhandle_t model)	{mRefEnt.hModel = model;	}
+	inline void SetAngles(vec3_t ang)		{if(ang){VectorCopy(ang,mAngles);}else{VectorClear(mAngles);}				}
+	inline void SetAngleDelta(vec3_t ang)	{if(ang){VectorCopy(ang,mAngleDelta);}else{VectorClear(mAngleDelta);}		}
+	inline void SetEmitterFxID(int id)	{mEmitterFxID = id;		}
+	inline void SetDensity(float density)	{mDensity = density;		}
+	inline void SetVariance(float var)	{mVariance = var;			}
+	inline void SetOldTime(int time)		{mOldTime = time;			}
+	inline void SetLastOrg(vec3_t org)	{if(org){VectorCopy(org,mLastOrigin);}else{VectorClear(mLastOrigin);}		}
+	inline void SetLastVel(vec3_t vel)	{if(vel){VectorCopy(vel,mOldVelocity);}else{VectorClear(mOldVelocity);}	}
 };
 
 // We're getting pretty low level here, not the kind of thing to abuse considering how much overhead this
@@ -614,8 +614,8 @@ public:
 	void CalcRotateMatrix();
 	void Rotate();
 
-	inline void SetNumVerts( int c )					{ mCount = c;			}
-	inline void SetRot( vec3_t r )						{ if(r){VectorCopy(r,mRotDelta);}else{VectorClear(mRotDelta);}}
-	inline void SetMotionTimeStamp( int t )				{ mTimeStamp = theFxHelper.GetTime() + t; }
-	inline int	GetMotionTimeStamp()					{ return mTimeStamp; }
+	inline void SetNumVerts(int c)					{mCount = c;			}
+	inline void SetRot(vec3_t r)						{if(r){VectorCopy(r,mRotDelta);}else{VectorClear(mRotDelta);}}
+	inline void SetMotionTimeStamp(int t)				{mTimeStamp = theFxHelper.GetTime() + t;}
+	inline int	GetMotionTimeStamp()					{return mTimeStamp;}
 };

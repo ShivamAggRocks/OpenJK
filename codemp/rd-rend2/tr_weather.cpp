@@ -35,7 +35,7 @@ namespace
 		vec3_t velocity;
 	};
 
-	void RB_UpdateWindObject( windObject_t *wo )
+	void RB_UpdateWindObject(windObject_t *wo)
 	{
 		if (wo->targetVelocityTimeRemaining == 0)
 		{
@@ -68,13 +68,13 @@ namespace
 		VectorAdd(wo->currentVelocity, deltaVelocity, wo->currentVelocity);
 	}
 
-	void GenerateRainModel( weatherObject_t& ws, const int maxParticleCount )
+	void GenerateRainModel(weatherObject_t& ws, const int maxParticleCount)
 	{
 		const int mapExtentZ = (int)(tr.world->bmodels[0].bounds[1][2] - tr.world->bmodels[0].bounds[0][2]);
 		const int PARTICLE_COUNT = (int)(maxParticleCount * mapExtentZ / CHUNK_EXTENDS);
 		std::vector<rainVertex_t> rainVertices(PARTICLE_COUNT * CHUNK_COUNT);
 
-		for ( int i = 0; i < rainVertices.size(); ++i )
+		for (int i = 0; i < rainVertices.size(); ++i)
 		{
 			rainVertex_t& vertex = rainVertices[i];
 			vertex.position[0] = Q_flrand(-HALF_CHUNK_EXTENDS, HALF_CHUNK_EXTENDS);
@@ -149,8 +149,8 @@ namespace
 		R_SetOrientationOriginAndAxis(orientation, viewOrigin, forward, left, up);
 
 		const vec3_t viewBounds[2] = {
-			{ 0.0f, -halfMapSize[1], -halfMapSize[0] },
-			{ halfMapSize[2] * 2.0f, halfMapSize[1], halfMapSize[0] }
+			{0.0f, -halfMapSize[1], -halfMapSize[0]},
+			{halfMapSize[2] * 2.0f, halfMapSize[1], halfMapSize[0]}
 		};
 
 		R_SetupViewParmsForOrthoRendering(
@@ -188,7 +188,7 @@ namespace
 			qglEnable(GL_DEPTH_CLAMP);
 
 			GL_Cull(CT_TWO_SIDED);
-			vec4_t color = { 0.0f, 0.0f, 0.0f, 1.0f };
+			vec4_t color = {0.0f, 0.0f, 0.0f, 1.0f};
 			backEnd.currentEntity = &tr.worldEntity;
 
 			vec3_t stepSize = {
@@ -441,7 +441,7 @@ namespace
 
 		const GLuint currentFrameUbo = backEndData->currentFrame->ubo;
 		const UniformBlockBinding uniformBlockBindings[] = {
-			{ currentFrameUbo, tr.sceneUboOffset, UNIFORM_BLOCK_SCENE }
+			{currentFrameUbo, tr.sceneUboOffset, UNIFORM_BLOCK_SCENE}
 		};
 		DrawItemSetUniformBlockBindings(
 			item, uniformBlockBindings, frameAllocator);
@@ -623,7 +623,7 @@ void RE_WorldEffectCommand(const char *command)
 	else if (Q_stricmp(token, "constantwind") == 0)
 	{
 		vec3_t parsedWind;
-		vec3_t defaultWind = { 0.f, 0.8f, 0.f };
+		vec3_t defaultWind = {0.f, 0.8f, 0.f};
 		if (!WE_ParseVector(&command, 3, parsedWind))
 			VectorAdd(
 				tr.weatherSystem->constWindDirection,
@@ -1089,7 +1089,7 @@ void RE_WorldEffectCommand(const char *command)
 
 void R_WorldEffect_f(void)
 {
-	char temp[2048] = { 0 };
+	char temp[2048] = {0};
 	ri.Cmd_ArgsBuffer(temp, sizeof(temp));
 	RE_WorldEffectCommand(temp);
 }
@@ -1113,7 +1113,7 @@ void R_AddWeatherSurfaces()
 	);
 }
 
-void RB_SurfaceWeather( srfWeather_t *surf )
+void RB_SurfaceWeather(srfWeather_t *surf)
 {
 	assert(tr.weatherSystem);
 
@@ -1194,7 +1194,7 @@ void RB_SurfaceWeather( srfWeather_t *surf )
 
 		item.renderState.stateBits = stateBits;
 		item.renderState.cullType = CT_TWO_SIDED;
-		item.renderState.depthRange = { 0.0f, 1.0f };
+		item.renderState.depthRange = {0.0f, 1.0f};
 		item.program = &tr.weatherShader;
 
 		const size_t numAttribs = ARRAY_LEN(weatherObject->attribsTemplate);
@@ -1221,7 +1221,7 @@ void RB_SurfaceWeather( srfWeather_t *surf )
 			{
 				const GLuint currentFrameUbo = backEndData->currentFrame->ubo;
 				const UniformBlockBinding uniformBlockBindings[] = {
-					{ currentFrameUbo, tr.cameraUboOffsets[tr.viewParms.currentViewParm], UNIFORM_BLOCK_CAMERA }
+					{currentFrameUbo, tr.cameraUboOffsets[tr.viewParms.currentViewParm], UNIFORM_BLOCK_CAMERA}
 				};
 				DrawItemSetUniformBlockBindings(
 					item, uniformBlockBindings, frameAllocator);

@@ -76,40 +76,40 @@ extern	int		c_pmove;
 extern int forcePowerNeeded[NUM_FORCE_POWER_LEVELS][NUM_FORCE_POWERS];
 
 //PM anim utility functions:
-qboolean PM_SaberInParry( int move );
-qboolean PM_SaberInKnockaway( int move );
-qboolean PM_SaberInReflect( int move );
-qboolean PM_SaberInStart( int move );
-qboolean PM_InSaberAnim( int anim );
-qboolean PM_InKnockDown( playerState_t *ps );
-qboolean PM_PainAnim( int anim );
-qboolean PM_JumpingAnim( int anim );
-qboolean PM_LandingAnim( int anim );
-qboolean PM_SpinningAnim( int anim );
-qboolean PM_InOnGroundAnim ( int anim );
-qboolean PM_InRollComplete( playerState_t *ps, int anim );
+qboolean PM_SaberInParry(int move);
+qboolean PM_SaberInKnockaway(int move);
+qboolean PM_SaberInReflect(int move);
+qboolean PM_SaberInStart(int move);
+qboolean PM_InSaberAnim(int anim);
+qboolean PM_InKnockDown(playerState_t *ps);
+qboolean PM_PainAnim(int anim);
+qboolean PM_JumpingAnim(int anim);
+qboolean PM_LandingAnim(int anim);
+qboolean PM_SpinningAnim(int anim);
+qboolean PM_InOnGroundAnim (int anim);
+qboolean PM_InRollComplete(playerState_t *ps, int anim);
 
-int PM_AnimLength( int index, animNumber_t anim );
+int PM_AnimLength(int index, animNumber_t anim);
 
 int PM_GetSaberStance(void);
 float PM_GroundDistance(void);
 qboolean PM_SomeoneInFront(trace_t *tr);
 saberMoveName_t PM_SaberFlipOverAttackMove(void);
-saberMoveName_t PM_SaberJumpAttackMove( void );
+saberMoveName_t PM_SaberJumpAttackMove(void);
 
-void PM_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce );
-void PM_AddTouchEnt( int entityNum );
-void PM_AddEvent( int newEvent );
+void PM_ClipVelocity(vec3_t in, vec3_t normal, vec3_t out, float overbounce);
+void PM_AddTouchEnt(int entityNum);
+void PM_AddEvent(int newEvent);
 
-qboolean	PM_SlideMove( qboolean gravity );
-void		PM_StepSlideMove( qboolean gravity );
+qboolean	PM_SlideMove(qboolean gravity);
+void		PM_StepSlideMove(qboolean gravity);
 
-void PM_StartTorsoAnim( int anim );
-void PM_ContinueLegsAnim( int anim );
-void PM_ForceLegsAnim( int anim );
+void PM_StartTorsoAnim(int anim);
+void PM_ContinueLegsAnim(int anim);
+void PM_ForceLegsAnim(int anim);
 
-void PM_BeginWeaponChange( int weapon );
-void PM_FinishWeaponChange( void );
+void PM_BeginWeaponChange(int weapon);
+void PM_FinishWeaponChange(void);
 
 void PM_SetAnim(int setAnimParts,int anim,int setAnimFlags);
 

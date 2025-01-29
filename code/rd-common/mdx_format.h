@@ -189,7 +189,7 @@ typedef struct {
 //
 typedef struct {
 	//
-	// ( first 3 fields are same format as MD3/MDR so we can apply easy model-format-type checks )
+	// (first 3 fields are same format as MD3/MDR so we can apply easy model-format-type checks)
 	//
 	int			ident;				// "IDP3" = MD3, "RDM5" = MDR, "2LGM"(GL2 Mesh) = MDX   (cruddy char order I know, but I'm following what was there in other versions)
 	int			version;			// 1,2,3 etc as per format revision
@@ -215,7 +215,7 @@ typedef struct {
 		{
 			int offsets[1];		// variable sized (mdxmHeader_t->numSurfaces), each offset points to a mdxmSurfHierarchy_t below
 		} mdxmHierarchyOffsets_t;
-// }
+//}
 
 // for each surface...	(mdxmHeader_t->numSurfaces)
 // {
@@ -229,8 +229,8 @@ typedef struct {
 			int			parentIndex;		// this points to the index in the file of the parent surface. -1 if null/root
 			int			numChildren;		// number of surfaces which are children of this one
 			int			childIndexes[1];	// [mdxmSurfHierarch_t->numChildren] (variable sized)
-		} mdxmSurfHierarchy_t;	// struct size = (int)( &((mdxmSurfHierarch_t *)0)->childIndexes[ mdxmSurfHierarch_t->numChildren ] );
-// }
+		} mdxmSurfHierarchy_t;	// struct size = (int)(&((mdxmSurfHierarch_t *)0)->childIndexes[ mdxmSurfHierarch_t->numChildren ]);
+//}
 
 
 // for each LOD...  (mdxmHeader_t->numLODs)
@@ -287,7 +287,7 @@ typedef struct {
 						typedef struct {
 							int			indexes[3];
 						} mdxmTriangle_t;
-				// }
+				//}
 
 
 				// for each vert... (mdxmSurface_t->numVerts)
@@ -310,28 +310,28 @@ typedef struct {
 
 						} mdxmVertex_t;
 
-				// } vert
+				//} vert
 
 #ifdef __cplusplus
 
 // these are convenience functions that I can invoked in code. Do NOT change them (because this is a shared file),
 //	but if you want to copy the logic out and use your own versions then fine...
 //
-static inline int G2_GetVertWeights( const mdxmVertex_t *pVert )
+static inline int G2_GetVertWeights(const mdxmVertex_t *pVert)
 {
 	int iNumWeights = (pVert->uiNmWeightsAndBoneIndexes >> 30)+1;	// 1..4 count
 
 	return iNumWeights;
 }
 
-static inline int G2_GetVertBoneIndex( const mdxmVertex_t *pVert, const int iWeightNum)
+static inline int G2_GetVertBoneIndex(const mdxmVertex_t *pVert, const int iWeightNum)
 {
 	int iBoneIndex = (pVert->uiNmWeightsAndBoneIndexes>>(iG2_BITS_PER_BONEREF*iWeightNum))&((1<<iG2_BITS_PER_BONEREF)-1);
 
 	return iBoneIndex;
 }
 
-static inline float G2_GetVertBoneWeight( const mdxmVertex_t *pVert, const int iWeightNum, float &fTotalWeight, int iNumWeights )
+static inline float G2_GetVertBoneWeight(const mdxmVertex_t *pVert, const int iWeightNum, float &fTotalWeight, int iNumWeights)
 {
 	float fBoneWeight;
 
@@ -342,7 +342,7 @@ static inline float G2_GetVertBoneWeight( const mdxmVertex_t *pVert, const int i
 	else
 	{
 		int iTemp = pVert->BoneWeightings[iWeightNum];
-			iTemp|= (pVert->uiNmWeightsAndBoneIndexes >> (iG2_BONEWEIGHT_TOPBITS_SHIFT+(iWeightNum*2)) ) & iG2_BONEWEIGHT_TOPBITS_AND;
+			iTemp|= (pVert->uiNmWeightsAndBoneIndexes >> (iG2_BONEWEIGHT_TOPBITS_SHIFT+(iWeightNum*2))) & iG2_BONEWEIGHT_TOPBITS_AND;
 
 		fBoneWeight = fG2_BONEWEIGHT_RECIPROCAL_MULT * iTemp;
 		fTotalWeight += fBoneWeight;
@@ -359,11 +359,11 @@ static inline float G2_GetVertBoneWeight( const mdxmVertex_t *pVert, const int i
 							vec2_t			texCoords;
 						} mdxmVertexTexCoord_t;
 
-				// } vert
+				//} vert
 
 
-		// } surface
-// } LOD
+		//} surface
+//} LOD
 
 
 
@@ -376,7 +376,7 @@ static inline float G2_GetVertBoneWeight( const mdxmVertex_t *pVert, const int i
 //
 typedef struct {
 	//
-	// ( first 3 fields are same format as MD3/MDR so we can apply easy model-format-type checks )
+	// (first 3 fields are same format as MD3/MDR so we can apply easy model-format-type checks)
 	//
 	int			ident;				// 	"IDP3" = MD3, "RDM5" = MDR, "2LGA"(GL2 Anim) = MDXA
 	int			version;			// 1,2,3 etc as per format revision
@@ -403,7 +403,7 @@ typedef struct {
 		{
 			int offsets[1];		// variable sized (mdxaHeader_t->numBones), each offset points to an mdxaSkel_t below
 		} mdxaSkelOffsets_t;
-// }
+//}
 
 
 
@@ -419,8 +419,8 @@ typedef struct {
 			mdxaBone_t	BasePoseMatInv;		// inverse, to save run-time calc
 			int			numChildren;		// number of children bones
 			int			children[1];		// [mdxaSkel_t->numChildren] (variable sized)
-		} mdxaSkel_t;	// struct size = (int)( &((mdxaSkel_t *)0)->children[ mdxaSkel_t->numChildren ] );
-// }
+		} mdxaSkel_t;	// struct size = (int)(&((mdxaSkel_t *)0)->children[ mdxaSkel_t->numChildren ]);
+//}
 
 
 	// (offset @ mdxaHeader_t->ofsFrames)
@@ -448,7 +448,7 @@ typedef struct {
 // for each bone in pool (unknown number, no actual total stored at the moment)...
 // {
 		// mdxaCompBone_t  (defined at file top because of struct dependancy)
-// }
+//}
 
 //---------------------------------------------------------------------------
 

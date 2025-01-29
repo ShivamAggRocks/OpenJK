@@ -38,12 +38,12 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 
 // Dammit, I can't use this more elegant form because of !@#@!$%% VM code... (can't alter passed in ptrs, only contents of)
 //
-//unsigned int AnyLanguage_ReadCharFromString( const char **ppsText, qboolean *pbIsTrailingPunctuation = NULL);
+//unsigned int AnyLanguage_ReadCharFromString(const char **ppsText, qboolean *pbIsTrailingPunctuation = NULL);
 //
 // so instead we have to use this messier method...
 //
-unsigned int AnyLanguage_ReadCharFromString( char *psText, int *piAdvanceCount, qboolean *pbIsTrailingPunctuation = NULL);
-unsigned int AnyLanguage_ReadCharFromString( char **psText, qboolean *pbIsTrailingPunctuation = NULL);
+unsigned int AnyLanguage_ReadCharFromString(char *psText, int *piAdvanceCount, qboolean *pbIsTrailingPunctuation = NULL);
+unsigned int AnyLanguage_ReadCharFromString(char **psText, qboolean *pbIsTrailingPunctuation = NULL);
 
 qboolean Language_IsAsian(void);
 qboolean Language_UsesSpaces(void);

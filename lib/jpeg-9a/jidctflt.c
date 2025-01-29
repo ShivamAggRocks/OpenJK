@@ -116,7 +116,7 @@ jpeg_idct_float (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       quantptr++;
       wsptr++;
       continue;
-    }
+   }
     
     /* Even part */
 
@@ -171,7 +171,7 @@ jpeg_idct_float (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     inptr++;			/* advance pointers to next column */
     quantptr++;
     wsptr++;
-  }
+ }
   
   /* Pass 2: process rows from work array, store into output array. */
 
@@ -229,7 +229,7 @@ jpeg_idct_float (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     outptr[4] = range_limit[((int) (tmp3 - tmp4)) & RANGE_MASK];
     
     wsptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 }
 
 #endif /* DCT_FLOAT_SUPPORTED */

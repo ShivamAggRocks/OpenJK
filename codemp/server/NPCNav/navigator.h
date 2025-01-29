@@ -63,9 +63,9 @@ class CEdge
 
 public:
 
-	CEdge( void ) : m_first(-1), m_second(-1), m_cost(-1) {}
-	CEdge( int first, int second, int cost );
-	~CEdge( void );
+	CEdge(void) : m_first(-1), m_second(-1), m_cost(-1) {}
+	CEdge(int first, int second, int cost);
+	~CEdge(void);
 
 	int		m_first;
 	int		m_second;
@@ -91,37 +91,37 @@ class CNode
 
 public:
 
-	CNode( void );
-	~CNode( void );
+	CNode(void);
+	~CNode(void);
 
-	static CNode *Create( vec3_t position, int flags, int radius, int ID );
-	static CNode *Create( void );
+	static CNode *Create(vec3_t position, int flags, int radius, int ID);
+	static CNode *Create(void);
 
-	void AddEdge( int ID, int cost, int flags = EFLAG_NONE );
-	void AddRank( int ID, int rank );
+	void AddEdge(int ID, int cost, int flags = EFLAG_NONE);
+	void AddRank(int ID, int rank);
 
-	void Draw( qboolean radius );
+	void Draw(qboolean radius);
 
-	int	GetID( void )					const	{	return m_ID;	}
-	void GetPosition( vec3_t position )	const	{	if ( position )	VectorCopy( m_position, position );	}
+	int	GetID(void)					const	{	return m_ID;	}
+	void GetPosition(vec3_t position)	const	{	if (position)	VectorCopy(m_position, position);	}
 
-	int GetNumEdges( void )				const	{	return m_numEdges;	}
-	int	GetEdgeNumToNode( int ID );
-	int GetEdge( int edgeNum );
-	int GetEdgeCost( int edgeNum );
-	byte GetEdgeFlags( int edgeNum );
-	void SetEdgeFlags( int edgeNum, int newFlags );
-	int	GetRadius( void )				const	{	return m_radius;	}
+	int GetNumEdges(void)				const	{	return m_numEdges;	}
+	int	GetEdgeNumToNode(int ID);
+	int GetEdge(int edgeNum);
+	int GetEdgeCost(int edgeNum);
+	byte GetEdgeFlags(int edgeNum);
+	void SetEdgeFlags(int edgeNum, int newFlags);
+	int	GetRadius(void)				const	{	return m_radius;	}
 
-	void InitRanks( int size );
-	int GetRank( int ID );
+	void InitRanks(int size);
+	int GetRank(int ID);
 
-	int	GetFlags( void )				const	{	return m_flags;	}
-	void AddFlag( int newFlag )			{	m_flags |= newFlag;	}
-	void RemoveFlag( int oldFlag )		{	m_flags &= ~oldFlag; }
+	int	GetFlags(void)				const	{	return m_flags;	}
+	void AddFlag(int newFlag)			{	m_flags |= newFlag;	}
+	void RemoveFlag(int oldFlag)		{	m_flags &= ~oldFlag;}
 
-	int	Save( int numNodes, fileHandle_t file );
-	int Load( int numNodes, fileHandle_t file );
+	int	Save(int numNodes, fileHandle_t file);
+	int Load(int numNodes, fileHandle_t file);
 
 protected:
 
@@ -161,93 +161,93 @@ class CNavigator
 
 public:
 
-	CNavigator( void );
-	~CNavigator( void );
+	CNavigator(void);
+	~CNavigator(void);
 
-	void Init( void );
-	void Free( void );
+	void Init(void);
+	void Free(void);
 
-	bool Load( const char *filename, int checksum );
-	bool Save( const char *filename, int checksum );
+	bool Load(const char *filename, int checksum);
+	bool Save(const char *filename, int checksum);
 
-	int  AddRawPoint( vec3_t point, int flags, int radius );
-	void CalculatePaths( qboolean recalc=qfalse );
+	int  AddRawPoint(vec3_t point, int flags, int radius);
+	void CalculatePaths(qboolean recalc=qfalse);
 
 #if _HARD_CONNECT
 
-	void HardConnect( int first, int second );
+	void HardConnect(int first, int second);
 
 #endif
 
-	void ShowNodes( void );
-	void ShowEdges( void );
-	void ShowPath( int start, int end );
+	void ShowNodes(void);
+	void ShowEdges(void);
+	void ShowPath(int start, int end);
 
-	int GetNearestNode( sharedEntity_t *ent, int lastID, int flags, int targetID );
+	int GetNearestNode(sharedEntity_t *ent, int lastID, int flags, int targetID);
 
-	int GetBestNode( int startID, int endID, int rejectID = NODE_NONE );
+	int GetBestNode(int startID, int endID, int rejectID = NODE_NONE);
 
-	int GetNodePosition( int nodeID, vec3_t out );
-	int GetNodeNumEdges( int nodeID );
-	int GetNodeEdge( int nodeID, int edge );
-	float GetNodeLeadDistance( int nodeID );
+	int GetNodePosition(int nodeID, vec3_t out);
+	int GetNodeNumEdges(int nodeID);
+	int GetNodeEdge(int nodeID, int edge);
+	float GetNodeLeadDistance(int nodeID);
 
-	int GetNumNodes( void )		const	{	return (int)m_nodes.size();		}
+	int GetNumNodes(void)		const	{	return (int)m_nodes.size();		}
 
-	bool Connected( int startID, int endID );
+	bool Connected(int startID, int endID);
 
-	unsigned int GetPathCost( int startID, int endID );
-	unsigned int GetEdgeCost( int startID, int endID );
+	unsigned int GetPathCost(int startID, int endID);
+	unsigned int GetEdgeCost(int startID, int endID);
 
-	int GetProjectedNode( vec3_t origin, int nodeID );
+	int GetProjectedNode(vec3_t origin, int nodeID);
 //MCG Added BEGIN
-	void CheckFailedNodes( sharedEntity_t *ent );
-	void AddFailedNode( sharedEntity_t *ent, int nodeID );
-	qboolean NodeFailed( sharedEntity_t *ent, int nodeID );
-	qboolean NodesAreNeighbors( int startID, int endID );
-	void ClearFailedEdge( failedEdge_t	*failedEdge );
-	void ClearAllFailedEdges( void );
-	int EdgeFailed( int startID, int endID );
-	void AddFailedEdge( int entID, int startID, int endID );
-	qboolean CheckFailedEdge( failedEdge_t *failedEdge );
-	void CheckAllFailedEdges( void );
-	qboolean RouteBlocked( int startID, int testEdgeID, int endID, int rejectRank );
-	int GetBestNodeAltRoute( int startID, int endID, int *pathCost, int rejectID = NODE_NONE );
-	int GetBestNodeAltRoute( int startID, int endID, int rejectID = NODE_NONE );
-	int GetBestPathBetweenEnts( sharedEntity_t *ent, sharedEntity_t *goal, int flags );
-	int	GetNodeRadius( int nodeID );
-	void CheckBlockedEdges( void );
-	void ClearCheckedNodes( void );
+	void CheckFailedNodes(sharedEntity_t *ent);
+	void AddFailedNode(sharedEntity_t *ent, int nodeID);
+	qboolean NodeFailed(sharedEntity_t *ent, int nodeID);
+	qboolean NodesAreNeighbors(int startID, int endID);
+	void ClearFailedEdge(failedEdge_t	*failedEdge);
+	void ClearAllFailedEdges(void);
+	int EdgeFailed(int startID, int endID);
+	void AddFailedEdge(int entID, int startID, int endID);
+	qboolean CheckFailedEdge(failedEdge_t *failedEdge);
+	void CheckAllFailedEdges(void);
+	qboolean RouteBlocked(int startID, int testEdgeID, int endID, int rejectRank);
+	int GetBestNodeAltRoute(int startID, int endID, int *pathCost, int rejectID = NODE_NONE);
+	int GetBestNodeAltRoute(int startID, int endID, int rejectID = NODE_NONE);
+	int GetBestPathBetweenEnts(sharedEntity_t *ent, sharedEntity_t *goal, int flags);
+	int	GetNodeRadius(int nodeID);
+	void CheckBlockedEdges(void);
+	void ClearCheckedNodes(void);
 	byte CheckedNode(int wayPoint,int ent);
 	void SetCheckedNode(int wayPoint,int ent,byte value);
 
-	void FlagAllNodes( int newFlag );
+	void FlagAllNodes(int newFlag);
 
 	qboolean pathsCalculated;
 //MCG Added END
 
 protected:
 
-	int		TestNodePath( sharedEntity_t *ent, int okToHitEntNum, vec3_t position, qboolean includeEnts );
-	int		TestNodeLOS( sharedEntity_t *ent, vec3_t position );
-	int		TestBestFirst( sharedEntity_t *ent, int lastID, int flags );
+	int		TestNodePath(sharedEntity_t *ent, int okToHitEntNum, vec3_t position, qboolean includeEnts);
+	int		TestNodeLOS(sharedEntity_t *ent, vec3_t position);
+	int		TestBestFirst(sharedEntity_t *ent, int lastID, int flags);
 
 #if __NEWCOLLECT
-	int		CollectNearestNodes( vec3_t origin, int radius, int maxCollect, nodeChain_l &nodeChain );
+	int		CollectNearestNodes(vec3_t origin, int radius, int maxCollect, nodeChain_l &nodeChain);
 #else
-	int		CollectNearestNodes( vec3_t origin, int radius, int maxCollect, int *nodeChain );
+	int		CollectNearestNodes(vec3_t origin, int radius, int maxCollect, int *nodeChain);
 #endif	//__NEWCOLLECT
 
-	char	GetChar( fileHandle_t file );
-	int		GetInt( fileHandle_t file );
-	float	GetFloat( fileHandle_t file );
-	long	GetLong( fileHandle_t file );
+	char	GetChar(fileHandle_t file);
+	int		GetInt(fileHandle_t file);
+	float	GetFloat(fileHandle_t file);
+	long	GetLong(fileHandle_t file);
 
-	void	SetEdgeCost( int ID1, int ID2, int cost );
-	int		GetEdgeCost( CNode *first, CNode *second );
-	void	AddNodeEdges( CNode *node, int addDist, edge_l &edgeList, bool *checkedNodes );
+	void	SetEdgeCost(int ID1, int ID2, int cost);
+	int		GetEdgeCost(CNode *first, CNode *second);
+	void	AddNodeEdges(CNode *node, int addDist, edge_l &edgeList, bool *checkedNodes);
 
-	void	CalculatePath( CNode *node );
+	void	CalculatePath(CNode *node);
 
 	//rww - made failedEdges private as it doesn't seem to need to be public.
 	//And I'd rather shoot myself than have to devise a way of setting/accessing this
@@ -274,8 +274,8 @@ public:
 public:
 	CEdge*	Pop();
 	CEdge*	Find(int npNum);
-	void	Push( CEdge* theEdge );
-	void	Update(CEdge* edge );
+	void	Push(CEdge* theEdge);
+	void	Update(CEdge* edge);
 	bool	Empty();
 
 

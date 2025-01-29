@@ -38,7 +38,7 @@
 				((unsigned) buf[1] << 8 | buf[0]);
 			*(uint32_t *) buf = t;
 			buf += 4;
-	    } while (--longs);
+	   } while (--longs);
 	}
 #endif // Q3_BIG_ENDIAN
 
@@ -67,7 +67,7 @@ void MD5Init(struct MD5Context *ctx)
 
 /* This is the central step in the MD5 algorithm. */
 #define MD5STEP(f, w, x, y, z, data, s) \
-	( w += f(x, y, z) + data,  w = w<<s | w>>(32-s),  w += x )
+	(w += f(x, y, z) + data,  w = w<<s | w>>(32-s),  w += x)
 
 /*
  * The core of the MD5 algorithm, this alters an existing MD5 hash to
@@ -189,7 +189,7 @@ void MD5Update(struct MD5Context *ctx, unsigned char const *buf, unsigned len)
 		MD5Transform(ctx->buf, (uint32_t *) ctx->in);
 		buf += t;
 		len -= t;
-    }
+   }
     /* Process data in 64-byte chunks */
 
     while (len >= 64) {
@@ -198,7 +198,7 @@ void MD5Update(struct MD5Context *ctx, unsigned char const *buf, unsigned len)
 		MD5Transform(ctx->buf, (uint32_t *) ctx->in);
 		buf += 64;
 		len -= 64;
-    }
+   }
 
     /* Handle any remaining bytes of data. */
 
@@ -234,10 +234,10 @@ void MD5Final(struct MD5Context *ctx, unsigned char *digest)
 
 		/* Now fill the next block with 56 bytes */
 		memset(ctx->in, 0, 56);
-    } else {
+   } else {
 		/* Pad block to 56 bytes */
 		memset(p, 0, count - 8);
-    }
+   }
     byteReverse(ctx->in, 14);
 
     /* Append length in bits and transform */
@@ -252,7 +252,7 @@ void MD5Final(struct MD5Context *ctx, unsigned char *digest)
     memset(ctx, 0, sizeof(*ctx));	/* In case it's sensitive */
 }
 
-char *Com_MD5File( const char *fn, int length, const char *prefix, int prefix_len )
+char *Com_MD5File(const char *fn, int length, const char *prefix, int prefix_len)
 {
 	static char final[33] = {""};
 	unsigned char digest[16] = {""};
@@ -264,15 +264,15 @@ char *Com_MD5File( const char *fn, int length, const char *prefix, int prefix_le
 	int r = 0;
 	int total = 0;
 
-	Q_strncpyz( final, "", sizeof( final ) );
+	Q_strncpyz(final, "", sizeof(final));
 
-	filelen = FS_SV_FOpenFileRead( fn, &f );
+	filelen = FS_SV_FOpenFileRead(fn, &f);
 
-	if( !f ) {
+	if(!f) {
 		return final;
 	}
-	if( filelen < 1 ) {
-		FS_FCloseFile( f );
+	if(filelen < 1) {
+		FS_FCloseFile(f);
 		return final;
 	}
 	if(filelen < length || !length) {
@@ -281,7 +281,7 @@ char *Com_MD5File( const char *fn, int length, const char *prefix, int prefix_le
 
 	MD5Init(&md5);
 
-	if( prefix_len && *prefix )
+	if(prefix_len && *prefix)
 		MD5Update(&md5 , (unsigned char *)prefix, prefix_len);
 
 	for(;;) {

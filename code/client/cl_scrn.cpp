@@ -46,13 +46,13 @@ SCR_DrawNamedPic
 Coordinates are 640*480 virtual values
 =================
 */
-void SCR_DrawNamedPic( float x, float y, float width, float height, const char *picname ) {
+void SCR_DrawNamedPic(float x, float y, float width, float height, const char *picname) {
 	qhandle_t	hShader;
 
-	assert( width != 0 );
+	assert(width != 0);
 
-	hShader = re.RegisterShader( picname );
-	re.DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader );
+	hShader = re.RegisterShader(picname);
+	re.DrawStretchPic(x, y, width, height, 0, 0, 1, 1, hShader);
 }
 
 
@@ -63,12 +63,12 @@ SCR_FillRect
 Coordinates are 640*480 virtual values
 =================
 */
-void SCR_FillRect( float x, float y, float width, float height, const float *color ) {
-	re.SetColor( color );
+void SCR_FillRect(float x, float y, float width, float height, const float *color) {
+	re.SetColor(color);
 
-	re.DrawStretchPic( x, y, width, height, 0, 0, 0, 0, cls.whiteShader );
+	re.DrawStretchPic(x, y, width, height, 0, 0, 0, 0, cls.whiteShader);
 
-	re.SetColor( NULL );
+	re.SetColor(NULL);
 }
 
 
@@ -80,8 +80,8 @@ Coordinates are 640*480 virtual values
 A width of 0 will draw with the original image width
 =================
 */
-void SCR_DrawPic( float x, float y, float width, float height, qhandle_t hShader ) {
-	re.DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader );
+void SCR_DrawPic(float x, float y, float width, float height, qhandle_t hShader) {
+	re.DrawStretchPic(x, y, width, height, 0, 0, 1, 1, hShader);
 }
 
 
@@ -89,7 +89,7 @@ void SCR_DrawPic( float x, float y, float width, float height, qhandle_t hShader
 ** SCR_DrawBigChar
 ** big chars are drawn at 640*480 virtual screen size
 */
-void SCR_DrawBigChar( int x, int y, int ch ) {
+void SCR_DrawBigChar(int x, int y, int ch) {
 	int row, col;
 	float frow, fcol;
 	float size;
@@ -97,11 +97,11 @@ void SCR_DrawBigChar( int x, int y, int ch ) {
 
 	ch &= 255;
 
-	if ( ch == ' ' ) {
+	if (ch == ' ') {
 		return;
 	}
 
-	if ( y < -BIGCHAR_HEIGHT ) {
+	if (y < -BIGCHAR_HEIGHT) {
 		return;
 	}
 
@@ -117,10 +117,10 @@ void SCR_DrawBigChar( int x, int y, int ch ) {
 	fcol = col*0.0625;
 	size = 0.0625;
 /*
-	re.DrawStretchPic( ax, ay, aw, ah,
+	re.DrawStretchPic(ax, ay, aw, ah,
 					   fcol, frow,
 					   fcol + size, frow + size,
-					   cls.charSetShader );
+					   cls.charSetShader);
 */
 	float size2;
 
@@ -129,10 +129,10 @@ void SCR_DrawBigChar( int x, int y, int ch ) {
 	size = 0.03125;
 	size2 = 0.0625;
 
-	re.DrawStretchPic( ax, ay, aw, ah,
+	re.DrawStretchPic(ax, ay, aw, ah,
 					   fcol, frow,
 					   fcol + size, frow + size2,
-					   cls.charSetShader );
+					   cls.charSetShader);
 
 }
 
@@ -140,18 +140,18 @@ void SCR_DrawBigChar( int x, int y, int ch ) {
 ** SCR_DrawSmallChar
 ** small chars are drawn at native screen resolution
 */
-void SCR_DrawSmallChar( int x, int y, int ch ) {
+void SCR_DrawSmallChar(int x, int y, int ch) {
 	int row, col;
 	float frow, fcol;
 	float size;
 
 	ch &= 255;
 
-	if ( ch == ' ' ) {
+	if (ch == ' ') {
 		return;
 	}
 
-	if ( y < -con.charHeight ) {
+	if (y < -con.charHeight) {
 		return;
 	}
 
@@ -162,10 +162,10 @@ void SCR_DrawSmallChar( int x, int y, int ch ) {
 	fcol = col*0.0625;
 	size = 0.0625;
 
-	re.DrawStretchPic( x, y, con.charWidth, con.charHeight,
+	re.DrawStretchPic(x, y, con.charWidth, con.charHeight,
 					   fcol, frow,
 					   fcol + size, frow + size,
-					   cls.charSetShader );
+					   cls.charSetShader);
 */
 
 	float size2;
@@ -175,11 +175,11 @@ void SCR_DrawSmallChar( int x, int y, int ch ) {
 	size = 0.03125;
 	size2 = 0.0625;
 
-	re.DrawStretchPic( x * con.xadjust, y * con.yadjust,
+	re.DrawStretchPic(x * con.xadjust, y * con.yadjust,
 						con.charWidth * con.xadjust, con.charHeight * con.yadjust,
 		fcol, frow,
 		fcol + size, frow + size2,
-		cls.charSetShader );
+		cls.charSetShader);
 
 }
 
@@ -195,7 +195,7 @@ to a fixed color.
 Coordinates are at 640 by 480 virtual resolution
 ==================
 */
-void SCR_DrawBigStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape ) {
+void SCR_DrawBigStringExt(int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape) {
 	vec4_t		color;
 	const char	*s;
 	int			xx;
@@ -203,15 +203,15 @@ void SCR_DrawBigStringExt( int x, int y, const char *string, float *setColor, qb
 	// draw the drop shadow
 	color[0] = color[1] = color[2] = 0;
 	color[3] = setColor[3];
-	re.SetColor( color );
+	re.SetColor(color);
 	s = string;
 	xx = x;
-	while ( *s ) {
-		if ( !noColorEscape && Q_IsColorString( s ) ) {
+	while (*s) {
+		if (!noColorEscape && Q_IsColorString(s)) {
 			s += 2;
 			continue;
 		}
-		SCR_DrawBigChar( xx+2, y+2, *s );
+		SCR_DrawBigChar(xx+2, y+2, *s);
 		xx += BIGCHAR_WIDTH;
 		s++;
 	}
@@ -220,37 +220,37 @@ void SCR_DrawBigStringExt( int x, int y, const char *string, float *setColor, qb
 	// draw the colored text
 	s = string;
 	xx = x;
-	re.SetColor( setColor );
-	while ( *s ) {
-		if ( Q_IsColorString( s ) ) {
-			if ( !forceColor ) {
-				memcpy( color, g_color_table[ColorIndex(*(s+1))], sizeof( color ) );
+	re.SetColor(setColor);
+	while (*s) {
+		if (Q_IsColorString(s)) {
+			if (!forceColor) {
+				memcpy(color, g_color_table[ColorIndex(*(s+1))], sizeof(color));
 				color[3] = setColor[3];
-				re.SetColor( color );
+				re.SetColor(color);
 			}
-			if ( !noColorEscape ) {
+			if (!noColorEscape) {
 				s += 2;
 				continue;
 			}
 		}
-		SCR_DrawBigChar( xx, y, *s );
+		SCR_DrawBigChar(xx, y, *s);
 		xx += BIGCHAR_WIDTH;
 		s++;
 	}
-	re.SetColor( NULL );
+	re.SetColor(NULL);
 }
 
 
-void SCR_DrawBigString( int x, int y, const char *s, float alpha, qboolean noColorEscape ) {
+void SCR_DrawBigString(int x, int y, const char *s, float alpha, qboolean noColorEscape) {
 	float	color[4];
 
 	color[0] = color[1] = color[2] = 1.0;
 	color[3] = alpha;
-	SCR_DrawBigStringExt( x, y, s, color, qfalse, noColorEscape );
+	SCR_DrawBigStringExt(x, y, s, color, qfalse, noColorEscape);
 }
 
-void SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color, qboolean noColorEscape ) {
-	SCR_DrawBigStringExt( x, y, s, color, qtrue, noColorEscape );
+void SCR_DrawBigStringColor(int x, int y, const char *s, vec4_t color, qboolean noColorEscape) {
+	SCR_DrawBigStringExt(x, y, s, color, qtrue, noColorEscape);
 }
 
 /*
@@ -261,8 +261,8 @@ Draws a multi-colored string with a drop shadow, optionally forcing
 to a fixed color.
 ==================
 */
-void SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor,
-		qboolean noColorEscape ) {
+void SCR_DrawSmallStringExt(int x, int y, const char *string, float *setColor, qboolean forceColor,
+		qboolean noColorEscape) {
 	vec4_t		color;
 	const char	*s;
 	int			xx;
@@ -270,35 +270,35 @@ void SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, 
 	// draw the colored text
 	s = string;
 	xx = x;
-	re.SetColor( setColor );
-	while ( *s ) {
-		if ( Q_IsColorString( s ) ) {
-			if ( !forceColor ) {
-				memcpy( color, g_color_table[ColorIndex(*(s+1))], sizeof( color ) );
+	re.SetColor(setColor);
+	while (*s) {
+		if (Q_IsColorString(s)) {
+			if (!forceColor) {
+				memcpy(color, g_color_table[ColorIndex(*(s+1))], sizeof(color));
 				color[3] = setColor[3];
-				re.SetColor( color );
+				re.SetColor(color);
 			}
-			if ( !noColorEscape ) {
+			if (!noColorEscape) {
 				s += 2;
 				continue;
 			}
 		}
-		SCR_DrawSmallChar( xx, y, *s );
+		SCR_DrawSmallChar(xx, y, *s);
 		xx += con.charWidth;
 		s++;
 	}
-	re.SetColor( NULL );
+	re.SetColor(NULL);
 }
 
 /*
 ** SCR_Strlen -- skips color escape codes
 */
-static int SCR_Strlen( const char *str ) {
+static int SCR_Strlen(const char *str) {
 	const char *s = str;
 	int count = 0;
 
-	while ( *s ) {
-		if ( Q_IsColorString( s ) ) {
+	while (*s) {
+		if (Q_IsColorString(s)) {
 			s += 2;
 		} else {
 			count++;
@@ -312,8 +312,8 @@ static int SCR_Strlen( const char *str ) {
 /*
 ** SCR_GetBigStringWidth
 */
-int	SCR_GetBigStringWidth( const char *str ) {
-	return SCR_Strlen( str ) * BIGCHAR_WIDTH;
+int	SCR_GetBigStringWidth(const char *str) {
+	return SCR_Strlen(str) * BIGCHAR_WIDTH;
 }
 
 //===============================================================================
@@ -363,10 +363,10 @@ void SCR_DrawDebugGraph (void)
 	w = cls.glconfig.vidWidth;
 	x = 0;
 	y = cls.glconfig.vidHeight;
-	re.SetColor( g_color_table[0] );
+	re.SetColor(g_color_table[0]);
 	re.DrawStretchPic(x, y - cl_graphheight->integer,
-		w, cl_graphheight->integer, 0, 0, 0, 0, 0 );
-	re.SetColor( NULL );
+		w, cl_graphheight->integer, 0, 0, 0, 0, 0);
+	re.SetColor(NULL);
 
 	for (a=0 ; a<w ; a++)
 	{
@@ -377,7 +377,7 @@ void SCR_DrawDebugGraph (void)
 		if (v < 0)
 			v += cl_graphheight->integer * (1+(int)(-v / cl_graphheight->integer));
 		h = (int)v % cl_graphheight->integer;
-		re.DrawStretchPic( x+w-1-a, y - h, 1, h, 0, 0, 0, 0, 0 );
+		re.DrawStretchPic(x+w-1-a, y - h, 1, h, 0, 0, 0, 0, 0);
 	}
 }
 //=============================================================================
@@ -387,7 +387,7 @@ void SCR_DrawDebugGraph (void)
 SCR_Init
 ==================
 */
-void SCR_Init( void ) {
+void SCR_Init(void) {
 	cl_timegraph = Cvar_Get ("timegraph", "0", CVAR_CHEAT);
 	cl_debuggraph = Cvar_Get ("debuggraph", "0", CVAR_CHEAT);
 	cl_graphheight = Cvar_Get ("graphheight", "32", CVAR_CHEAT);
@@ -400,9 +400,9 @@ void SCR_Init( void ) {
 
 //=======================================================
 
-void UI_SetActiveMenu( const char* menuname,const char *menuID );
-void _UI_Refresh( int realtime );
-void UI_DrawConnect( const char *servername, const char * updateInfoString );
+void UI_SetActiveMenu(const char* menuname,const char *menuID);
+void _UI_Refresh(int realtime);
+void UI_DrawConnect(const char *servername, const char * updateInfoString);
 
 /*
 ==================
@@ -411,36 +411,36 @@ SCR_DrawScreenField
 This will be called twice if rendering in stereo mode
 ==================
 */
-void SCR_DrawScreenField( stereoFrame_t stereoFrame ) {
+void SCR_DrawScreenField(stereoFrame_t stereoFrame) {
 
-	re.BeginFrame( stereoFrame );
+	re.BeginFrame(stereoFrame);
 
 	qboolean uiFullscreen = _UI_IsFullscreen();
 
 	// if the menu is going to cover the entire screen, we
 	// don't need to render anything under it
-	if ( !uiFullscreen ) {
-		switch( cls.state ) {
+	if (!uiFullscreen) {
+		switch(cls.state) {
 		default:
-			Com_Error( ERR_FATAL, "SCR_DrawScreenField: bad cls.state" );
+			Com_Error(ERR_FATAL, "SCR_DrawScreenField: bad cls.state");
 			break;
 		case CA_CINEMATIC:
 			SCR_DrawCinematic();
 			break;
 		case CA_DISCONNECTED:
 			// force menu up
-			UI_SetActiveMenu( "mainMenu", NULL );
+			UI_SetActiveMenu("mainMenu", NULL);
 			break;
 		case CA_CONNECTING:
 		case CA_CHALLENGING:
 		case CA_CONNECTED:
 			// connecting clients will only show the connection dialog
-			UI_DrawConnect( clc.servername, cls.updateInfoString );
+			UI_DrawConnect(clc.servername, cls.updateInfoString);
 			break;
 		case CA_LOADING:
 		case CA_PRIMED:
 			// draw the game information screen and loading progress
-			CL_CGameRendering( stereoFrame );
+			CL_CGameRendering(stereoFrame);
 			break;
 		case CA_ACTIVE:
 			if (CL_IsRunningInGameCinematic() || CL_InGameCinematicOnStandBy())
@@ -449,7 +449,7 @@ void SCR_DrawScreenField( stereoFrame_t stereoFrame ) {
 			}
 			else
 			{
-				CL_CGameRendering( stereoFrame );
+				CL_CGameRendering(stereoFrame);
 			}
 			break;
 		}
@@ -460,13 +460,13 @@ void SCR_DrawScreenField( stereoFrame_t stereoFrame ) {
 	// draw downloading progress bar
 
 	// the menu draws next
-	_UI_Refresh( cls.realtime );
+	_UI_Refresh(cls.realtime);
 
 	// console draws next
 	Con_DrawConsole ();
 
 	// debug graph can be drawn on top of anything
-	if ( cl_debuggraph->integer || cl_timegraph->integer ) {
+	if (cl_debuggraph->integer || cl_timegraph->integer) {
 		SCR_DrawDebugGraph ();
 	}
 }
@@ -479,37 +479,37 @@ This is called every frame, and can also be called explicitly to flush
 text to the screen.
 ==================
 */
-void SCR_UpdateScreen( void ) {
+void SCR_UpdateScreen(void) {
 	static int	recursive;
 
-	if ( !scr_initialized ) {
+	if (!scr_initialized) {
 		return;				// not initialized yet
 	}
 
 	// load the ref / ui / cgame if needed
 	CL_StartHunkUsers();
 
-	if ( ++recursive > 2 ) {
-		Com_Error( ERR_FATAL, "SCR_UpdateScreen: recursively called" );
+	if (++recursive > 2) {
+		Com_Error(ERR_FATAL, "SCR_UpdateScreen: recursively called");
 	}
 	recursive = qtrue;
 
 	// If there is no VM, there are also no rendering commands issued. Stop the renderer in
 	// that case.
-	if ( cls.uiStarted )
+	if (cls.uiStarted)
 	{
 		// if running in stereo, we need to draw the frame twice
-		if ( cls.glconfig.stereoEnabled ) {
-			SCR_DrawScreenField( STEREO_LEFT );
-			SCR_DrawScreenField( STEREO_RIGHT );
+		if (cls.glconfig.stereoEnabled) {
+			SCR_DrawScreenField(STEREO_LEFT);
+			SCR_DrawScreenField(STEREO_RIGHT);
 		} else {
-			SCR_DrawScreenField( STEREO_CENTER );
+			SCR_DrawScreenField(STEREO_CENTER);
 		}
 
-		if ( com_speeds->integer ) {
-			re.EndFrame( &time_frontend, &time_backend );
+		if (com_speeds->integer) {
+			re.EndFrame(&time_frontend, &time_backend);
 		} else {
-			re.EndFrame( NULL, NULL );
+			re.EndFrame(NULL, NULL);
 		}
 	}
 
@@ -533,22 +533,22 @@ void SCR_PrecacheScreenshot()
 	// No screenshots unless connected to single player local server...
 	//
 //	char *psInfo = cl.gameState.stringData + cl.gameState.stringOffsets[ CS_SERVERINFO ];
-//	int iMaxClients = atoi(Info_ValueForKey( psInfo, "sv_maxclients" ));
+//	int iMaxClients = atoi(Info_ValueForKey(psInfo, "sv_maxclients"));
 
 	// (no need to check single-player status in voyager, this code base is all singleplayer)
-	if ( cls.state != CA_ACTIVE )
+	if (cls.state != CA_ACTIVE)
 	{
 		return;
 	}
 
-	if (!Key_GetCatcher( ))
+	if (!Key_GetCatcher())
 	{
 		// in-game...
 		//
 //		SCR_UnprecacheScreenshot();
 //		pbScreenData = (byte *)Z_Malloc(SG_SCR_WIDTH * SG_SCR_HEIGHT * 4);
 		S_ClearSoundBuffer();	// clear DMA etc because the following glReadPixels() call can take ages
-		re.GetScreenShot( (byte *) &bScreenData, SG_SCR_WIDTH, SG_SCR_HEIGHT);
+		re.GetScreenShot((byte *) &bScreenData, SG_SCR_WIDTH, SG_SCR_HEIGHT);
 		screenDataValid = qtrue;
 	}
 

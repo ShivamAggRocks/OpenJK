@@ -58,12 +58,12 @@
 /* sort so that a<=b */
 #define SORT(a,b)       \
              if(a>b)    \
-             {          \
+             {         \
                float tmp; \
                tmp=a;     \
                a=b;     \
                b=tmp;     \
-             }
+            }
 
 #define ISECT(VV0,VV1,VV2,D0,D1,D2,isect0,isect1) \
               isect0=VV0+(VV1-VV0)*D0/(D0-D1);    \
@@ -72,34 +72,34 @@
 
 #define COMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1) \
   if(D0D1>0.0f)                                         \
-  {                                                     \
+  {                                                    \
     /* here we know that D0D2<=0.0 */                   \
     /* that is D0, D1 are on the same side, D2 on the other or on the plane */ \
     ISECT(VV2,VV0,VV1,D2,D0,D1,isect0,isect1);          \
-  }                                                     \
+ }                                                     \
   else if(D0D2>0.0f)                                    \
-  {                                                     \
+  {                                                    \
     /* here we know that d0d1<=0.0 */                   \
     ISECT(VV1,VV0,VV2,D1,D0,D2,isect0,isect1);          \
-  }                                                     \
+ }                                                     \
   else if(D1*D2>0.0f || D0!=0.0f)                       \
-  {                                                     \
+  {                                                    \
     /* here we know that d0d1<=0.0 or that D0!=0.0 */   \
     ISECT(VV0,VV1,VV2,D0,D1,D2,isect0,isect1);          \
-  }                                                     \
+ }                                                     \
   else if(D1!=0.0f)                                     \
-  {                                                     \
+  {                                                    \
     ISECT(VV1,VV0,VV2,D1,D0,D2,isect0,isect1);          \
-  }                                                     \
+ }                                                     \
   else if(D2!=0.0f)                                     \
-  {                                                     \
+  {                                                    \
     ISECT(VV2,VV0,VV1,D2,D0,D1,isect0,isect1);          \
-  }                                                     \
+ }                                                     \
   else                                                  \
-  {                                                     \
+  {                                                    \
     /* triangles are coplanar */                        \
     return coplanar_tri_tri(N1,V0,V1,V2,U0,U1,U2);      \
-  }
+ }
 
 
 
@@ -114,20 +114,20 @@
   f=Ay*Bx-Ax*By;                                      \
   d=By*Cx-Bx*Cy;                                      \
   if((f>0 && d>=0 && d<=f) || (f<0 && d<=0 && d>=f))  \
-  {                                                   \
+  {                                                  \
     e=Ax*Cy-Ay*Cx;                                    \
     if(f>0)                                           \
-    {                                                 \
+    {                                                \
       if(e>=0 && e<=f) return 1;                      \
-    }                                                 \
+   }                                                 \
     else                                              \
-    {                                                 \
+    {                                                \
       if(e<=0 && e>=f) return 1;                      \
-    }                                                 \
-  }
+   }                                                 \
+ }
 
 #define EDGE_AGAINST_TRI_EDGES(V0,V1,U0,U1,U2) \
-{                                              \
+{                                             \
   float Ax,Ay,Bx,By,Cx,Cy,e,d,f;               \
   Ax=V1[i0]-V0[i0];                            \
   Ay=V1[i1]-V0[i1];                            \
@@ -140,7 +140,7 @@
 }
 
 #define POINT_IN_TRI(V0,U0,U1,U2)           \
-{                                           \
+{                                          \
   float a,b,c,d0,d1,d2;                     \
   /* is T1 completly inside T2? */          \
   /* check if V0 is inside tri(U0,U1,U2) */ \
@@ -159,9 +159,9 @@
   c=-a*U2[i0]-b*U2[i1];                     \
   d2=a*V0[i0]+b*V0[i1]+c;                   \
   if(d0*d1>0.0)                             \
-  {                                         \
+  {                                        \
     if(d0*d2>0.0) return 1;                 \
-  }                                         \
+ }                                         \
 }
 
 qboolean coplanar_tri_tri(vec3_t N,vec3_t V0,vec3_t V1,vec3_t V2,
@@ -180,26 +180,26 @@ qboolean coplanar_tri_tri(vec3_t N,vec3_t V0,vec3_t V1,vec3_t V2,
       {
           i0=1;      /* A[0] is greatest */
           i1=2;
-      }
+     }
       else
       {
           i0=0;      /* A[2] is greatest */
           i1=1;
-      }
-   }
+     }
+  }
    else   /* A[0]<=A[1] */
    {
       if(A[2]>A[1])
       {
           i0=0;      /* A[2] is greatest */
           i1=1;
-      }
+     }
       else
       {
           i0=0;      /* A[1] is greatest */
           i1=2;
-      }
-    }
+     }
+   }
 
     /* test all edges of triangle 1 against the edges of triangle 2 */
     EDGE_AGAINST_TRI_EDGES(V0,V1,U0,U1,U2);

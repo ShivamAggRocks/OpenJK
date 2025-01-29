@@ -54,7 +54,7 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
     if (force_baseline && temp > 255L)
       temp = 255L;		/* limit to baseline range if requested */
     (*qtblptr)->quantval[i] = (UINT16) temp;
-  }
+ }
 
   /* Initialize sent_table FALSE so table will be written to JPEG file. */
   (*qtblptr)->sent_table = FALSE;
@@ -201,19 +201,19 @@ std_huff_tables (j_compress_ptr cinfo)
 /* IMPORTANT: these are only valid for 8-bit data precision! */
 {
   static const UINT8 bits_dc_luminance[17] =
-    { /* 0-base */ 0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 };
+    {/* 0-base */ 0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
   static const UINT8 val_dc_luminance[] =
-    { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
   
   static const UINT8 bits_dc_chrominance[17] =
-    { /* 0-base */ 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+    {/* 0-base */ 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
   static const UINT8 val_dc_chrominance[] =
-    { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
   
   static const UINT8 bits_ac_luminance[17] =
-    { /* 0-base */ 0, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d };
+    {/* 0-base */ 0, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d};
   static const UINT8 val_ac_luminance[] =
-    { 0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12,
+    {0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12,
       0x21, 0x31, 0x41, 0x06, 0x13, 0x51, 0x61, 0x07,
       0x22, 0x71, 0x14, 0x32, 0x81, 0x91, 0xa1, 0x08,
       0x23, 0x42, 0xb1, 0xc1, 0x15, 0x52, 0xd1, 0xf0,
@@ -233,12 +233,12 @@ std_huff_tables (j_compress_ptr cinfo)
       0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda, 0xe1, 0xe2,
       0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea,
       0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8,
-      0xf9, 0xfa };
+      0xf9, 0xfa};
   
   static const UINT8 bits_ac_chrominance[17] =
-    { /* 0-base */ 0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77 };
+    {/* 0-base */ 0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77};
   static const UINT8 val_ac_chrominance[] =
-    { 0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21,
+    {0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21,
       0x31, 0x06, 0x12, 0x41, 0x51, 0x07, 0x61, 0x71,
       0x13, 0x22, 0x32, 0x81, 0x08, 0x14, 0x42, 0x91,
       0xa1, 0xb1, 0xc1, 0x09, 0x23, 0x33, 0x52, 0xf0,
@@ -258,7 +258,7 @@ std_huff_tables (j_compress_ptr cinfo)
       0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda,
       0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9,
       0xea, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8,
-      0xf9, 0xfa };
+      0xf9, 0xfa};
   
   add_huff_table(cinfo, &cinfo->dc_huff_tbl_ptrs[0],
 		 bits_dc_luminance, val_dc_luminance);
@@ -314,7 +314,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
     cinfo->arith_dc_L[i] = 0;
     cinfo->arith_dc_U[i] = 1;
     cinfo->arith_ac_K[i] = 5;
-  }
+ }
 
   /* Default is no multiple-scan output */
   cinfo->scan_info = NULL;
@@ -413,7 +413,7 @@ jpeg_default_colorspace (j_compress_ptr cinfo)
     break;
   default:
     ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
-  }
+ }
 }
 
 
@@ -434,7 +434,7 @@ jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
    compptr->v_samp_factor = (vsamp), \
    compptr->quant_tbl_no = (quant), \
    compptr->dc_tbl_no = (dctbl), \
-   compptr->ac_tbl_no = (actbl) )
+   compptr->ac_tbl_no = (actbl))
 
   /* Safety check to ensure start_compress not called yet. */
   if (cinfo->global_state != CSTATE_START)
@@ -457,7 +457,7 @@ jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 	       MAX_COMPONENTS);
     for (ci = 0; ci < cinfo->num_components; ci++) {
       SET_COMP(ci, ci, 1,1, 0, 0,0);
-    }
+   }
     break;
   case JCS_GRAYSCALE:
     cinfo->write_JFIF_header = TRUE; /* Write a JFIF marker */
@@ -526,7 +526,7 @@ jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
     break;
   default:
     ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
-  }
+ }
 }
 
 
@@ -562,7 +562,7 @@ fill_scans (jpeg_scan_info * scanptr, int ncomps,
     scanptr->Ah = Ah;
     scanptr->Al = Al;
     scanptr++;
-  }
+ }
   return scanptr;
 }
 
@@ -581,10 +581,10 @@ fill_dc_scans (jpeg_scan_info * scanptr, int ncomps, int Ah, int Al)
     scanptr->Ah = Ah;
     scanptr->Al = Al;
     scanptr++;
-  } else {
+ } else {
     /* Noninterleaved DC scan for each component */
     scanptr = fill_scans(scanptr, ncomps, 0, 0, Ah, Al);
-  }
+ }
   return scanptr;
 }
 
@@ -611,13 +611,13 @@ jpeg_simple_progression (j_compress_ptr cinfo)
        cinfo->jpeg_color_space == JCS_BG_YCC)) {
     /* Custom script for YCC color images. */
     nscans = 10;
-  } else {
+ } else {
     /* All-purpose script for other color spaces. */
     if (ncomps > MAX_COMPS_IN_SCAN)
       nscans = 6 * ncomps;	/* 2 DC + 4 AC scans per component */
     else
       nscans = 2 + 4 * ncomps;	/* 2 DC scans; 4 AC scans per component */
-  }
+ }
 
   /* Allocate space for script.
    * We need to put it in the permanent pool in case the application performs
@@ -631,7 +631,7 @@ jpeg_simple_progression (j_compress_ptr cinfo)
     cinfo->script_space = (jpeg_scan_info *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
 			cinfo->script_space_size * SIZEOF(jpeg_scan_info));
-  }
+ }
   scanptr = cinfo->script_space;
   cinfo->scan_info = scanptr;
   cinfo->num_scans = nscans;
@@ -658,7 +658,7 @@ jpeg_simple_progression (j_compress_ptr cinfo)
     scanptr = fill_a_scan(scanptr, 1, 1, 63, 1, 0);
     /* Luma bottom bit comes last since it's usually largest scan */
     scanptr = fill_a_scan(scanptr, 0, 1, 63, 1, 0);
-  } else {
+ } else {
     /* All-purpose script for other color spaces. */
     /* Successive approximation first pass */
     scanptr = fill_dc_scans(scanptr, ncomps, 0, 1);
@@ -669,7 +669,7 @@ jpeg_simple_progression (j_compress_ptr cinfo)
     /* Successive approximation final pass */
     scanptr = fill_dc_scans(scanptr, ncomps, 1, 0);
     scanptr = fill_scans(scanptr, ncomps, 1, 63, 1, 0);
-  }
+ }
 }
 
 #endif /* C_PROGRESSIVE_SUPPORTED */

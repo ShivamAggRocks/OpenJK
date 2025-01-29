@@ -25,15 +25,15 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "tr_common.h"
 #include <png.h>
 
-void user_write_data( png_structp png_ptr, png_bytep data, png_size_t length ) {
-	fileHandle_t fp = *(fileHandle_t*)png_get_io_ptr( png_ptr );
-	ri.FS_Write( data, length, fp );
+void user_write_data(png_structp png_ptr, png_bytep data, png_size_t length) {
+	fileHandle_t fp = *(fileHandle_t*)png_get_io_ptr(png_ptr);
+	ri.FS_Write(data, length, fp);
 }
-void user_flush_data( png_structp png_ptr ) {
+void user_flush_data(png_structp png_ptr) {
 	//TODO: ri.FS_Flush?
 }
 
-int RE_SavePNG( const char *filename, byte *buf, size_t width, size_t height, int byteDepth ) {
+int RE_SavePNG(const char *filename, byte *buf, size_t width, size_t height, int byteDepth) {
 	fileHandle_t fp;
 	png_structp png_ptr = NULL;
 	png_infop info_ptr = NULL;
@@ -49,8 +49,8 @@ int RE_SavePNG( const char *filename, byte *buf, size_t width, size_t height, in
 	*/
 	int depth = 8;
 
-	fp = ri.FS_FOpenFileWrite( filename, qtrue );
-	if ( !fp ) {
+	fp = ri.FS_FOpenFileWrite(filename, qtrue);
+	if (!fp) {
 		goto fopen_failed;
 	}
 
@@ -85,7 +85,7 @@ int RE_SavePNG( const char *filename, byte *buf, size_t width, size_t height, in
 	/* Initialize rows of PNG. */
 
 	row_pointers = (png_byte **)png_malloc (png_ptr, height * sizeof (png_byte *));
-	for ( y=0; y<height; ++y ) {
+	for (y=0; y<height; ++y) {
 		png_byte *row = (png_byte *)png_malloc (png_ptr, sizeof (uint8_t) * width * byteDepth);
 		row_pointers[height-y-1] = row;
 		for (x = 0; x < width; ++x) {
@@ -99,7 +99,7 @@ int RE_SavePNG( const char *filename, byte *buf, size_t width, size_t height, in
 	/* Write the image data to "fp". */
 
 //	png_init_io (png_ptr, fp);
-	png_set_write_fn( png_ptr, (png_voidp)&fp, user_write_data, user_flush_data );
+	png_set_write_fn(png_ptr, (png_voidp)&fp, user_write_data, user_flush_data);
 	png_set_rows (png_ptr, info_ptr, row_pointers);
 	png_write_png (png_ptr, info_ptr, PNG_TRANSFORM_IDENTITY, NULL);
 
@@ -117,34 +117,34 @@ png_failure:
 png_create_info_struct_failed:
 	png_destroy_write_struct (&png_ptr, &info_ptr);
 png_create_write_struct_failed:
-	ri.FS_FCloseFile( fp );
+	ri.FS_FCloseFile(fp);
 fopen_failed:
 	return status;
 }
 
-void user_read_data( png_structp png_ptr, png_bytep data, png_size_t length );
-void png_print_error ( png_structp png_ptr, png_const_charp err )
+void user_read_data(png_structp png_ptr, png_bytep data, png_size_t length);
+void png_print_error (png_structp png_ptr, png_const_charp err)
 {
 	ri.Printf (PRINT_ERROR, "%s\n", err);
 }
 
-void png_print_warning ( png_structp png_ptr, png_const_charp warning )
+void png_print_warning (png_structp png_ptr, png_const_charp warning)
 {
 	ri.Printf (PRINT_WARNING, "%s\n", warning);
 }
 
-bool IsPowerOfTwo ( int i ) { return (i & (i - 1)) == 0; }
+bool IsPowerOfTwo (int i) {return (i & (i - 1)) == 0;}
 
 struct PNGFileReader
 {
-	PNGFileReader ( char *buf ) : buf(buf), offset(0), png_ptr(NULL), info_ptr(NULL) {}
+	PNGFileReader (char *buf) : buf(buf), offset(0), png_ptr(NULL), info_ptr(NULL) {}
 	~PNGFileReader()
 	{
 		ri.FS_FreeFile (buf);
 		png_destroy_read_struct (&png_ptr, &info_ptr, NULL);
 	}
 
-	int Read ( byte **data, int *width, int *height )
+	int Read (byte **data, int *width, int *height)
 	{
 		// Setup the pointers
 		*data = NULL;
@@ -157,21 +157,21 @@ struct PNGFileReader
 		byte ident[SIGNATURE_LEN];
 		memcpy (ident, buf, SIGNATURE_LEN);
 
-		if ( !png_check_sig (ident, SIGNATURE_LEN) )
+		if (!png_check_sig (ident, SIGNATURE_LEN))
 		{
 			ri.Printf (PRINT_ERROR, "PNG signature not found in given image.");
 			return 0;
 		}
 
 		png_ptr = png_create_read_struct (PNG_LIBPNG_VER_STRING, NULL, png_print_error, png_print_warning);
-		if ( png_ptr == NULL )
+		if (png_ptr == NULL)
 		{
 			ri.Printf (PRINT_ERROR, "Could not allocate enough memory to load the image.");
 			return 0;
 		}
 
 		info_ptr = png_create_info_struct (png_ptr);
-		if ( setjmp (png_jmpbuf (png_ptr)) )
+		if (setjmp (png_jmpbuf (png_ptr)))
 		{
 			return 0;
 		}
@@ -197,7 +197,7 @@ struct PNGFileReader
 
 		// While modern OpenGL can handle non-PoT textures, it's faster to handle only PoT
 		// so that the graphics driver doesn't have to fiddle about with the texture when uploading.
-		if ( !IsPowerOfTwo (width_) || !IsPowerOfTwo (height_) )
+		if (!IsPowerOfTwo (width_) || !IsPowerOfTwo (height_))
 		{
 			ri.Printf (PRINT_ERROR, "Width or height is not a power-of-two.\n");
 			return 0;
@@ -207,14 +207,14 @@ struct PNGFileReader
 		// but this only seemed to be used by the RMG system which does not work in JKA. If this
 		// does need to be re-implemented, then colortype should be PNG_COLOR_TYPE_PALETTE or
 		// PNG_COLOR_TYPE_GRAY.
-		if ( colortype != PNG_COLOR_TYPE_RGB && colortype != PNG_COLOR_TYPE_RGBA )
+		if (colortype != PNG_COLOR_TYPE_RGB && colortype != PNG_COLOR_TYPE_RGBA)
 		{
 			ri.Printf (PRINT_ERROR, "Image is not 24-bit or 32-bit.");
 			return 0;
 		}
 
 		// Read the png data
-		if ( colortype == PNG_COLOR_TYPE_RGB )
+		if (colortype == PNG_COLOR_TYPE_RGB)
 		{
 			// Expand RGB -> RGBA
 			png_set_add_alpha (png_ptr, 0xff, PNG_FILLER_AFTER);
@@ -224,7 +224,7 @@ struct PNGFileReader
 
 		// We always assume there are 4 channels. RGB channels are expanded to RGBA when read.
 		byte *tempData = (byte *)ri.Z_Malloc (width_ * height_ * 4, TAG_TEMP_PNG, qfalse, 4);
-		if ( !tempData )
+		if (!tempData)
 		{
 			ri.Printf (PRINT_ERROR, "Could not allocate enough memory to load the image.");
 			return 0;
@@ -232,7 +232,7 @@ struct PNGFileReader
 
 		// Dynamic array of row pointers, with 'height' elements, initialized to NULL.
 		byte **row_pointers = (byte **)ri.Hunk_AllocateTempMemory (sizeof (byte *) * height_);
-		if ( !row_pointers )
+		if (!row_pointers)
 		{
 			ri.Printf (PRINT_ERROR, "Could not allocate enough memory to load the image.");
 
@@ -242,14 +242,14 @@ struct PNGFileReader
 		}
 
 		// Re-set the jmp so that these new memory allocations can be reclaimed
-		if ( setjmp (png_jmpbuf (png_ptr)) )
+		if (setjmp (png_jmpbuf (png_ptr)))
 		{
 			ri.Hunk_FreeTempMemory (row_pointers);
 			ri.Z_Free (tempData);
 			return 0;
 		}
 
-		for ( unsigned int i = 0, j = 0; i < height_; i++, j += 4 )
+		for (unsigned int i = 0, j = 0; i < height_; i++, j += 4)
 		{
 			row_pointers[i] = tempData + j * width_;
 		}
@@ -269,7 +269,7 @@ struct PNGFileReader
 		return 1;
 	}
 
-	void ReadBytes ( void *dest, size_t len )
+	void ReadBytes (void *dest, size_t len)
 	{
 		memcpy (dest, buf + offset, len);
 		offset += len;
@@ -282,18 +282,18 @@ private:
 	png_infop info_ptr;
 };
 
-void user_read_data( png_structp png_ptr, png_bytep data, png_size_t length ) {
+void user_read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 	png_voidp r = png_get_io_ptr (png_ptr);
 	PNGFileReader *reader = (PNGFileReader *)r;
 	reader->ReadBytes (data, length);
 }
 
 // Loads a PNG image from file.
-void LoadPNG ( const char *filename, byte **data, int *width, int *height )
+void LoadPNG (const char *filename, byte **data, int *width, int *height)
 {
 	char *buf = NULL;
 	int len = ri.FS_ReadFile (filename, (void **)&buf);
-	if ( len < 0 || buf == NULL )
+	if (len < 0 || buf == NULL)
 	{
 		return;
 	}

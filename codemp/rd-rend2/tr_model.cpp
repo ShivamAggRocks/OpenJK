@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 static qboolean R_LoadMD3(model_t *mod, int lod, void *buffer, const char *modName);
-static qboolean R_LoadMDR(model_t *mod, void *buffer, int filesize, const char *name );
+static qboolean R_LoadMDR(model_t *mod, void *buffer, int filesize, const char *name);
 
 /*
 ====================
@@ -67,11 +67,11 @@ qhandle_t R_RegisterMD3(const char *name, model_t *mod)
 			Com_sprintf(namebuf, sizeof(namebuf), "%s.%s", filename, fext);
 
 		qboolean bAlreadyCached = qfalse;
-		if( !CModelCache->LoadFile( namebuf, (void**)&buf, &bAlreadyCached ) )
+		if(!CModelCache->LoadFile(namebuf, (void**)&buf, &bAlreadyCached))
 			continue;
 
 		ident = *(unsigned *)buf;
-		if( !bAlreadyCached )
+		if(!bAlreadyCached)
 			LL(ident);
 
 		switch(ident)
@@ -197,21 +197,21 @@ qhandle_t R_RegisterIQM(const char *name, model_t *mod)
 typedef struct
 {
 	const char *ext;
-	qhandle_t (*ModelLoader)( const char *, model_t * );
+	qhandle_t (*ModelLoader)(const char *, model_t *);
 } modelExtToLoaderMap_t;
 
 // Note that the ordering indicates the order of preference used
 // when there are multiple models of different formats available
 static modelExtToLoaderMap_t modelLoaders[ ] =
 {
-	{ "iqm", R_RegisterIQM },
-	{ "mdr", R_RegisterMDR },
-	{ "md3", R_RegisterMD3 },
+	{"iqm", R_RegisterIQM},
+	{"mdr", R_RegisterMDR},
+	{"md3", R_RegisterMD3},
 	/*
 	Ghoul 2 Insert Start
 	*/
-	{ "glm", R_RegisterMD3 },
-	{ "gla", R_RegisterMD3 },
+	{"glm", R_RegisterMD3},
+	{"gla", R_RegisterMD3},
 	/*
 	Ghoul 2 Insert End
 	*/
@@ -222,11 +222,11 @@ static int numModelLoaders = ARRAY_LEN(modelLoaders);
 /*
 ** R_GetModelByHandle
 */
-model_t	*R_GetModelByHandle( qhandle_t index ) {
+model_t	*R_GetModelByHandle(qhandle_t index) {
 	model_t		*mod;
 
 	// out of range gets the defualt model
-	if ( index < 1 || index >= tr.numModels ) {
+	if (index < 1 || index >= tr.numModels) {
 		return tr.models[0];
 	}
 
@@ -240,14 +240,14 @@ model_t	*R_GetModelByHandle( qhandle_t index ) {
 /*
 ** R_AllocModel
 */
-model_t *R_AllocModel( void ) {
+model_t *R_AllocModel(void) {
 	model_t		*mod;
 
-	if ( tr.numModels == MAX_MOD_KNOWN ) {
+	if (tr.numModels == MAX_MOD_KNOWN) {
 		return NULL;
 	}
 
-	mod = (model_t *)ri.Hunk_Alloc( sizeof( *tr.models[tr.numModels] ), h_low );
+	mod = (model_t *)ri.Hunk_Alloc(sizeof(*tr.models[tr.numModels]), h_low);
 	mod->index = tr.numModels;
 	tr.models[tr.numModels] = mod;
 	tr.numModels++;
@@ -291,7 +291,7 @@ optimization to prevent disk rescanning if they are
 asked for again.
 ====================
 */
-qhandle_t RE_RegisterModel( const char *name ) {
+qhandle_t RE_RegisterModel(const char *name) {
 	model_t		*mod;
 	qhandle_t	hModel;
 	qboolean	orgNameFailed = qfalse;
@@ -301,41 +301,41 @@ qhandle_t RE_RegisterModel( const char *name ) {
 	const char	*ext;
 	char		altName[ MAX_QPATH ];
 
-	if ( !name || !name[0] ) {
-		ri.Printf( PRINT_ALL, "RE_RegisterModel: NULL name\n" );
+	if (!name || !name[0]) {
+		ri.Printf(PRINT_ALL, "RE_RegisterModel: NULL name\n");
 		return 0;
 	}
 
-	if ( strlen( name ) >= MAX_QPATH ) {
-		ri.Printf( PRINT_ALL, "Model name exceeds MAX_QPATH\n" );
+	if (strlen(name) >= MAX_QPATH) {
+		ri.Printf(PRINT_ALL, "Model name exceeds MAX_QPATH\n");
 		return 0;
 	}
 
 	// search the currently loaded models
-	if( ( hModel = CModelCache->GetModelHandle( name ) ) != -1 )
+	if((hModel = CModelCache->GetModelHandle(name)) != -1)
 		return hModel;
 
-	if ( name[0] == '*' )
+	if (name[0] == '*')
 	{
-		if ( strcmp (name, "*default.gla") != 0 )
+		if (strcmp (name, "*default.gla") != 0)
 		{
 			return 0;
 		}
 	}
 
-	if( name[0] == '#' )
+	if(name[0] == '#')
 	{
 		return RE_RegisterBSP(name);
 	}
 
 	// allocate a new model_t
-	if ( ( mod = R_AllocModel() ) == NULL ) {
-		ri.Printf( PRINT_WARNING, "RE_RegisterModel: R_AllocModel() failed for '%s'\n", name);
+	if ((mod = R_AllocModel()) == NULL) {
+		ri.Printf(PRINT_WARNING, "RE_RegisterModel: R_AllocModel() failed for '%s'\n", name);
 		return 0;
 	}
 
 	// only set the name after the model has been successfully loaded
-	Q_strncpyz( mod->name, name, sizeof( mod->name ) );
+	Q_strncpyz(mod->name, name, sizeof(mod->name));
 
 	R_IssuePendingRenderCommands();
 
@@ -345,38 +345,38 @@ qhandle_t RE_RegisterModel( const char *name ) {
 	//
 	// load the files
 	//
-	Q_strncpyz( localName, name, MAX_QPATH );
+	Q_strncpyz(localName, name, MAX_QPATH);
 
-	ext = COM_GetExtension( localName );
+	ext = COM_GetExtension(localName);
 
-	if( *ext )
+	if(*ext)
 	{
 		// Look for the correct loader and use it
-		for( i = 0; i < numModelLoaders; i++ )
+		for(i = 0; i < numModelLoaders; i++)
 		{
-			if( !Q_stricmp( ext, modelLoaders[ i ].ext ) )
+			if(!Q_stricmp(ext, modelLoaders[ i ].ext))
 			{
 				// Load
-				hModel = modelLoaders[ i ].ModelLoader( localName, mod );
+				hModel = modelLoaders[ i ].ModelLoader(localName, mod);
 				break;
 			}
 		}
 
 		// A loader was found
-		if( i < numModelLoaders )
+		if(i < numModelLoaders)
 		{
-			if( !hModel )
+			if(!hModel)
 			{
 				// Loader failed, most likely because the file isn't there;
 				// try again without the extension
 				orgNameFailed = qtrue;
 				orgLoader = i;
-				COM_StripExtension( name, localName, MAX_QPATH );
+				COM_StripExtension(name, localName, MAX_QPATH);
 			}
 			else
 			{
 				// Something loaded
-				CModelCache->InsertModelHandle( name, hModel );
+				CModelCache->InsertModelHandle(name, hModel);
 				return mod->index;
 			}
 		}
@@ -384,29 +384,29 @@ qhandle_t RE_RegisterModel( const char *name ) {
 
 	// Try and find a suitable match using all
 	// the model formats supported
-	for( i = 0; i < numModelLoaders; i++ )
+	for(i = 0; i < numModelLoaders; i++)
 	{
 		if (i == orgLoader)
 			continue;
 
-		Com_sprintf( altName, sizeof (altName), "%s.%s", localName, modelLoaders[ i ].ext );
+		Com_sprintf(altName, sizeof (altName), "%s.%s", localName, modelLoaders[ i ].ext);
 
 		// Load
-		hModel = modelLoaders[ i ].ModelLoader( altName, mod );
+		hModel = modelLoaders[ i ].ModelLoader(altName, mod);
 
-		if( hModel )
+		if(hModel)
 		{
-			if( orgNameFailed )
+			if(orgNameFailed)
 			{
-				ri.Printf( PRINT_DEVELOPER, "WARNING: %s not present, using %s instead\n",
-						name, altName );
+				ri.Printf(PRINT_DEVELOPER, "WARNING: %s not present, using %s instead\n",
+						name, altName);
 			}
 
 			break;
 		}
 	}
 
-	CModelCache->InsertModelHandle( name, hModel );
+	CModelCache->InsertModelHandle(name, hModel);
 	return hModel;
 }
 
@@ -421,7 +421,7 @@ qhandle_t RE_RegisterModel( const char *name ) {
 R_LoadMDXA_Server - load a Ghoul 2 animation file
 =================
 */
-qboolean R_LoadMDXA_Server( model_t *mod, void *buffer, const char *mod_name, qboolean &bAlreadyCached ) {
+qboolean R_LoadMDXA_Server(model_t *mod, void *buffer, const char *mod_name, qboolean &bAlreadyCached) {
 
 	mdxaHeader_t		*pinmodel, *mdxa;
 	int					version;
@@ -448,7 +448,7 @@ qboolean R_LoadMDXA_Server( model_t *mod, void *buffer, const char *mod_name, qb
 	mod->dataSize  += size;
 
 	qboolean bAlreadyFound = qfalse;
-	mdxa = (mdxaHeader_t*)CModelCache->Allocate( size, buffer, mod_name, &bAlreadyFound, TAG_MODEL_GLA );
+	mdxa = (mdxaHeader_t*)CModelCache->Allocate(size, buffer, mod_name, &bAlreadyFound, TAG_MODEL_GLA);
 	mod->data.gla = mdxa;
 
 	assert(bAlreadyCached == bAlreadyFound);	// I should probably eliminate 'bAlreadyFound', but wtf?
@@ -462,8 +462,8 @@ qboolean R_LoadMDXA_Server( model_t *mod, void *buffer, const char *mod_name, qb
 		// Aaaargh. Kill me now...
 		//
 		bAlreadyCached = qtrue;
-		assert( mdxa == buffer );
-//		memcpy( mdxa, buffer, size );	// and don't do this now, since it's the same thing
+		assert(mdxa == buffer);
+//		memcpy(mdxa, buffer, size);	// and don't do this now, since it's the same thing
 
 		LL(mdxa->ident);
 		LL(mdxa->version);
@@ -473,7 +473,7 @@ qboolean R_LoadMDXA_Server( model_t *mod, void *buffer, const char *mod_name, qb
 		LL(mdxa->ofsEnd);
 	}
 
- 	if ( mdxa->numFrames < 1 ) {
+ 	if (mdxa->numFrames < 1) {
 		return qfalse;
 	}
 
@@ -490,7 +490,7 @@ qboolean R_LoadMDXA_Server( model_t *mod, void *buffer, const char *mod_name, qb
 R_LoadMDXM_Server - load a Ghoul 2 Mesh file
 =================
 */
-qboolean R_LoadMDXM_Server( model_t *mod, void *buffer, const char *mod_name, qboolean &bAlreadyCached ) {
+qboolean R_LoadMDXM_Server(model_t *mod, void *buffer, const char *mod_name, qboolean &bAlreadyCached) {
 	int					i,l, j;
 	mdxmHeader_t		*pinmodel, *mdxm;
 	mdxmLOD_t			*lod;
@@ -521,7 +521,7 @@ qboolean R_LoadMDXM_Server( model_t *mod, void *buffer, const char *mod_name, qb
 	mod->dataSize += size;
 
 	qboolean bAlreadyFound = qfalse;
-	mdxm = (mdxmHeader_t*)CModelCache->Allocate( size, buffer, mod_name, &bAlreadyFound, TAG_MODEL_GLM );
+	mdxm = (mdxmHeader_t*)CModelCache->Allocate(size, buffer, mod_name, &bAlreadyFound, TAG_MODEL_GLM);
 	mod->data.glm = (mdxmData_t *)ri.Hunk_Alloc (sizeof (mdxmData_t), h_low);
 	mod->data.glm->header = mdxm;
 
@@ -536,8 +536,8 @@ qboolean R_LoadMDXM_Server( model_t *mod, void *buffer, const char *mod_name, qb
 		// Aaaargh. Kill me now...
 		//
 		bAlreadyCached = qtrue;
-		assert( mdxm == buffer );
-//		memcpy( mdxm, buffer, size );	// and don't do this now, since it's the same thing
+		assert(mdxm == buffer);
+//		memcpy(mdxm, buffer, size);	// and don't do this now, since it's the same thing
 
 		LL(mdxm->ident);
 		LL(mdxm->version);
@@ -562,8 +562,8 @@ qboolean R_LoadMDXM_Server( model_t *mod, void *buffer, const char *mod_name, qb
 		return qtrue;	// All done. Stop, go no further, do not LittleLong(), do not pass Go...
 	}
 
-	surfInfo = (mdxmSurfHierarchy_t *)( (byte *)mdxm + mdxm->ofsSurfHierarchy);
- 	for ( i = 0 ; i < mdxm->numSurfaces ; i++)
+	surfInfo = (mdxmSurfHierarchy_t *)((byte *)mdxm + mdxm->ofsSurfHierarchy);
+ 	for (i = 0 ; i < mdxm->numSurfaces ; i++)
 	{
 		LL(surfInfo->numChildren);
 		LL(surfInfo->parentIndex);
@@ -583,19 +583,19 @@ qboolean R_LoadMDXM_Server( model_t *mod, void *buffer, const char *mod_name, qb
 		CModelCache->StoreShaderRequest(mod_name, &surfInfo->shader[0], &surfInfo->shaderIndex);
 
 		// find the next surface
-		surfInfo = (mdxmSurfHierarchy_t *)( (byte *)surfInfo + (intptr_t)( &((mdxmSurfHierarchy_t *)0)->childIndexes[ surfInfo->numChildren ] ));
+		surfInfo = (mdxmSurfHierarchy_t *)((byte *)surfInfo + (intptr_t)(&((mdxmSurfHierarchy_t *)0)->childIndexes[ surfInfo->numChildren ]));
   	}
 
 	// swap all the LOD's	(we need to do the middle part of this even for intel, because of shader reg and err-check)
-	lod = (mdxmLOD_t *) ( (byte *)mdxm + mdxm->ofsLODs );
-	for ( l = 0 ; l < mdxm->numLODs ; l++)
+	lod = (mdxmLOD_t *) ((byte *)mdxm + mdxm->ofsLODs);
+	for (l = 0 ; l < mdxm->numLODs ; l++)
 	{
 		int	triCount = 0;
 
 		LL(lod->ofsEnd);
 		// swap all the surfaces
-		surf = (mdxmSurface_t *) ( (byte *)lod + sizeof (mdxmLOD_t) + (mdxm->numSurfaces * sizeof(mdxmLODSurfOffset_t)) );
-		for ( i = 0 ; i < mdxm->numSurfaces ; i++)
+		surf = (mdxmSurface_t *) ((byte *)lod + sizeof (mdxmLOD_t) + (mdxm->numSurfaces * sizeof(mdxmLODSurfOffset_t)));
+		for (i = 0 ; i < mdxm->numSurfaces ; i++)
 		{
 			LL(surf->numTriangles);
 			LL(surf->ofsTriangles);
@@ -609,10 +609,10 @@ qboolean R_LoadMDXM_Server( model_t *mod, void *buffer, const char *mod_name, qb
 
 			triCount += surf->numTriangles;
 
-			if ( surf->numVerts > SHADER_MAX_VERTEXES ) {
+			if (surf->numVerts > SHADER_MAX_VERTEXES) {
 				return qfalse;
 			}
-			if ( surf->numTriangles*3 > SHADER_MAX_INDEXES ) {
+			if (surf->numTriangles*3 > SHADER_MAX_INDEXES) {
 				return qfalse;
 			}
 
@@ -622,11 +622,11 @@ qboolean R_LoadMDXM_Server( model_t *mod, void *buffer, const char *mod_name, qb
 			// register the shaders
 
 			// find the next surface
-			surf = (mdxmSurface_t *)( (byte *)surf + surf->ofsEnd );
+			surf = (mdxmSurface_t *)((byte *)surf + surf->ofsEnd);
 		}
 
 		// find the next LOD
-		lod = (mdxmLOD_t *)( (byte *)lod + lod->ofsEnd );
+		lod = (mdxmLOD_t *)((byte *)lod + lod->ofsEnd);
 	}
 
 	return qtrue;
@@ -668,11 +668,11 @@ qhandle_t R_RegisterMDX_Server(const char *name, model_t *mod)
 			Com_sprintf(namebuf, sizeof(namebuf), "%s.%s", filename, fext);
 
 		qboolean bAlreadyCached = qfalse;
-		if( !CModelCache->LoadFile( namebuf, (void**)&buf, &bAlreadyCached ) )
+		if(!CModelCache->LoadFile(namebuf, (void**)&buf, &bAlreadyCached))
 			continue;
 
 		ident = *(unsigned *)buf;
-		if( !bAlreadyCached )
+		if(!bAlreadyCached)
 			LL(ident);
 
 		switch(ident)
@@ -725,8 +725,8 @@ static modelExtToLoaderMap_t serverModelLoaders[ ] =
 	/*
 	Ghoul 2 Insert Start
 	*/
-	{ "glm", R_RegisterMDX_Server },
-	{ "gla", R_RegisterMDX_Server },
+	{"glm", R_RegisterMDX_Server},
+	{"gla", R_RegisterMDX_Server},
 	/*
 	Ghoul 2 Insert End
 	*/
@@ -734,7 +734,7 @@ static modelExtToLoaderMap_t serverModelLoaders[ ] =
 
 static int numServerModelLoaders = ARRAY_LEN(serverModelLoaders);
 
-qhandle_t RE_RegisterServerModel( const char *name ) {
+qhandle_t RE_RegisterServerModel(const char *name) {
 	model_t		*mod;
 	qhandle_t	hModel;
 	int			i;
@@ -742,38 +742,38 @@ qhandle_t RE_RegisterServerModel( const char *name ) {
 	const char	*ext;
 
 	if (!r_noServerGhoul2)
-	{ //keep it from choking when it gets to these checks in the g2 code. Registering all r_ cvars for the server would be a Bad Thing though.
-		r_noServerGhoul2 = ri.Cvar_Get( "r_noserverghoul2", "0", 0, "");
+	{//keep it from choking when it gets to these checks in the g2 code. Registering all r_ cvars for the server would be a Bad Thing though.
+		r_noServerGhoul2 = ri.Cvar_Get("r_noserverghoul2", "0", 0, "");
 	}
 
-	if ( !name || !name[0] ) {
+	if (!name || !name[0]) {
 		return 0;
 	}
 
-	if ( strlen( name ) >= MAX_QPATH ) {
+	if (strlen(name) >= MAX_QPATH) {
 		return 0;
 	}
 
 	// search the currently loaded models
-	if( ( hModel = CModelCache->GetModelHandle( name ) ) != -1 )
+	if((hModel = CModelCache->GetModelHandle(name)) != -1)
 		return hModel;
 
-	if ( name[0] == '*' )
+	if (name[0] == '*')
 	{
-		if ( strcmp (name, "*default.gla") != 0 )
+		if (strcmp (name, "*default.gla") != 0)
 		{
 			return 0;
 		}
 	}
 
 	// allocate a new model_t
-	if ( ( mod = R_AllocModel() ) == NULL ) {
-		ri.Printf( PRINT_WARNING, "RE_RegisterModel: R_AllocModel() failed for '%s'\n", name);
+	if ((mod = R_AllocModel()) == NULL) {
+		ri.Printf(PRINT_WARNING, "RE_RegisterModel: R_AllocModel() failed for '%s'\n", name);
 		return 0;
 	}
 
 	// only set the name after the model has been successfully loaded
-	Q_strncpyz( mod->name, name, sizeof( mod->name ) );
+	Q_strncpyz(mod->name, name, sizeof(mod->name));
 
 	R_IssuePendingRenderCommands();
 
@@ -783,36 +783,36 @@ qhandle_t RE_RegisterServerModel( const char *name ) {
 	//
 	// load the files
 	//
-	Q_strncpyz( localName, name, MAX_QPATH );
+	Q_strncpyz(localName, name, MAX_QPATH);
 
-	ext = COM_GetExtension( localName );
+	ext = COM_GetExtension(localName);
 
-	if( *ext )
+	if(*ext)
 	{
 		// Look for the correct loader and use it
-		for( i = 0; i < numServerModelLoaders; i++ )
+		for(i = 0; i < numServerModelLoaders; i++)
 		{
-			if( !Q_stricmp( ext, serverModelLoaders[ i ].ext ) )
+			if(!Q_stricmp(ext, serverModelLoaders[ i ].ext))
 			{
 				// Load
-				hModel = serverModelLoaders[ i ].ModelLoader( localName, mod );
+				hModel = serverModelLoaders[ i ].ModelLoader(localName, mod);
 				break;
 			}
 		}
 
 		// A loader was found
-		if( i < numServerModelLoaders )
+		if(i < numServerModelLoaders)
 		{
-			if( hModel )
+			if(hModel)
 			{
 				// Something loaded
-				CModelCache->InsertModelHandle( name, hModel );
+				CModelCache->InsertModelHandle(name, hModel);
 				return mod->index;
 			}
 		}
 	}
 
-	CModelCache->InsertModelHandle( name, hModel );
+	CModelCache->InsertModelHandle(name, hModel);
 	return hModel;
 }
 
@@ -865,7 +865,7 @@ static qboolean R_LoadMD3(model_t * mod, int lod, void *buffer, const char *modN
 	mdvModel = mod->data.mdv[lod] = (mdvModel_t *)ri.Hunk_Alloc(sizeof(*mdvModel), h_low);
 
 //  Com_Memcpy(mod->md3[lod], buffer, LittleLong(md3Model->ofsEnd));
-	if( !bAlreadyFound )
+	if(!bAlreadyFound)
 	{	// HACK
 		LL(md3Model->ident);
 		LL(md3Model->version);
@@ -879,7 +879,7 @@ static qboolean R_LoadMD3(model_t * mod, int lod, void *buffer, const char *modN
 	}
 	else
 	{
-		CModelCache->AllocateShaders( modName );
+		CModelCache->AllocateShaders(modName);
 	}
 
 	if(md3Model->numFrames < 1)
@@ -952,14 +952,14 @@ static qboolean R_LoadMD3(model_t * mod, int lod, void *buffer, const char *modN
 		{
 			ri.Printf(PRINT_WARNING, "R_LoadMD3: %s has more than %i verts on %s (%i).\n",
 				modName, SHADER_MAX_VERTEXES - 1, md3Surf->name[0] ? md3Surf->name : "a surface",
-				md3Surf->numVerts );
+				md3Surf->numVerts);
 			return qfalse;
 		}
 		if(md3Surf->numTriangles * 3 >= SHADER_MAX_INDEXES)
 		{
 			ri.Printf(PRINT_WARNING, "R_LoadMD3: %s has more than %i triangles on %s (%i).\n",
-				modName, ( SHADER_MAX_INDEXES / 3 ) - 1, md3Surf->name[0] ? md3Surf->name : "a surface",
-				md3Surf->numTriangles );
+				modName, (SHADER_MAX_INDEXES / 3) - 1, md3Surf->name[0] ? md3Surf->name : "a surface",
+				md3Surf->numTriangles);
 			return qfalse;
 		}
 
@@ -1031,14 +1031,14 @@ static qboolean R_LoadMD3(model_t * mod, int lod, void *buffer, const char *modN
 
 			normal = LittleShort(md3xyz->normal);
 
-			lat = ( normal >> 8 ) & 0xff;
-			lng = ( normal & 0xff );
+			lat = (normal >> 8) & 0xff;
+			lng = (normal & 0xff);
 			lat *= (FUNCTABLE_SIZE/256);
 			lng *= (FUNCTABLE_SIZE/256);
 
-			// decode X as cos( lat ) * sin( long )
-			// decode Y as sin( lat ) * sin( long )
-			// decode Z as cos( long )
+			// decode X as cos(lat) * sin(long)
+			// decode Y as sin(lat) * sin(long)
+			// decode Z as cos(long)
 
 			v->normal[0] = tr.sinTable[(lat+(FUNCTABLE_SIZE/4))&FUNCTABLE_MASK] * tr.sinTable[lng];
 			v->normal[1] = tr.sinTable[lat] * tr.sinTable[lng];
@@ -1217,7 +1217,7 @@ static qboolean R_LoadMD3(model_t * mod, int lod, void *buffer, const char *modN
 R_LoadMDR
 =================
 */
-static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char *mod_name )
+static qboolean R_LoadMDR(model_t *mod, void *buffer, int filesize, const char *mod_name)
 {
 	int					i, j, k, l;
 	mdrHeader_t			*pinmodel, *mdr;
@@ -1273,7 +1273,7 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 	}
 
 	mod->dataSize += size;
-	mod->data.mdr = mdr = (mdrHeader_t*)ri.Hunk_Alloc( size, h_low );
+	mod->data.mdr = mdr = (mdrHeader_t*)ri.Hunk_Alloc(size, h_low);
 
 	// Copy all the values over from the file and fix endian issues in the process, if necessary.
 
@@ -1288,7 +1288,7 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 
 	mod->numLods = mdr->numLODs;
 
-	if ( mdr->numFrames < 1 )
+	if (mdr->numFrames < 1)
 	{
 		ri.Printf(PRINT_WARNING, "R_LoadMDR: %s has no frames\n", mod_name);
 		return qfalse;
@@ -1326,7 +1326,7 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 					// platforms, though.
 
 					((unsigned short *)(cframe->bones[j].Comp))[k] =
-						LittleShort( ((unsigned short *)(cframe->bones[j].Comp))[k] );
+						LittleShort(((unsigned short *)(cframe->bones[j].Comp))[k]);
 				}
 
 				/* Now do the actual uncompressing */
@@ -1348,7 +1348,7 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 		curframe = (mdrFrame_t *)((byte *) pinmodel + pinmodel->ofsFrames);
 
 		// swap all the frames
-		for ( i = 0 ; i < mdr->numFrames ; i++)
+		for (i = 0 ; i < mdr->numFrames ; i++)
 		{
 			for(j = 0; j < 3; j++)
 			{
@@ -1362,7 +1362,7 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 
 			for (j = 0; j < (int) (mdr->numBones * sizeof(mdrBone_t) / 4); j++)
 			{
-				((float *)frame->bones)[j] = LittleFloat( ((float *)curframe->bones)[j] );
+				((float *)frame->bones)[j] = LittleFloat(((float *)curframe->bones)[j]);
 			}
 
 			curframe = (mdrFrame_t *) &curframe->bones[mdr->numBones];
@@ -1377,7 +1377,7 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 	curlod = (mdrLOD_t *)((byte *) pinmodel + LittleLong(pinmodel->ofsLODs));
 
 	// swap all the LOD's
-	for ( l = 0 ; l < mdr->numLODs ; l++)
+	for (l = 0 ; l < mdr->numLODs ; l++)
 	{
 		// simple bounds check
 		if((byte *) (lod + 1) > (byte *) mdr + size)
@@ -1393,7 +1393,7 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 		lod->ofsSurfaces = (int)((byte *) surf - (byte *) lod);
 		cursurf = (mdrSurface_t *) ((byte *)curlod + LittleLong(curlod->ofsSurfaces));
 
-		for ( i = 0 ; i < lod->numSurfaces ; i++)
+		for (i = 0 ; i < lod->numSurfaces ; i++)
 		{
 			// simple bounds check
 			if((byte *) (surf + 1) > (byte *) mdr + size)
@@ -1415,26 +1415,26 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 			// numBoneReferences and BoneReferences generally seem to be unused
 
 			// now do the checks that may fail.
-			if ( surf->numVerts >= SHADER_MAX_VERTEXES )
+			if (surf->numVerts >= SHADER_MAX_VERTEXES)
 			{
 				ri.Printf(PRINT_WARNING, "R_LoadMDR: %s has more than %i verts on %s (%i).\n",
 					  mod_name, SHADER_MAX_VERTEXES-1, surf->name[0] ? surf->name : "a surface",
-					  surf->numVerts );
+					  surf->numVerts);
 				return qfalse;
 			}
-			if ( surf->numTriangles*3 >= SHADER_MAX_INDEXES )
+			if (surf->numTriangles*3 >= SHADER_MAX_INDEXES)
 			{
 				ri.Printf(PRINT_WARNING, "R_LoadMDR: %s has more than %i triangles on %s (%i).\n",
-					  mod_name, ( SHADER_MAX_INDEXES / 3 ) - 1, surf->name[0] ? surf->name : "a surface",
-					  surf->numTriangles );
+					  mod_name, (SHADER_MAX_INDEXES / 3) - 1, surf->name[0] ? surf->name : "a surface",
+					  surf->numTriangles);
 				return qfalse;
 			}
 			// lowercase the surface name so skin compares are faster
-			Q_strlwr( surf->name );
+			Q_strlwr(surf->name);
 
 			// register the shaders
 			sh = R_FindShader(surf->shader, lightmapsNone, stylesDefault, qtrue);
-			if ( sh->defaultShader ) {
+			if (sh->defaultShader) {
 				surf->shaderIndex = 0;
 			} else {
 				surf->shaderIndex = sh->index;
@@ -1559,7 +1559,7 @@ static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char 
 /*
 ** RE_BeginRegistration
 */
-void RE_BeginRegistration( glconfig_t *glconfigOut ) {
+void RE_BeginRegistration(glconfig_t *glconfigOut) {
 
 	R_Init();
 
@@ -1593,7 +1593,7 @@ void R_SVModelInit()
 R_ModelInit
 ===============
 */
-void R_ModelInit( void ) {
+void R_ModelInit(void) {
 	model_t		*mod;
 
 	// leave a space for NULL model
@@ -1607,7 +1607,7 @@ void R_ModelInit( void ) {
 
 extern void KillTheShaderHashTable(void);
 void RE_HunkClearCrap(void)
-{ //get your dirty sticky assets off me, you damn dirty hunk!
+{//get your dirty sticky assets off me, you damn dirty hunk!
 	KillTheShaderHashTable();
 	tr.numModels = 0;
 	CModelCache->DeleteAll();
@@ -1621,29 +1621,29 @@ void RE_HunkClearCrap(void)
 R_Modellist_f
 ================
 */
-void R_Modellist_f( void ) {
+void R_Modellist_f(void) {
 	int		i, j;
 	model_t	*mod;
 	int		total;
 	int		lods;
 
 	total = 0;
-	for ( i = 1 ; i < tr.numModels; i++ ) {
+	for (i = 1 ; i < tr.numModels; i++) {
 		mod = tr.models[i];
 		lods = 1;
-		for ( j = 1 ; j < MD3_MAX_LODS ; j++ ) {
-			if ( mod->data.mdv[j] && mod->data.mdv[j] != mod->data.mdv[j-1] ) {
+		for (j = 1 ; j < MD3_MAX_LODS ; j++) {
+			if (mod->data.mdv[j] && mod->data.mdv[j] != mod->data.mdv[j-1]) {
 				lods++;
 			}
 		}
-		ri.Printf( PRINT_ALL, "%8i : (%i) %s\n",mod->dataSize, lods, mod->name );
+		ri.Printf(PRINT_ALL, "%8i : (%i) %s\n",mod->dataSize, lods, mod->name);
 		total += mod->dataSize;
 	}
-	ri.Printf( PRINT_ALL, "%8i : Total models\n", total );
+	ri.Printf(PRINT_ALL, "%8i : Total models\n", total);
 
 #if	0		// not working right with new hunk
-	if ( tr.world ) {
-		ri.Printf( PRINT_ALL, "\n%8i : %s\n", tr.world->dataSize, tr.world->name );
+	if (tr.world) {
+		ri.Printf(PRINT_ALL, "\n%8i : %s\n", tr.world->dataSize, tr.world->name);
 	}
 #endif
 }
@@ -1657,12 +1657,12 @@ void R_Modellist_f( void ) {
 R_GetTag
 ================
 */
-static mdvTag_t *R_GetTag( mdvModel_t *mod, int frame, const char *_tagName ) {
+static mdvTag_t *R_GetTag(mdvModel_t *mod, int frame, const char *_tagName) {
 	int             i;
 	mdvTag_t       *tag;
 	mdvTagName_t   *tagName;
 
-	if ( frame >= mod->numFrames ) {
+	if (frame >= mod->numFrames) {
 		// it is possible to have a bad frame while changing models, so don't error
 		frame = mod->numFrames - 1;
 	}
@@ -1680,28 +1680,28 @@ static mdvTag_t *R_GetTag( mdvModel_t *mod, int frame, const char *_tagName ) {
 	return NULL;
 }
 
-void R_GetAnimTag( mdrHeader_t *mod, int framenum, const char *tagName, mdvTag_t * dest)
+void R_GetAnimTag(mdrHeader_t *mod, int framenum, const char *tagName, mdvTag_t * dest)
 {
 	int				i, j, k;
 	int				frameSize;
 	mdrFrame_t		*frame;
 	mdrTag_t		*tag;
 
-	if ( framenum >= mod->numFrames )
+	if (framenum >= mod->numFrames)
 	{
 		// it is possible to have a bad frame while changing models, so don't error
 		framenum = mod->numFrames - 1;
 	}
 
 	tag = (mdrTag_t *)((byte *)mod + mod->ofsTags);
-	for ( i = 0 ; i < mod->numTags ; i++, tag++ )
+	for (i = 0 ; i < mod->numTags ; i++, tag++)
 	{
-		if ( !strcmp( tag->name, tagName ) )
+		if (!strcmp(tag->name, tagName))
 		{
 			// uncompressed model...
 			//
-			frameSize = (intptr_t)( &((mdrFrame_t *)0)->bones[ mod->numBones ] );
-			frame = (mdrFrame_t *)((byte *)mod + mod->ofsFrames + framenum * frameSize );
+			frameSize = (intptr_t)(&((mdrFrame_t *)0)->bones[ mod->numBones ]);
+			frame = (mdrFrame_t *)((byte *)mod + mod->ofsFrames + framenum * frameSize);
 
 			for (j = 0; j < 3; j++)
 			{
@@ -1717,8 +1717,8 @@ void R_GetAnimTag( mdrHeader_t *mod, int framenum, const char *tagName, mdvTag_t
 		}
 	}
 
-	AxisClear( dest->axis );
-	VectorClear( dest->origin );
+	AxisClear(dest->axis);
+	VectorClear(dest->origin);
 }
 
 /*
@@ -1726,16 +1726,16 @@ void R_GetAnimTag( mdrHeader_t *mod, int framenum, const char *tagName, mdvTag_t
 R_LerpTag
 ================
 */
-int R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFrame,
-					 float frac, const char *tagName ) {
+int R_LerpTag(orientation_t *tag, qhandle_t handle, int startFrame, int endFrame,
+					 float frac, const char *tagName) {
 	mdvTag_t	*start, *end;
 	mdvTag_t	start_space, end_space;
 	int		i;
 	float		frontLerp, backLerp;
 	model_t		*model;
 
-	model = R_GetModelByHandle( handle );
-	if ( !model->data.mdv[0] )
+	model = R_GetModelByHandle(handle);
+	if (!model->data.mdv[0])
 	{
 		if(model->type == MOD_MDR)
 		{
@@ -1744,25 +1744,25 @@ int R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFram
 			R_GetAnimTag((mdrHeader_t *) model->data.mdr, startFrame, tagName, start);
 			R_GetAnimTag((mdrHeader_t *) model->data.mdr, endFrame, tagName, end);
 		}
-		else if( model->type == MOD_IQM ) {
-			return R_IQMLerpTag( tag, (iqmData_t *)model->data.iqm,
+		else if(model->type == MOD_IQM) {
+			return R_IQMLerpTag(tag, (iqmData_t *)model->data.iqm,
 					startFrame, endFrame,
-					frac, tagName );
+					frac, tagName);
 		} else {
 
-			AxisClear( tag->axis );
-			VectorClear( tag->origin );
+			AxisClear(tag->axis);
+			VectorClear(tag->origin);
 			return qfalse;
 
 		}
 	}
 	else
 	{
-		start = R_GetTag( model->data.mdv[0], startFrame, tagName );
-		end = R_GetTag( model->data.mdv[0], endFrame, tagName );
-		if ( !start || !end ) {
-			AxisClear( tag->axis );
-			VectorClear( tag->origin );
+		start = R_GetTag(model->data.mdv[0], startFrame, tagName);
+		end = R_GetTag(model->data.mdv[0], endFrame, tagName);
+		if (!start || !end) {
+			AxisClear(tag->axis);
+			VectorClear(tag->origin);
 			return qfalse;
 		}
 	}
@@ -1770,15 +1770,15 @@ int R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFram
 	frontLerp = frac;
 	backLerp = 1.0f - frac;
 
-	for ( i = 0 ; i < 3 ; i++ ) {
+	for (i = 0 ; i < 3 ; i++) {
 		tag->origin[i] = start->origin[i] * backLerp +  end->origin[i] * frontLerp;
 		tag->axis[0][i] = start->axis[0][i] * backLerp +  end->axis[0][i] * frontLerp;
 		tag->axis[1][i] = start->axis[1][i] * backLerp +  end->axis[1][i] * frontLerp;
 		tag->axis[2][i] = start->axis[2][i] * backLerp +  end->axis[2][i] * frontLerp;
 	}
-	VectorNormalize( tag->axis[0] );
-	VectorNormalize( tag->axis[1] );
-	VectorNormalize( tag->axis[2] );
+	VectorNormalize(tag->axis[0]);
+	VectorNormalize(tag->axis[1]);
+	VectorNormalize(tag->axis[2]);
 	return qtrue;
 }
 
@@ -1788,14 +1788,14 @@ int R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFram
 R_ModelBounds
 ====================
 */
-void R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs ) {
+void R_ModelBounds(qhandle_t handle, vec3_t mins, vec3_t maxs) {
 	model_t		*model;
 
-	model = R_GetModelByHandle( handle );
+	model = R_GetModelByHandle(handle);
 
 	if(model->type == MOD_BRUSH) {
-		VectorCopy( model->data.bmodel->bounds[0], mins );
-		VectorCopy( model->data.bmodel->bounds[1], maxs );
+		VectorCopy(model->data.bmodel->bounds[0], mins);
+		VectorCopy(model->data.bmodel->bounds[1], maxs);
 
 		return;
 	} else if (model->type == MOD_MESH) {
@@ -1805,8 +1805,8 @@ void R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs ) {
 		header = model->data.mdv[0];
 		frame = header->frames;
 
-		VectorCopy( frame->bounds[0], mins );
-		VectorCopy( frame->bounds[1], maxs );
+		VectorCopy(frame->bounds[0], mins);
+		VectorCopy(frame->bounds[1], maxs);
 
 		return;
 	} else if (model->type == MOD_MDR) {
@@ -1816,8 +1816,8 @@ void R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs ) {
 		header = model->data.mdr;
 		frame = (mdrFrame_t *) ((byte *)header + header->ofsFrames);
 
-		VectorCopy( frame->bounds[0], mins );
-		VectorCopy( frame->bounds[1], maxs );
+		VectorCopy(frame->bounds[0], mins);
+		VectorCopy(frame->bounds[1], maxs);
 
 		return;
 	} else if(model->type == MOD_IQM) {
@@ -1833,6 +1833,6 @@ void R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs ) {
 		}
 	}
 
-	VectorClear( mins );
-	VectorClear( maxs );
+	VectorClear(mins);
+	VectorClear(maxs);
 }

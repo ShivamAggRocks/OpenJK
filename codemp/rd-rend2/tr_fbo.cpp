@@ -315,18 +315,18 @@ static void FBO_SetupDrawBuffers()
 	int numBuffers = 0;
 	GLenum bufs[8];
 
-	while ( currentFBO->colorBuffers[numBuffers] != 0 )
+	while (currentFBO->colorBuffers[numBuffers] != 0)
 	{
 		numBuffers++;
 	}
 
-	if ( numBuffers == 0 )
+	if (numBuffers == 0)
 	{
 		qglDrawBuffer (GL_NONE);
 	}
 	else
 	{
-		for ( int i = 0; i < numBuffers; i++ )
+		for (int i = 0; i < numBuffers; i++)
 		{
 			bufs[i] = GL_COLOR_ATTACHMENT0 + i;
 		}
@@ -349,9 +349,9 @@ void FBO_Bind(FBO_t * fbo)
 	{
 		// don't just call LogComment, or we will get a call to va() every frame!
 		if (fbo)
-			GLimp_LogComment(va("--- FBO_Bind( %s ) ---\n", fbo->name));
+			GLimp_LogComment(va("--- FBO_Bind(%s) ---\n", fbo->name));
 		else
-			GLimp_LogComment("--- FBO_Bind ( NULL ) ---\n");
+			GLimp_LogComment("--- FBO_Bind (NULL) ---\n");
 	}
 
 	if (!fbo)
@@ -462,12 +462,12 @@ void FBO_Init(void)
 	// clear render buffer
 	// this fixes the corrupt screen bug with r_hdr 1 on older hardware
 	FBO_Bind(tr.renderFbo);
-	qglClearColor( 0.f, 0.f, 0.f, 1 );
-	qglClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	qglClearColor(0.f, 0.f, 0.f, 1);
+	qglClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// glow buffers
 	{
-		for ( int i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++ )
+		for (int i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++)
 		{
 			tr.glowFboScaled[i] = FBO_Create(
 				va("*glowScaled%d", i), tr.glowImageScaled[i]->width,
@@ -498,7 +498,7 @@ void FBO_Init(void)
 #if MAX_DRAWN_PSHADOWS > 0
 	if (tr.pshadowArrayImage != NULL)
 	{
-		for( i = 0; i < MAX_DRAWN_PSHADOWS; i++)
+		for(i = 0; i < MAX_DRAWN_PSHADOWS; i++)
 		{
 			tr.pshadowFbos[i] = FBO_Create(
 				va("_shadowmap%i", i), tr.pshadowArrayImage->width,
@@ -529,7 +529,7 @@ void FBO_Init(void)
 
 	if (tr.sunShadowArrayImage != NULL)
 	{
-		for ( i = 0; i < 3; i++)
+		for (i = 0; i < 3; i++)
 		{
 			tr.sunShadowFbo[i] = FBO_Create(
 				va("_sunshadowmap%i", i),
@@ -819,8 +819,8 @@ void FBO_BlitFromTexture(struct image_s *src, vec4i_t inSrcBox, vec2_t inSrcTexS
 		height = glConfig.vidHeight;
 	}
 
-	qglViewport( 0, 0, width, height );
-	qglScissor( 0, 0, width, height );
+	qglViewport(0, 0, width, height);
+	qglScissor(0, 0, width, height);
 
 	Matrix16Ortho(0, width, height, 0, 0, 1, projection);
 
@@ -841,7 +841,7 @@ void FBO_BlitFromTexture(struct image_s *src, vec4i_t inSrcBox, vec2_t inSrcTexS
 	invTexRes[0] = 1.0f / src->width  * srcTexScale[0];
 	invTexRes[1] = 1.0f / src->height * srcTexScale[1];
 
-	GL_State( blend );
+	GL_State(blend);
 
 	GLSL_BindProgram(shaderProgram);
 

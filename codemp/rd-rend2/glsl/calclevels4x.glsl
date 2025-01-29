@@ -45,27 +45,27 @@ void main()
 	vec3 current = vec3(1.0, 0.0, 0.0);
 
 #ifdef FIRST_PASS
-	current = GetValues(vec2( 0.0,  0.0), current);
+	current = GetValues(vec2(0.0,  0.0), current);
 #else
 	current = GetValues(vec2(-1.5, -1.5), current);
 	current = GetValues(vec2(-0.5, -1.5), current);
-	current = GetValues(vec2( 0.5, -1.5), current);
-	current = GetValues(vec2( 1.5, -1.5), current);
+	current = GetValues(vec2(0.5, -1.5), current);
+	current = GetValues(vec2(1.5, -1.5), current);
 
 	current = GetValues(vec2(-1.5, -0.5), current);
 	current = GetValues(vec2(-0.5, -0.5), current);
-	current = GetValues(vec2( 0.5, -0.5), current);
-	current = GetValues(vec2( 1.5, -0.5), current);
+	current = GetValues(vec2(0.5, -0.5), current);
+	current = GetValues(vec2(1.5, -0.5), current);
 
 	current = GetValues(vec2(-1.5,  0.5), current);
 	current = GetValues(vec2(-0.5,  0.5), current);
-	current = GetValues(vec2( 0.5,  0.5), current);
-	current = GetValues(vec2( 1.5,  0.5), current);
+	current = GetValues(vec2(0.5,  0.5), current);
+	current = GetValues(vec2(1.5,  0.5), current);
 
 	current = GetValues(vec2(-1.5,  1.5), current);
 	current = GetValues(vec2(-0.5,  1.5), current);
-	current = GetValues(vec2( 0.5,  1.5), current);
-	current = GetValues(vec2( 1.5,  1.5), current);
+	current = GetValues(vec2(0.5,  1.5), current);
+	current = GetValues(vec2(1.5,  1.5), current);
 
 	current.y *= 0.0625;
 #endif

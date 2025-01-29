@@ -65,7 +65,7 @@ const char *BuildShaderStateConfig(void) {
 	memset(buff, 0, MAX_STRING_CHARS);
 	for (i = 0; i < remapCount; i++) {
 		Com_sprintf(out, (MAX_QPATH * 2) + 5, "%s=%s:%5.2f@", remappedShaders[i].oldShader, remappedShaders[i].newShader, remappedShaders[i].timeOffset);
-		Q_strcat( buff, sizeof( buff ), out);
+		Q_strcat(buff, sizeof(buff), out);
 	}
 	return buff;
 }
@@ -84,33 +84,33 @@ G_FindConfigstringIndex
 
 ================
 */
-static int G_FindConfigstringIndex( const char *name, int start, int max, qboolean create ) {
+static int G_FindConfigstringIndex(const char *name, int start, int max, qboolean create) {
 	int		i;
 	char	s[MAX_STRING_CHARS];
 
-	if ( !VALIDSTRING( name ) ) {
+	if (!VALIDSTRING(name)) {
 		return 0;
 	}
 
-	for ( i=1 ; i<max ; i++ ) {
-		trap->GetConfigstring( start + i, s, sizeof( s ) );
-		if ( !s[0] ) {
+	for (i=1 ; i<max ; i++) {
+		trap->GetConfigstring(start + i, s, sizeof(s));
+		if (!s[0]) {
 			break;
 		}
-		if ( !strcmp( s, name ) ) {
+		if (!strcmp(s, name)) {
 			return i;
 		}
 	}
 
-	if ( !create ) {
+	if (!create) {
 		return 0;
 	}
 
-	if ( i == max ) {
-		trap->Error( ERR_DROP, "G_FindConfigstringIndex: overflow" );
+	if (i == max) {
+		trap->Error(ERR_DROP, "G_FindConfigstringIndex: overflow");
 	}
 
-	trap->SetConfigstring( start + i, name );
+	trap->SetConfigstring(start + i, name);
 
 	return i;
 }
@@ -119,14 +119,14 @@ static int G_FindConfigstringIndex( const char *name, int start, int max, qboole
 Ghoul2 Insert Start
 */
 
-int G_BoneIndex( const char *name ) {
+int G_BoneIndex(const char *name) {
 	return G_FindConfigstringIndex (name, CS_G2BONES, MAX_G2BONES, qtrue);
 }
 /*
 Ghoul2 Insert End
 */
 
-int G_ModelIndex( const char *name ) {
+int G_ModelIndex(const char *name) {
 #ifdef _DEBUG_MODEL_PATH_ON_SERVER
 	//debug to see if we are shoving data into configstrings for models that don't exist, and if
 	//so, where we are doing it from -rww
@@ -134,7 +134,7 @@ int G_ModelIndex( const char *name ) {
 
 	trap->FS_Open(name, &fh, FS_READ);
 	if (!fh)
-	{ //try models/ then, this is assumed for registering models
+	{//try models/ then, this is assumed for registering models
 		trap->FS_Open(va("models/%s", name), &fh, FS_READ);
 		if (!fh)
 		{
@@ -150,13 +150,13 @@ int G_ModelIndex( const char *name ) {
 	return G_FindConfigstringIndex (name, CS_MODELS, MAX_MODELS, qtrue);
 }
 
-int	G_IconIndex( const char* name )
+int	G_IconIndex(const char* name)
 {
 	assert(name && name[0]);
 	return G_FindConfigstringIndex (name, CS_ICONS, MAX_ICONS, qtrue);
 }
 
-int G_SoundIndex( const char *name ) {
+int G_SoundIndex(const char *name) {
 	assert(name && name[0]);
 	return G_FindConfigstringIndex (name, CS_SOUNDS, MAX_SOUNDS, qtrue);
 }
@@ -166,12 +166,12 @@ int G_SoundSetIndex(const char *name)
 	return G_FindConfigstringIndex (name, CS_AMBIENT_SET, MAX_AMBIENT_SETS, qtrue);
 }
 
-int G_EffectIndex( const char *name )
+int G_EffectIndex(const char *name)
 {
 	return G_FindConfigstringIndex (name, CS_EFFECTS, MAX_FX, qtrue);
 }
 
-int G_BSPIndex( const char *name )
+int G_BSPIndex(const char *name)
 {
 	return G_FindConfigstringIndex (name, CS_BSP_MODELS, MAX_SUB_BSP, qtrue);
 }
@@ -186,20 +186,20 @@ qboolean G_PlayerHasCustomSkeleton(gentity_t *ent)
 	siegeClass_t *scl;
 
 	if (level.gametype != GT_SIEGE)
-	{ //only in siege
+	{//only in siege
 		return qfalse;
 	}
 
 	if (ent->s.number >= MAX_CLIENTS ||
 		!ent->client ||
 		ent->client->siegeClass == -1)
-	{ //invalid class
+	{//invalid class
 		return qfalse;
 	}
 
 	scl = &bgSiegeClasses[ent->client->siegeClass];
 	if (!(scl->classflags & (1<<CFL_CUSTOMSKEL)))
-	{ //class is not flagged for this
+	{//class is not flagged for this
 		return qfalse;
 	}
 
@@ -215,13 +215,13 @@ G_TeamCommand
 Broadcasts a command to only a specific team
 ================
 */
-void G_TeamCommand( team_t team, char *cmd ) {
+void G_TeamCommand(team_t team, char *cmd) {
 	int		i;
 
-	for ( i = 0 ; i < level.maxclients ; i++ ) {
-		if ( level.clients[i].pers.connected == CON_CONNECTED ) {
-			if ( level.clients[i].sess.sessionTeam == team ) {
-				trap->SendServerCommand( i, va("%s", cmd ));
+	for (i = 0 ; i < level.maxclients ; i++) {
+		if (level.clients[i].pers.connected == CON_CONNECTED) {
+			if (level.clients[i].sess.sessionTeam == team) {
+				trap->SendServerCommand(i, va("%s", cmd));
 			}
 		}
 	}
@@ -249,7 +249,7 @@ gentity_t *G_Find (gentity_t *from, int fieldofs, const char *match)
 	else
 		from++;
 
-	for ( ; from < &g_entities[level.num_entities] ; from++)
+	for (; from < &g_entities[level.num_entities] ; from++)
 	{
 		if (!from->inuse)
 			continue;
@@ -270,7 +270,7 @@ gentity_t *G_Find (gentity_t *from, int fieldofs, const char *match)
 G_RadiusList - given an origin and a radius, return all entities that are in use that are within the list
 ============
 */
-int G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean takeDamage, gentity_t *ent_list[MAX_GENTITIES])
+int G_RadiusList (vec3_t origin, float radius,	gentity_t *ignore, qboolean takeDamage, gentity_t *ent_list[MAX_GENTITIES])
 {
 	float		dist;
 	gentity_t	*ent;
@@ -281,20 +281,20 @@ int G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean take
 	int			i, e;
 	int			ent_count = 0;
 
-	if ( radius < 1 )
+	if (radius < 1)
 	{
 		radius = 1;
 	}
 
-	for ( i = 0 ; i < 3 ; i++ )
+	for (i = 0 ; i < 3 ; i++)
 	{
 		mins[i] = origin[i] - radius;
 		maxs[i] = origin[i] + radius;
 	}
 
-	numListedEntities = trap->EntitiesInBox( mins, maxs, entityList, MAX_GENTITIES );
+	numListedEntities = trap->EntitiesInBox(mins, maxs, entityList, MAX_GENTITIES);
 
-	for ( e = 0 ; e < numListedEntities ; e++ )
+	for (e = 0 ; e < numListedEntities ; e++)
 	{
 		ent = &g_entities[entityList[ e ]];
 
@@ -302,12 +302,12 @@ int G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean take
 			continue;
 
 		// find the distance from the edge of the bounding box
-		for ( i = 0 ; i < 3 ; i++ )
+		for (i = 0 ; i < 3 ; i++)
 		{
-			if ( origin[i] < ent->r.absmin[i] )
+			if (origin[i] < ent->r.absmin[i])
 			{
 				v[i] = ent->r.absmin[i] - origin[i];
-			} else if ( origin[i] > ent->r.absmax[i] )
+			} else if (origin[i] > ent->r.absmax[i])
 			{
 				v[i] = origin[i] - ent->r.absmax[i];
 			} else
@@ -316,8 +316,8 @@ int G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean take
 			}
 		}
 
-		dist = VectorLength( v );
-		if ( dist >= radius )
+		dist = VectorLength(v);
+		if (dist >= radius)
 		{
 			continue;
 		}
@@ -333,13 +333,13 @@ int G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean take
 
 
 //----------------------------------------------------------
-void G_Throw( gentity_t *targ, vec3_t newDir, float push )
+void G_Throw(gentity_t *targ, vec3_t newDir, float push)
 //----------------------------------------------------------
 {
 	vec3_t	kvel;
 	float	mass;
 
-	if ( targ->physicsBounce > 0 )	//overide the mass
+	if (targ->physicsBounce > 0)	//overide the mass
 	{
 		mass = targ->physicsBounce;
 	}
@@ -348,40 +348,40 @@ void G_Throw( gentity_t *targ, vec3_t newDir, float push )
 		mass = 200;
 	}
 
-	if ( g_gravity.value > 0 )
+	if (g_gravity.value > 0)
 	{
-		VectorScale( newDir, g_knockback.value * (float)push / mass * 0.8, kvel );
+		VectorScale(newDir, g_knockback.value * (float)push / mass * 0.8, kvel);
 		kvel[2] = newDir[2] * g_knockback.value * (float)push / mass * 1.5;
 	}
 	else
 	{
-		VectorScale( newDir, g_knockback.value * (float)push / mass, kvel );
+		VectorScale(newDir, g_knockback.value * (float)push / mass, kvel);
 	}
 
-	if ( targ->client )
+	if (targ->client)
 	{
-		VectorAdd( targ->client->ps.velocity, kvel, targ->client->ps.velocity );
+		VectorAdd(targ->client->ps.velocity, kvel, targ->client->ps.velocity);
 	}
-	else if ( targ->s.pos.trType != TR_STATIONARY && targ->s.pos.trType != TR_LINEAR_STOP && targ->s.pos.trType != TR_NONLINEAR_STOP )
+	else if (targ->s.pos.trType != TR_STATIONARY && targ->s.pos.trType != TR_LINEAR_STOP && targ->s.pos.trType != TR_NONLINEAR_STOP)
 	{
-		VectorAdd( targ->s.pos.trDelta, kvel, targ->s.pos.trDelta );
-		VectorCopy( targ->r.currentOrigin, targ->s.pos.trBase );
+		VectorAdd(targ->s.pos.trDelta, kvel, targ->s.pos.trDelta);
+		VectorCopy(targ->r.currentOrigin, targ->s.pos.trBase);
 		targ->s.pos.trTime = level.time;
 	}
 
 	// set the timer so that the other client can't cancel
 	// out the movement immediately
-	if ( targ->client && !targ->client->ps.pm_time )
+	if (targ->client && !targ->client->ps.pm_time)
 	{
 		int		t;
 
 		t = push * 2;
 
-		if ( t < 50 )
+		if (t < 50)
 		{
 			t = 50;
 		}
-		if ( t > 200 )
+		if (t > 200)
 		{
 			t = 200;
 		}
@@ -395,7 +395,7 @@ void G_Throw( gentity_t *targ, vec3_t newDir, float push )
 //it is left around you will have a memory leak, because true dynamic memory is
 //allocated by the exe.
 void G_FreeFakeClient(gclient_t **cl)
-{ //or not, the dynamic stuff is busted somehow at the moment. Yet it still works in the test.
+{//or not, the dynamic stuff is busted somehow at the moment. Yet it still works in the test.
   //I think something is messed up in being able to cast the memory to stuff to modify it,
   //while modifying it directly seems to work fine.
 	//trap->TrueFree((void **)cl);
@@ -417,7 +417,7 @@ void G_AllocateVehicleObject(Vehicle_t **pVeh)
 	}
 
 	while (i < MAX_VEHICLES_AT_A_TIME)
-	{ //iterate through and try to find a free one
+	{//iterate through and try to find a free one
 		if (!g_vehiclePoolOccupied[i])
 		{
 			g_vehiclePoolOccupied[i] = qtrue;
@@ -438,7 +438,7 @@ void G_FreeVehicleObject(Vehicle_t *pVeh)
 	{
 		if (g_vehiclePoolOccupied[i] &&
 			&g_vehiclePool[i] == pVeh)
-		{ //guess this is it
+		{//guess this is it
 			g_vehiclePoolOccupied[i] = qfalse;
 			break;
 		}
@@ -572,10 +572,10 @@ void GlobalUse(gentity_t *self, gentity_t *other, gentity_t *activator)
 	self->use(self, other, activator);
 }
 
-void G_UseTargets2( gentity_t *ent, gentity_t *activator, const char *string ) {
+void G_UseTargets2(gentity_t *ent, gentity_t *activator, const char *string) {
 	gentity_t		*t;
 
-	if ( !ent ) {
+	if (!ent) {
 		return;
 	}
 
@@ -585,20 +585,20 @@ void G_UseTargets2( gentity_t *ent, gentity_t *activator, const char *string ) {
 		trap->SetConfigstring(CS_SHADERSTATE, BuildShaderStateConfig());
 	}
 
-	if ( !string || !string[0] ) {
+	if (!string || !string[0]) {
 		return;
 	}
 
 	t = NULL;
-	while ( (t = G_Find (t, FOFS(targetname), string)) != NULL ) {
-		if ( t == ent ) {
+	while ((t = G_Find (t, FOFS(targetname), string)) != NULL) {
+		if (t == ent) {
 			trap->Print ("WARNING: Entity used itself.\n");
 		} else {
-			if ( t->use ) {
+			if (t->use) {
 				GlobalUse(t, ent, activator);
 			}
 		}
-		if ( !ent->inuse ) {
+		if (!ent->inuse) {
 			trap->Print("entity was removed while using targets\n");
 			return;
 		}
@@ -615,7 +615,7 @@ match (string)self.target and call their .use function
 
 ==============================
 */
-void G_UseTargets( gentity_t *ent, gentity_t *activator )
+void G_UseTargets(gentity_t *ent, gentity_t *activator)
 {
 	if (!ent)
 	{
@@ -633,7 +633,7 @@ This is just a convenience function
 for making temporary vectors for function calls
 =============
 */
-float	*tv( float x, float y, float z ) {
+float	*tv(float x, float y, float z) {
 	static	int		index;
 	static	vec3_t	vecs[8];
 	float	*v;
@@ -659,7 +659,7 @@ This is just a convenience function
 for printing vectors
 =============
 */
-char	*vtos( const vec3_t v ) {
+char	*vtos(const vec3_t v) {
 	static	int		index;
 	static	char	str[8][32];
 	char	*s;
@@ -684,30 +684,30 @@ Angles will be cleared, because it is being used to represent a direction
 instead of an orientation.
 ===============
 */
-void G_SetMovedir( vec3_t angles, vec3_t movedir ) {
+void G_SetMovedir(vec3_t angles, vec3_t movedir) {
 	static vec3_t VEC_UP		= {0, -1, 0};
 	static vec3_t MOVEDIR_UP	= {0, 0, 1};
 	static vec3_t VEC_DOWN		= {0, -2, 0};
 	static vec3_t MOVEDIR_DOWN	= {0, 0, -1};
 
-	if ( VectorCompare (angles, VEC_UP) ) {
+	if (VectorCompare (angles, VEC_UP)) {
 		VectorCopy (MOVEDIR_UP, movedir);
-	} else if ( VectorCompare (angles, VEC_DOWN) ) {
+	} else if (VectorCompare (angles, VEC_DOWN)) {
 		VectorCopy (MOVEDIR_DOWN, movedir);
 	} else {
 		AngleVectors (angles, movedir, NULL, NULL);
 	}
-	VectorClear( angles );
+	VectorClear(angles);
 }
 
-void G_InitGentity( gentity_t *e ) {
+void G_InitGentity(gentity_t *e) {
 	e->inuse = qtrue;
 	e->classname = "noclass";
 	e->s.number = e - g_entities;
 	e->r.ownerNum = ENTITYNUM_NONE;
 	e->s.modelGhoul2 = 0; //assume not
 
-	trap->ICARUS_FreeEnt( (sharedEntity_t *)e );	//ICARUS information must be added after this point
+	trap->ICARUS_FreeEnt((sharedEntity_t *)e);	//ICARUS information must be added after this point
 }
 
 //give us some decent info on all the active ents -rww
@@ -805,54 +805,54 @@ instead of being removed and recreated, which can cause interpolated
 angles and bad trails.
 =================
 */
-gentity_t *G_Spawn( void ) {
+gentity_t *G_Spawn(void) {
 	int			i, force;
 	gentity_t	*e;
 
 	e = NULL;	// shut up warning
 	i = 0;		// shut up warning
-	for ( force = 0 ; force < 2 ; force++ ) {
+	for (force = 0 ; force < 2 ; force++) {
 		// if we go through all entities and can't find one to free,
 		// override the normal minimum times before use
 		e = &g_entities[MAX_CLIENTS];
-		for ( i = MAX_CLIENTS ; i<level.num_entities ; i++, e++) {
-			if ( e->inuse ) {
+		for (i = MAX_CLIENTS ; i<level.num_entities ; i++, e++) {
+			if (e->inuse) {
 				continue;
 			}
 
 			// the first couple seconds of server time can involve a lot of
 			// freeing and allocating, so relax the replacement policy
-			if ( !force && e->freetime > level.startTime + 2000 && level.time - e->freetime < 1000 )
+			if (!force && e->freetime > level.startTime + 2000 && level.time - e->freetime < 1000)
 			{
 				continue;
 			}
 
 			// reuse this slot
-			G_InitGentity( e );
+			G_InitGentity(e);
 			return e;
 		}
-		if ( i != MAX_GENTITIES ) {
+		if (i != MAX_GENTITIES) {
 			break;
 		}
 	}
-	if ( i == ENTITYNUM_MAX_NORMAL ) {
+	if (i == ENTITYNUM_MAX_NORMAL) {
 		/*
 		for (i = 0; i < MAX_GENTITIES; i++) {
 			trap->Print("%4i: %s\n", i, g_entities[i].classname);
 		}
 		*/
 		G_SpewEntList();
-		trap->Error( ERR_DROP, "G_Spawn: no free entities" );
+		trap->Error(ERR_DROP, "G_Spawn: no free entities");
 	}
 
 	// open up a new slot
 	level.num_entities++;
 
 	// let the server system know that there are more entities
-	trap->LocateGameData( (sharedEntity_t *)level.gentities, level.num_entities, sizeof( gentity_t ),
-		&level.clients[0].ps, sizeof( level.clients[0] ) );
+	trap->LocateGameData((sharedEntity_t *)level.gentities, level.num_entities, sizeof(gentity_t),
+		&level.clients[0].ps, sizeof(level.clients[0]));
 
-	G_InitGentity( e );
+	G_InitGentity(e);
 	return e;
 }
 
@@ -861,13 +861,13 @@ gentity_t *G_Spawn( void ) {
 G_EntitiesFree
 =================
 */
-qboolean G_EntitiesFree( void ) {
+qboolean G_EntitiesFree(void) {
 	int			i;
 	gentity_t	*e;
 
 	e = &g_entities[MAX_CLIENTS];
-	for ( i = MAX_CLIENTS; i < level.num_entities; i++, e++) {
-		if ( e->inuse ) {
+	for (i = MAX_CLIENTS; i < level.num_entities; i++, e++) {
+		if (e->inuse) {
 			continue;
 		}
 		// slot available
@@ -894,7 +894,7 @@ void G_SendG2KillQueue(void)
 	Com_sprintf(g2KillString, 1024, "kg2");
 
 	while (i < gG2KillNum && i < 64)
-	{ //send 64 at once, max...
+	{//send 64 at once, max...
 		Q_strcat(g2KillString, 1024, va(" %i", gG2KillIndex[i]));
 		i++;
 	}
@@ -904,7 +904,7 @@ void G_SendG2KillQueue(void)
 	//Clear the count because we just sent off the whole queue
 	gG2KillNum -= i;
 	if (gG2KillNum < 0)
-	{ //hmm, should be impossible, but I'm paranoid as we're far past beta.
+	{//hmm, should be impossible, but I'm paranoid as we're far past beta.
 		assert(0);
 		gG2KillNum = 0;
 	}
@@ -913,7 +913,7 @@ void G_SendG2KillQueue(void)
 void G_KillG2Queue(int entNum)
 {
 	if (gG2KillNum >= MAX_G2_KILL_QUEUE)
-	{ //This would be considered a Bad Thing.
+	{//This would be considered a Bad Thing.
 #ifdef _DEBUG
 		Com_Printf("WARNING: Exceeded the MAX_G2_KILL_QUEUE count for this frame!\n");
 #endif
@@ -933,7 +933,7 @@ G_FreeEntity
 Marks the entity as free
 =================
 */
-void G_FreeEntity( gentity_t *ed ) {
+void G_FreeEntity(gentity_t *ed) {
 	//gentity_t *te;
 
 	if (ed->isSaberEntity)
@@ -946,9 +946,9 @@ void G_FreeEntity( gentity_t *ed ) {
 
 	trap->UnlinkEntity ((sharedEntity_t *)ed);		// unlink from world
 
-	trap->ICARUS_FreeEnt( (sharedEntity_t *)ed );	//ICARUS information must be added after this point
+	trap->ICARUS_FreeEnt((sharedEntity_t *)ed);	//ICARUS information must be added after this point
 
-	if ( ed->neverFree ) {
+	if (ed->neverFree) {
 		return;
 	}
 
@@ -957,9 +957,9 @@ void G_FreeEntity( gentity_t *ed ) {
 	//to let the client know he needs to clean up all the g2 stuff for this
 	//now-removed entity
 	if (ed->s.modelGhoul2)
-	{ //force all clients to accept an event to destroy this instance, right now
+	{//force all clients to accept an event to destroy this instance, right now
 		/*
-		te = G_TempEntity( vec3_origin, EV_DESTROY_GHOUL2_INSTANCE );
+		te = G_TempEntity(vec3_origin, EV_DESTROY_GHOUL2_INSTANCE);
 		te->r.svFlags |= SVF_BROADCAST;
 		te->s.eventParm = ed->s.number;
 		*/
@@ -974,12 +974,12 @@ void G_FreeEntity( gentity_t *ed ) {
 	}
 
 	if (ed->s.eType == ET_NPC && ed->m_pVehicle)
-	{ //tell the "vehicle pool" that this one is now free
+	{//tell the "vehicle pool" that this one is now free
 		G_FreeVehicleObject(ed->m_pVehicle);
 	}
 
 	if (ed->s.eType == ET_NPC && ed->client)
-	{ //this "client" structure is one of our dynamically allocated ones, so free the memory
+	{//this "client" structure is one of our dynamically allocated ones, so free the memory
 		int saberEntNum = -1;
 		int i = 0;
 		if (ed->client->ps.saberEntityNum)
@@ -1055,7 +1055,7 @@ The origin will be snapped to save net bandwidth, so care
 must be taken if the origin is right on a surface (snap towards start vector first)
 =================
 */
-gentity_t *G_TempEntity( vec3_t origin, int event ) {
+gentity_t *G_TempEntity(vec3_t origin, int event) {
 	gentity_t		*e;
 	vec3_t		snapped;
 
@@ -1066,16 +1066,16 @@ gentity_t *G_TempEntity( vec3_t origin, int event ) {
 	e->eventTime = level.time;
 	e->freeAfterEvent = qtrue;
 
-	VectorCopy( origin, snapped );
-	SnapVector( snapped );		// save network bandwidth
-	G_SetOrigin( e, snapped );
+	VectorCopy(origin, snapped);
+	SnapVector(snapped);		// save network bandwidth
+	G_SetOrigin(e, snapped);
 	//WTF?  Why aren't we setting the s.origin? (like below)
 	//cg_events.c code checks origin all over the place!!!
 	//Trying to save bandwidth...?
-	//VectorCopy( snapped, e->s.origin );
+	//VectorCopy(snapped, e->s.origin);
 
 	// find cluster for PVS
-	trap->LinkEntity( (sharedEntity_t *)e );
+	trap->LinkEntity((sharedEntity_t *)e);
 
 	return e;
 }
@@ -1088,7 +1088,7 @@ G_SoundTempEntity
 Special event entity that keeps sound trackers in mind
 =================
 */
-gentity_t *G_SoundTempEntity( vec3_t origin, int event, int channel ) {
+gentity_t *G_SoundTempEntity(vec3_t origin, int event, int channel) {
 	gentity_t		*e;
 	vec3_t		snapped;
 
@@ -1101,12 +1101,12 @@ gentity_t *G_SoundTempEntity( vec3_t origin, int event, int channel ) {
 	e->eventTime = level.time;
 	e->freeAfterEvent = qtrue;
 
-	VectorCopy( origin, snapped );
-	SnapVector( snapped );		// save network bandwidth
-	G_SetOrigin( e, snapped );
+	VectorCopy(origin, snapped);
+	SnapVector(snapped);		// save network bandwidth
+	G_SetOrigin(e, snapped);
 
 	// find cluster for PVS
-	trap->LinkEntity( (sharedEntity_t *)e );
+	trap->LinkEntity((sharedEntity_t *)e);
 
 	return e;
 }
@@ -1118,12 +1118,12 @@ void G_ScaleNetHealth(gentity_t *self)
 	int maxHealth = self->maxHealth;
 
     if (maxHealth < 1000)
-	{ //it's good then
+	{//it's good then
 		self->s.maxhealth = maxHealth;
 		self->s.health = self->health;
 
 		if (self->s.health < 0)
-		{ //don't let it wrap around
+		{//don't let it wrap around
 			self->s.health = 0;
 		}
 		return;
@@ -1134,13 +1134,13 @@ void G_ScaleNetHealth(gentity_t *self)
 	self->s.health = (self->health/100);
 
 	if (self->s.health < 0)
-	{ //don't let it wrap around
+	{//don't let it wrap around
 		self->s.health = 0;
 	}
 
 	if (self->health > 0 &&
 		self->s.health <= 0)
-	{ //don't let it scale to 0 if the thing is still not "dead"
+	{//don't let it scale to 0 if the thing is still not "dead"
 		self->s.health = 1;
 	}
 }
@@ -1169,28 +1169,28 @@ void G_KillBox (gentity_t *ent) {
 	gentity_t	*hit;
 	vec3_t		mins, maxs;
 
-	VectorAdd( ent->client->ps.origin, ent->r.mins, mins );
-	VectorAdd( ent->client->ps.origin, ent->r.maxs, maxs );
-	num = trap->EntitiesInBox( mins, maxs, touch, MAX_GENTITIES );
+	VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
+	VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
+	num = trap->EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
 
 	for (i=0 ; i<num ; i++) {
 		hit = &g_entities[touch[i]];
-		if ( !hit->client ) {
+		if (!hit->client) {
 			continue;
 		}
 
 		if (hit->s.number == ent->s.number)
-		{ //don't telefrag yourself!
+		{//don't telefrag yourself!
 			continue;
 		}
 
 		if (ent->r.ownerNum == hit->s.number)
-		{ //don't telefrag your vehicle!
+		{//don't telefrag your vehicle!
 			continue;
 		}
 
 		// nail it
-		G_Damage ( hit, ent, ent, NULL, NULL,
+		G_Damage (hit, ent, ent, NULL, NULL,
 			100000, DAMAGE_NO_PROTECTION, MOD_TELEFRAG);
 	}
 
@@ -1207,11 +1207,11 @@ client side: jumppads and item pickups
 Adds an event+parm and twiddles the event counter
 ===============
 */
-void G_AddPredictableEvent( gentity_t *ent, int event, int eventParm ) {
-	if ( !ent->client ) {
+void G_AddPredictableEvent(gentity_t *ent, int event, int eventParm) {
+	if (!ent->client) {
 		return;
 	}
-	BG_AddPredictableEventToPlayerstate( event, eventParm, &ent->client->ps );
+	BG_AddPredictableEventToPlayerstate(event, eventParm, &ent->client->ps);
 }
 
 
@@ -1222,24 +1222,24 @@ G_AddEvent
 Adds an event+parm and twiddles the event counter
 ===============
 */
-void G_AddEvent( gentity_t *ent, int event, int eventParm ) {
+void G_AddEvent(gentity_t *ent, int event, int eventParm) {
 	int		bits;
 
-	if ( !event ) {
-		trap->Print( "G_AddEvent: zero event added for entity %i\n", ent->s.number );
+	if (!event) {
+		trap->Print("G_AddEvent: zero event added for entity %i\n", ent->s.number);
 		return;
 	}
 
 	// clients need to add the event in playerState_t instead of entityState_t
-	if ( ent->client ) {
+	if (ent->client) {
 		bits = ent->client->ps.externalEvent & EV_EVENT_BITS;
-		bits = ( bits + EV_EVENT_BIT1 ) & EV_EVENT_BITS;
+		bits = (bits + EV_EVENT_BIT1) & EV_EVENT_BITS;
 		ent->client->ps.externalEvent = event | bits;
 		ent->client->ps.externalEventParm = eventParm;
 		ent->client->ps.externalEventTime = level.time;
 	} else {
 		bits = ent->s.event & EV_EVENT_BITS;
-		bits = ( bits + EV_EVENT_BIT1 ) & EV_EVENT_BITS;
+		bits = (bits + EV_EVENT_BIT1) & EV_EVENT_BITS;
 		ent->s.event = event | bits;
 		ent->s.eventParm = eventParm;
 	}
@@ -1255,7 +1255,7 @@ gentity_t *G_PlayEffect(int fxID, vec3_t org, vec3_t ang)
 {
 	gentity_t	*te;
 
-	te = G_TempEntity( org, EV_PLAY_EFFECT );
+	te = G_TempEntity(org, EV_PLAY_EFFECT);
 	VectorCopy(ang, te->s.angles);
 	VectorCopy(org, te->s.origin);
 	te->s.eventParm = fxID;
@@ -1269,10 +1269,10 @@ G_PlayEffectID
 =============
 */
 gentity_t *G_PlayEffectID(const int fxID, vec3_t org, vec3_t ang)
-{ //play an effect by the G_EffectIndex'd ID instead of a predefined effect ID
+{//play an effect by the G_EffectIndex'd ID instead of a predefined effect ID
 	gentity_t	*te;
 
-	te = G_TempEntity( org, EV_PLAY_EFFECT_ID );
+	te = G_TempEntity(org, EV_PLAY_EFFECT_ID);
 	VectorCopy(ang, te->s.angles);
 	VectorCopy(org, te->s.origin);
 	te->s.eventParm = fxID;
@@ -1280,7 +1280,7 @@ gentity_t *G_PlayEffectID(const int fxID, vec3_t org, vec3_t ang)
 	if (!te->s.angles[0] &&
 		!te->s.angles[1] &&
 		!te->s.angles[2])
-	{ //play off this dir by default then.
+	{//play off this dir by default then.
 		te->s.angles[1] = 1;
 	}
 
@@ -1296,7 +1296,7 @@ gentity_t *G_ScreenShake(vec3_t org, gentity_t *target, float intensity, int dur
 {
 	gentity_t	*te;
 
-	te = G_TempEntity( org, EV_SCREENSHAKE );
+	te = G_TempEntity(org, EV_SCREENSHAKE);
 	VectorCopy(org, te->s.origin);
 	te->s.angles[0] = intensity;
 	te->s.time = duration;
@@ -1323,11 +1323,11 @@ gentity_t *G_ScreenShake(vec3_t org, gentity_t *target, float intensity, int dur
 G_MuteSound
 =============
 */
-void G_MuteSound( int entnum, int channel )
+void G_MuteSound(int entnum, int channel)
 {
 	gentity_t	*te, *e;
 
-	te = G_TempEntity( vec3_origin, EV_MUTE_SOUND );
+	te = G_TempEntity(vec3_origin, EV_MUTE_SOUND);
 	te->r.svFlags = SVF_BROADCAST;
 	te->s.trickedentindex2 = entnum;
 	te->s.trickedentindex = channel;
@@ -1346,17 +1346,17 @@ void G_MuteSound( int entnum, int channel )
 G_Sound
 =============
 */
-void G_Sound( gentity_t *ent, int channel, int soundIndex ) {
+void G_Sound(gentity_t *ent, int channel, int soundIndex) {
 	gentity_t	*te;
 
 	assert(soundIndex);
 
-	te = G_SoundTempEntity( ent->r.currentOrigin, EV_GENERAL_SOUND, channel );
+	te = G_SoundTempEntity(ent->r.currentOrigin, EV_GENERAL_SOUND, channel);
 	te->s.eventParm = soundIndex;
 	te->s.saberEntityNum = channel;
 
 	if (ent && ent->client && channel > TRACK_CHANNEL_NONE)
-	{ //let the client remember the index of the player entity so he can kill the most recent sound on request
+	{//let the client remember the index of the player entity so he can kill the most recent sound on request
 		if (g_entities[ent->client->ps.fd.killSoundEntIndex[channel-50]].inuse &&
 			ent->client->ps.fd.killSoundEntIndex[channel-50] > MAX_CLIENTS)
 		{
@@ -1383,10 +1383,10 @@ void G_Sound( gentity_t *ent, int channel, int soundIndex ) {
 G_SoundAtLoc
 =============
 */
-void G_SoundAtLoc( vec3_t loc, int channel, int soundIndex ) {
+void G_SoundAtLoc(vec3_t loc, int channel, int soundIndex) {
 	gentity_t	*te;
 
-	te = G_TempEntity( loc, EV_GENERAL_SOUND );
+	te = G_TempEntity(loc, EV_GENERAL_SOUND);
 	te->s.eventParm = soundIndex;
 	te->s.saberEntityNum = channel;
 }
@@ -1396,21 +1396,21 @@ void G_SoundAtLoc( vec3_t loc, int channel, int soundIndex ) {
 G_EntitySound
 =============
 */
-void G_EntitySound( gentity_t *ent, int channel, int soundIndex ) {
+void G_EntitySound(gentity_t *ent, int channel, int soundIndex) {
 	gentity_t	*te;
 
-	te = G_TempEntity( ent->r.currentOrigin, EV_ENTITY_SOUND );
+	te = G_TempEntity(ent->r.currentOrigin, EV_ENTITY_SOUND);
 	te->s.eventParm = soundIndex;
 	te->s.clientNum = ent->s.number;
 	te->s.trickedentindex = channel;
 }
 
 //To make porting from SP easier.
-void G_SoundOnEnt( gentity_t *ent, int channel, const char *soundPath )
+void G_SoundOnEnt(gentity_t *ent, int channel, const char *soundPath)
 {
 	gentity_t	*te;
 
-	te = G_TempEntity( ent->r.currentOrigin, EV_ENTITY_SOUND );
+	te = G_TempEntity(ent->r.currentOrigin, EV_ENTITY_SOUND);
 	te->s.eventParm = G_SoundIndex((char *)soundPath);
 	te->s.clientNum = ent->s.number;
 	te->s.trickedentindex = channel;
@@ -1426,19 +1426,19 @@ ValidUseTarget
 Returns whether or not the targeted entity is useable
 ==============
 */
-qboolean ValidUseTarget( gentity_t *ent )
+qboolean ValidUseTarget(gentity_t *ent)
 {
-	if ( !ent->use )
+	if (!ent->use)
 	{
 		return qfalse;
 	}
 
-	if ( ent->flags & FL_INACTIVE )
+	if (ent->flags & FL_INACTIVE)
 	{//set by target_deactivate
 		return qfalse;
 	}
 
-	if ( !(ent->r.svFlags & SVF_PLAYER_USABLE) )
+	if (!(ent->r.svFlags & SVF_PLAYER_USABLE))
 	{//Check for flag that denotes BUTTON_USE useability
 		return qfalse;
 	}
@@ -1464,12 +1464,12 @@ void G_UseDispenserOn(gentity_t *ent, int dispType, gentity_t *target)
 	else if (dispType == HI_AMMODISP)
 	{
 		if (ent->client->medSupplyDebounce < level.time)
-		{ //do the next increment
+		{//do the next increment
 			//increment based on the amount of ammo used per normal shot.
 			target->client->ps.ammo[weaponData[target->client->ps.weapon].ammoIndex] += weaponData[target->client->ps.weapon].energyPerShot;
 
 			if (target->client->ps.ammo[weaponData[target->client->ps.weapon].ammoIndex] > ammoData[weaponData[target->client->ps.weapon].ammoIndex].max)
-			{ //cap it off
+			{//cap it off
 				target->client->ps.ammo[weaponData[target->client->ps.weapon].ammoIndex] = ammoData[weaponData[target->client->ps.weapon].ammoIndex].max;
 			}
 
@@ -1485,14 +1485,14 @@ int G_CanUseDispOn(gentity_t *ent, int dispType)
 {
 	if (!ent->client || !ent->inuse || ent->health < 1 ||
 		ent->client->ps.stats[STAT_HEALTH] < 1)
-	{ //dead or invalid
+	{//dead or invalid
 		return 0;
 	}
 
 	if (dispType == HI_HEALTHDISP)
 	{
         if (ent->client->ps.stats[STAT_HEALTH] < ent->client->ps.stats[STAT_MAX_HEALTH])
-		{ //he's hurt
+		{//he's hurt
 			return 1;
 		}
 
@@ -1502,12 +1502,12 @@ int G_CanUseDispOn(gentity_t *ent, int dispType)
 	else if (dispType == HI_AMMODISP)
 	{
 		if (ent->client->ps.weapon <= WP_NONE || ent->client->ps.weapon > LAST_USEABLE_WEAPON)
-		{ //not a player-useable weapon
+		{//not a player-useable weapon
 			return 0;
 		}
 
 		if (ent->client->ps.ammo[weaponData[ent->client->ps.weapon].ammoIndex] < ammoData[weaponData[ent->client->ps.weapon].ammoIndex].max)
-		{ //needs more ammo for current weapon
+		{//needs more ammo for current weapon
 			return 1;
 		}
 
@@ -1524,23 +1524,23 @@ qboolean TryHeal(gentity_t *ent, gentity_t *target)
 	if (level.gametype == GT_SIEGE && ent->client->siegeClass != -1 &&
 		target && target->inuse && target->maxHealth && target->healingclass &&
 		target->healingclass[0] && target->health > 0 && target->health < target->maxHealth)
-	{ //it's not dead yet...
+	{//it's not dead yet...
 		siegeClass_t *scl = &bgSiegeClasses[ent->client->siegeClass];
 
 		if (!Q_stricmp(scl->name, target->healingclass))
-		{ //this thing can be healed by the class this player is using
+		{//this thing can be healed by the class this player is using
 			if (target->healingDebounce < level.time)
-			{ //do the actual heal
+			{//do the actual heal
 				target->health += 10;
 				if (target->health > target->maxHealth)
-				{ //don't go too high
+				{//don't go too high
 					target->health = target->maxHealth;
 				}
 				target->healingDebounce = level.time + target->healingrate;
 				if (target->healingsound && target->healingsound[0])
-				{ //play it
+				{//play it
 					if (target->s.solid == SOLID_BMODEL)
-					{ //ok, well, just play it on the client then.
+					{//ok, well, just play it on the client then.
 						G_Sound(ent, CHAN_AUTO, G_SoundIndex(target->healingsound));
 					}
 					else
@@ -1562,12 +1562,12 @@ qboolean TryHeal(gentity_t *ent, gentity_t *target)
 			//keep them in the healing anim even when the healing debounce is not yet expired
 			if (ent->client->ps.torsoAnim == BOTH_BUTTON_HOLD ||
 				ent->client->ps.torsoAnim == BOTH_CONSOLE1)
-			{ //extend the time
+			{//extend the time
 				ent->client->ps.torsoTimer = 500;
 			}
 			else
 			{
-				G_SetAnim( ent, NULL, SETANIM_TORSO, BOTH_BUTTON_HOLD, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0 );
+				G_SetAnim(ent, NULL, SETANIM_TORSO, BOTH_BUTTON_HOLD, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
 			}
 
 			return qtrue;
@@ -1587,11 +1587,11 @@ Try and use an entity in the world, directly ahead of us
 
 #define USE_DISTANCE	64.0f
 
-extern void Touch_Button(gentity_t *ent, gentity_t *other, trace_t *trace );
+extern void Touch_Button(gentity_t *ent, gentity_t *other, trace_t *trace);
 extern qboolean gSiegeRoundBegun;
 static vec3_t	playerMins = {-15, -15, DEFAULT_MINS_2};
 static vec3_t	playerMaxs = {15, 15, DEFAULT_MAXS_2};
-void TryUse( gentity_t *ent )
+void TryUse(gentity_t *ent)
 {
 	gentity_t	*target;
 	trace_t		trace;
@@ -1600,7 +1600,7 @@ void TryUse( gentity_t *ent )
 
 	if (level.gametype == GT_SIEGE &&
 		!gSiegeRoundBegun)
-	{ //nothing can be used til the round starts.
+	{//nothing can be used til the round starts.
 		return;
 	}
 
@@ -1612,7 +1612,7 @@ void TryUse( gentity_t *ent )
 	}
 
 	if (ent->client->ps.emplacedIndex)
-	{ //on an emplaced gun or using a vehicle, don't do anything when hitting use key
+	{//on an emplaced gun or using a vehicle, don't do anything when hitting use key
 		return;
 	}
 
@@ -1624,19 +1624,19 @@ void TryUse( gentity_t *ent )
 			Vehicle_t *pVeh = currentVeh->m_pVehicle;
 			if (!pVeh->m_iBoarding)
 			{
-				pVeh->m_pVehicleInfo->Eject( pVeh, (bgEntity_t *)ent, qfalse );
+				pVeh->m_pVehicleInfo->Eject(pVeh, (bgEntity_t *)ent, qfalse);
 			}
 			return;
 		}
 	}
 
 	if (ent->client->jetPackOn)
-	{ //can't use anything else to jp is off
+	{//can't use anything else to jp is off
 		goto tryJetPack;
 	}
 
 	if (ent->client->bodyGrabIndex != ENTITYNUM_NONE)
-	{ //then hitting the use key just means let go
+	{//then hitting the use key just means let go
 		if (ent->client->bodyGrabTime < level.time)
 		{
 			gentity_t *grabbed = &g_entities[ent->client->bodyGrabIndex];
@@ -1661,15 +1661,15 @@ void TryUse( gentity_t *ent )
 	VectorCopy(ent->client->ps.origin, viewspot);
 	viewspot[2] += ent->client->ps.viewheight;
 
-	VectorCopy( viewspot, src );
-	AngleVectors( ent->client->ps.viewangles, vf, NULL, NULL );
+	VectorCopy(viewspot, src);
+	AngleVectors(ent->client->ps.viewangles, vf, NULL, NULL);
 
-	VectorMA( src, USE_DISTANCE, vf, dest );
+	VectorMA(src, USE_DISTANCE, vf, dest);
 
 	//Trace ahead to find a valid target
-	trap->Trace( &trace, src, vec3_origin, vec3_origin, dest, ent->s.number, MASK_OPAQUE|CONTENTS_SOLID|CONTENTS_BODY|CONTENTS_ITEM|CONTENTS_CORPSE, qfalse, 0, 0 );
+	trap->Trace(&trace, src, vec3_origin, vec3_origin, dest, ent->s.number, MASK_OPAQUE|CONTENTS_SOLID|CONTENTS_BODY|CONTENTS_ITEM|CONTENTS_CORPSE, qfalse, 0, 0);
 
-	if ( trace.fraction == 1.0f || trace.entityNum == ENTITYNUM_NONE )
+	if (trace.fraction == 1.0f || trace.entityNum == ENTITYNUM_NONE)
 	{
 		goto tryJetPack;
 	}
@@ -1680,10 +1680,10 @@ void TryUse( gentity_t *ent )
 #if 0
 	if (target->inuse && target->s.eType == ET_BODY &&
 		ent->client->bodyGrabTime < level.time)
-	{ //then grab the body
+	{//then grab the body
 		target->s.eFlags |= EF_RAG; //make sure it's in rag state
 		if (!ent->s.number)
-		{ //switch cl 0 and entitynum_none, so we can operate on the "if non-0" concept
+		{//switch cl 0 and entitynum_none, so we can operate on the "if non-0" concept
 			target->s.ragAttach = ENTITYNUM_NONE;
 		}
 		else
@@ -1699,22 +1699,22 @@ void TryUse( gentity_t *ent )
 	if (target && target->m_pVehicle && target->client &&
 		target->s.NPC_class == CLASS_VEHICLE &&
 		!ent->client->ps.zoomMode)
-	{ //if target is a vehicle then perform appropriate checks
+	{//if target is a vehicle then perform appropriate checks
 		Vehicle_t *pVeh = target->m_pVehicle;
 
 		if (pVeh->m_pVehicleInfo)
 		{
-			if ( ent->r.ownerNum == target->s.number )
-			{ //user is already on this vehicle so eject him
-				pVeh->m_pVehicleInfo->Eject( pVeh, (bgEntity_t *)ent, qfalse );
+			if (ent->r.ownerNum == target->s.number)
+			{//user is already on this vehicle so eject him
+				pVeh->m_pVehicleInfo->Eject(pVeh, (bgEntity_t *)ent, qfalse);
 			}
 			else
-			{ // Otherwise board this vehicle.
+			{// Otherwise board this vehicle.
 				if (level.gametype < GT_TEAM ||
 					!target->alliedTeam ||
 					(target->alliedTeam == ent->client->sess.sessionTeam))
-				{ //not belonging to a team, or client is on same team
-					pVeh->m_pVehicleInfo->Board( pVeh, (bgEntity_t *)ent );
+				{//not belonging to a team, or client is on same team
+					pVeh->m_pVehicleInfo->Board(pVeh, (bgEntity_t *)ent);
 				}
 			}
 			//clear the damn button!
@@ -1729,20 +1729,20 @@ void TryUse( gentity_t *ent )
 	{
 		if (bg_itemlist[ent->client->ps.stats[STAT_HOLDABLE_ITEM]].giTag == HI_HEALTHDISP ||
 			bg_itemlist[ent->client->ps.stats[STAT_HOLDABLE_ITEM]].giTag == HI_AMMODISP)
-		{ //has a dispenser item selected
+		{//has a dispenser item selected
             if (target && target->client && target->health > 0 && OnSameTeam(ent, target) &&
 				G_CanUseDispOn(target, bg_itemlist[ent->client->ps.stats[STAT_HOLDABLE_ITEM]].giTag))
-			{ //a live target that's on my team, we can use him
+			{//a live target that's on my team, we can use him
 				G_UseDispenserOn(ent, bg_itemlist[ent->client->ps.stats[STAT_HOLDABLE_ITEM]].giTag, target);
 
 				//for now, we will use the standard use anim
 				if (ent->client->ps.torsoAnim == BOTH_BUTTON_HOLD)
-				{ //extend the time
+				{//extend the time
 					ent->client->ps.torsoTimer = 500;
 				}
 				else
 				{
-					G_SetAnim( ent, NULL, SETANIM_TORSO, BOTH_BUTTON_HOLD, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0 );
+					G_SetAnim(ent, NULL, SETANIM_TORSO, BOTH_BUTTON_HOLD, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
 				}
 				ent->client->ps.weaponTime = ent->client->ps.torsoTimer;
 				return;
@@ -1750,10 +1750,10 @@ void TryUse( gentity_t *ent )
 		}
 	}
 #else
-    if ( ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_HEALTHDISP)) || (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_AMMODISP))) &&
+    if (((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_HEALTHDISP)) || (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_AMMODISP))) &&
 		target && target->inuse && target->client && target->health > 0 && OnSameTeam(ent, target) &&
-		(G_CanUseDispOn(target, HI_HEALTHDISP) || G_CanUseDispOn(target, HI_AMMODISP)) )
-	{ //a live target that's on my team, we can use him
+		(G_CanUseDispOn(target, HI_HEALTHDISP) || G_CanUseDispOn(target, HI_AMMODISP)))
+	{//a live target that's on my team, we can use him
 		if (G_CanUseDispOn(target, HI_HEALTHDISP))
 		{
 			G_UseDispenserOn(ent, HI_HEALTHDISP, target);
@@ -1765,12 +1765,12 @@ void TryUse( gentity_t *ent )
 
 		//for now, we will use the standard use anim
 		if (ent->client->ps.torsoAnim == BOTH_BUTTON_HOLD)
-		{ //extend the time
+		{//extend the time
 			ent->client->ps.torsoTimer = 500;
 		}
 		else
 		{
-			G_SetAnim( ent, NULL, SETANIM_TORSO, BOTH_BUTTON_HOLD, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0 );
+			G_SetAnim(ent, NULL, SETANIM_TORSO, BOTH_BUTTON_HOLD, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
 		}
 		ent->client->ps.weaponTime = ent->client->ps.torsoTimer;
 		return;
@@ -1779,30 +1779,30 @@ void TryUse( gentity_t *ent )
 #endif
 
 	//Check for a use command
-	if ( ValidUseTarget( target )
+	if (ValidUseTarget(target)
 		&& (level.gametype != GT_SIEGE
 			|| !target->alliedTeam
 			|| target->alliedTeam != ent->client->sess.sessionTeam
-			|| g_ff_objectives.integer) )
+			|| g_ff_objectives.integer))
 	{
 		if (ent->client->ps.torsoAnim == BOTH_BUTTON_HOLD ||
 			ent->client->ps.torsoAnim == BOTH_CONSOLE1)
-		{ //extend the time
+		{//extend the time
 			ent->client->ps.torsoTimer = 500;
 		}
 		else
 		{
-			G_SetAnim( ent, NULL, SETANIM_TORSO, BOTH_BUTTON_HOLD, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0 );
+			G_SetAnim(ent, NULL, SETANIM_TORSO, BOTH_BUTTON_HOLD, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
 		}
 		ent->client->ps.weaponTime = ent->client->ps.torsoTimer;
 		/*
-		NPC_SetAnim( ent, SETANIM_TORSO, BOTH_FORCEPUSH, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
-		if ( !VectorLengthSquared( ent->client->ps.velocity ) )
+		NPC_SetAnim(ent, SETANIM_TORSO, BOTH_FORCEPUSH, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD);
+		if (!VectorLengthSquared(ent->client->ps.velocity))
 		{
-			NPC_SetAnim( ent, SETANIM_LEGS, BOTH_FORCEPUSH, SETANIM_FLAG_NORMAL|SETANIM_FLAG_HOLD );
+			NPC_SetAnim(ent, SETANIM_LEGS, BOTH_FORCEPUSH, SETANIM_FLAG_NORMAL|SETANIM_FLAG_HOLD);
 		}
 		*/
-		if ( target->touch == Touch_Button )
+		if (target->touch == Touch_Button)
 		{//pretend we touched it
 			target->touch(target, ent, NULL);
 		}
@@ -1829,9 +1829,9 @@ tryJetPack:
 		}
 	}
 
-	if ( (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_AMMODISP)) /*&&
-		G_ItemUsable(&ent->client->ps, HI_AMMODISP)*/ )
-	{ //if you used nothing, then try spewing out some ammo
+	if ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_AMMODISP)) /*&&
+		G_ItemUsable(&ent->client->ps, HI_AMMODISP)*/)
+	{//if you used nothing, then try spewing out some ammo
 		trace_t trToss;
 		vec3_t fAng;
 		vec3_t fwd;
@@ -1850,17 +1850,17 @@ tryJetPack:
 	}
 }
 
-qboolean G_PointInBounds( vec3_t point, vec3_t mins, vec3_t maxs )
+qboolean G_PointInBounds(vec3_t point, vec3_t mins, vec3_t maxs)
 {
 	int i;
 
-	for(i = 0; i < 3; i++ )
+	for(i = 0; i < 3; i++)
 	{
-		if ( point[i] < mins[i] )
+		if (point[i] < mins[i])
 		{
 			return qfalse;
 		}
-		if ( point[i] > maxs[i] )
+		if (point[i] > maxs[i])
 		{
 			return qfalse;
 		}
@@ -1869,13 +1869,13 @@ qboolean G_PointInBounds( vec3_t point, vec3_t mins, vec3_t maxs )
 	return qtrue;
 }
 
-qboolean G_BoxInBounds( vec3_t point, vec3_t mins, vec3_t maxs, vec3_t boundsMins, vec3_t boundsMaxs )
+qboolean G_BoxInBounds(vec3_t point, vec3_t mins, vec3_t maxs, vec3_t boundsMins, vec3_t boundsMaxs)
 {
 	vec3_t boxMins;
 	vec3_t boxMaxs;
 
-	VectorAdd( point, mins, boxMins );
-	VectorAdd( point, maxs, boxMaxs );
+	VectorAdd(point, mins, boxMins);
+	VectorAdd(point, maxs, boxMaxs);
 
 	if(boxMaxs[0]>boundsMaxs[0])
 		return qfalse;
@@ -1900,20 +1900,20 @@ qboolean G_BoxInBounds( vec3_t point, vec3_t mins, vec3_t maxs, vec3_t boundsMin
 }
 
 
-void G_SetAngles( gentity_t *ent, vec3_t angles )
+void G_SetAngles(gentity_t *ent, vec3_t angles)
 {
-	VectorCopy( angles, ent->r.currentAngles );
-	VectorCopy( angles, ent->s.angles );
-	VectorCopy( angles, ent->s.apos.trBase );
+	VectorCopy(angles, ent->r.currentAngles);
+	VectorCopy(angles, ent->s.angles);
+	VectorCopy(angles, ent->s.apos.trBase);
 }
 
-qboolean G_ClearTrace( vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, int ignore, int clipmask )
+qboolean G_ClearTrace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, int ignore, int clipmask)
 {
 	static	trace_t	tr;
 
-	trap->Trace( &tr, start, mins, maxs, end, ignore, clipmask, qfalse, 0, 0 );
+	trap->Trace(&tr, start, mins, maxs, end, ignore, clipmask, qfalse, 0, 0);
 
-	if ( tr.allsolid || tr.startsolid || tr.fraction < 1.0 )
+	if (tr.allsolid || tr.startsolid || tr.fraction < 1.0)
 	{
 		return qfalse;
 	}
@@ -1928,14 +1928,14 @@ G_SetOrigin
 Sets the pos trajectory for a fixed position
 ================
 */
-void G_SetOrigin( gentity_t *ent, vec3_t origin ) {
-	VectorCopy( origin, ent->s.pos.trBase );
+void G_SetOrigin(gentity_t *ent, vec3_t origin) {
+	VectorCopy(origin, ent->s.pos.trBase);
 	ent->s.pos.trType = TR_STATIONARY;
 	ent->s.pos.trTime = 0;
 	ent->s.pos.trDuration = 0;
-	VectorClear( ent->s.pos.trDelta );
+	VectorClear(ent->s.pos.trDelta);
 
-	VectorCopy( origin, ent->r.currentOrigin );
+	VectorCopy(origin, ent->r.currentOrigin);
 }
 
 qboolean G_CheckInSolid (gentity_t *self, qboolean fix)
@@ -2012,7 +2012,7 @@ int DebugLine(vec3_t start, vec3_t end, int color) {
 	return trap->DebugPolygonCreate(color, 4, points);
 }
 
-void G_ROFF_NotetrackCallback( gentity_t *cent, const char *notetrack)
+void G_ROFF_NotetrackCallback(gentity_t *cent, const char *notetrack)
 {
 	char type[256];
 	int i = 0;
@@ -2055,56 +2055,56 @@ void G_ROFF_NotetrackCallback( gentity_t *cent, const char *notetrack)
 	}
 }
 
-void G_SpeechEvent( gentity_t *self, int event )
+void G_SpeechEvent(gentity_t *self, int event)
 {
 	G_AddEvent(self, event, 0);
 }
 
-qboolean G_ExpandPointToBBox( vec3_t point, const vec3_t mins, const vec3_t maxs, int ignore, int clipmask )
+qboolean G_ExpandPointToBBox(vec3_t point, const vec3_t mins, const vec3_t maxs, int ignore, int clipmask)
 {
 	trace_t	tr;
 	vec3_t	start, end;
 	int i;
 
-	VectorCopy( point, start );
+	VectorCopy(point, start);
 
-	for ( i = 0; i < 3; i++ )
+	for (i = 0; i < 3; i++)
 	{
-		VectorCopy( start, end );
+		VectorCopy(start, end);
 		end[i] += mins[i];
-		trap->Trace( &tr, start, vec3_origin, vec3_origin, end, ignore, clipmask, qfalse, 0, 0 );
-		if ( tr.allsolid || tr.startsolid )
+		trap->Trace(&tr, start, vec3_origin, vec3_origin, end, ignore, clipmask, qfalse, 0, 0);
+		if (tr.allsolid || tr.startsolid)
 		{
 			return qfalse;
 		}
-		if ( tr.fraction < 1.0 )
+		if (tr.fraction < 1.0)
 		{
-			VectorCopy( start, end );
+			VectorCopy(start, end);
 			end[i] += maxs[i]-(mins[i]*tr.fraction);
-			trap->Trace( &tr, start, vec3_origin, vec3_origin, end, ignore, clipmask, qfalse, 0, 0 );
-			if ( tr.allsolid || tr.startsolid )
+			trap->Trace(&tr, start, vec3_origin, vec3_origin, end, ignore, clipmask, qfalse, 0, 0);
+			if (tr.allsolid || tr.startsolid)
 			{
 				return qfalse;
 			}
-			if ( tr.fraction < 1.0 )
+			if (tr.fraction < 1.0)
 			{
 				return qfalse;
 			}
-			VectorCopy( end, start );
+			VectorCopy(end, start);
 		}
 	}
 	//expanded it, now see if it's all clear
-	trap->Trace( &tr, start, mins, maxs, start, ignore, clipmask, qfalse, 0, 0 );
-	if ( tr.allsolid || tr.startsolid )
+	trap->Trace(&tr, start, mins, maxs, start, ignore, clipmask, qfalse, 0, 0);
+	if (tr.allsolid || tr.startsolid)
 	{
 		return qfalse;
 	}
-	VectorCopy( start, point );
+	VectorCopy(start, point);
 	return qtrue;
 }
 
-extern qboolean G_FindClosestPointOnLineSegment( const vec3_t start, const vec3_t end, const vec3_t from, vec3_t result );
-float ShortestLineSegBewteen2LineSegs( vec3_t start1, vec3_t end1, vec3_t start2, vec3_t end2, vec3_t close_pnt1, vec3_t close_pnt2 )
+extern qboolean G_FindClosestPointOnLineSegment(const vec3_t start, const vec3_t end, const vec3_t from, vec3_t result);
+float ShortestLineSegBewteen2LineSegs(vec3_t start1, vec3_t end1, vec3_t start2, vec3_t end2, vec3_t close_pnt1, vec3_t close_pnt2)
 {
 	float	current_dist, new_dist;
 	vec3_t	new_pnt;
@@ -2121,59 +2121,59 @@ float ShortestLineSegBewteen2LineSegs( vec3_t start1, vec3_t end1, vec3_t start2
 	float v1v1, v2v2, v1v2;
 	float denom;
 
-	VectorSubtract( start2, start1, start_dif );
+	VectorSubtract(start2, start1, start_dif);
 	//vec v1 = end1 - start1
-	VectorSubtract( end1, start1, v1 );
+	VectorSubtract(end1, start1, v1);
 	//vec v2 = end2 - start2
-	VectorSubtract( end2, start2, v2 );
+	VectorSubtract(end2, start2, v2);
 	//
-	v1v1 = DotProduct( v1, v1 );
-	v2v2 = DotProduct( v2, v2 );
-	v1v2 = DotProduct( v1, v2 );
+	v1v1 = DotProduct(v1, v1);
+	v2v2 = DotProduct(v2, v2);
+	v1v2 = DotProduct(v1, v2);
 
 	//the main computation
 
 	denom = (v1v2 * v1v2) - (v1v1 * v2v2);
 
 	//if denom is small, then skip all this and jump to the section marked below
-	if ( fabs(denom) > 0.001f )
+	if (fabs(denom) > 0.001f)
 	{
-		float s = -( (v2v2*DotProduct( v1, start_dif )) - (v1v2*DotProduct( v2, start_dif )) ) / denom;
-		float t = ( (v1v1*DotProduct( v2, start_dif )) - (v1v2*DotProduct( v1, start_dif )) ) / denom;
+		float s = -((v2v2*DotProduct(v1, start_dif)) - (v1v2*DotProduct(v2, start_dif))) / denom;
+		float t = ((v1v1*DotProduct(v2, start_dif)) - (v1v2*DotProduct(v1, start_dif))) / denom;
 		qboolean done = qtrue;
 
-		if ( s < 0 )
+		if (s < 0)
 		{
 			done = qfalse;
 			s = 0;// and see note below
 		}
 
-		if ( s > 1 )
+		if (s > 1)
 		{
 			done = qfalse;
 			s = 1;// and see note below
 		}
 
-		if ( t < 0 )
+		if (t < 0)
 		{
 			done = qfalse;
 			t = 0;// and see note below
 		}
 
-		if ( t > 1 )
+		if (t > 1)
 		{
 			done = qfalse;
 			t = 1;// and see note below
 		}
 
 		//vec close_pnt1 = start1 + s * v1
-		VectorMA( start1, s, v1, close_pnt1 );
+		VectorMA(start1, s, v1, close_pnt1);
 		//vec close_pnt2 = start2 + t * v2
-		VectorMA( start2, t, v2, close_pnt2 );
+		VectorMA(start2, t, v2, close_pnt2);
 
-		current_dist = Distance( close_pnt1, close_pnt2 );
+		current_dist = Distance(close_pnt1, close_pnt2);
 		//now, if none of those if's fired, you are done.
-		if ( done )
+		if (done)
 		{
 			return current_dist;
 		}
@@ -2190,92 +2190,92 @@ float ShortestLineSegBewteen2LineSegs( vec3_t start1, vec3_t end1, vec3_t start2
 
 	//test 2 close_pnts first
 	/*
-	G_FindClosestPointOnLineSegment( start1, end1, close_pnt2, new_pnt );
-	new_dist = Distance( close_pnt2, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start1, end1, close_pnt2, new_pnt);
+	new_dist = Distance(close_pnt2, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( new_pnt, close_pnt1 );
-		VectorCopy( close_pnt2, close_pnt2 );
+		VectorCopy(new_pnt, close_pnt1);
+		VectorCopy(close_pnt2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	G_FindClosestPointOnLineSegment( start2, end2, close_pnt1, new_pnt );
-	new_dist = Distance( close_pnt1, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start2, end2, close_pnt1, new_pnt);
+	new_dist = Distance(close_pnt1, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( close_pnt1, close_pnt1 );
-		VectorCopy( new_pnt, close_pnt2 );
+		VectorCopy(close_pnt1, close_pnt1);
+		VectorCopy(new_pnt, close_pnt2);
 		current_dist = new_dist;
 	}
 	*/
 	//test all the endpoints
-	new_dist = Distance( start1, start2 );
-	if ( new_dist < current_dist )
+	new_dist = Distance(start1, start2);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( start1, close_pnt1 );
-		VectorCopy( start2, close_pnt2 );
+		VectorCopy(start1, close_pnt1);
+		VectorCopy(start2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	new_dist = Distance( start1, end2 );
-	if ( new_dist < current_dist )
+	new_dist = Distance(start1, end2);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( start1, close_pnt1 );
-		VectorCopy( end2, close_pnt2 );
+		VectorCopy(start1, close_pnt1);
+		VectorCopy(end2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	new_dist = Distance( end1, start2 );
-	if ( new_dist < current_dist )
+	new_dist = Distance(end1, start2);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( end1, close_pnt1 );
-		VectorCopy( start2, close_pnt2 );
+		VectorCopy(end1, close_pnt1);
+		VectorCopy(start2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	new_dist = Distance( end1, end2 );
-	if ( new_dist < current_dist )
+	new_dist = Distance(end1, end2);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( end1, close_pnt1 );
-		VectorCopy( end2, close_pnt2 );
+		VectorCopy(end1, close_pnt1);
+		VectorCopy(end2, close_pnt2);
 		current_dist = new_dist;
 	}
 
 	//Then we have 4 more point / segment tests
 
-	G_FindClosestPointOnLineSegment( start2, end2, start1, new_pnt );
-	new_dist = Distance( start1, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start2, end2, start1, new_pnt);
+	new_dist = Distance(start1, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( start1, close_pnt1 );
-		VectorCopy( new_pnt, close_pnt2 );
+		VectorCopy(start1, close_pnt1);
+		VectorCopy(new_pnt, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	G_FindClosestPointOnLineSegment( start2, end2, end1, new_pnt );
-	new_dist = Distance( end1, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start2, end2, end1, new_pnt);
+	new_dist = Distance(end1, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( end1, close_pnt1 );
-		VectorCopy( new_pnt, close_pnt2 );
+		VectorCopy(end1, close_pnt1);
+		VectorCopy(new_pnt, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	G_FindClosestPointOnLineSegment( start1, end1, start2, new_pnt );
-	new_dist = Distance( start2, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start1, end1, start2, new_pnt);
+	new_dist = Distance(start2, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( new_pnt, close_pnt1 );
-		VectorCopy( start2, close_pnt2 );
+		VectorCopy(new_pnt, close_pnt1);
+		VectorCopy(start2, close_pnt2);
 		current_dist = new_dist;
 	}
 
-	G_FindClosestPointOnLineSegment( start1, end1, end2, new_pnt );
-	new_dist = Distance( end2, new_pnt );
-	if ( new_dist < current_dist )
+	G_FindClosestPointOnLineSegment(start1, end1, end2, new_pnt);
+	new_dist = Distance(end2, new_pnt);
+	if (new_dist < current_dist)
 	{//then update close_pnt1 close_pnt2 and current_dist
-		VectorCopy( new_pnt, close_pnt1 );
-		VectorCopy( end2, close_pnt2 );
+		VectorCopy(new_pnt, close_pnt1);
+		VectorCopy(end2, close_pnt2);
 		current_dist = new_dist;
 	}
 

@@ -630,20 +630,20 @@ public:
 
 
 void G_SquadPathsInit(void);
-void NPC_InitGame( void );
-void G_LoadBoltOns( void );
-void Svcmd_NPC_f( void );
+void NPC_InitGame(void);
+void G_LoadBoltOns(void);
+void Svcmd_NPC_f(void);
 /*
-void Bot_InitGame( void );
-void Bot_InitPreSpawn( void );
-void Bot_InitPostSpawn( void );
-void Bot_Shutdown( void );
-void Bot_Think( gentity_t *ent, int msec );
-void Bot_Connect( gentity_t *bot, char *botName );
-void Bot_Begin( gentity_t *bot );
-void Bot_Disconnect( gentity_t *bot );
-void Svcmd_Bot_f( void );
-void Nav_ItemSpawn( gentity_t *ent, int remaining );
+void Bot_InitGame(void);
+void Bot_InitPreSpawn(void);
+void Bot_InitPostSpawn(void);
+void Bot_Shutdown(void);
+void Bot_Think(gentity_t *ent, int msec);
+void Bot_Connect(gentity_t *bot, char *botName);
+void Bot_Begin(gentity_t *bot);
+void Bot_Disconnect(gentity_t *bot);
+void Svcmd_Bot_f(void);
+void Nav_ItemSpawn(gentity_t *ent, int remaining);
 */
 
 //

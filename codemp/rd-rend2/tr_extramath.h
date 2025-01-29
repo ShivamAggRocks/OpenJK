@@ -31,17 +31,17 @@ typedef int vec2i_t[2];
 typedef int vec3i_t[3];
 typedef int vec4i_t[4];
 
-void Matrix16Zero( matrix_t out );
-void Matrix16Identity( matrix_t out );
-void Matrix16Copy( const matrix_t in, matrix_t out );
-void Matrix16Multiply( const matrix_t in1, const matrix_t in2, matrix_t out );
-void Matrix16Transform( const matrix_t in1, const vec4_t in2, vec4_t out );
+void Matrix16Zero(matrix_t out);
+void Matrix16Identity(matrix_t out);
+void Matrix16Copy(const matrix_t in, matrix_t out);
+void Matrix16Multiply(const matrix_t in1, const matrix_t in2, matrix_t out);
+void Matrix16Transform(const matrix_t in1, const vec4_t in2, vec4_t out);
 qboolean Matrix16Compare(const matrix_t a, const matrix_t b);
-void Matrix16Dump( const matrix_t in );
-void Matrix16Translation( const vec3_t vec, matrix_t out );
-void Matrix16Ortho( float left, float right, float bottom, float top, float znear, float zfar, matrix_t out );
+void Matrix16Dump(const matrix_t in);
+void Matrix16Translation(const vec3_t vec, matrix_t out);
+void Matrix16Ortho(float left, float right, float bottom, float top, float znear, float zfar, matrix_t out);
 void Matrix16View(vec3_t axes[3], vec3_t origin, matrix_t out);
-void Matrix16SimpleInverse( const matrix_t in, matrix_t out);
+void Matrix16SimpleInverse(const matrix_t in, matrix_t out);
 
 #define VectorCopy2(a,b)		((b)[0]=(a)[0],(b)[1]=(a)[1])
 #define VectorSet2(v,x,y)       ((v)[0]=(x),(v)[1]=(y));
@@ -59,7 +59,7 @@ void Matrix16SimpleInverse( const matrix_t in, matrix_t out);
 #define FloatToByte(a)          (byte)((a) * 255.0f)
 
 #define RGBtosRGB(a)            (((a) < 0.0031308f) ? (12.92f * (a)) : (1.055f * pow((a), 0.41666f) - 0.055f))
-#define sRGBtoRGB(a)            (((a) <= 0.04045f)  ? ((a) / 12.92f) : (pow((((a) + 0.055f) / 1.055f), 2.4)) )
+#define sRGBtoRGB(a)            (((a) <= 0.04045f)  ? ((a) / 12.92f) : (pow((((a) + 0.055f) / 1.055f), 2.4)))
 
 QINLINE int VectorCompare4(const vec4_t v1, const vec4_t v2)
 {
@@ -79,7 +79,7 @@ QINLINE int VectorCompare5(const vec5_t v1, const vec5_t v2)
 	return 1;
 }
 
-void VectorLerp( vec3_t a, vec3_t b, float lerp, vec3_t c);
+void VectorLerp(vec3_t a, vec3_t b, float lerp, vec3_t c);
 
 
 qboolean SpheresIntersect(vec3_t origin1, float radius1, vec3_t origin2, float radius2);

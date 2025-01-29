@@ -27,7 +27,7 @@ const float CHUNK_EXTENDS = 2000.0;
 const float HALF_CHUNK_EXTENDS = CHUNK_EXTENDS * 0.5;
 const float THREE_HALF_CHUNK_EXTENDS = 3.0 * HALF_CHUNK_EXTENDS;
 
-vec3 NewParticleZPosition( in vec3 in_position )
+vec3 NewParticleZPosition(in vec3 in_position)
 {
 	vec3 position = in_position;
 	position.xy += u_RandomOffset.xy;

@@ -33,7 +33,7 @@ PUSHMOVE
 ===============================================================================
 */
 
-void MatchTeam( gentity_t *teamLeader, int moverState, int time );
+void MatchTeam(gentity_t *teamLeader, int moverState, int time);
 
 typedef struct pushed_s {
 	gentity_t	*ent;
@@ -62,7 +62,7 @@ G_PlayDoorLoopSound
 -------------------------
 */
 
-void G_PlayDoorLoopSound( gentity_t *ent )
+void G_PlayDoorLoopSound(gentity_t *ent)
 {
 	if (!ent->soundSet || !ent->soundSet[0])
 	{
@@ -85,7 +85,7 @@ G_PlayDoorSound
 -------------------------
 */
 
-void G_PlayDoorSound( gentity_t *ent, int type )
+void G_PlayDoorSound(gentity_t *ent, int type)
 {
 	if (!ent->soundSet || !ent->soundSet[0])
 	{
@@ -103,25 +103,25 @@ G_TestEntityPosition
 
 ============
 */
-gentity_t	*G_TestEntityPosition( gentity_t *ent ) {
+gentity_t	*G_TestEntityPosition(gentity_t *ent) {
 	trace_t	tr;
 	int		mask;
 
-	if ( ent->clipmask ) {
+	if (ent->clipmask) {
 		mask = ent->clipmask;
 	} else {
 		mask = MASK_SOLID;
 	}
-	if ( ent->client ) {
+	if (ent->client) {
 		vec3_t vMax;
 		VectorCopy(ent->r.maxs, vMax);
 		if (vMax[2] < 1)
 		{
 			vMax[2] = 1;
 		}
-		trap->Trace( &tr, ent->client->ps.origin, ent->r.mins, vMax, ent->client->ps.origin, ent->s.number, mask, qfalse, 0, 0 );
+		trap->Trace(&tr, ent->client->ps.origin, ent->r.mins, vMax, ent->client->ps.origin, ent->s.number, mask, qfalse, 0, 0);
 	} else {
-		trap->Trace( &tr, ent->s.pos.trBase, ent->r.mins, ent->r.maxs, ent->s.pos.trBase, ent->s.number, mask, qfalse, 0, 0 );
+		trap->Trace(&tr, ent->s.pos.trBase, ent->r.mins, ent->r.maxs, ent->s.pos.trBase, ent->s.number, mask, qfalse, 0, 0);
 	}
 
 	if (tr.startsolid)
@@ -175,7 +175,7 @@ G_TryPushingEntity
 Returns qfalse if the move is blocked
 ==================
 */
-qboolean	G_TryPushingEntity( gentity_t *check, gentity_t *pusher, vec3_t move, vec3_t amove ) {
+qboolean	G_TryPushingEntity(gentity_t *check, gentity_t *pusher, vec3_t move, vec3_t amove) {
 	matrix3_t	matrix, transpose;
 	vec3_t		org, org2, move2;
 	gentity_t	*block;
@@ -184,27 +184,27 @@ qboolean	G_TryPushingEntity( gentity_t *check, gentity_t *pusher, vec3_t move, v
 	/*
 	// EF_MOVER_STOP will just stop when contacting another entity
 	// instead of pushing it, but entities can still ride on top of it
-	if ( ( pusher->s.eFlags & EF_MOVER_STOP ) &&
-		check->s.groundEntityNum != pusher->s.number ) {
+	if ((pusher->s.eFlags & EF_MOVER_STOP) &&
+		check->s.groundEntityNum != pusher->s.number) {
 		return qfalse;
 	}
 	*/
-	if ( pusher->s.apos.trType != TR_STATIONARY//rotating
+	if (pusher->s.apos.trType != TR_STATIONARY//rotating
 		&& (pusher->spawnflags&16) //IMPACT
-		&& Q_stricmp( "func_rotating", pusher->classname ) == 0 )
+		&& Q_stricmp("func_rotating", pusher->classname) == 0)
 	{//just blow the fuck out of them
-		G_Damage( check, pusher, pusher, NULL, NULL, pusher->damage, DAMAGE_NO_KNOCKBACK, MOD_CRUSH );
+		G_Damage(check, pusher, pusher, NULL, NULL, pusher->damage, DAMAGE_NO_KNOCKBACK, MOD_CRUSH);
 		return qtrue;
 	}
 
 	// save off the old position
 	if (pushed_p > &pushed[MAX_GENTITIES]) {
-		trap->Error( ERR_DROP, "pushed_p > &pushed[MAX_GENTITIES]" );
+		trap->Error(ERR_DROP, "pushed_p > &pushed[MAX_GENTITIES]");
 	}
 	pushed_p->ent = check;
 	VectorCopy (check->s.pos.trBase, pushed_p->origin);
 	VectorCopy (check->s.apos.trBase, pushed_p->angles);
-	if ( check->client ) {
+	if (check->client) {
 		pushed_p->deltayaw = check->client->ps.delta_angles[YAW];
 		VectorCopy (check->client->ps.origin, pushed_p->origin);
 	}
@@ -212,21 +212,21 @@ qboolean	G_TryPushingEntity( gentity_t *check, gentity_t *pusher, vec3_t move, v
 
 	// try moving the contacted entity
 	// figure movement due to the pusher's amove
-	G_CreateRotationMatrix( amove, transpose );
-	G_TransposeMatrix( transpose, matrix );
-	if ( check->client ) {
+	G_CreateRotationMatrix(amove, transpose);
+	G_TransposeMatrix(transpose, matrix);
+	if (check->client) {
 		VectorSubtract (check->client->ps.origin, pusher->r.currentOrigin, org);
 	}
 	else {
 		VectorSubtract (check->s.pos.trBase, pusher->r.currentOrigin, org);
 	}
-	VectorCopy( org, org2 );
-	G_RotatePoint( org2, matrix );
+	VectorCopy(org, org2);
+	G_RotatePoint(org2, matrix);
 	VectorSubtract (org2, org, move2);
 	// add movement
 	VectorAdd (check->s.pos.trBase, move, check->s.pos.trBase);
 	VectorAdd (check->s.pos.trBase, move2, check->s.pos.trBase);
-	if ( check->client ) {
+	if (check->client) {
 		VectorAdd (check->client->ps.origin, move, check->client->ps.origin);
 		VectorAdd (check->client->ps.origin, move2, check->client->ps.origin);
 		// make sure the client's view rotates when on a rotating mover
@@ -234,17 +234,17 @@ qboolean	G_TryPushingEntity( gentity_t *check, gentity_t *pusher, vec3_t move, v
 	}
 
 	// may have pushed them off an edge
-	if ( check->s.groundEntityNum != pusher->s.number ) {
+	if (check->s.groundEntityNum != pusher->s.number) {
 		check->s.groundEntityNum = ENTITYNUM_NONE;
 	}
 
-	block = G_TestEntityPosition( check );
+	block = G_TestEntityPosition(check);
 	if (!block) {
 		// pushed ok
-		if ( check->client ) {
-			VectorCopy( check->client->ps.origin, check->r.currentOrigin );
+		if (check->client) {
+			VectorCopy(check->client->ps.origin, check->r.currentOrigin);
 		} else {
-			VectorCopy( check->s.pos.trBase, check->r.currentOrigin );
+			VectorCopy(check->s.pos.trBase, check->r.currentOrigin);
 		}
 		trap->LinkEntity ((sharedEntity_t *)check);
 		return qtrue;
@@ -261,13 +261,13 @@ qboolean	G_TryPushingEntity( gentity_t *check, gentity_t *pusher, vec3_t move, v
 	// if it is ok to leave in the old position, do it
 	// this is only relevent for riding entities, not pushed
 	// Sliding trapdoors can cause this.
-	VectorCopy( (pushed_p-1)->origin, check->s.pos.trBase);
-	if ( check->client ) {
-		VectorCopy( (pushed_p-1)->origin, check->client->ps.origin);
+	VectorCopy((pushed_p-1)->origin, check->s.pos.trBase);
+	if (check->client) {
+		VectorCopy((pushed_p-1)->origin, check->client->ps.origin);
 	}
-	VectorCopy( (pushed_p-1)->angles, check->s.apos.trBase );
+	VectorCopy((pushed_p-1)->angles, check->s.apos.trBase);
 	block = G_TestEntityPosition (check);
-	if ( !block ) {
+	if (!block) {
 		check->s.groundEntityNum = ENTITYNUM_NONE;
 		pushed_p--;
 		return qtrue;
@@ -278,7 +278,7 @@ qboolean	G_TryPushingEntity( gentity_t *check, gentity_t *pusher, vec3_t move, v
 }
 
 
-void G_ExplodeMissile( gentity_t *ent );
+void G_ExplodeMissile(gentity_t *ent);
 
 /*
 ============
@@ -289,8 +289,8 @@ otherwise riders would continue to slide.
 If qfalse is returned, *obstacle will be the blocking entity
 ============
 */
-void NPC_RemoveBody( gentity_t *self );
-qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **obstacle ) {
+void NPC_RemoveBody(gentity_t *self);
+qboolean G_MoverPush(gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **obstacle) {
 	int			i, e;
 	gentity_t	*check;
 	vec3_t		mins, maxs;
@@ -304,12 +304,12 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 
 	// mins/maxs are the bounds at the destination
 	// totalMins / totalMaxs are the bounds for the entire move
-	if ( pusher->r.currentAngles[0] || pusher->r.currentAngles[1] || pusher->r.currentAngles[2]
-		|| amove[0] || amove[1] || amove[2] ) {
+	if (pusher->r.currentAngles[0] || pusher->r.currentAngles[1] || pusher->r.currentAngles[2]
+		|| amove[0] || amove[1] || amove[2]) {
 		float		radius;
 
-		radius = RadiusFromBounds( pusher->r.mins, pusher->r.maxs );
-		for ( i = 0 ; i < 3 ; i++ ) {
+		radius = RadiusFromBounds(pusher->r.mins, pusher->r.maxs);
+		for (i = 0 ; i < 3 ; i++) {
 			mins[i] = pusher->r.currentOrigin[i] + move[i] - radius;
 			maxs[i] = pusher->r.currentOrigin[i] + move[i] + radius;
 			totalMins[i] = mins[i] - move[i];
@@ -321,10 +321,10 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 			maxs[i] = pusher->r.absmax[i] + move[i];
 		}
 
-		VectorCopy( pusher->r.absmin, totalMins );
-		VectorCopy( pusher->r.absmax, totalMaxs );
+		VectorCopy(pusher->r.absmin, totalMins);
+		VectorCopy(pusher->r.absmax, totalMaxs);
 		for (i=0 ; i<3 ; i++) {
-			if ( move[i] > 0 ) {
+			if (move[i] > 0) {
 				totalMaxs[i] += move[i];
 			} else {
 				totalMins[i] += move[i];
@@ -333,33 +333,33 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 	}
 
 	// unlink the pusher so we don't get it in the entityList
-	trap->UnlinkEntity( (sharedEntity_t *)pusher );
+	trap->UnlinkEntity((sharedEntity_t *)pusher);
 
-	listedEntities = trap->EntitiesInBox( totalMins, totalMaxs, entityList, MAX_GENTITIES );
+	listedEntities = trap->EntitiesInBox(totalMins, totalMaxs, entityList, MAX_GENTITIES);
 
 	// move the pusher to it's final position
-	VectorAdd( pusher->r.currentOrigin, move, pusher->r.currentOrigin );
-	VectorAdd( pusher->r.currentAngles, amove, pusher->r.currentAngles );
-	trap->LinkEntity( (sharedEntity_t *)pusher );
+	VectorAdd(pusher->r.currentOrigin, move, pusher->r.currentOrigin);
+	VectorAdd(pusher->r.currentAngles, amove, pusher->r.currentAngles);
+	trap->LinkEntity((sharedEntity_t *)pusher);
 
 	// see if any solid entities are inside the final position
-	for ( e = 0 ; e < listedEntities ; e++ ) {
+	for (e = 0 ; e < listedEntities ; e++) {
 		check = &g_entities[ entityList[ e ] ];
 
 		// only push items and players
-		if ( /*check->s.eType != ET_ITEM &&*/ check->s.eType != ET_PLAYER && check->s.eType != ET_NPC && !check->physicsObject ) {
+		if (/*check->s.eType != ET_ITEM &&*/ check->s.eType != ET_PLAYER && check->s.eType != ET_NPC && !check->physicsObject) {
 			continue;
 		}
 
 		// if the entity is standing on the pusher, it will definitely be moved
-		if ( check->s.groundEntityNum != pusher->s.number ) {
+		if (check->s.groundEntityNum != pusher->s.number) {
 			// see if the ent needs to be tested
-			if ( check->r.absmin[0] >= maxs[0]
+			if (check->r.absmin[0] >= maxs[0]
 			|| check->r.absmin[1] >= maxs[1]
 			|| check->r.absmin[2] >= maxs[2]
 			|| check->r.absmax[0] <= mins[0]
 			|| check->r.absmax[1] <= mins[1]
-			|| check->r.absmax[2] <= mins[2] ) {
+			|| check->r.absmax[2] <= mins[2]) {
 				continue;
 			}
 			// see if the ent's bbox is inside the pusher's final position
@@ -370,48 +370,48 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 		}
 
 		// the entity needs to be pushed
-		if ( G_TryPushingEntity( check, pusher, move, amove ) ) {
+		if (G_TryPushingEntity(check, pusher, move, amove)) {
 			continue;
 		}
 
 		if (pusher->damage && check->client && (pusher->spawnflags & 32))
 		{
-			G_Damage( check, pusher, pusher, NULL, NULL, pusher->damage, 0, MOD_CRUSH );
+			G_Damage(check, pusher, pusher, NULL, NULL, pusher->damage, 0, MOD_CRUSH);
 			continue;
 		}
 
 		if (check->s.eType == ET_BODY ||
 			(check->s.eType == ET_PLAYER && check->health < 1))
-		{ //whatever, just crush it
-			G_Damage( check, pusher, pusher, NULL, NULL, 999, 0, MOD_CRUSH );
+		{//whatever, just crush it
+			G_Damage(check, pusher, pusher, NULL, NULL, 999, 0, MOD_CRUSH);
 			continue;
 		}
 
-		if ( (check->r.contents & CONTENTS_TRIGGER) && check->s.weapon == G2_MODEL_PART)
+		if ((check->r.contents & CONTENTS_TRIGGER) && check->s.weapon == G2_MODEL_PART)
 		{//keep limbs from blocking elevators.  Kill the limb and keep moving.
 			G_FreeEntity(check);
 			continue;
 		}
 
-		if( check->s.eFlags & EF_DROPPEDWEAPON )
+		if(check->s.eFlags & EF_DROPPEDWEAPON)
 		{//keep dropped weapons from blocking elevators.  Kill the weapon and keep moving.
 			G_FreeEntity(check);
 			continue;
 		}
 
-		if ( check->s.eType == ET_NPC //an NPC
+		if (check->s.eType == ET_NPC //an NPC
 			&& check->health <= 0 //NPC is dead
-			&& !(check->flags & FL_NOTARGET) )  //NPC isn't still spawned or in no target mode.
+			&& !(check->flags & FL_NOTARGET))  //NPC isn't still spawned or in no target mode.
 		{//dead npcs should be removed now!
-			NPC_RemoveBody( check );
+			NPC_RemoveBody(check);
 			continue;
 		}
 
 		// the move was blocked an entity
 
 		// bobbing entities are instant-kill and never get blocked
-		if ( pusher->s.pos.trType == TR_SINE || pusher->s.apos.trType == TR_SINE ) {
-			G_Damage( check, pusher, pusher, NULL, NULL, 99999, 0, MOD_CRUSH );
+		if (pusher->s.pos.trType == TR_SINE || pusher->s.apos.trType == TR_SINE) {
+			G_Damage(check, pusher, pusher, NULL, NULL, 99999, 0, MOD_CRUSH);
 			continue;
 		}
 
@@ -422,10 +422,10 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 		// move back any entities we already moved
 		// go backwards, so if the same entity was pushed
 		// twice, it goes back to the original position
-		for ( p=pushed_p-1 ; p>=pushed ; p-- ) {
+		for (p=pushed_p-1 ; p>=pushed ; p--) {
 			VectorCopy (p->origin, p->ent->s.pos.trBase);
 			VectorCopy (p->angles, p->ent->s.apos.trBase);
-			if ( p->ent->client ) {
+			if (p->ent->client) {
 				p->ent->client->ps.delta_angles[YAW] = p->deltayaw;
 				VectorCopy (p->origin, p->ent->client->ps.origin);
 			}
@@ -443,7 +443,7 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 G_MoverTeam
 =================
 */
-void G_MoverTeam( gentity_t *ent ) {
+void G_MoverTeam(gentity_t *ent) {
 	vec3_t		move, amove;
 	gentity_t	*part, *obstacle;
 	vec3_t		origin, angles;
@@ -456,14 +456,14 @@ void G_MoverTeam( gentity_t *ent ) {
 	pushed_p = pushed;
 	for (part = ent ; part ; part=part->teamchain) {
 		// get current position
-		BG_EvaluateTrajectory( &part->s.pos, level.time, origin );
-		BG_EvaluateTrajectory( &part->s.apos, level.time, angles );
-		VectorSubtract( origin, part->r.currentOrigin, move );
-		VectorSubtract( angles, part->r.currentAngles, amove );
-		if ( !VectorCompare( move, vec3_origin )
-			|| !VectorCompare( amove, vec3_origin ) )
+		BG_EvaluateTrajectory(&part->s.pos, level.time, origin);
+		BG_EvaluateTrajectory(&part->s.apos, level.time, angles);
+		VectorSubtract(origin, part->r.currentOrigin, move);
+		VectorSubtract(angles, part->r.currentAngles, amove);
+		if (!VectorCompare(move, vec3_origin)
+			|| !VectorCompare(amove, vec3_origin))
 		{//actually moved
-			if ( !G_MoverPush( part, move, amove, &obstacle ) ) {
+			if (!G_MoverPush(part, move, amove, &obstacle)) {
 				break;	// move was blocked
 			}
 		}
@@ -471,29 +471,29 @@ void G_MoverTeam( gentity_t *ent ) {
 
 	if (part) {
 		// go back to the previous position
-		for ( part = ent ; part ; part = part->teamchain ) {
+		for (part = ent ; part ; part = part->teamchain) {
 			part->s.pos.trTime += level.time - level.previousTime;
 			part->s.apos.trTime += level.time - level.previousTime;
-			BG_EvaluateTrajectory( &part->s.pos, level.time, part->r.currentOrigin );
-			BG_EvaluateTrajectory( &part->s.apos, level.time, part->r.currentAngles );
-			trap->LinkEntity( (sharedEntity_t *)part );
+			BG_EvaluateTrajectory(&part->s.pos, level.time, part->r.currentOrigin);
+			BG_EvaluateTrajectory(&part->s.apos, level.time, part->r.currentAngles);
+			trap->LinkEntity((sharedEntity_t *)part);
 		}
 
 		// if the pusher has a "blocked" function, call it
 		if (ent->blocked) {
-			ent->blocked( ent, obstacle );
+			ent->blocked(ent, obstacle);
 		}
 		return;
 	}
 
 	// the move succeeded
-	for ( part = ent ; part ; part = part->teamchain ) {
+	for (part = ent ; part ; part = part->teamchain) {
 		// call the reached function if time is at or past end point
-		if ( part->s.pos.trType == TR_LINEAR_STOP ||
+		if (part->s.pos.trType == TR_LINEAR_STOP ||
 			part->s.pos.trType == TR_NONLINEAR_STOP) {
-			if ( level.time >= part->s.pos.trTime + part->s.pos.trDuration ) {
-				if ( part->reached ) {
-					part->reached( part );
+			if (level.time >= part->s.pos.trTime + part->s.pos.trDuration) {
+				if (part->reached) {
+					part->reached(part);
 				}
 			}
 		}
@@ -506,20 +506,20 @@ G_RunMover
 
 ================
 */
-void G_RunMover( gentity_t *ent ) {
+void G_RunMover(gentity_t *ent) {
 	// if not a team captain, don't do anything, because
 	// the captain will handle everything
-	if ( ent->flags & FL_TEAMSLAVE ) {
+	if (ent->flags & FL_TEAMSLAVE) {
 		return;
 	}
 
 	// if stationary at one of the positions, don't move anything
-	if ( ent->s.pos.trType != TR_STATIONARY || ent->s.apos.trType != TR_STATIONARY ) {
-		G_MoverTeam( ent );
+	if (ent->s.pos.trType != TR_STATIONARY || ent->s.apos.trType != TR_STATIONARY) {
+		G_MoverTeam(ent);
 	}
 
 	// check think function
-	G_RunThink( ent );
+	G_RunThink(ent);
 }
 
 /*
@@ -538,7 +538,7 @@ CalcTeamDoorCenter
 Finds all the doors of a team and returns their center position
 */
 
-void CalcTeamDoorCenter ( gentity_t *ent, vec3_t center )
+void CalcTeamDoorCenter (gentity_t *ent, vec3_t center)
 {
 	vec3_t		slavecenter;
 	gentity_t	*slave;
@@ -546,7 +546,7 @@ void CalcTeamDoorCenter ( gentity_t *ent, vec3_t center )
 	//Start with our center
 	VectorAdd(ent->r.mins, ent->r.maxs, center);
 	VectorScale(center, 0.5, center);
-	for ( slave = ent->teamchain ; slave ; slave = slave->teamchain )
+	for (slave = ent->teamchain ; slave ; slave = slave->teamchain)
 	{
 		//Find slave's center
 		VectorAdd(slave->r.mins, slave->r.maxs, slavecenter);
@@ -562,7 +562,7 @@ void CalcTeamDoorCenter ( gentity_t *ent, vec3_t center )
 SetMoverState
 ===============
 */
-void SetMoverState( gentity_t *ent, moverState_t moverState, int time ) {
+void SetMoverState(gentity_t *ent, moverState_t moverState, int time) {
 	vec3_t			delta;
 	float			f;
 
@@ -570,26 +570,26 @@ void SetMoverState( gentity_t *ent, moverState_t moverState, int time ) {
 
 	ent->s.pos.trTime = time;
 
-	if ( ent->s.pos.trDuration <= 0 )
+	if (ent->s.pos.trDuration <= 0)
 	{//Don't allow divide by zero!
 		ent->s.pos.trDuration = 1;
 	}
 
-	switch( moverState ) {
+	switch(moverState) {
 	case MOVER_POS1:
-		VectorCopy( ent->pos1, ent->s.pos.trBase );
+		VectorCopy(ent->pos1, ent->s.pos.trBase);
 		ent->s.pos.trType = TR_STATIONARY;
 		break;
 	case MOVER_POS2:
-		VectorCopy( ent->pos2, ent->s.pos.trBase );
+		VectorCopy(ent->pos2, ent->s.pos.trBase);
 		ent->s.pos.trType = TR_STATIONARY;
 		break;
 	case MOVER_1TO2:
-		VectorCopy( ent->pos1, ent->s.pos.trBase );
-		VectorSubtract( ent->pos2, ent->pos1, delta );
+		VectorCopy(ent->pos1, ent->s.pos.trBase);
+		VectorSubtract(ent->pos2, ent->pos1, delta);
 		f = 1000.0 / ent->s.pos.trDuration;
-		VectorScale( delta, f, ent->s.pos.trDelta );
-		if ( ent->alt_fire )
+		VectorScale(delta, f, ent->s.pos.trDelta);
+		if (ent->alt_fire)
 		{
 			ent->s.pos.trType = TR_LINEAR_STOP;
 		}
@@ -600,11 +600,11 @@ void SetMoverState( gentity_t *ent, moverState_t moverState, int time ) {
 		//ent->s.eFlags &= ~EF_BLOCKED_MOVER;
 		break;
 	case MOVER_2TO1:
-		VectorCopy( ent->pos2, ent->s.pos.trBase );
-		VectorSubtract( ent->pos1, ent->pos2, delta );
+		VectorCopy(ent->pos2, ent->s.pos.trBase);
+		VectorSubtract(ent->pos1, ent->pos2, delta);
 		f = 1000.0 / ent->s.pos.trDuration;
-		VectorScale( delta, f, ent->s.pos.trDelta );
-		if ( ent->alt_fire )
+		VectorScale(delta, f, ent->s.pos.trDelta);
+		if (ent->alt_fire)
 		{
 			ent->s.pos.trType = TR_LINEAR_STOP;
 		}
@@ -615,8 +615,8 @@ void SetMoverState( gentity_t *ent, moverState_t moverState, int time ) {
 		//ent->s.eFlags &= ~EF_BLOCKED_MOVER;
 		break;
 	}
-	BG_EvaluateTrajectory( &ent->s.pos, level.time, ent->r.currentOrigin );
-	trap->LinkEntity( (sharedEntity_t *)ent );
+	BG_EvaluateTrajectory(&ent->s.pos, level.time, ent->r.currentOrigin);
+	trap->LinkEntity((sharedEntity_t *)ent);
 }
 
 /*
@@ -627,11 +627,11 @@ All entities in a mover team will move from pos1 to pos2
 in the same amount of time
 ================
 */
-void MatchTeam( gentity_t *teamLeader, int moverState, int time ) {
+void MatchTeam(gentity_t *teamLeader, int moverState, int time) {
 	gentity_t		*slave;
 
-	for ( slave = teamLeader ; slave ; slave = slave->teamchain ) {
-		SetMoverState( slave, (moverState_t) moverState, time );
+	for (slave = teamLeader ; slave ; slave = slave->teamchain) {
+		SetMoverState(slave, (moverState_t) moverState, time);
 	}
 }
 
@@ -642,16 +642,16 @@ void MatchTeam( gentity_t *teamLeader, int moverState, int time ) {
 ReturnToPos1
 ================
 */
-void ReturnToPos1( gentity_t *ent ) {
+void ReturnToPos1(gentity_t *ent) {
 	ent->think = 0;
 	ent->nextthink = 0;
 	ent->s.time = level.time;
 
-	MatchTeam( ent, MOVER_2TO1, level.time );
+	MatchTeam(ent, MOVER_2TO1, level.time);
 
 	// starting sound
-	G_PlayDoorLoopSound( ent );
-	G_PlayDoorSound( ent, BMS_START );	//??
+	G_PlayDoorLoopSound(ent);
+	G_PlayDoorSound(ent, BMS_START);	//??
 }
 
 
@@ -661,25 +661,25 @@ Reached_BinaryMover
 ================
 */
 
-void Reached_BinaryMover( gentity_t *ent )
+void Reached_BinaryMover(gentity_t *ent)
 {
 	// stop the looping sound
 	ent->s.loopSound = 0;
 	ent->s.loopIsSoundset = qfalse;
 
-	if ( ent->moverState == MOVER_1TO2 )
+	if (ent->moverState == MOVER_1TO2)
 	{//reached open
 		vec3_t	doorcenter;
 
 		// reached pos2
-		SetMoverState( ent, MOVER_POS2, level.time );
+		SetMoverState(ent, MOVER_POS2, level.time);
 
-		CalcTeamDoorCenter( ent, doorcenter );
+		CalcTeamDoorCenter(ent, doorcenter);
 
 		// play sound
-		G_PlayDoorSound( ent, BMS_END );
+		G_PlayDoorSound(ent, BMS_END);
 
-		if ( ent->wait < 0 )
+		if (ent->wait < 0)
 		{//Done for good
 			ent->think = 0;
 			ent->nextthink = 0;
@@ -700,34 +700,34 @@ void Reached_BinaryMover( gentity_t *ent )
 		}
 
 		// fire targets
-		if ( !ent->activator )
+		if (!ent->activator)
 		{
 			ent->activator = ent;
 		}
-		G_UseTargets2( ent, ent->activator, ent->opentarget );
+		G_UseTargets2(ent, ent->activator, ent->opentarget);
 	}
-	else if ( ent->moverState == MOVER_2TO1 )
+	else if (ent->moverState == MOVER_2TO1)
 	{//closed
 		vec3_t	doorcenter;
 
 		// reached pos1
-		SetMoverState( ent, MOVER_POS1, level.time );
+		SetMoverState(ent, MOVER_POS1, level.time);
 
-		CalcTeamDoorCenter( ent, doorcenter );
+		CalcTeamDoorCenter(ent, doorcenter);
 
 		// play sound
-		G_PlayDoorSound( ent, BMS_END );
+		G_PlayDoorSound(ent, BMS_END);
 
 		// close areaportals
-		if ( ent->teammaster == ent || !ent->teammaster )
+		if (ent->teammaster == ent || !ent->teammaster)
 		{
-			trap->AdjustAreaPortalState( (sharedEntity_t *)ent, qfalse );
+			trap->AdjustAreaPortalState((sharedEntity_t *)ent, qfalse);
 		}
-		G_UseTargets2( ent, ent->activator, ent->closetarget );
+		G_UseTargets2(ent, ent->activator, ent->closetarget);
 	}
 	else
 	{
-		trap->Error( ERR_DROP, "Reached_BinaryMover: bad moverState" );
+		trap->Error(ERR_DROP, "Reached_BinaryMover: bad moverState");
 	}
 }
 
@@ -737,7 +737,7 @@ void Reached_BinaryMover( gentity_t *ent )
 Use_BinaryMover_Go
 ================
 */
-void Use_BinaryMover_Go( gentity_t *ent )
+void Use_BinaryMover_Go(gentity_t *ent)
 {
 	int		total;
 	int		partial;
@@ -746,34 +746,34 @@ void Use_BinaryMover_Go( gentity_t *ent )
 
 	ent->activator = activator;
 
-	if ( ent->moverState == MOVER_POS1 )
+	if (ent->moverState == MOVER_POS1)
 	{
 		vec3_t	doorcenter;
 
 		// start moving 50 msec later, becase if this was player
 		// triggered, level.time hasn't been advanced yet
-		MatchTeam( ent, MOVER_1TO2, level.time + 50 );
+		MatchTeam(ent, MOVER_1TO2, level.time + 50);
 
-		CalcTeamDoorCenter( ent, doorcenter );
+		CalcTeamDoorCenter(ent, doorcenter);
 
 		// starting sound
-		G_PlayDoorLoopSound( ent );
-		G_PlayDoorSound( ent, BMS_START );
+		G_PlayDoorLoopSound(ent);
+		G_PlayDoorSound(ent, BMS_START);
 		ent->s.time = level.time;
 
 		// open areaportal
-		if ( ent->teammaster == ent || !ent->teammaster ) {
-			trap->AdjustAreaPortalState( (sharedEntity_t *)ent, qtrue );
+		if (ent->teammaster == ent || !ent->teammaster) {
+			trap->AdjustAreaPortalState((sharedEntity_t *)ent, qtrue);
 		}
-		G_UseTargets( ent, ent->activator );
+		G_UseTargets(ent, ent->activator);
 		return;
 	}
 
 	// if all the way up, just delay before coming down
-	if ( ent->moverState == MOVER_POS2 ) {
+	if (ent->moverState == MOVER_POS2) {
 		//have to do this because the delay sets our think to Use_BinaryMover_Go
 		ent->think = ReturnToPos1;
-		if ( ent->spawnflags & 8 )
+		if (ent->spawnflags & 8)
 		{//TOGGLE doors don't use wait!
 			ent->nextthink = level.time + FRAMETIME;
 		}
@@ -781,27 +781,27 @@ void Use_BinaryMover_Go( gentity_t *ent )
 		{
 			ent->nextthink = level.time + ent->wait;
 		}
-		G_UseTargets2( ent, ent->activator, ent->target2 );
+		G_UseTargets2(ent, ent->activator, ent->target2);
 		return;
 	}
 
 	// only partway down before reversing
-	if ( ent->moverState == MOVER_2TO1 )
+	if (ent->moverState == MOVER_2TO1)
 	{
-		if ( ent->s.pos.trType == TR_NONLINEAR_STOP )
+		if (ent->s.pos.trType == TR_NONLINEAR_STOP)
 		{
 			vec3_t curDelta;
 			float fPartial;
 			total = ent->s.pos.trDuration-50;
-			VectorSubtract( ent->r.currentOrigin, ent->pos1, curDelta );
-			fPartial = VectorLength( curDelta )/VectorLength( ent->s.pos.trDelta );
-			VectorScale( ent->s.pos.trDelta, fPartial, curDelta );
+			VectorSubtract(ent->r.currentOrigin, ent->pos1, curDelta);
+			fPartial = VectorLength(curDelta)/VectorLength(ent->s.pos.trDelta);
+			VectorScale(ent->s.pos.trDelta, fPartial, curDelta);
 			fPartial /= ent->s.pos.trDuration;
 			fPartial /= 0.001f;
-			fPartial = acos( fPartial );
-			fPartial = RAD2DEG( fPartial );
+			fPartial = acos(fPartial);
+			fPartial = RAD2DEG(fPartial);
 			fPartial = (90.0f - fPartial)/90.0f*ent->s.pos.trDuration;
-			partial = total - floor( fPartial );
+			partial = total - floor(fPartial);
 		}
 		else
 		{
@@ -809,49 +809,49 @@ void Use_BinaryMover_Go( gentity_t *ent )
 			partial = level.time - ent->s.pos.trTime;
 		}
 
-		if ( partial > total ) {
+		if (partial > total) {
 			partial = total;
 		}
-		ent->s.pos.trTime = level.time - ( total - partial );//ent->s.time;
+		ent->s.pos.trTime = level.time - (total - partial);//ent->s.time;
 
-		MatchTeam( ent, MOVER_1TO2, ent->s.pos.trTime );
+		MatchTeam(ent, MOVER_1TO2, ent->s.pos.trTime);
 
-		G_PlayDoorSound( ent, BMS_START );
+		G_PlayDoorSound(ent, BMS_START);
 
 		return;
 	}
 
 	// only partway up before reversing
-	if ( ent->moverState == MOVER_1TO2 )
+	if (ent->moverState == MOVER_1TO2)
 	{
-		if ( ent->s.pos.trType == TR_NONLINEAR_STOP )
+		if (ent->s.pos.trType == TR_NONLINEAR_STOP)
 		{
 			vec3_t curDelta;
 			float fPartial;
 			total = ent->s.pos.trDuration-50;
-			VectorSubtract( ent->r.currentOrigin, ent->pos2, curDelta );
-			fPartial = VectorLength( curDelta )/VectorLength( ent->s.pos.trDelta );
-			VectorScale( ent->s.pos.trDelta, fPartial, curDelta );
+			VectorSubtract(ent->r.currentOrigin, ent->pos2, curDelta);
+			fPartial = VectorLength(curDelta)/VectorLength(ent->s.pos.trDelta);
+			VectorScale(ent->s.pos.trDelta, fPartial, curDelta);
 			fPartial /= ent->s.pos.trDuration;
 			fPartial /= 0.001f;
-			fPartial = acos( fPartial );
-			fPartial = RAD2DEG( fPartial );
+			fPartial = acos(fPartial);
+			fPartial = RAD2DEG(fPartial);
 			fPartial = (90.0f - fPartial)/90.0f*ent->s.pos.trDuration;
-			partial = total - floor( fPartial );
+			partial = total - floor(fPartial);
 		}
 		else
 		{
 			total = ent->s.pos.trDuration;
 			partial = level.time - ent->s.pos.trTime;
 		}
-		if ( partial > total ) {
+		if (partial > total) {
 			partial = total;
 		}
 
-		ent->s.pos.trTime = level.time - ( total - partial );//ent->s.time;
-		MatchTeam( ent, MOVER_2TO1, ent->s.pos.trTime );
+		ent->s.pos.trTime = level.time - (total - partial);//ent->s.time;
+		MatchTeam(ent, MOVER_2TO1, ent->s.pos.trTime);
 
-		G_PlayDoorSound( ent, BMS_START );
+		G_PlayDoorSound(ent, BMS_START);
 
 		return;
 	}
@@ -864,14 +864,14 @@ void UnLockDoors(gentity_t *const ent)
 	gentity_t	*slave = ent;
 	do
 	{	// want to allow locked toggle doors, so keep the targetname
-		if( !(slave->spawnflags & MOVER_TOGGLE) )
+		if(!(slave->spawnflags & MOVER_TOGGLE))
 		{
 			slave->targetname = NULL;//not usable ever again
 		}
 		slave->spawnflags &= ~MOVER_LOCKED;
 		slave->s.frame = 1;//second stage of anim
 		slave = slave->teamchain;
-	} while  ( slave );
+	} while  (slave);
 }
 void LockDoors(gentity_t *const ent)
 {
@@ -883,33 +883,33 @@ void LockDoors(gentity_t *const ent)
 		slave->spawnflags |= MOVER_LOCKED;
 		slave->s.frame = 0;//first stage of anim
 		slave = slave->teamchain;
-	} while  ( slave );
+	} while  (slave);
 }
 /*
 ================
 Use_BinaryMover
 ================
 */
-void Use_BinaryMover( gentity_t *ent, gentity_t *other, gentity_t *activator )
+void Use_BinaryMover(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
-	if ( !ent->use )
+	if (!ent->use)
 	{//I cannot be used anymore, must be a door with a wait of -1 that's opened.
 		return;
 	}
 
 	// only the master should be used
-	if ( ent->flags & FL_TEAMSLAVE )
+	if (ent->flags & FL_TEAMSLAVE)
 	{
-		Use_BinaryMover( ent->teammaster, other, activator );
+		Use_BinaryMover(ent->teammaster, other, activator);
 		return;
 	}
 
-	if ( ent->flags & FL_INACTIVE )
+	if (ent->flags & FL_INACTIVE)
 	{
 		return;
 	}
 
-	if ( ent->spawnflags & MOVER_LOCKED )
+	if (ent->spawnflags & MOVER_LOCKED)
 	{//a locked door, unlock it
 		UnLockDoors(ent);
 		return;
@@ -940,30 +940,30 @@ InitMover
 so the movement delta can be calculated
 ================
 */
-void InitMoverTrData( gentity_t *ent )
+void InitMoverTrData(gentity_t *ent)
 {
 	vec3_t		move;
 	float		distance;
 
 	ent->s.pos.trType = TR_STATIONARY;
-	VectorCopy( ent->pos1, ent->s.pos.trBase );
+	VectorCopy(ent->pos1, ent->s.pos.trBase);
 
 	// calculate time to reach second position from speed
-	VectorSubtract( ent->pos2, ent->pos1, move );
-	distance = VectorLength( move );
-	if ( ! ent->speed )
+	VectorSubtract(ent->pos2, ent->pos1, move);
+	distance = VectorLength(move);
+	if (! ent->speed)
 	{
 		ent->speed = 100;
 	}
-	VectorScale( move, ent->speed, ent->s.pos.trDelta );
+	VectorScale(move, ent->speed, ent->s.pos.trDelta);
 	ent->s.pos.trDuration = distance * 1000 / ent->speed;
-	if ( ent->s.pos.trDuration <= 0 )
+	if (ent->s.pos.trDuration <= 0)
 	{
 		ent->s.pos.trDuration = 1;
 	}
 }
 
-void InitMover( gentity_t *ent )
+void InitMover(gentity_t *ent)
 {
 	float		light;
 	vec3_t		color;
@@ -971,41 +971,41 @@ void InitMover( gentity_t *ent )
 
 	// if the "model2" key is set, use a seperate model
 	// for drawing, but clip against the brushes
-	if ( ent->model2 )
+	if (ent->model2)
 	{
-		if ( strstr( ent->model2, ".glm" ))
-		{ //for now, not supported in MP.
+		if (strstr(ent->model2, ".glm"))
+		{//for now, not supported in MP.
 			ent->s.modelindex2 = 0;
 		}
 		else
 		{
-			ent->s.modelindex2 = G_ModelIndex( ent->model2 );
+			ent->s.modelindex2 = G_ModelIndex(ent->model2);
 		}
 	}
 
 	// if the "color" or "light" keys are set, setup constantLight
-	lightSet = G_SpawnFloat( "light", "100", &light );
-	colorSet = G_SpawnVector( "color", "1 1 1", color );
-	if ( lightSet || colorSet ) {
+	lightSet = G_SpawnFloat("light", "100", &light);
+	colorSet = G_SpawnVector("color", "1 1 1", color);
+	if (lightSet || colorSet) {
 		int		r, g, b, i;
 
 		r = color[0] * 255;
-		if ( r > 255 ) {
+		if (r > 255) {
 			r = 255;
 		}
 		g = color[1] * 255;
-		if ( g > 255 ) {
+		if (g > 255) {
 			g = 255;
 		}
 		b = color[2] * 255;
-		if ( b > 255 ) {
+		if (b > 255) {
 			b = 255;
 		}
 		i = light / 4;
-		if ( i > 255 ) {
+		if (i > 255) {
 			i = 255;
 		}
-		ent->s.constantLight = r | ( g << 8 ) | ( b << 16 ) | ( i << 24 );
+		ent->s.constantLight = r | (g << 8) | (b << 16) | (i << 24);
 	}
 
 	ent->use = Use_BinaryMover;
@@ -1013,7 +1013,7 @@ void InitMover( gentity_t *ent )
 
 	ent->moverState = MOVER_POS1;
 	ent->r.svFlags = SVF_USE_CURRENT_ORIGIN;
-	if ( ent->spawnflags & MOVER_INACTIVE )
+	if (ent->spawnflags & MOVER_INACTIVE)
 	{// Make it inactive
 		ent->flags |= FL_INACTIVE;
 	}
@@ -1022,10 +1022,10 @@ void InitMover( gentity_t *ent )
 		ent->r.svFlags |= SVF_PLAYER_USABLE;
 	}
 	ent->s.eType = ET_MOVER;
-	VectorCopy( ent->pos1, ent->r.currentOrigin );
-	trap->LinkEntity( (sharedEntity_t *)ent );
+	VectorCopy(ent->pos1, ent->r.currentOrigin);
+	trap->LinkEntity((sharedEntity_t *)ent);
 
-	InitMoverTrData( ent );
+	InitMoverTrData(ent);
 }
 
 
@@ -1045,19 +1045,19 @@ targeted by another entity.
 Blocked_Door
 ================
 */
-void Blocked_Door( gentity_t *ent, gentity_t *other )
+void Blocked_Door(gentity_t *ent, gentity_t *other)
 {
 	//determines if we need to relock after moving or not.
 	qboolean relock = (ent->spawnflags & MOVER_LOCKED) ? qtrue : qfalse;
-	if ( ent->damage ) {
-		G_Damage( other, ent, ent, NULL, NULL, ent->damage, 0, MOD_CRUSH );
+	if (ent->damage) {
+		G_Damage(other, ent, ent, NULL, NULL, ent->damage, 0, MOD_CRUSH);
 	}
-	if ( ent->spawnflags & MOVER_CRUSHER ) {
+	if (ent->spawnflags & MOVER_CRUSHER) {
 		return;		// crushers don't reverse
 	}
 
 	// reverse direction
-	Use_BinaryMover( ent, ent, other );
+	Use_BinaryMover(ent, ent, other);
 	if(relock)
 	{//door was locked before reverse move, relock door.
 		LockDoors(ent);
@@ -1070,8 +1070,8 @@ void Blocked_Door( gentity_t *ent, gentity_t *other )
 Touch_DoorTriggerSpectator
 ================
 */
-static vec3_t doorangles = { 10000000.0, 0, 0 };
-static void Touch_DoorTriggerSpectator( gentity_t *ent, gentity_t *other, trace_t *trace ) {
+static vec3_t doorangles = {10000000.0, 0, 0};
+static void Touch_DoorTriggerSpectator(gentity_t *ent, gentity_t *other, trace_t *trace) {
 	int axis;
 	float doorMin, doorMax;
 	vec3_t origin, pMins, pMaxs;
@@ -1100,7 +1100,7 @@ static void Touch_DoorTriggerSpectator( gentity_t *ent, gentity_t *other, trace_
 		tr.fraction == 1.0f &&
 		tr.entityNum == ENTITYNUM_NONE)
 	{
-		TeleportPlayer( other, origin, doorangles );
+		TeleportPlayer(other, origin, doorangles);
 	}
 }
 
@@ -1109,17 +1109,17 @@ static void Touch_DoorTriggerSpectator( gentity_t *ent, gentity_t *other, trace_
 Touch_DoorTrigger
 ================
 */
-void Touch_DoorTrigger( gentity_t *ent, gentity_t *other, trace_t *trace )
+void Touch_DoorTrigger(gentity_t *ent, gentity_t *other, trace_t *trace)
 {
 	gentity_t *relockEnt = NULL;
 
-	if ( other->client && other->client->sess.sessionTeam == TEAM_SPECTATOR )
+	if (other->client && other->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
 		// if the door is not open and not opening
-		if ( ent->parent->moverState != MOVER_1TO2 &&
-			ent->parent->moverState != MOVER_POS2 )
+		if (ent->parent->moverState != MOVER_1TO2 &&
+			ent->parent->moverState != MOVER_POS2)
 		{
-			Touch_DoorTriggerSpectator( ent, other, trace );
+			Touch_DoorTriggerSpectator(ent, other, trace);
 		}
 		return;
 	}
@@ -1129,33 +1129,33 @@ void Touch_DoorTrigger( gentity_t *ent, gentity_t *other, trace_t *trace )
 	{
 		if (other->client && other->s.number >= MAX_CLIENTS &&
 			other->s.eType == ET_NPC && other->s.NPC_class == CLASS_VEHICLE)
-		{ //doors don't open for vehicles
+		{//doors don't open for vehicles
 			return;
 		}
 
 		if (other->client && other->s.number < MAX_CLIENTS &&
 			other->client->ps.m_iVehicleNum)
-		{ //can't open a door while on a vehicle
+		{//can't open a door while on a vehicle
 			return;
 		}
 	}
 
-	if ( ent->flags & FL_INACTIVE )
+	if (ent->flags & FL_INACTIVE)
 	{
 		return;
 	}
 
-	if ( ent->parent->spawnflags & MOVER_LOCKED )
+	if (ent->parent->spawnflags & MOVER_LOCKED)
 	{//don't even try to use the door if it's locked
-		if ( !ent->parent->alliedTeam //we don't have a "teamallow" team
+		if (!ent->parent->alliedTeam //we don't have a "teamallow" team
 			|| !other->client //we do have a "teamallow" team, but this isn't a client
-			|| other->client->sess.sessionTeam != ent->parent->alliedTeam )//it is a client, but it's not on the right team
+			|| other->client->sess.sessionTeam != ent->parent->alliedTeam)//it is a client, but it's not on the right team
 		{
 			return;
 		}
 		else
 		{//temporarily unlock us while we call Use_BinaryMover (so it doesn't unlock all the doors in this team)
-			if ( ent->parent->flags & FL_TEAMSLAVE )
+			if (ent->parent->flags & FL_TEAMSLAVE)
 			{
 				relockEnt = ent->parent->teammaster;
 			}
@@ -1163,30 +1163,30 @@ void Touch_DoorTrigger( gentity_t *ent, gentity_t *other, trace_t *trace )
 			{
 				relockEnt = ent->parent;
 			}
-			if ( relockEnt != NULL )
+			if (relockEnt != NULL)
 			{
 				relockEnt->spawnflags &= ~MOVER_LOCKED;
 			}
 		}
 	}
 
-	if ( ent->parent->moverState != MOVER_1TO2 )
+	if (ent->parent->moverState != MOVER_1TO2)
 	{//Door is not already opening
-		//if ( ent->parent->moverState == MOVER_POS1 || ent->parent->moverState == MOVER_2TO1 )
+		//if (ent->parent->moverState == MOVER_POS1 || ent->parent->moverState == MOVER_2TO1)
 		//{//only check these if closed or closing
 
 		//If door is closed, opening or open, check this
-		Use_BinaryMover( ent->parent, ent, other );
+		Use_BinaryMover(ent->parent, ent, other);
 	}
-	if ( relockEnt != NULL )
+	if (relockEnt != NULL)
 	{//re-lock us
 		relockEnt->spawnflags |= MOVER_LOCKED;
 	}
 
 	/*
 	//Old style
-	if ( ent->parent->moverState != MOVER_1TO2 ) {
-		Use_BinaryMover( ent->parent, ent, other );
+	if (ent->parent->moverState != MOVER_1TO2) {
+		Use_BinaryMover(ent->parent, ent, other);
 	}
 	*/
 }
@@ -1199,16 +1199,16 @@ All of the parts of a door have been spawned, so create
 a trigger that encloses all of them
 ======================
 */
-void Think_SpawnNewDoorTrigger( gentity_t *ent )
+void Think_SpawnNewDoorTrigger(gentity_t *ent)
 {
 	gentity_t		*other;
 	vec3_t		mins, maxs;
 	int			i, best;
 
 	// set all of the slaves as shootable
-	if ( ent->takedamage )
+	if (ent->takedamage)
 	{
-		for ( other = ent ; other ; other = other->teamchain )
+		for (other = ent ; other ; other = other->teamchain)
 		{
 			other->takedamage = qtrue;
 		}
@@ -1225,8 +1225,8 @@ void Think_SpawnNewDoorTrigger( gentity_t *ent )
 
 	// find the thinnest axis, which will be the one we expand
 	best = 0;
-	for ( i = 1 ; i < 3 ; i++ ) {
-		if ( maxs[i] - mins[i] < maxs[best] - mins[best] ) {
+	for (i = 1 ; i < 3 ; i++) {
+		if (maxs[i] - mins[i] < maxs[best] - mins[best]) {
 			best = i;
 		}
 	}
@@ -1245,56 +1245,56 @@ void Think_SpawnNewDoorTrigger( gentity_t *ent )
 	// remember the thinnest axis
 	other->count = best;
 
-	MatchTeam( ent, ent->moverState, level.time );
+	MatchTeam(ent, ent->moverState, level.time);
 }
 
-void Think_MatchTeam( gentity_t *ent )
+void Think_MatchTeam(gentity_t *ent)
 {
-	MatchTeam( ent, ent->moverState, level.time );
+	MatchTeam(ent, ent->moverState, level.time);
 }
 
-qboolean G_EntIsDoor( int entityNum )
+qboolean G_EntIsDoor(int entityNum)
 {
 	gentity_t *ent;
 
-	if ( entityNum < 0 || entityNum >= ENTITYNUM_WORLD )
+	if (entityNum < 0 || entityNum >= ENTITYNUM_WORLD)
 	{
 		return qfalse;
 	}
 
 	ent = &g_entities[entityNum];
-	if ( ent && !Q_stricmp( "func_door", ent->classname ) )
+	if (ent && !Q_stricmp("func_door", ent->classname))
 	{//blocked by a door
 		return qtrue;
 	}
 	return qfalse;
 }
 
-gentity_t *G_FindDoorTrigger( gentity_t *ent )
+gentity_t *G_FindDoorTrigger(gentity_t *ent)
 {
 	gentity_t *owner = NULL;
 	gentity_t *door = ent;
-	if ( door->flags & FL_TEAMSLAVE )
+	if (door->flags & FL_TEAMSLAVE)
 	{//not the master door, get the master door
-		while ( door->teammaster && (door->flags&FL_TEAMSLAVE))
+		while (door->teammaster && (door->flags&FL_TEAMSLAVE))
 		{
 			door = door->teammaster;
 		}
 	}
-	if ( door->targetname )
+	if (door->targetname)
 	{//find out what is targeting it
 		//FIXME: if ent->targetname, check what kind of trigger/ent is targetting it?  If a normal trigger (active, etc), then it's okay?
-		while ( (owner = G_Find( owner, FOFS( target ), door->targetname )) != NULL )
+		while ((owner = G_Find(owner, FOFS(target), door->targetname)) != NULL)
 		{
-			if ( owner && (owner->r.contents&CONTENTS_TRIGGER) )
+			if (owner && (owner->r.contents&CONTENTS_TRIGGER))
 			{
 				return owner;
 			}
 		}
 		owner = NULL;
-		while ( (owner = G_Find( owner, FOFS( target2 ), door->targetname )) != NULL )
+		while ((owner = G_Find(owner, FOFS(target2), door->targetname)) != NULL)
 		{
-			if ( owner && (owner->r.contents&CONTENTS_TRIGGER) )
+			if (owner && (owner->r.contents&CONTENTS_TRIGGER))
 			{
 				return owner;
 			}
@@ -1302,9 +1302,9 @@ gentity_t *G_FindDoorTrigger( gentity_t *ent )
 	}
 
 	owner = NULL;
-	while ( (owner = G_Find( owner, FOFS( classname ), "trigger_door" )) != NULL )
+	while ((owner = G_Find(owner, FOFS(classname), "trigger_door")) != NULL)
 	{
-		if ( owner->parent == door )
+		if (owner->parent == door)
 		{
 			return owner;
 		}
@@ -1313,44 +1313,44 @@ gentity_t *G_FindDoorTrigger( gentity_t *ent )
 	return NULL;
 }
 
-qboolean G_EntIsUnlockedDoor( int entityNum )
+qboolean G_EntIsUnlockedDoor(int entityNum)
 {
-	if ( entityNum < 0 || entityNum >= ENTITYNUM_WORLD )
+	if (entityNum < 0 || entityNum >= ENTITYNUM_WORLD)
 	{
 		return qfalse;
 	}
 
-	if ( G_EntIsDoor( entityNum ) )
+	if (G_EntIsDoor(entityNum))
 	{
 		gentity_t *ent = &g_entities[entityNum];
 		gentity_t *owner = NULL;
-		if ( ent->flags & FL_TEAMSLAVE )
+		if (ent->flags & FL_TEAMSLAVE)
 		{//not the master door, get the master door
-			while ( ent->teammaster && (ent->flags&FL_TEAMSLAVE))
+			while (ent->teammaster && (ent->flags&FL_TEAMSLAVE))
 			{
 				ent = ent->teammaster;
 			}
 		}
-		if ( ent->targetname )
+		if (ent->targetname)
 		{//find out what is targetting it
 			owner = NULL;
 			//FIXME: if ent->targetname, check what kind of trigger/ent is targetting it?  If a normal trigger (active, etc), then it's okay?
-			while ( (owner = G_Find( owner, FOFS( target ), ent->targetname )) != NULL )
+			while ((owner = G_Find(owner, FOFS(target), ent->targetname)) != NULL)
 			{
-				if ( !Q_stricmp( "trigger_multiple", owner->classname ) )//FIXME: other triggers okay too?
+				if (!Q_stricmp("trigger_multiple", owner->classname))//FIXME: other triggers okay too?
 				{
-					if ( !(owner->flags & FL_INACTIVE) )
+					if (!(owner->flags & FL_INACTIVE))
 					{
 						return qtrue;
 					}
 				}
 			}
 			owner = NULL;
-			while ( (owner = G_Find( owner, FOFS( target2 ), ent->targetname )) != NULL )
+			while ((owner = G_Find(owner, FOFS(target2), ent->targetname)) != NULL)
 			{
-				if ( !Q_stricmp( "trigger_multiple", owner->classname ) )//FIXME: other triggers okay too?
+				if (!Q_stricmp("trigger_multiple", owner->classname))//FIXME: other triggers okay too?
 				{
-					if ( !(owner->flags & FL_INACTIVE) )
+					if (!(owner->flags & FL_INACTIVE))
 					{
 						return qtrue;
 					}
@@ -1360,13 +1360,13 @@ qboolean G_EntIsUnlockedDoor( int entityNum )
 		}
 		else
 		{//check the door's auto-created trigger instead
-			owner = G_FindDoorTrigger( ent );
-			if ( owner && (owner->flags&FL_INACTIVE) )
+			owner = G_FindDoorTrigger(ent);
+			if (owner && (owner->flags&FL_INACTIVE))
 			{//owning auto-created trigger is inactive
 				return qfalse;
 			}
 		}
-		if ( !(ent->flags & FL_INACTIVE) && //assumes that the reactivate trigger isn't right next to the door!
+		if (!(ent->flags & FL_INACTIVE) && //assumes that the reactivate trigger isn't right next to the door!
 			!ent->health &&
 			!(ent->spawnflags & MOVER_PLAYER_USE) &&
 			!(ent->spawnflags & MOVER_FORCE_ACTIVATE) &&
@@ -1434,67 +1434,67 @@ void SP_func_door (gentity_t *ent)
 	ent->delay *= 1000;
 
 	// default lip of 8 units
-	G_SpawnFloat( "lip", "8", &lip );
+	G_SpawnFloat("lip", "8", &lip);
 
 	// default damage of 2 points
-	G_SpawnInt( "dmg", "2", &ent->damage );
-	if ( ent->damage < 0 )
+	G_SpawnInt("dmg", "2", &ent->damage);
+	if (ent->damage < 0)
 	{
 		ent->damage = 0;
 	}
 
-	G_SpawnInt( "teamallow", "0", &ent->alliedTeam );
+	G_SpawnInt("teamallow", "0", &ent->alliedTeam);
 
 	// first position at start
-	VectorCopy( ent->s.origin, ent->pos1 );
+	VectorCopy(ent->s.origin, ent->pos1);
 
 	// calculate second position
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
-	G_SetMovedir( ent->s.angles, ent->movedir );
-	abs_movedir[0] = fabs( ent->movedir[0] );
-	abs_movedir[1] = fabs( ent->movedir[1] );
-	abs_movedir[2] = fabs( ent->movedir[2] );
-	VectorSubtract( ent->r.maxs, ent->r.mins, size );
-	distance = DotProduct( abs_movedir, size ) - lip;
-	VectorMA( ent->pos1, distance, ent->movedir, ent->pos2 );
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
+	G_SetMovedir(ent->s.angles, ent->movedir);
+	abs_movedir[0] = fabs(ent->movedir[0]);
+	abs_movedir[1] = fabs(ent->movedir[1]);
+	abs_movedir[2] = fabs(ent->movedir[2]);
+	VectorSubtract(ent->r.maxs, ent->r.mins, size);
+	distance = DotProduct(abs_movedir, size) - lip;
+	VectorMA(ent->pos1, distance, ent->movedir, ent->pos2);
 
 	// if "start_open", reverse position 1 and 2
-	if ( ent->spawnflags & 1 )
+	if (ent->spawnflags & 1)
 	{
 		vec3_t	temp;
 
-		VectorCopy( ent->pos2, temp );
-		VectorCopy( ent->s.origin, ent->pos2 );
-		VectorCopy( temp, ent->pos1 );
+		VectorCopy(ent->pos2, temp);
+		VectorCopy(ent->s.origin, ent->pos2);
+		VectorCopy(temp, ent->pos1);
 	}
 
-	if ( ent->spawnflags & MOVER_LOCKED )
+	if (ent->spawnflags & MOVER_LOCKED)
 	{//a locked door, set up as locked until used directly
 		ent->s.eFlags |= EF_SHADER_ANIM;//use frame-controlled shader anim
 		ent->s.frame = 0;//first stage of anim
 	}
-	InitMover( ent );
+	InitMover(ent);
 
 	ent->nextthink = level.time + FRAMETIME;
 
-	if ( !(ent->flags&FL_TEAMSLAVE) )
+	if (!(ent->flags&FL_TEAMSLAVE))
 	{
 		int health;
 
-		G_SpawnInt( "health", "0", &health );
+		G_SpawnInt("health", "0", &health);
 
-		if ( health )
+		if (health)
 		{
 			ent->takedamage = qtrue;
 		}
 
-		if ( !(ent->spawnflags&MOVER_LOCKED) && (ent->targetname || health || ent->spawnflags & MOVER_PLAYER_USE || ent->spawnflags & MOVER_FORCE_ACTIVATE) )
+		if (!(ent->spawnflags&MOVER_LOCKED) && (ent->targetname || health || ent->spawnflags & MOVER_PLAYER_USE || ent->spawnflags & MOVER_FORCE_ACTIVATE))
 		{
 			// non touch/shoot doors
 			ent->think = Think_MatchTeam;
 
 			if (ent->spawnflags & MOVER_FORCE_ACTIVATE)
-			{ //so we know it's push/pullable on the client
+			{//so we know it's push/pullable on the client
 				ent->s.bolt1 = 1;
 			}
 		}
@@ -1520,13 +1520,13 @@ Touch_Plat
 Don't allow descent if a living player is on it
 ===============
 */
-void Touch_Plat( gentity_t *ent, gentity_t *other, trace_t *trace ) {
-	if ( !other->client || other->client->ps.stats[STAT_HEALTH] <= 0 ) {
+void Touch_Plat(gentity_t *ent, gentity_t *other, trace_t *trace) {
+	if (!other->client || other->client->ps.stats[STAT_HEALTH] <= 0) {
 		return;
 	}
 
 	// delay return-to-pos1 by one second
-	if ( ent->moverState == MOVER_POS2 ) {
+	if (ent->moverState == MOVER_POS2) {
 		ent->nextthink = level.time + 1000;
 	}
 }
@@ -1538,13 +1538,13 @@ Touch_PlatCenterTrigger
 If the plat is at the bottom position, start it going up
 ===============
 */
-void Touch_PlatCenterTrigger(gentity_t *ent, gentity_t *other, trace_t *trace ) {
-	if ( !other->client ) {
+void Touch_PlatCenterTrigger(gentity_t *ent, gentity_t *other, trace_t *trace) {
+	if (!other->client) {
 		return;
 	}
 
-	if ( ent->parent->moverState == MOVER_POS1 ) {
-		Use_BinaryMover( ent->parent, ent, other );
+	if (ent->parent->moverState == MOVER_POS1) {
+		Use_BinaryMover(ent->parent, ent, other);
 	}
 }
 
@@ -1558,7 +1558,7 @@ Elevator cars require that the trigger extend through the entire low position,
 not just sit on top of it.
 ================
 */
-void SpawnPlatTrigger( gentity_t *ent ) {
+void SpawnPlatTrigger(gentity_t *ent) {
 	gentity_t	*trigger;
 	vec3_t	tmin, tmax;
 
@@ -1577,11 +1577,11 @@ void SpawnPlatTrigger( gentity_t *ent ) {
 	tmax[1] = ent->pos1[1] + ent->r.maxs[1] - 33;
 	tmax[2] = ent->pos1[2] + ent->r.maxs[2] + 8;
 
-	if ( tmax[0] <= tmin[0] ) {
+	if (tmax[0] <= tmin[0]) {
 		tmin[0] = ent->pos1[0] + (ent->r.mins[0] + ent->r.maxs[0]) *0.5;
 		tmax[0] = tmin[0] + 1;
 	}
-	if ( tmax[1] <= tmin[1] ) {
+	if (tmax[1] <= tmin[1]) {
 		tmin[1] = ent->pos1[1] + (ent->r.mins[1] + ent->r.maxs[1]) *0.5;
 		tmax[1] = tmin[1] + 1;
 	}
@@ -1615,26 +1615,26 @@ void SP_func_plat (gentity_t *ent) {
 
 	VectorClear (ent->s.angles);
 
-	G_SpawnFloat( "speed", "200", &ent->speed );
-	G_SpawnInt( "dmg", "2", &ent->damage );
-	G_SpawnFloat( "wait", "1", &ent->wait );
-	G_SpawnFloat( "lip", "8", &lip );
+	G_SpawnFloat("speed", "200", &ent->speed);
+	G_SpawnInt("dmg", "2", &ent->damage);
+	G_SpawnFloat("wait", "1", &ent->wait);
+	G_SpawnFloat("lip", "8", &lip);
 
 	ent->wait = 1000;
 
 	// create second position
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
 
-	if ( !G_SpawnFloat( "height", "0", &height ) ) {
+	if (!G_SpawnFloat("height", "0", &height)) {
 		height = (ent->r.maxs[2] - ent->r.mins[2]) - lip;
 	}
 
 	// pos1 is the rest (bottom) position, pos2 is the top
-	VectorCopy( ent->s.origin, ent->pos2 );
-	VectorCopy( ent->pos2, ent->pos1 );
+	VectorCopy(ent->s.origin, ent->pos2);
+	VectorCopy(ent->pos2, ent->pos1);
 	ent->pos1[2] -= height;
 
-	InitMover( ent );
+	InitMover(ent);
 
 	// touch function keeps the plat from returning while
 	// a live player is standing on it
@@ -1645,7 +1645,7 @@ void SP_func_plat (gentity_t *ent) {
 	ent->parent = ent;	// so it can be treated as a door
 
 	// spawn the trigger if one hasn't been custom made
-	if ( !ent->targetname ) {
+	if (!ent->targetname) {
 		SpawnPlatTrigger(ent);
 	}
 }
@@ -1664,13 +1664,13 @@ Touch_Button
 
 ===============
 */
-void Touch_Button(gentity_t *ent, gentity_t *other, trace_t *trace ) {
-	if ( !other->client ) {
+void Touch_Button(gentity_t *ent, gentity_t *other, trace_t *trace) {
+	if (!other->client) {
 		return;
 	}
 
-	if ( ent->moverState == MOVER_POS1 ) {
-		Use_BinaryMover( ent, other, other );
+	if (ent->moverState == MOVER_POS1) {
+		Use_BinaryMover(ent, other, other);
 	}
 }
 
@@ -1691,7 +1691,7 @@ When a button is touched, it moves some distance in the direction of it's angle,
 "color"		constantLight color
 "light"		constantLight radius
 */
-void SP_func_button( gentity_t *ent ) {
+void SP_func_button(gentity_t *ent) {
 	vec3_t		abs_movedir;
 	float		distance;
 	vec3_t		size;
@@ -1699,28 +1699,28 @@ void SP_func_button( gentity_t *ent ) {
 
 //	ent->sound1to2 = G_SoundIndex("sound/movers/switches/butn2.wav");
 
-	if ( !ent->speed ) {
+	if (!ent->speed) {
 		ent->speed = 40;
 	}
 
-	if ( !ent->wait ) {
+	if (!ent->wait) {
 		ent->wait = 1;
 	}
 	ent->wait *= 1000;
 
 	// first position
-	VectorCopy( ent->s.origin, ent->pos1 );
+	VectorCopy(ent->s.origin, ent->pos1);
 
 	// calculate second position
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
 
-	G_SpawnFloat( "lip", "4", &lip );
+	G_SpawnFloat("lip", "4", &lip);
 
-	G_SetMovedir( ent->s.angles, ent->movedir );
+	G_SetMovedir(ent->s.angles, ent->movedir);
 	abs_movedir[0] = fabs(ent->movedir[0]);
 	abs_movedir[1] = fabs(ent->movedir[1]);
 	abs_movedir[2] = fabs(ent->movedir[2]);
-	VectorSubtract( ent->r.maxs, ent->r.mins, size );
+	VectorSubtract(ent->r.maxs, ent->r.mins, size);
 	distance = abs_movedir[0] * size[0] + abs_movedir[1] * size[1] + abs_movedir[2] * size[2] - lip;
 	VectorMA (ent->pos1, distance, ent->movedir, ent->pos2);
 
@@ -1732,7 +1732,7 @@ void SP_func_button( gentity_t *ent ) {
 		ent->touch = Touch_Button;
 	}
 
-	InitMover( ent );
+	InitMover(ent);
 }
 
 
@@ -1758,9 +1758,9 @@ Think_BeginMoving
 The wait time at a corner has completed, so start moving again
 ===============
 */
-void Think_BeginMoving( gentity_t *ent ) {
-	G_PlayDoorSound( ent, BMS_START );
-	G_PlayDoorLoopSound( ent );
+void Think_BeginMoving(gentity_t *ent) {
+	G_PlayDoorSound(ent, BMS_START);
+	G_PlayDoorLoopSound(ent);
 	ent->s.pos.trTime = level.time;
 	ent->s.pos.trType = TR_LINEAR_STOP;
 }
@@ -1770,7 +1770,7 @@ void Think_BeginMoving( gentity_t *ent ) {
 Reached_Train
 ===============
 */
-void Reached_Train( gentity_t *ent ) {
+void Reached_Train(gentity_t *ent) {
 	gentity_t		*next;
 	float			speed;
 	vec3_t			move;
@@ -1778,42 +1778,42 @@ void Reached_Train( gentity_t *ent ) {
 
 	// copy the apropriate values
 	next = ent->nextTrain;
-	if ( !next || !next->nextTrain ) {
+	if (!next || !next->nextTrain) {
 		return;		// just stop
 	}
 
 	// fire all other targets
-	G_UseTargets( next, NULL );
+	G_UseTargets(next, NULL);
 
 	// set the new trajectory
 	ent->nextTrain = next->nextTrain;
-	VectorCopy( next->s.origin, ent->pos1 );
-	VectorCopy( next->nextTrain->s.origin, ent->pos2 );
+	VectorCopy(next->s.origin, ent->pos1);
+	VectorCopy(next->nextTrain->s.origin, ent->pos2);
 
 	// if the path_corner has a speed, use that
-	if ( next->speed ) {
+	if (next->speed) {
 		speed = next->speed;
 	} else {
 		// otherwise use the train's speed
 		speed = ent->speed;
 	}
-	if ( speed < 1 ) {
+	if (speed < 1) {
 		speed = 1;
 	}
 
 	// calculate duration
-	VectorSubtract( ent->pos2, ent->pos1, move );
-	length = VectorLength( move );
+	VectorSubtract(ent->pos2, ent->pos1, move);
+	length = VectorLength(move);
 
 	ent->s.pos.trDuration = length * 1000 / speed;
 
 	// start it going
-	SetMoverState( ent, MOVER_1TO2, level.time );
+	SetMoverState(ent, MOVER_1TO2, level.time);
 
-	G_PlayDoorSound( ent, BMS_END );
+	G_PlayDoorSound(ent, BMS_END);
 
 	// if there is a "wait" value on the target, don't start moving yet
-	if ( next->wait ) {
+	if (next->wait) {
 		ent->s.loopSound = 0;
 		ent->s.loopIsSoundset = qfalse;
 		ent->nextthink = level.time + next->wait * 1000;
@@ -1822,7 +1822,7 @@ void Reached_Train( gentity_t *ent ) {
 	}
 	else
 	{
-		G_PlayDoorLoopSound( ent );
+		G_PlayDoorLoopSound(ent);
 	}
 }
 
@@ -1833,13 +1833,13 @@ Think_SetupTrainTargets
 Link all the corners together
 ===============
 */
-void Think_SetupTrainTargets( gentity_t *ent ) {
+void Think_SetupTrainTargets(gentity_t *ent) {
 	gentity_t		*path, *next, *start;
 
-	ent->nextTrain = G_Find( NULL, FOFS(targetname), ent->target );
-	if ( !ent->nextTrain ) {
-		Com_Printf( "func_train at %s with an unfound target\n",
-			vtos(ent->r.absmin) );
+	ent->nextTrain = G_Find(NULL, FOFS(targetname), ent->target);
+	if (!ent->nextTrain) {
+		Com_Printf("func_train at %s with an unfound target\n",
+			vtos(ent->r.absmin));
 		//Free me?`
 		return;
 	}
@@ -1850,14 +1850,14 @@ void Think_SetupTrainTargets( gentity_t *ent ) {
 	//         ^      |
 	//          \_____|
 	start = NULL;
-	for ( path = ent->nextTrain ; path != start ; path = next ) {
-		if ( !start ) {
+	for (path = ent->nextTrain ; path != start ; path = next) {
+		if (!start) {
 			start = path;
 		}
 
-		if ( !path->target ) {
-//			trap->Printf( "Train corner at %s without a target\n",
-//				vtos(path->s.origin) );
+		if (!path->target) {
+//			trap->Printf("Train corner at %s without a target\n",
+//				vtos(path->s.origin));
 			//end of path
 			break;
 		}
@@ -1867,16 +1867,16 @@ void Think_SetupTrainTargets( gentity_t *ent ) {
 		// is reached
 		next = NULL;
 		do {
-			next = G_Find( next, FOFS(targetname), path->target );
-			if ( !next ) {
-//				trap->Printf( "Train corner at %s without a target path_corner\n",
-//					vtos(path->s.origin) );
+			next = G_Find(next, FOFS(targetname), path->target);
+			if (!next) {
+//				trap->Printf("Train corner at %s without a target path_corner\n",
+//					vtos(path->s.origin));
 				//end of path
 				break;
 			}
-		} while ( strcmp( next->classname, "path_corner" ) );
+		} while (strcmp(next->classname, "path_corner"));
 
-		if ( next )
+		if (next)
 		{
 			path->nextTrain = next;
 		}
@@ -1886,14 +1886,14 @@ void Think_SetupTrainTargets( gentity_t *ent ) {
 		}
 	}
 
-	if ( !ent->targetname || (ent->spawnflags&1) /*start on*/)
+	if (!ent->targetname || (ent->spawnflags&1) /*start on*/)
 	{
 		// start the train moving from the first corner
-		Reached_Train( ent );
+		Reached_Train(ent);
 	}
 	else
 	{
-		G_SetOrigin( ent, ent->s.origin );
+		G_SetOrigin(ent, ent->s.origin);
 	}
 }
 
@@ -1904,10 +1904,10 @@ Target: next path corner and other targets to fire
 "speed" speed to move to the next corner
 "wait" seconds to wait before behining move to next corner
 */
-void SP_path_corner( gentity_t *self ) {
-	if ( !self->targetname ) {
+void SP_path_corner(gentity_t *self) {
+	if (!self->targetname) {
 		trap->Print ("path_corner with no targetname at %s\n", vtos(self->s.origin));
-		G_FreeEntity( self );
+		G_FreeEntity(self);
 		return;
 	}
 	// path corners don't need to be linked in
@@ -1939,18 +1939,18 @@ void SP_func_train (gentity_t *self) {
 		}
 	}
 
-	if ( !self->speed ) {
+	if (!self->speed) {
 		self->speed = 100;
 	}
 
-	if ( !self->target ) {
+	if (!self->target) {
 		trap->Print ("func_train without a target at %s\n", vtos(self->r.absmin));
-		G_FreeEntity( self );
+		G_FreeEntity(self);
 		return;
 	}
 
-	trap->SetBrushModel( (sharedEntity_t *)self, self->model );
-	InitMover( self );
+	trap->SetBrushModel((sharedEntity_t *)self, self->model);
+	InitMover(self);
 
 	self->reached = Reached_Train;
 
@@ -1968,7 +1968,7 @@ STATIC
 ===============================================================================
 */
 
-void func_static_use ( gentity_t *self, gentity_t *other, gentity_t *activator );
+void func_static_use (gentity_t *self, gentity_t *other, gentity_t *activator);
 /*QUAKED func_static (0 .5 .8) ? F_PUSH F_PULL SWITCH_SHADER CRUSHER IMPACT x PLAYER_USE INACTIVE BROADCAST
 F_PUSH		Will be used when you Force-Push it
 F_PULL		Will be used when you Force-Pull it
@@ -1987,35 +1987,35 @@ A bmodel that just sits there, doing nothing.  Can be used for conditional walls
 "dmg"		how much damage to do when it crushes (use with CRUSHER spawnflag)
 "linear" set to 1 and it will move linearly rather than with acceleration (default is 0)
 */
-void SP_func_static( gentity_t *ent )
+void SP_func_static(gentity_t *ent)
 {
 	int		test;
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
 
-	VectorCopy( ent->s.origin, ent->pos1 );
-	VectorCopy( ent->s.origin, ent->pos2 );
+	VectorCopy(ent->s.origin, ent->pos1);
+	VectorCopy(ent->s.origin, ent->pos2);
 
-	InitMover( ent );
+	InitMover(ent);
 
 	ent->use = func_static_use;
 	ent->reached = 0;
 
-	G_SetOrigin( ent, ent->s.origin );
-	G_SetAngles( ent, ent->s.angles );
+	G_SetOrigin(ent, ent->s.origin);
+	G_SetAngles(ent, ent->s.angles);
 
-	if( ent->spawnflags & 2048 )
+	if(ent->spawnflags & 2048)
 	{								   // yes this is very very evil, but for now (pre-alpha) it's a solution
 		ent->r.svFlags |= SVF_BROADCAST; // I need to rotate something that is huge and it's touching too many area portals...
 	}
 
-	if ( ent->spawnflags & 4/*SWITCH_SHADER*/ )
+	if (ent->spawnflags & 4/*SWITCH_SHADER*/)
 	{
 		ent->s.eFlags |= EF_SHADER_ANIM;//use frame-controlled shader anim
 		ent->s.frame = 0;//first stage of anim
 	}
 
 	if ((ent->spawnflags & 1) || (ent->spawnflags & 2))
-	{ //so we know it's push/pullable on the client
+	{//so we know it's push/pullable on the client
 		ent->s.bolt1 = 1;
 	}
 
@@ -2029,14 +2029,14 @@ void SP_func_static( gentity_t *ent )
 		ent->s.iModelScale = 1023;
 	}
 
-	G_SpawnInt( "hyperspace", "0", &test );
-	if ( test )
+	G_SpawnInt("hyperspace", "0", &test);
+	if (test)
 	{
 		ent->r.svFlags |= SVF_BROADCAST; // I need to rotate something that is huge and it's touching too many area portals...
 		ent->s.eFlags2 |= EF2_HYPERSPACE;
 	}
 
-	trap->LinkEntity( (sharedEntity_t *)ent );
+	trap->LinkEntity((sharedEntity_t *)ent);
 
 	if (level.mBSPInstanceDepth)
 	{	// this means that this guy will never be updated, moved, changed, etc.
@@ -2044,15 +2044,15 @@ void SP_func_static( gentity_t *ent )
 	}
 }
 
-void func_static_use ( gentity_t *self, gentity_t *other, gentity_t *activator )
+void func_static_use (gentity_t *self, gentity_t *other, gentity_t *activator)
 {
-	G_ActivateBehavior( self, BSET_USE );
+	G_ActivateBehavior(self, BSET_USE);
 
-	if ( self->spawnflags & 4/*SWITCH_SHADER*/ )
+	if (self->spawnflags & 4/*SWITCH_SHADER*/)
 	{
 		self->s.frame = self->s.frame ? 0 : 1;//toggle frame
 	}
-	G_UseTargets( self, activator );
+	G_UseTargets(self, activator);
 }
 
 /*
@@ -2063,27 +2063,27 @@ ROTATING
 ===============================================================================
 */
 
-void func_rotating_use( gentity_t *self, gentity_t *other, gentity_t *activator )
+void func_rotating_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 {
-	if(	self->s.apos.trType == TR_LINEAR )
+	if(	self->s.apos.trType == TR_LINEAR)
 	{
 		self->s.apos.trType = TR_STATIONARY;
 		// stop the sound if it stops moving
 		self->s.loopSound = 0;
 		self->s.loopIsSoundset = qfalse;
 		// play stop sound too?
-		if ( self->soundSet && self->soundSet[0] )
+		if (self->soundSet && self->soundSet[0])
 		{
 			self->s.soundSetIndex = G_SoundSetIndex(self->soundSet);
-			G_AddEvent( self, EV_BMODEL_SOUND, BMS_END );
+			G_AddEvent(self, EV_BMODEL_SOUND, BMS_END);
 		}
 	}
 	else
 	{
-		if ( self->soundSet && self->soundSet[0] )
+		if (self->soundSet && self->soundSet[0])
 		{
 			self->s.soundSetIndex = G_SoundSetIndex(self->soundSet);
-			G_AddEvent( self, EV_BMODEL_SOUND, BMS_START );
+			G_AddEvent(self, EV_BMODEL_SOUND, BMS_START);
 			self->s.loopSound = BMS_MID;
 			self->s.loopIsSoundset = qtrue;
 		}
@@ -2146,35 +2146,35 @@ Don't know if these work:
 10 = MAT_METAL3		(METAL and METAL2 chunk combo)
 11 = MAT_CRATE1		(yellow multi-colored crate chunks)
 12 = MAT_GRATE1		(grate chunks--looks horrible right now)
-13 = MAT_ROPE		(for yavin_trial, no chunks, just wispy bits )
+13 = MAT_ROPE		(for yavin_trial, no chunks, just wispy bits)
 14 = MAT_CRATE2		(red multi-colored crate chunks)
-15 = MAT_WHITE_METAL (white angular chunks for Stu, NS_hideout )
+15 = MAT_WHITE_METAL (white angular chunks for Stu, NS_hideout)
 16 = MAT_SNOWY_ROCK	 (mix of gray and brown rocks)
 
 Applicable only during Siege gametype:
 teamnodmg - if 1, team 1 can't damage this. If 2, team 2 can't damage this.
 
 */
-void SP_func_breakable( gentity_t *self );
+void SP_func_breakable(gentity_t *self);
 void SP_func_rotating (gentity_t *ent) {
 	vec3_t spinangles;
-	if ( ent->health )
+	if (ent->health)
 	{
 		int sav_spawnflags = ent->spawnflags;
 		ent->spawnflags = 0;
-		SP_func_breakable( ent );
+		SP_func_breakable(ent);
 		ent->spawnflags = sav_spawnflags;
 	}
 	else
 	{
-		trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
-		InitMover( ent );
+		trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
+		InitMover(ent);
 
-		VectorCopy( ent->s.origin, ent->s.pos.trBase );
-		VectorCopy( ent->s.pos.trBase, ent->r.currentOrigin );
-		VectorCopy( ent->s.apos.trBase, ent->r.currentAngles );
+		VectorCopy(ent->s.origin, ent->s.pos.trBase);
+		VectorCopy(ent->s.pos.trBase, ent->r.currentOrigin);
+		VectorCopy(ent->s.apos.trBase, ent->r.currentAngles);
 
-		trap->LinkEntity( (sharedEntity_t *)ent );
+		trap->LinkEntity((sharedEntity_t *)ent);
 	}
 
 	G_SpawnInt("model2scale", "0", &ent->s.iModelScale);
@@ -2187,21 +2187,21 @@ void SP_func_rotating (gentity_t *ent) {
 		ent->s.iModelScale = 1023;
 	}
 
-	if ( G_SpawnVector( "spinangles", "0 0 0", spinangles ) )
+	if (G_SpawnVector("spinangles", "0 0 0", spinangles))
 	{
-		ent->speed = VectorLength( spinangles );
+		ent->speed = VectorLength(spinangles);
 		// set the axis of rotation
-		VectorCopy( spinangles, ent->s.apos.trDelta );
+		VectorCopy(spinangles, ent->s.apos.trDelta);
 	}
 	else
 	{
-		if ( !ent->speed ) {
+		if (!ent->speed) {
 			ent->speed = 100;
 		}
 		// set the axis of rotation
-		if ( ent->spawnflags & 4 ) {
+		if (ent->spawnflags & 4) {
 			ent->s.apos.trDelta[2] = ent->speed;
-		} else if ( ent->spawnflags & 8 ) {
+		} else if (ent->spawnflags & 8) {
 			ent->s.apos.trDelta[0] = ent->speed;
 		} else {
 			ent->s.apos.trDelta[1] = ent->speed;
@@ -2210,7 +2210,7 @@ void SP_func_rotating (gentity_t *ent) {
 	ent->s.apos.trType = TR_LINEAR;
 
 	if (!ent->damage) {
-		if ( (ent->spawnflags&16) )//IMPACT
+		if ((ent->spawnflags&16))//IMPACT
 		{
 			ent->damage = 10000;
 		}
@@ -2219,9 +2219,9 @@ void SP_func_rotating (gentity_t *ent) {
 			ent->damage = 2;
 		}
 	}
-	if ( (ent->spawnflags&2) )//RADAR
+	if ((ent->spawnflags&2))//RADAR
 	{//show up on Radar at close range and play impact sound when close...?  Range based on my size
-		ent->s.speed = Distance( ent->r.absmin, ent->r.absmax )*0.5f;
+		ent->s.speed = Distance(ent->r.absmin, ent->r.absmax)*0.5f;
 		ent->s.eFlags |= EF_RADAROBJECT;
 	}
 }
@@ -2250,25 +2250,25 @@ void SP_func_bobbing (gentity_t *ent) {
 	float		height;
 	float		phase;
 
-	G_SpawnFloat( "speed", "4", &ent->speed );
-	G_SpawnFloat( "height", "32", &height );
-	G_SpawnInt( "dmg", "2", &ent->damage );
-	G_SpawnFloat( "phase", "0", &phase );
+	G_SpawnFloat("speed", "4", &ent->speed);
+	G_SpawnFloat("height", "32", &height);
+	G_SpawnInt("dmg", "2", &ent->damage);
+	G_SpawnFloat("phase", "0", &phase);
 
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
-	InitMover( ent );
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
+	InitMover(ent);
 
-	VectorCopy( ent->s.origin, ent->s.pos.trBase );
-	VectorCopy( ent->s.origin, ent->r.currentOrigin );
+	VectorCopy(ent->s.origin, ent->s.pos.trBase);
+	VectorCopy(ent->s.origin, ent->r.currentOrigin);
 
 	ent->s.pos.trDuration = ent->speed * 1000;
 	ent->s.pos.trTime = ent->s.pos.trDuration * phase;
 	ent->s.pos.trType = TR_SINE;
 
 	// set the axis of bobbing
-	if ( ent->spawnflags & 1 ) {
+	if (ent->spawnflags & 1) {
 		ent->s.pos.trDelta[0] = height;
-	} else if ( ent->spawnflags & 2 ) {
+	} else if (ent->spawnflags & 2) {
 		ent->s.pos.trDelta[1] = height;
 	} else {
 		ent->s.pos.trDelta[2] = height;
@@ -2301,28 +2301,28 @@ void SP_func_pendulum(gentity_t *ent) {
 	float		phase;
 	float		speed;
 
-	G_SpawnFloat( "speed", "30", &speed );
-	G_SpawnInt( "dmg", "2", &ent->damage );
-	G_SpawnFloat( "phase", "0", &phase );
+	G_SpawnFloat("speed", "30", &speed);
+	G_SpawnInt("dmg", "2", &ent->damage);
+	G_SpawnFloat("phase", "0", &phase);
 
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
 
 	// find pendulum length
-	length = fabs( ent->r.mins[2] );
-	if ( length < 8 ) {
+	length = fabs(ent->r.mins[2]);
+	if (length < 8) {
 		length = 8;
 	}
 
-	freq = 1 / ( M_PI * 2 ) * sqrt( g_gravity.value / ( 3 * length ) );
+	freq = 1 / (M_PI * 2) * sqrt(g_gravity.value / (3 * length));
 
-	ent->s.pos.trDuration = ( 1000 / freq );
+	ent->s.pos.trDuration = (1000 / freq);
 
-	InitMover( ent );
+	InitMover(ent);
 
-	VectorCopy( ent->s.origin, ent->s.pos.trBase );
-	VectorCopy( ent->s.origin, ent->r.currentOrigin );
+	VectorCopy(ent->s.origin, ent->s.pos.trBase);
+	VectorCopy(ent->s.origin, ent->r.currentOrigin);
 
-	VectorCopy( ent->s.angles, ent->s.apos.trBase );
+	VectorCopy(ent->s.angles, ent->s.apos.trBase);
 
 	ent->s.apos.trDuration = 1000 / freq;
 	ent->s.apos.trTime = ent->s.apos.trDuration * phase;
@@ -2338,41 +2338,41 @@ BREAKABLE BRUSH
 ===============================================================================
 */
 //---------------------------------------------------
-static void CacheChunkEffects( material_t material )
+static void CacheChunkEffects(material_t material)
 {
-	switch( material )
+	switch(material)
 	{
 	case MAT_GLASS:
-		G_EffectIndex( "chunks/glassbreak" );
+		G_EffectIndex("chunks/glassbreak");
 		break;
 	case MAT_GLASS_METAL:
-		G_EffectIndex( "chunks/glassbreak" );
-		G_EffectIndex( "chunks/metalexplode" );
+		G_EffectIndex("chunks/glassbreak");
+		G_EffectIndex("chunks/metalexplode");
 		break;
 	case MAT_ELECTRICAL:
 	case MAT_ELEC_METAL:
-		G_EffectIndex( "chunks/sparkexplode" );
+		G_EffectIndex("chunks/sparkexplode");
 		break;
 	case MAT_METAL:
 	case MAT_METAL2:
 	case MAT_METAL3:
 	case MAT_CRATE1:
 	case MAT_CRATE2:
-		G_EffectIndex( "chunks/metalexplode" );
+		G_EffectIndex("chunks/metalexplode");
 		break;
 	case MAT_GRATE1:
-		G_EffectIndex( "chunks/grateexplode" );
+		G_EffectIndex("chunks/grateexplode");
 		break;
 	case MAT_DRK_STONE:
 	case MAT_LT_STONE:
 	case MAT_GREY_STONE:
 	case MAT_WHITE_METAL: // what is this crap really supposed to be??
 	case MAT_SNOWY_ROCK:
-		G_EffectIndex( "chunks/rockbreaklg" );
-		G_EffectIndex( "chunks/rockbreakmed" );
+		G_EffectIndex("chunks/rockbreaklg");
+		G_EffectIndex("chunks/rockbreakmed");
 		break;
 	case MAT_ROPE:
-		G_EffectIndex( "chunks/ropebreak" );
+		G_EffectIndex("chunks/ropebreak");
 //		G_SoundIndex(); // FIXME: give it a sound
 		break;
 	default:
@@ -2380,15 +2380,15 @@ static void CacheChunkEffects( material_t material )
 	}
 }
 
-void G_MiscModelExplosion( vec3_t mins, vec3_t maxs, int size, material_t chunkType )
+void G_MiscModelExplosion(vec3_t mins, vec3_t maxs, int size, material_t chunkType)
 {
 	gentity_t *te;
 	vec3_t mid;
 
-	VectorAdd( mins, maxs, mid );
-	VectorScale( mid, 0.5f, mid );
+	VectorAdd(mins, maxs, mid);
+	VectorScale(mid, 0.5f, mid);
 
-	te = G_TempEntity( mid, EV_MISC_MODEL_EXP );
+	te = G_TempEntity(mid, EV_MISC_MODEL_EXP);
 
 	VectorCopy(maxs, te->s.origin2);
 	VectorCopy(mins, te->s.angles2);
@@ -2396,10 +2396,10 @@ void G_MiscModelExplosion( vec3_t mins, vec3_t maxs, int size, material_t chunkT
 	te->s.eventParm = chunkType;
 }
 
-void G_Chunks( int owner, vec3_t origin, const vec3_t normal, const vec3_t mins, const vec3_t maxs,
-						float speed, int numChunks, material_t chunkType, int customChunk, float baseScale )
+void G_Chunks(int owner, vec3_t origin, const vec3_t normal, const vec3_t mins, const vec3_t maxs,
+						float speed, int numChunks, material_t chunkType, int customChunk, float baseScale)
 {
-	gentity_t *te = G_TempEntity( origin, EV_DEBRIS );
+	gentity_t *te = G_TempEntity(origin, EV_DEBRIS);
 
 	//Now it's time to cram everything horribly into the entitystate of an event entity.
 	te->s.owner = owner;
@@ -2424,11 +2424,11 @@ void funcBBrushDieGo (gentity_t *self)
 	material_t	chunkType = self->material;
 
 	// if a missile is stuck to us, blow it up so we don't look dumb
-	for ( i = 0; i < MAX_GENTITIES; i++ )
+	for (i = 0; i < MAX_GENTITIES; i++)
 	{
-		if ( g_entities[i].s.groundEntityNum == self->s.number && ( g_entities[i].s.eFlags & EF_MISSILE_STICK ))
+		if (g_entities[i].s.groundEntityNum == self->s.number && (g_entities[i].s.eFlags & EF_MISSILE_STICK))
 		{
-			G_Damage( &g_entities[i], self, self, NULL, NULL, 99999, 0, MOD_CRUSH ); //?? MOD?
+			G_Damage(&g_entities[i], self, self, NULL, NULL, 99999, 0, MOD_CRUSH); //?? MOD?
 		}
 	}
 
@@ -2440,81 +2440,81 @@ void funcBBrushDieGo (gentity_t *self)
 
 	VectorSet(up, 0, 0, 1);
 
-	if ( self->target && attacker != NULL )
+	if (self->target && attacker != NULL)
 	{
 		G_UseTargets(self, attacker);
 	}
 
-	VectorSubtract( self->r.absmax, self->r.absmin, org );// size
+	VectorSubtract(self->r.absmax, self->r.absmin, org);// size
 
 	numChunks = Q_flrand(0.0f, 1.0f) * 6 + 18;
 
 	// This formula really has no logical basis other than the fact that it seemed to be the closest to yielding the results that I wanted.
 	// Volume is length * width * height...then break that volume down based on how many chunks we have
-	scale = sqrt( sqrt( org[0] * org[1] * org[2] )) * 1.75f;
+	scale = sqrt(sqrt(org[0] * org[1] * org[2])) * 1.75f;
 
-	if ( scale > 48 )
+	if (scale > 48)
 	{
 		size = 2;
 	}
-	else if ( scale > 24 )
+	else if (scale > 24)
 	{
 		size = 1;
 	}
 
 	scale = scale / numChunks;
 
-	if ( self->radius > 0.0f )
+	if (self->radius > 0.0f)
 	{
 		// designer wants to scale number of chunks, helpful because the above scale code is far from perfect
 		//	I do this after the scale calculation because it seems that the chunk size generally seems to be very close, it's just the number of chunks is a bit weak
 		numChunks *= self->radius;
 	}
 
-	VectorMA( self->r.absmin, 0.5, org, org );
-	VectorAdd( self->r.absmin,self->r.absmax, org );
-	VectorScale( org, 0.5f, org );
+	VectorMA(self->r.absmin, 0.5, org, org);
+	VectorAdd(self->r.absmin,self->r.absmax, org);
+	VectorScale(org, 0.5f, org);
 
-	if ( attacker != NULL && attacker->client )
+	if (attacker != NULL && attacker->client)
 	{
-		VectorSubtract( org, attacker->r.currentOrigin, dir );
-		VectorNormalize( dir );
+		VectorSubtract(org, attacker->r.currentOrigin, dir);
+		VectorNormalize(dir);
 	}
 	else
 	{
 		VectorCopy(up, dir);
 	}
 
-	if ( !(self->spawnflags & 2048) ) // NO_EXPLOSION
+	if (!(self->spawnflags & 2048)) // NO_EXPLOSION
 	{
 		// we are allowed to explode
-		G_MiscModelExplosion( self->r.absmin, self->r.absmax, size, chunkType );
+		G_MiscModelExplosion(self->r.absmin, self->r.absmax, size, chunkType);
 	}
 
 	if (self->genericValue15)
-	{ //a custom effect to play
+	{//a custom effect to play
 		vec3_t ang;
 		VectorSet(ang, 0.0f, 1.0f, 0.0f);
 		G_PlayEffectID(self->genericValue15, org, ang);
 	}
 
-	if ( self->splashDamage > 0 && self->splashRadius > 0 )
+	if (self->splashDamage > 0 && self->splashRadius > 0)
 	{
 		gentity_t *te;
 		//explode
-		G_RadiusDamage( org, self, self->splashDamage, self->splashRadius, self, NULL, MOD_UNKNOWN );
+		G_RadiusDamage(org, self, self->splashDamage, self->splashRadius, self, NULL, MOD_UNKNOWN);
 
-		te = G_TempEntity( org, EV_GENERAL_SOUND );
+		te = G_TempEntity(org, EV_GENERAL_SOUND);
 		te->s.eventParm = G_SoundIndex("sound/weapons/explosions/cargoexplode.wav");
 	}
 
 	//FIXME: base numChunks off size?
-	G_Chunks( self->s.number, org, dir, self->r.absmin, self->r.absmax, 300, numChunks, chunkType, 0, (scale*self->mass) );
+	G_Chunks(self->s.number, org, dir, self->r.absmin, self->r.absmax, 300, numChunks, chunkType, 0, (scale*self->mass));
 
-	trap->AdjustAreaPortalState( (sharedEntity_t *)self, qtrue );
+	trap->AdjustAreaPortalState((sharedEntity_t *)self, qtrue);
 	self->think = G_FreeEntity;
 	self->nextthink = level.time + 50;
-	//G_FreeEntity( self );
+	//G_FreeEntity(self);
 }
 
 void funcBBrushDie (gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int mod)
@@ -2535,7 +2535,7 @@ void funcBBrushDie (gentity_t *self, gentity_t *inflictor, gentity_t *attacker, 
 
 void funcBBrushUse (gentity_t *self, gentity_t *other, gentity_t *activator)
 {
-	G_ActivateBehavior( self, BSET_USE );
+	G_ActivateBehavior(self, BSET_USE);
 	if(self->spawnflags & 64)
 	{//Using it doesn't break it, makes it use it's targets
 		if(self->target && self->target[0])
@@ -2551,12 +2551,12 @@ void funcBBrushUse (gentity_t *self, gentity_t *other, gentity_t *activator)
 
 void funcBBrushPain(gentity_t *self, gentity_t *attacker, int damage)
 {
-	if ( self->painDebounceTime > level.time )
+	if (self->painDebounceTime > level.time)
 	{
 		return;
 	}
 
-	if ( self->paintarget && self->paintarget[0] )
+	if (self->paintarget && self->paintarget[0])
 	{
 		if (!self->activator)
 		{
@@ -2571,43 +2571,43 @@ void funcBBrushPain(gentity_t *self, gentity_t *attacker, int damage)
 		}
 	}
 
-	G_ActivateBehavior( self, BSET_PAIN );
+	G_ActivateBehavior(self, BSET_PAIN);
 
-	if ( self->material == MAT_DRK_STONE
+	if (self->material == MAT_DRK_STONE
 		|| self->material == MAT_LT_STONE
 		|| self->material == MAT_GREY_STONE
-		|| self->material == MAT_SNOWY_ROCK )
+		|| self->material == MAT_SNOWY_ROCK)
 	{
 		vec3_t	org, dir;
 		float	scale;
 		int		numChunks;
-		VectorSubtract( self->r.absmax, self->r.absmin, org );// size
+		VectorSubtract(self->r.absmax, self->r.absmin, org);// size
 		// This formula really has no logical basis other than the fact that it seemed to be the closest to yielding the results that I wanted.
 		// Volume is length * width * height...then break that volume down based on how many chunks we have
-		scale = VectorLength( org ) / 100.0f;
-		VectorMA( self->r.absmin, 0.5, org, org );
-		VectorAdd( self->r.absmin,self->r.absmax, org );
-		VectorScale( org, 0.5f, org );
-		if ( attacker != NULL && attacker->client )
+		scale = VectorLength(org) / 100.0f;
+		VectorMA(self->r.absmin, 0.5, org, org);
+		VectorAdd(self->r.absmin,self->r.absmax, org);
+		VectorScale(org, 0.5f, org);
+		if (attacker != NULL && attacker->client)
 		{
-			VectorSubtract( attacker->r.currentOrigin, org, dir );
-			VectorNormalize( dir );
+			VectorSubtract(attacker->r.currentOrigin, org, dir);
+			VectorNormalize(dir);
 		}
 		else
 		{
-			VectorSet( dir, 0, 0, 1 );
+			VectorSet(dir, 0, 0, 1);
 		}
-		numChunks = Q_irand( 1, 3 );
-		if ( self->radius > 0.0f )
+		numChunks = Q_irand(1, 3);
+		if (self->radius > 0.0f)
 		{
 			// designer wants to scale number of chunks, helpful because the above scale code is far from perfect
 			//	I do this after the scale calculation because it seems that the chunk size generally seems to be very close, it's just the number of chunks is a bit weak
 			numChunks = ceil(numChunks*self->radius);
 		}
-		G_Chunks( self->s.number, org, dir, self->r.absmin, self->r.absmax, 300, numChunks, self->material, 0, (scale*self->mass) );
+		G_Chunks(self->s.number, org, dir, self->r.absmin, self->r.absmax, 300, numChunks, self->material, 0, (scale*self->mass));
 	}
 
-	if ( self->wait == -1 )
+	if (self->wait == -1)
 	{
 		self->pain = 0;
 		return;
@@ -2616,15 +2616,15 @@ void funcBBrushPain(gentity_t *self, gentity_t *attacker, int damage)
 	self->painDebounceTime = level.time + self->wait;
 }
 
-static void InitBBrush ( gentity_t *ent )
+static void InitBBrush (gentity_t *ent)
 {
 	float		light;
 	vec3_t		color;
 	qboolean	lightSet, colorSet;
 
-	VectorCopy( ent->s.origin, ent->pos1 );
+	VectorCopy(ent->s.origin, ent->pos1);
 
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
 
 	ent->die = funcBBrushDie;
 
@@ -2637,35 +2637,35 @@ static void InitBBrush ( gentity_t *ent )
 
 	// if the "model2" key is set, use a seperate model
 	// for drawing, but clip against the brushes
-	if ( ent->model2 && ent->model2[0] )
+	if (ent->model2 && ent->model2[0])
 	{
-		ent->s.modelindex2 = G_ModelIndex( ent->model2 );
+		ent->s.modelindex2 = G_ModelIndex(ent->model2);
 	}
 
 	// if the "color" or "light" keys are set, setup constantLight
-	lightSet = G_SpawnFloat( "light", "100", &light );
-	colorSet = G_SpawnVector( "color", "1 1 1", color );
-	if ( lightSet || colorSet )
+	lightSet = G_SpawnFloat("light", "100", &light);
+	colorSet = G_SpawnVector("color", "1 1 1", color);
+	if (lightSet || colorSet)
 	{
 		int		r, g, b, i;
 
 		r = color[0] * 255;
-		if ( r > 255 ) {
+		if (r > 255) {
 			r = 255;
 		}
 		g = color[1] * 255;
-		if ( g > 255 ) {
+		if (g > 255) {
 			g = 255;
 		}
 		b = color[2] * 255;
-		if ( b > 255 ) {
+		if (b > 255) {
 			b = 255;
 		}
 		i = light / 4;
-		if ( i > 255 ) {
+		if (i > 255) {
 			i = 255;
 		}
-		ent->s.constantLight = r | ( g << 8 ) | ( b << 16 ) | ( i << 24 );
+		ent->s.constantLight = r | (g << 8) | (b << 16) | (i << 24);
 	}
 
 	if(ent->spawnflags & 128)
@@ -2677,10 +2677,10 @@ static void InitBBrush ( gentity_t *ent )
 	trap->LinkEntity((sharedEntity_t *)ent);
 
 	ent->s.pos.trType = TR_STATIONARY;
-	VectorCopy( ent->pos1, ent->s.pos.trBase );
+	VectorCopy(ent->pos1, ent->s.pos.trBase);
 }
 
-void funcBBrushTouch( gentity_t *ent, gentity_t *other, trace_t *trace )
+void funcBBrushTouch(gentity_t *ent, gentity_t *other, trace_t *trace)
 {
 }
 
@@ -2739,16 +2739,16 @@ Don't know if these work:
 10 = MAT_METAL3		(METAL and METAL2 chunk combo)
 11 = MAT_CRATE1		(yellow multi-colored crate chunks)
 12 = MAT_GRATE1		(grate chunks--looks horrible right now)
-13 = MAT_ROPE		(for yavin_trial, no chunks, just wispy bits )
+13 = MAT_ROPE		(for yavin_trial, no chunks, just wispy bits)
 14 = MAT_CRATE2		(red multi-colored crate chunks)
-15 = MAT_WHITE_METAL (white angular chunks for Stu, NS_hideout )
+15 = MAT_WHITE_METAL (white angular chunks for Stu, NS_hideout)
 16 = MAT_SNOWY_ROCK	 (mix of gray and brown rocks)
 
 Applicable only during Siege gametype:
 teamnodmg - if 1, team 1 can't damage this. If 2, team 2 can't damage this.
 
 */
-void SP_func_breakable( gentity_t *self )
+void SP_func_breakable(gentity_t *self)
 {
 	int t;
 	char *s = NULL;
@@ -2756,7 +2756,7 @@ void SP_func_breakable( gentity_t *self )
 	G_SpawnString("playfx", "", &s);
 
 	if (s && s[0])
-	{ //should we play a special death effect?
+	{//should we play a special death effect?
 		self->genericValue15 = G_EffectIndex(s);
 	}
 	else
@@ -2772,23 +2772,23 @@ void SP_func_breakable( gentity_t *self )
 		}
 	}
 
-	G_SpawnInt( "showhealth", "0", &t );
+	G_SpawnInt("showhealth", "0", &t);
 
 	if (t)
-	{ //a non-0 maxhealth value will mean we want to show the health on the hud
+	{//a non-0 maxhealth value will mean we want to show the health on the hud
 		self->maxHealth = self->health;
 		G_ScaleNetHealth(self);
 	}
 
 	//NOTE: g_spawn.c does this automatically now
-	//G_SpawnInt( "teamowner", "0", &t );
+	//G_SpawnInt("teamowner", "0", &t);
 	//self->s.teamowner = t;
 
-	if ( self->spawnflags & 16 ) // saber only
+	if (self->spawnflags & 16) // saber only
 	{
 		self->flags |= FL_DMG_BY_SABER_ONLY;
 	}
-	else if ( self->spawnflags & 32 ) // heavy weap
+	else if (self->spawnflags & 32) // heavy weap
 	{
 		self->flags |= FL_DMG_BY_HEAVY_WEAP_ONLY;
 	}
@@ -2799,17 +2799,17 @@ void SP_func_breakable( gentity_t *self )
 	}
 
 	G_SoundIndex("sound/weapons/explosions/cargoexplode.wav");//precaching
-	G_SpawnFloat( "radius", "1", &self->radius ); // used to scale chunk code if desired by a designer
-	G_SpawnInt( "material", "0", (int*)&self->material );
+	G_SpawnFloat("radius", "1", &self->radius); // used to scale chunk code if desired by a designer
+	G_SpawnInt("material", "0", (int*)&self->material);
 
-	G_SpawnInt( "splashDamage", "0", &self->splashDamage );
-	G_SpawnInt( "splashRadius", "0", &self->splashRadius );
+	G_SpawnInt("splashDamage", "0", &self->splashDamage);
+	G_SpawnInt("splashRadius", "0", &self->splashRadius);
 
-	CacheChunkEffects( self->material );
+	CacheChunkEffects(self->material);
 
 	self->use = funcBBrushUse;
 
-	//if ( self->paintarget )
+	//if (self->paintarget)
 	{
 		self->pain = funcBBrushPain;
 	}
@@ -2817,67 +2817,67 @@ void SP_func_breakable( gentity_t *self )
 	self->touch = funcBBrushTouch;
 
 	/*
-	if ( self->team && self->team[0] )
+	if (self->team && self->team[0])
 	{
-		self->alliedTeam = TranslateTeamName( self->team );
+		self->alliedTeam = TranslateTeamName(self->team);
 		if(self->alliedTeam == TEAM_FREE)
 		{
-			trap->Error( ERR_DROP, "team name %s not recognized\n", self->team );
+			trap->Error(ERR_DROP, "team name %s not recognized\n", self->team);
 		}
 	}
 	*/
-	if ( self->team && self->team[0] && level.gametype == GT_SIEGE &&
+	if (self->team && self->team[0] && level.gametype == GT_SIEGE &&
 		!self->teamnodmg)
 	{
 		self->teamnodmg = atoi(self->team);
 	}
 	self->team = NULL;
 	if (!self->model) {
-		trap->Error( ERR_DROP, "func_breakable with NULL model\n" );
+		trap->Error(ERR_DROP, "func_breakable with NULL model\n");
 	}
-	InitBBrush( self );
+	InitBBrush(self);
 
-	if ( !self->radius )
+	if (!self->radius)
 	{//numchunks multiplier
 		self->radius = 1.0f;
 	}
-	if ( !self->mass )
+	if (!self->mass)
 	{//chunksize multiplier
 		self->mass = 1.0f;
 	}
 	self->genericValue4 = 1; //so damage sys knows it's a bbrush
 }
 
-qboolean G_EntIsBreakable( int entityNum )
+qboolean G_EntIsBreakable(int entityNum)
 {
 	gentity_t *ent;
 
-	if ( entityNum < 0 || entityNum >= ENTITYNUM_WORLD )
+	if (entityNum < 0 || entityNum >= ENTITYNUM_WORLD)
 	{
 		return qfalse;
 	}
 
 	ent = &g_entities[entityNum];
-	if ( (ent->r.svFlags & SVF_GLASS_BRUSH) )
+	if ((ent->r.svFlags & SVF_GLASS_BRUSH))
 	{
 		return qtrue;
 	}
 	/*
-	if ( (ent->svFlags&SVF_BBRUSH) )
+	if ((ent->svFlags&SVF_BBRUSH))
 	{
 		return qtrue;
 	}
 	*/
-	if ( !Q_stricmp( "func_breakable", ent->classname ) )
+	if (!Q_stricmp("func_breakable", ent->classname))
 	{
 		return qtrue;
 	}
 
-	if ( !Q_stricmp( "misc_model_breakable", ent->classname ) )
+	if (!Q_stricmp("misc_model_breakable", ent->classname))
 	{
 		return qtrue;
 	}
-	if ( !Q_stricmp( "misc_maglock", ent->classname ) )
+	if (!Q_stricmp("misc_maglock", ent->classname))
 	{
 		return qtrue;
 	}
@@ -2898,7 +2898,7 @@ void GlassDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int da
 	vec3_t dif;
 
 	if (self->genericValue5)
-	{ //was already destroyed, do not retrigger it
+	{//was already destroyed, do not retrigger it
 		return;
 	}
 
@@ -2912,7 +2912,7 @@ void GlassDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int da
 
 	self->splashRadius = 40; // ?? some random number, maybe it's ok?
 
-	te = G_TempEntity( dif, EV_GLASS_SHATTER );
+	te = G_TempEntity(dif, EV_GLASS_SHATTER);
 	te->s.genericenemyindex = self->s.number;
 	VectorCopy(self->pos1, te->s.origin);
 	VectorCopy(self->pos2, te->s.angles);
@@ -2933,7 +2933,7 @@ void GlassDie_Old(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, in
 
 	G_UseTargets(self, attacker);
 
-	te = G_TempEntity( dif, EV_GLASS_SHATTER );
+	te = G_TempEntity(dif, EV_GLASS_SHATTER);
 	te->s.genericenemyindex = self->s.number;
 	VectorCopy(self->r.maxs, te->s.origin);
 	VectorCopy(self->r.mins, te->s.angles);
@@ -2952,17 +2952,17 @@ void GlassUse(gentity_t *self, gentity_t *other, gentity_t *activator)
 	vec3_t temp1, temp2;
 
 	//no direct object to blame for the break, so fill the values with whatever
-	VectorAdd( self->r.mins, self->r.maxs, temp1 );
-	VectorScale( temp1, 0.5f, temp1 );
+	VectorAdd(self->r.mins, self->r.maxs, temp1);
+	VectorScale(temp1, 0.5f, temp1);
 
-	VectorAdd( other->r.mins, other->r.maxs, temp2 );
-	VectorScale( temp2, 0.5f, temp2 );
+	VectorAdd(other->r.mins, other->r.maxs, temp2);
+	VectorScale(temp2, 0.5f, temp2);
 
-	VectorSubtract( temp1, temp2, self->pos2 );
-	VectorCopy( temp1, self->pos1 );
+	VectorSubtract(temp1, temp2, self->pos2);
+	VectorCopy(temp1, self->pos1);
 
-	VectorNormalize( self->pos2 );
-	VectorScale( self->pos2, 390, self->pos2 );
+	VectorNormalize(self->pos2);
+	VectorScale(self->pos2, 390, self->pos2);
 
 	GlassDie(self, other, activator, 100, MOD_UNKNOWN);
 }
@@ -2974,14 +2974,14 @@ Breakable glass
 "light"		constantLight radius
 "maxshards"	Max number of shards to spawn on glass break
 */
-void SP_func_glass( gentity_t *ent ) {
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
-	InitMover( ent );
+void SP_func_glass(gentity_t *ent) {
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
+	InitMover(ent);
 
 	ent->r.svFlags = SVF_GLASS_BRUSH;
 
-	VectorCopy( ent->s.origin, ent->s.pos.trBase );
-	VectorCopy( ent->s.origin, ent->r.currentOrigin );
+	VectorCopy(ent->s.origin, ent->s.pos.trBase);
+	VectorCopy(ent->s.origin, ent->r.currentOrigin);
 	if (!ent->health)
 	{
 		ent->health = 1;
@@ -3011,27 +3011,27 @@ void SP_func_glass( gentity_t *ent ) {
 
 void func_usable_use (gentity_t *self, gentity_t *other, gentity_t *activator);
 
-extern gentity_t	*G_TestEntityPosition( gentity_t *ent );
-void func_wait_return_solid( gentity_t *self )
+extern gentity_t	*G_TestEntityPosition(gentity_t *ent);
+void func_wait_return_solid(gentity_t *self)
 {
 	//once a frame, see if it's clear.
 	self->clipmask = CONTENTS_BODY;
-	if ( !(self->spawnflags&16) || G_TestEntityPosition( self ) == NULL )
+	if (!(self->spawnflags&16) || G_TestEntityPosition(self) == NULL)
 	{
-		trap->SetBrushModel( (sharedEntity_t *)self, self->model );
-		InitMover( self );
-		VectorCopy( self->s.origin, self->s.pos.trBase );
-		VectorCopy( self->s.origin, self->r.currentOrigin );
+		trap->SetBrushModel((sharedEntity_t *)self, self->model);
+		InitMover(self);
+		VectorCopy(self->s.origin, self->s.pos.trBase);
+		VectorCopy(self->s.origin, self->r.currentOrigin);
 		self->r.svFlags &= ~SVF_NOCLIENT;
 		self->s.eFlags &= ~EF_NODRAW;
 		self->use = func_usable_use;
 		self->clipmask = 0;
-		if ( self->target2 && self->target2[0] )
+		if (self->target2 && self->target2[0])
 		{
-			G_UseTargets2( self, self->activator, self->target2 );
+			G_UseTargets2(self, self->activator, self->target2);
 		}
 		//FIXME: Animations?
-		/*if ( self->s.eFlags & EF_ANIM_ONCE )
+		/*if (self->s.eFlags & EF_ANIM_ONCE)
 		{//Start our anim
 			self->s.frame = 0;
 		}*/
@@ -3044,9 +3044,9 @@ void func_wait_return_solid( gentity_t *self )
 	}
 }
 
-void func_usable_think( gentity_t *self )
+void func_usable_think(gentity_t *self)
 {
-	if ( self->spawnflags & 8 )
+	if (self->spawnflags & 8)
 	{
 		self->r.svFlags |= SVF_PLAYER_USABLE;	//Replace the usable flag
 		self->use = func_usable_use;
@@ -3054,12 +3054,12 @@ void func_usable_think( gentity_t *self )
 	}
 }
 
-qboolean G_EntIsRemovableUsable( int entNum )
+qboolean G_EntIsRemovableUsable(int entNum)
 {
 	gentity_t *ent = &g_entities[entNum];
-	if ( ent->classname && !Q_stricmp( "func_usable", ent->classname ) )
+	if (ent->classname && !Q_stricmp("func_usable", ent->classname))
 	{
-		if ( !(ent->s.eFlags&EF_SHADER_ANIM) && !(ent->spawnflags&8) && ent->targetname )
+		if (!(ent->s.eFlags&EF_SHADER_ANIM) && !(ent->spawnflags&8) && ent->targetname)
 		{//not just a shader-animator and not ALWAYS_ON, so it must be removable somehow
 			return qtrue;
 		}
@@ -3069,20 +3069,20 @@ qboolean G_EntIsRemovableUsable( int entNum )
 
 void func_usable_use (gentity_t *self, gentity_t *other, gentity_t *activator)
 {//Toggle on and off
-	G_ActivateBehavior( self, BSET_USE );
-	if ( self->s.eFlags & EF_SHADER_ANIM )
+	G_ActivateBehavior(self, BSET_USE);
+	if (self->s.eFlags & EF_SHADER_ANIM)
 	{//animate shader when used
 		self->s.frame++;//inc frame
-		if ( self->s.frame > self->genericValue5 )
+		if (self->s.frame > self->genericValue5)
 		{//wrap around
 			self->s.frame = 0;
 		}
-		if ( self->target && self->target[0] )
+		if (self->target && self->target[0])
 		{
-			G_UseTargets( self, activator );
+			G_UseTargets(self, activator);
 		}
 	}
-	else if ( self->spawnflags & 8 )
+	else if (self->spawnflags & 8)
 	{//ALWAYS_ON
 		//Remove the ability to use the entity directly
 		self->r.svFlags &= ~SVF_PLAYER_USABLE;
@@ -3094,18 +3094,18 @@ void func_usable_use (gentity_t *self, gentity_t *other, gentity_t *activator)
 			G_UseTargets(self, activator);
 		}
 
-		if ( self->wait )
+		if (self->wait)
 		{
 			self->think = func_usable_think;
-			self->nextthink = level.time + ( self->wait * 1000 );
+			self->nextthink = level.time + (self->wait * 1000);
 		}
 
 		return;
 	}
-	else if ( !self->count )
+	else if (!self->count)
 	{//become solid again
 		self->count = 1;
-		func_wait_return_solid( self );
+		func_wait_return_solid(self);
 	}
 	else
 	{
@@ -3157,25 +3157,25 @@ teamuser - if 1, team 2 can't use this. If 2, team 1 can't use this.
 
 */
 
-void SP_func_usable( gentity_t *self )
+void SP_func_usable(gentity_t *self)
 {
-	trap->SetBrushModel( (sharedEntity_t *)self, self->model );
-	InitMover( self );
-	VectorCopy( self->s.origin, self->s.pos.trBase );
-	VectorCopy( self->s.origin, self->r.currentOrigin );
-	VectorCopy( self->s.origin, self->pos1 );
+	trap->SetBrushModel((sharedEntity_t *)self, self->model);
+	InitMover(self);
+	VectorCopy(self->s.origin, self->s.pos.trBase);
+	VectorCopy(self->s.origin, self->r.currentOrigin);
+	VectorCopy(self->s.origin, self->pos1);
 
 	G_SpawnInt("endframe", "0", &self->genericValue5);
 
-	if ( self->model2 && self->model2[0] )
+	if (self->model2 && self->model2[0])
 	{
-		if ( strstr( self->model2, ".glm" ))
-		{ //for now, not supported in MP.
+		if (strstr(self->model2, ".glm"))
+		{//for now, not supported in MP.
 			self->s.modelindex2 = 0;
 		}
 		else
 		{
-			self->s.modelindex2 = G_ModelIndex( self->model2 );
+			self->s.modelindex2 = G_ModelIndex(self->model2);
 		}
 	}
 
@@ -3205,14 +3205,14 @@ void SP_func_usable( gentity_t *self )
 
 	self->use = func_usable_use;
 
-	if ( self->health )
+	if (self->health)
 	{
 		self->takedamage = qtrue;
 		self->die = func_usable_die;
 		self->pain = func_usable_pain;
 	}
 
-	if ( self->genericValue5 > 0 )
+	if (self->genericValue5 > 0)
 	{
 		self->s.frame = 0;
 		self->s.eFlags |= EF_SHADER_ANIM;
@@ -3232,7 +3232,7 @@ WALL
 */
 
 //static -slc
-void use_wall( gentity_t *ent, gentity_t *other, gentity_t *activator )
+void use_wall(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
 	G_ActivateBehavior(ent,BSET_USE);
 
@@ -3242,9 +3242,9 @@ void use_wall( gentity_t *ent, gentity_t *other, gentity_t *activator )
 		ent->r.svFlags &= ~SVF_NOCLIENT;
 		ent->s.eFlags &= ~EF_NODRAW;
 		ent->r.contents = CONTENTS_SOLID;
-		if ( !(ent->spawnflags&1) )
+		if (!(ent->spawnflags&1))
 		{//START_OFF doesn't effect area portals
-			trap->AdjustAreaPortalState( (sharedEntity_t *)ent, qfalse );
+			trap->AdjustAreaPortalState((sharedEntity_t *)ent, qfalse);
 		}
 	}
 	// Make it go away
@@ -3253,9 +3253,9 @@ void use_wall( gentity_t *ent, gentity_t *other, gentity_t *activator )
 		ent->r.contents = 0;
 		ent->r.svFlags |= SVF_NOCLIENT;
 		ent->s.eFlags |= EF_NODRAW;
-		if ( !(ent->spawnflags&1) )
+		if (!(ent->spawnflags&1))
 		{//START_OFF doesn't effect area portals
-			trap->AdjustAreaPortalState( (sharedEntity_t *)ent, qtrue );
+			trap->AdjustAreaPortalState((sharedEntity_t *)ent, qtrue);
 		}
 	}
 }
@@ -3273,16 +3273,16 @@ A bmodel that just sits there, doing nothing.  Can be used for conditional walls
 
 START_OFF - the wall will not be there
 */
-void SP_func_wall( gentity_t *ent )
+void SP_func_wall(gentity_t *ent)
 {
-	trap->SetBrushModel( (sharedEntity_t *)ent, ent->model );
+	trap->SetBrushModel((sharedEntity_t *)ent, ent->model);
 
-	VectorCopy( ent->s.origin, ent->pos1 );
-	VectorCopy( ent->s.origin, ent->pos2 );
+	VectorCopy(ent->s.origin, ent->pos1);
+	VectorCopy(ent->s.origin, ent->pos2);
 
-	InitMover( ent );
-	VectorCopy( ent->s.origin, ent->s.pos.trBase );
-	VectorCopy( ent->s.origin, ent->r.currentOrigin );
+	InitMover(ent);
+	VectorCopy(ent->s.origin, ent->s.pos.trBase);
+	VectorCopy(ent->s.origin, ent->r.currentOrigin);
 
 	// it must be START_OFF
 	if (ent->spawnflags & FUNC_WALL_OFF)

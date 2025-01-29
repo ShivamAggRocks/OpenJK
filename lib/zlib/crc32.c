@@ -113,7 +113,7 @@ local void make_crc_table()
             for (k = 0; k < 8; k++)
                 c = c & 1 ? poly ^ (c >> 1) : c >> 1;
             crc_table[0][n] = c;
-        }
+       }
 
 #ifdef BYFOUR
         /* generate crc for each value followed by one, two, and three zeros,
@@ -125,17 +125,17 @@ local void make_crc_table()
                 c = crc_table[0][c & 0xff] ^ (c >> 8);
                 crc_table[k][n] = c;
                 crc_table[k + 4][n] = ZSWAP32(c);
-            }
-        }
+           }
+       }
 #endif /* BYFOUR */
 
         crc_table_empty = 0;
-    }
-    else {      /* not first */
+   }
+    else {     /* not first */
         /* wait for the other guy to finish (not efficient, but rare) */
         while (crc_table_empty)
             ;
-    }
+   }
 
 #ifdef MAKECRCH
     /* write out CRC tables to crc32.h */
@@ -152,14 +152,14 @@ local void make_crc_table()
 #  ifdef BYFOUR
         fprintf(out, "#ifdef BYFOUR\n");
         for (k = 1; k < 8; k++) {
-            fprintf(out, "  },\n  {\n");
+            fprintf(out, " },\n  {\n");
             write_table(out, crc_table[k]);
-        }
+       }
         fprintf(out, "#endif\n");
 #  endif /* BYFOUR */
-        fprintf(out, "  }\n};\n");
+        fprintf(out, " }\n};\n");
         fclose(out);
-    }
+   }
 #endif /* MAKECRCH */
 }
 
@@ -222,16 +222,16 @@ unsigned long ZEXPORT crc32(crc, buf, len)
             return crc32_little(crc, buf, len);
         else
             return crc32_big(crc, buf, len);
-    }
+   }
 #endif /* BYFOUR */
     crc = crc ^ 0xffffffffUL;
     while (len >= 8) {
         DO8;
         len -= 8;
-    }
+   }
     if (len) do {
         DO1;
-    } while (--len);
+   } while (--len);
     return crc ^ 0xffffffffUL;
 }
 
@@ -257,22 +257,22 @@ local unsigned long crc32_little(crc, buf, len)
     while (len && ((ptrdiff_t)buf & 3)) {
         c = crc_table[0][(c ^ *buf++) & 0xff] ^ (c >> 8);
         len--;
-    }
+   }
 
     buf4 = (const z_crc_t FAR *)(const void FAR *)buf;
     while (len >= 32) {
         DOLIT32;
         len -= 32;
-    }
+   }
     while (len >= 4) {
         DOLIT4;
         len -= 4;
-    }
+   }
     buf = (const unsigned char FAR *)buf4;
 
     if (len) do {
         c = crc_table[0][(c ^ *buf++) & 0xff] ^ (c >> 8);
-    } while (--len);
+   } while (--len);
     c = ~c;
     return (unsigned long)c;
 }
@@ -297,24 +297,24 @@ local unsigned long crc32_big(crc, buf, len)
     while (len && ((ptrdiff_t)buf & 3)) {
         c = crc_table[4][(c >> 24) ^ *buf++] ^ (c << 8);
         len--;
-    }
+   }
 
     buf4 = (const z_crc_t FAR *)(const void FAR *)buf;
     buf4--;
     while (len >= 32) {
         DOBIG32;
         len -= 32;
-    }
+   }
     while (len >= 4) {
         DOBIG4;
         len -= 4;
-    }
+   }
     buf4++;
     buf = (const unsigned char FAR *)buf4;
 
     if (len) do {
         c = crc_table[4][(c >> 24) ^ *buf++] ^ (c << 8);
-    } while (--len);
+   } while (--len);
     c = ~c;
     return (unsigned long)(ZSWAP32(c));
 }
@@ -336,7 +336,7 @@ local unsigned long gf2_matrix_times(mat, vec)
             sum ^= *mat;
         vec >>= 1;
         mat++;
-    }
+   }
     return sum;
 }
 
@@ -372,7 +372,7 @@ local uLong crc32_combine_(crc1, crc2, len2)
     for (n = 1; n < GF2_DIM; n++) {
         odd[n] = row;
         row <<= 1;
-    }
+   }
 
     /* put operator for two zero bits in even */
     gf2_matrix_square(even, odd);
@@ -400,7 +400,7 @@ local uLong crc32_combine_(crc1, crc2, len2)
         len2 >>= 1;
 
         /* if no more bits set, then done */
-    } while (len2 != 0);
+   } while (len2 != 0);
 
     /* return combined crc */
     crc1 ^= crc2;

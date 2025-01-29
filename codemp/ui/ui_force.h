@@ -53,4 +53,4 @@ qboolean UI_ForceSide_HandleKey(int flags, float *special, int key, int num, int
 qboolean UI_JediNonJedi_HandleKey(int flags, float *special, int key, int num, int min, int max, int type);
 qboolean UI_ForceMaxRank_HandleKey(int flags, float *special, int key, int num, int min, int max, int type);
 qboolean UI_ForcePowerRank_HandleKey(int flags, float *special, int key, int num, int min, int max, int type);
-extern void UI_ForceConfigHandle( int oldindex, int newindex );
+extern void UI_ForceConfigHandle(int oldindex, int newindex);

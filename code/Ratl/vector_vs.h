@@ -448,7 +448,7 @@ private:
 		{
 			if (right(i)<Size)
 			{
-				return ( (mArray[right(i)] < mArray[left(i)]) ? (left(i)) : (right(i)) );
+				return ((mArray[right(i)] < mArray[left(i)]) ? (left(i)) : (right(i)));
 			}
 			return left(i);	// Node i only has a left child, so by default it is the biggest
 		}

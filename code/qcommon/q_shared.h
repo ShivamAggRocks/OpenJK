@@ -90,12 +90,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define BASE_SAVE_COMPAT // this is defined to disable/fix some changes that break save compatibility
 
-#define VALIDSTRING( a )	( ( a != NULL ) && ( a[0] != '\0' ) )
+#define VALIDSTRING(a)	((a != NULL) && (a[0] != '\0'))
 
 //JAC: Added
-#define ARRAY_LEN( x ) ( sizeof( x ) / sizeof( *(x) ) )
-#define STRING( a ) #a
-#define XSTRING( a ) STRING( a )
+#define ARRAY_LEN(x) (sizeof(x) / sizeof(*(x)))
+#define STRING(a) #a
+#define XSTRING(a) STRING(a)
 
 #ifndef FINAL_BUILD
 #ifdef _WIN32
@@ -188,7 +188,7 @@ typedef int32_t qhandle_t, thandle_t, fxHandle_t, sfxHandle_t, fileHandle_t, cli
 #define NULL ((void *)0)
 #endif
 
-#define INT_ID( a, b, c, d ) (uint32_t)((((a) & 0xff) << 24) | (((b) & 0xff) << 16) | (((c) & 0xff) << 8) | ((d) & 0xff))
+#define INT_ID(a, b, c, d) (uint32_t)((((a) & 0xff) << 24) | (((b) & 0xff) << 16) | (((c) & 0xff) << 8) | ((d) & 0xff))
 
 // the game guarantees that no string from the network will ever
 // exceed MAX_STRING_CHARS
@@ -329,57 +329,57 @@ typedef enum
 
 #define MAX_BATTERIES	2500
 
-#define ENUM2STRING(arg)   { #arg,arg }
+#define ENUM2STRING(arg)   {#arg,arg}
 
 //=============================================
 
-char	*COM_SkipPath( char *pathname );
-const char	*COM_GetExtension( const char *name );
-void	COM_StripExtension( const char *in, char *out, int destsize );
+char	*COM_SkipPath(char *pathname);
+const char	*COM_GetExtension(const char *name);
+void	COM_StripExtension(const char *in, char *out, int destsize);
 qboolean COM_CompareExtension(const char *in, const char *ext);
-void	COM_DefaultExtension( char *path, int maxSize, const char *extension );
+void	COM_DefaultExtension(char *path, int maxSize, const char *extension);
 
 //JLFCALLOUT include MPNOTUSED
-void	 COM_BeginParseSession( void );
-void	 COM_EndParseSession( void );
+void	 COM_BeginParseSession(void);
+void	 COM_EndParseSession(void);
 
 // For compatibility with shared code
-QINLINE void COM_BeginParseSession( const char *sessionName )
+QINLINE void COM_BeginParseSession(const char *sessionName)
 {
 	COM_BeginParseSession();
 }
 
 class COM_ParseSession {
 public:
-	COM_ParseSession() { COM_BeginParseSession(); };
-	~COM_ParseSession() { COM_EndParseSession(); };
+	COM_ParseSession() {COM_BeginParseSession();};
+	~COM_ParseSession() {COM_EndParseSession();};
 };
 
-int		 COM_GetCurrentParseLine( void );
-char	*COM_Parse( const char **data_p );
-char	*COM_ParseExt( const char **data_p, qboolean allowLineBreak );
-int		 COM_Compress( char *data_p );
-qboolean COM_ParseString( const char **data, const char **s );
-qboolean COM_ParseInt( const char **data, int *i );
-qboolean COM_ParseFloat( const char **data, float *f );
-qboolean COM_ParseVec4( const char **buffer, vec4_t *c);
+int		 COM_GetCurrentParseLine(void);
+char	*COM_Parse(const char **data_p);
+char	*COM_ParseExt(const char **data_p, qboolean allowLineBreak);
+int		 COM_Compress(char *data_p);
+qboolean COM_ParseString(const char **data, const char **s);
+qboolean COM_ParseInt(const char **data, int *i);
+qboolean COM_ParseFloat(const char **data, float *f);
+qboolean COM_ParseVec4(const char **buffer, vec4_t *c);
 
 // data is an in/out parm, returns a parsed out token
 
-void	COM_MatchToken( char**buf_p, char *match );
+void	COM_MatchToken(char**buf_p, char *match);
 
 void SkipBracedSection (const char **program);
-void SkipRestOfLine ( const char **data );
+void SkipRestOfLine (const char **data);
 
 void Parse1DMatrix (const char **buf_p, int x, float *m);
 void Parse2DMatrix (const char **buf_p, int y, int x, float *m);
 void Parse3DMatrix (const char **buf_p, int z, int y, int x, float *m);
-int Com_HexStrToInt( const char *str );
+int Com_HexStrToInt(const char *str);
 
 int	QDECL Com_sprintf (char *dest, int size, const char *fmt, ...);
 
-char *Com_SkipTokens( char *s, int numTokens, char *sep );
-char *Com_SkipCharset( char *s, char *sep );
+char *Com_SkipTokens(char *s, int numTokens, char *sep);
+char *Com_SkipCharset(char *s, char *sep);
 
 
 // mode parm for FS_FOpenFile
@@ -400,22 +400,22 @@ typedef enum {
 char	* QDECL va(const char *format, ...);
 
 #define TRUNCATE_LENGTH	64
-void Com_TruncateLongString( char *buffer, const char *s );
+void Com_TruncateLongString(char *buffer, const char *s);
 
 //=============================================
 
 //
 // key / value info strings
 //
-const char *Info_ValueForKey( const char *s, const char *key );
-void Info_RemoveKey( char *s, const char *key );
-void Info_SetValueForKey( char *s, const char *key, const char *value );
-qboolean Info_Validate( const char *s );
-void Info_NextPair( const char **s, char key[MAX_INFO_KEY], char value[MAX_INFO_VALUE] );
+const char *Info_ValueForKey(const char *s, const char *key);
+void Info_RemoveKey(char *s, const char *key);
+void Info_SetValueForKey(char *s, const char *key, const char *value);
+qboolean Info_Validate(const char *s);
+void Info_NextPair(const char **s, char key[MAX_INFO_KEY], char value[MAX_INFO_VALUE]);
 
 // this is only here so the functions in q_shared.c and bg_*.c can link
-void	NORETURN QDECL Com_Error( int level, const char *error, ... );
-void	QDECL Com_Printf( const char *msg, ... );
+void	NORETURN QDECL Com_Error(int level, const char *error, ...);
+void	QDECL Com_Printf(const char *msg, ...);
 
 
 /*
@@ -468,8 +468,8 @@ typedef struct cvar_s {
 	int			flags;
 	qboolean	modified;			// set each time the cvar is changed
 	int			modificationCount;	// incremented each time the cvar is changed
-	float		value;				// atof( string )
-	int			integer;			// atoi( string )
+	float		value;				// atof(string)
+	int			integer;			// atoi(string)
 	qboolean	validate;
 	qboolean	integral;
 	float		min;
@@ -799,9 +799,9 @@ typedef enum
 #define	MAX_PS_EVENTS			2		// this must be a power of 2 unless you change some &'s to %'s -ste
 
 
-#define MAX_WORLD_COORD		( 64*1024 )
-#define MIN_WORLD_COORD		( -64*1024 )
-#define WORLD_SIZE			( MAX_WORLD_COORD - MIN_WORLD_COORD )
+#define MAX_WORLD_COORD		(64*1024)
+#define MIN_WORLD_COORD		(-64*1024)
+#define WORLD_SIZE			(MAX_WORLD_COORD - MIN_WORLD_COORD)
 
 typedef enum
 {
@@ -875,12 +875,12 @@ typedef struct
 	vec3_t		muzzleDir;
 	vec3_t		muzzleDirOld;
 	saberTrail_t	trail;
-	void		ActivateTrail ( float duration )
+	void		ActivateTrail (float duration)
 				{
 					trail.inAction = qtrue;
 					trail.duration = duration;
 				};
-	void		DeactivateTrail ( float duration )
+	void		DeactivateTrail (float duration)
 				{
 					trail.inAction = qfalse;
 					trail.duration = duration;
@@ -1091,17 +1091,17 @@ typedef struct
 	int			splashDamage2;				//0 - amount of splashDamage, 100% at a distance of 0, 0% at a distance = splashRadius
 	float		splashKnockback2;			//0 - amount of splashKnockback, 100% at a distance of 0, 0% at a distance = splashRadius
 //=========================================================================================================================================
-	void		Activate( void )
+	void		Activate(void)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
 						blade[i].active = qtrue;
 					}
 				};
 
-	void		Deactivate( void )
+	void		Deactivate(void)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
 						blade[i].active = qfalse;
 					}
@@ -1112,10 +1112,10 @@ typedef struct
 	//	[in]		int iBlade		Which Blade to activate.
 	//	[in]		bool bActive	Whether to activate it (default true), or deactivate it (false).
 	//	[return]	void
-	void		BladeActivate( int iBlade, qboolean bActive = qtrue )
+	void		BladeActivate(int iBlade, qboolean bActive = qtrue)
 				{
 					// Validate blade ID/Index.
-					if ( iBlade < 0 || iBlade >= numBlades )
+					if (iBlade < 0 || iBlade >= numBlades)
 						return;
 
 					blade[iBlade].active = bActive;
@@ -1123,9 +1123,9 @@ typedef struct
 
 	qboolean	Active()
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						if ( blade[i].active )
+						if (blade[i].active)
 						{
 							return qtrue;
 						}
@@ -1134,36 +1134,36 @@ typedef struct
 				}
 	qboolean	ActiveManualOnly()
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						if ( bladeStyle2Start > 0 )
+						if (bladeStyle2Start > 0)
 						{
-							if ( i >= bladeStyle2Start )
+							if (i >= bladeStyle2Start)
 							{
-								if ( (saberFlags2&SFL2_NO_MANUAL_DEACTIVATE2) )
+								if ((saberFlags2&SFL2_NO_MANUAL_DEACTIVATE2))
 								{//don't count this blade
 									continue;
 								}
 							}
-							else if ( (saberFlags2&SFL2_NO_MANUAL_DEACTIVATE) )
+							else if ((saberFlags2&SFL2_NO_MANUAL_DEACTIVATE))
 							{//don't count this blade
 								continue;
 							}
 						}
-						else if ( (saberFlags2&SFL2_NO_MANUAL_DEACTIVATE) )
+						else if ((saberFlags2&SFL2_NO_MANUAL_DEACTIVATE))
 						{//don't count any of these blades!
 							continue;
 						}
-						else if ( blade[i].active )
+						else if (blade[i].active)
 						{
 							return qtrue;
 						}
 					}
 					return qfalse;
 				}
-	void		SetLength( float length )
+	void		SetLength(float length)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
 						blade[i].length = length;
 					}
@@ -1171,9 +1171,9 @@ typedef struct
 	float		Length()
 				{//return largest length
 					float len1 = 0;
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						if ( blade[i].length > len1 )
+						if (blade[i].length > len1)
 						{
 							len1 = blade[i].length;
 						}
@@ -1183,27 +1183,27 @@ typedef struct
 	float		LengthMax()
 				{
 					float len1 = 0;
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						if ( blade[i].lengthMax > len1 )
+						if (blade[i].lengthMax > len1)
 						{
 							len1 = blade[i].lengthMax;
 						}
 					}
 					return len1;
 				};
-	void		ActivateTrail ( float duration )
+	void		ActivateTrail (float duration)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						blade[i].ActivateTrail( duration );
+						blade[i].ActivateTrail(duration);
 					}
 				};
-	void		DeactivateTrail ( float duration )
+	void		DeactivateTrail (float duration)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						blade[i].DeactivateTrail( duration );
+						blade[i].DeactivateTrail(duration);
 					}
 				};
 
@@ -1402,17 +1402,17 @@ public:
 	char		*brokenSaber1;				//if saber is actually hit by another saber, it can be cut in half/broken and will be replaced with this saber in your right hand
 	char		*brokenSaber2;				//if saber is actually hit by another saber, it can be cut in half/broken and will be replaced with this saber in your left hand
 	qboolean	returnDamage;				//when returning from a saber throw, it keeps spinning and doing damage
-	void		Activate( void )
+	void		Activate(void)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
 						blade[i].active = qtrue;
 					}
 				};
 
-	void		Deactivate( void )
+	void		Deactivate(void)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
 						blade[i].active = qfalse;
 					}
@@ -1423,10 +1423,10 @@ public:
 	//	[in]		int iBlade		Which Blade to activate.
 	//	[in]		bool bActive	Whether to activate it (default true), or deactivate it (false).
 	//	[return]	void
-	void		BladeActivate( int iBlade, qboolean bActive = qtrue )
+	void		BladeActivate(int iBlade, qboolean bActive = qtrue)
 				{
 					// Validate blade ID/Index.
-					if ( iBlade < 0 || iBlade >= numBlades )
+					if (iBlade < 0 || iBlade >= numBlades)
 						return;
 
 					blade[iBlade].active = bActive;
@@ -1434,18 +1434,18 @@ public:
 
 	qboolean	Active()
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						if ( blade[i].active )
+						if (blade[i].active)
 						{
 							return qtrue;
 						}
 					}
 					return qfalse;
 				}
-	void		SetLength( float length )
+	void		SetLength(float length)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
 						blade[i].length = length;
 					}
@@ -1453,9 +1453,9 @@ public:
 	float		Length()
 				{//return largest length
 					float len1 = 0;
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						if ( blade[i].length > len1 )
+						if (blade[i].length > len1)
 						{
 							len1 = blade[i].length;
 						}
@@ -1465,27 +1465,27 @@ public:
 	float		LengthMax()
 				{
 					float len1 = 0;
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						if ( blade[i].lengthMax > len1 )
+						if (blade[i].lengthMax > len1)
 						{
 							len1 = blade[i].lengthMax;
 						}
 					}
 					return len1;
 				};
-	void		ActivateTrail ( float duration )
+	void		ActivateTrail (float duration)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						blade[i].ActivateTrail( duration );
+						blade[i].ActivateTrail(duration);
 					}
 				};
-	void		DeactivateTrail ( float duration )
+	void		DeactivateTrail (float duration)
 				{
-					for ( int i = 0; i < numBlades; i++ )
+					for (int i = 0; i < numBlades; i++)
 					{
-						blade[i].DeactivateTrail( duration );
+						blade[i].DeactivateTrail(duration);
 					}
 				};
 
@@ -1679,20 +1679,20 @@ public:
 	//			or descend them as classes - so not every client has all this info
 	TSaberInfo	saber[MAX_SABERS];
 	qboolean	dualSabers;
-	qboolean	SaberStaff( void ) { return (qboolean)( saber[0].type == SABER_STAFF || (dualSabers && saber[1].type == SABER_STAFF) ); };
-	qboolean	SaberActive() { return (qboolean)( saber[0].Active() || (dualSabers&&saber[1].Active()) ); };
-	void		SetSaberLength( float length )
+	qboolean	SaberStaff(void) {return (qboolean)(saber[0].type == SABER_STAFF || (dualSabers && saber[1].type == SABER_STAFF));};
+	qboolean	SaberActive() {return (qboolean)(saber[0].Active() || (dualSabers&&saber[1].Active()));};
+	void		SetSaberLength(float length)
 				{
-					saber[0].SetLength( length );
-					if ( dualSabers )
+					saber[0].SetLength(length);
+					if (dualSabers)
 					{
-						saber[1].SetLength( length );
+						saber[1].SetLength(length);
 					}
 				}
 	float		SaberLength()
 				{//return largest length
 					float len1 = saber[0].Length();
-					if ( dualSabers && saber[1].Length() > len1 )
+					if (dualSabers && saber[1].Length() > len1)
 					{
 						return saber[1].Length();
 					}
@@ -1700,11 +1700,11 @@ public:
 				};
 	float		SaberLengthMax()
 				{
-					if ( saber[0].LengthMax() > saber[1].LengthMax() )
+					if (saber[0].LengthMax() > saber[1].LengthMax())
 					{
 						return saber[0].LengthMax();
 					}
-					else if ( dualSabers )
+					else if (dualSabers)
 					{
 						return saber[1].LengthMax();
 					}
@@ -1717,52 +1717,52 @@ public:
 	//	[in]	int iBlade		Which blade to modify (0 - (NUM_BLADES - 1)).
 	//	[in]	bool bActive	Whether to make it active (default true) or inactive (false).
 	//	[return]	void
-	void		SaberBladeActivate( int iSaber, int iBlade, qboolean bActive = qtrue )
+	void		SaberBladeActivate(int iSaber, int iBlade, qboolean bActive = qtrue)
 	{
 		// Validate saber (if it's greater than or equal to zero, OR it above the first saber but we
 		// are not doing duel Sabers, leave, something is not right.
-		if ( iSaber < 0 || ( iSaber > 0  && !dualSabers ) )
+		if (iSaber < 0 || (iSaber > 0  && !dualSabers))
 			return;
 
-		saber[iSaber].BladeActivate( iBlade, bActive );
+		saber[iSaber].BladeActivate(iBlade, bActive);
 	}
 
-	void		SaberActivate( void )
+	void		SaberActivate(void)
 				{
 					saber[0].Activate();
-					if ( dualSabers )
+					if (dualSabers)
 					{
 						saber[1].Activate();
 					}
 				}
-	void		SaberDeactivate( void )
+	void		SaberDeactivate(void)
 				{
 					saber[0].Deactivate();
 					saber[1].Deactivate();
 				};
-	void		SaberActivateTrail ( float duration )
+	void		SaberActivateTrail (float duration)
 				{
-					saber[0].ActivateTrail( duration );
-					if ( dualSabers )
+					saber[0].ActivateTrail(duration);
+					if (dualSabers)
 					{
-						saber[1].ActivateTrail( duration );
+						saber[1].ActivateTrail(duration);
 					}
 				};
-	void		SaberDeactivateTrail ( float duration )
+	void		SaberDeactivateTrail (float duration)
 				{
-					saber[0].DeactivateTrail( duration );
-					if ( dualSabers )
+					saber[0].DeactivateTrail(duration);
+					if (dualSabers)
 					{
-						saber[1].DeactivateTrail( duration );
+						saber[1].DeactivateTrail(duration);
 					}
 				};
-	int			SaberDisarmBonus( int bladeNum )
+	int			SaberDisarmBonus(int bladeNum)
 				{
 					int disarmBonus = 0;
-					if ( saber[0].Active() )
+					if (saber[0].Active())
 					{
-						if ( saber[0].bladeStyle2Start > 0
-							&& bladeNum >= saber[0].bladeStyle2Start )
+						if (saber[0].bladeStyle2Start > 0
+							&& bladeNum >= saber[0].bladeStyle2Start)
 						{
 							disarmBonus += saber[0].disarmBonus2;
 						}
@@ -1771,10 +1771,10 @@ public:
 							disarmBonus += saber[0].disarmBonus;
 						}
 					}
-					if ( dualSabers && saber[1].Active() )
+					if (dualSabers && saber[1].Active())
 					{//bonus for having 2 sabers
-						if ( saber[1].bladeStyle2Start > 0
-							&& bladeNum >= saber[1].bladeStyle2Start )
+						if (saber[1].bladeStyle2Start > 0
+							&& bladeNum >= saber[1].bladeStyle2Start)
 						{
                             disarmBonus += 1 + saber[1].disarmBonus2;
 						}
@@ -1785,14 +1785,14 @@ public:
 					}
 					return disarmBonus;
 				};
-	int			SaberParryBonus( void )
+	int			SaberParryBonus(void)
 				{
 					int parryBonus = 0;
-					if ( saber[0].Active() )
+					if (saber[0].Active())
 					{
 						parryBonus += saber[0].parryBonus;
 					}
-					if ( dualSabers && saber[1].Active() )
+					if (dualSabers && saber[1].Active())
 					{//bonus for having 2 sabers
 						parryBonus += 1 + saber[1].parryBonus;
 					}
@@ -2334,7 +2334,7 @@ typedef enum {// !!!!!!!!!!! LOADSAVE-affecting struct !!!!!!!!!!
 	TR_LINEAR,
 	TR_LINEAR_STOP,
 	TR_NONLINEAR_STOP,
-	TR_SINE,					// value = base + sin( time / duration ) * delta
+	TR_SINE,					// value = base + sin(time / duration) * delta
 	TR_GRAVITY
 } trType_t;
 
@@ -2671,8 +2671,8 @@ typedef struct stringID_table_s
 	int		id;
 } stringID_table_t;
 
-int GetIDForString ( const stringID_table_t *table, const char *string );
-const char *GetStringForID( const stringID_table_t *table, int id );
+int GetIDForString (const stringID_table_t *table, const char *string);
+const char *GetStringForID(const stringID_table_t *table, int id);
 
 // savegame screenshot size stuff...
 //
@@ -2750,13 +2750,13 @@ typedef enum
 
 } ForceReload_e;
 
-qboolean Q_InBitflags( const uint32_t *bits, int index, uint32_t bitsPerByte );
-void Q_AddToBitflags( uint32_t *bits, int index, uint32_t bitsPerByte );
-void Q_RemoveFromBitflags( uint32_t *bits, int index, uint32_t bitsPerByte );
+qboolean Q_InBitflags(const uint32_t *bits, int index, uint32_t bitsPerByte);
+void Q_AddToBitflags(uint32_t *bits, int index, uint32_t bitsPerByte);
+void Q_RemoveFromBitflags(uint32_t *bits, int index, uint32_t bitsPerByte);
 
-typedef int( *cmpFunc_t )(const void *a, const void *b);
+typedef int(*cmpFunc_t)(const void *a, const void *b);
 
-void *Q_LinearSearch( const void *key, const void *ptr, size_t count,
-	size_t size, cmpFunc_t cmp );
+void *Q_LinearSearch(const void *key, const void *ptr, size_t count,
+	size_t size, cmpFunc_t cmp);
 
 #endif	// __Q_SHARED_H

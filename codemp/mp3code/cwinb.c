@@ -57,7 +57,7 @@ void windowB(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si = (si + 64) & 511;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx = (bx + 64) & 511;
-      }
+     }
       si++;
       bx--;
       tmp = (long) sum;
@@ -66,14 +66,14 @@ void windowB(float *vbuf, int vb_ptr, unsigned char *pcm)
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = ((unsigned char) (tmp >> 8)) ^ 0x80;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx = (bx + 64) & 511;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -93,14 +93,14 @@ void windowB(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si = (si + 64) & 511;
 	 sum += (*coef--) * vbuf[bx];
 	 bx = (bx + 64) & 511;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = ((unsigned char) (tmp >> 8)) ^ 0x80;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 void windowB_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
@@ -125,7 +125,7 @@ void windowB_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si = (si + 64) & 511;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx = (bx + 64) & 511;
-      }
+     }
       si++;
       bx--;
       tmp = (long) sum;
@@ -135,14 +135,14 @@ void windowB_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 tmp = -32768;
       *pcm = ((unsigned char) (tmp >> 8)) ^ 0x80;
       pcm += 2;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx = (bx + 64) & 511;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -163,7 +163,7 @@ void windowB_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si = (si + 64) & 511;
 	 sum += (*coef--) * vbuf[bx];
 	 bx = (bx + 64) & 511;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
@@ -171,7 +171,7 @@ void windowB_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 tmp = -32768;
       *pcm = ((unsigned char) (tmp >> 8)) ^ 0x80;
       pcm += 2;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 /*------------------- 16 pt window ------------------------------*/
@@ -197,7 +197,7 @@ void windowB16(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si += 32;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx += 32;
-      }
+     }
       si++;
       bx--;
       coef += 16;
@@ -207,14 +207,14 @@ void windowB16(float *vbuf, int vb_ptr, unsigned char *pcm)
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = ((unsigned char) (tmp >> 8)) ^ 0x80;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx += 32;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -235,14 +235,14 @@ void windowB16(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si += 32;
 	 sum += (*coef--) * vbuf[bx];
 	 bx += 32;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = ((unsigned char) (tmp >> 8)) ^ 0x80;
-   }
+  }
 }
 /*--------------- 16 pt dual window (interleaved output) -----------------*/
 void windowB16_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
@@ -267,7 +267,7 @@ void windowB16_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si += 32;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx += 32;
-      }
+     }
       si++;
       bx--;
       coef += 16;
@@ -278,14 +278,14 @@ void windowB16_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 tmp = -32768;
       *pcm = ((unsigned char) (tmp >> 8)) ^ 0x80;
       pcm += 2;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx += 32;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -307,7 +307,7 @@ void windowB16_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si += 32;
 	 sum += (*coef--) * vbuf[bx];
 	 bx += 32;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
@@ -315,7 +315,7 @@ void windowB16_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 tmp = -32768;
       *pcm = ((unsigned char) (tmp >> 8)) ^ 0x80;
       pcm += 2;
-   }
+  }
 }
 /*------------------- 8 pt window ------------------------------*/
 void windowB8(float *vbuf, int vb_ptr, unsigned char *pcm)
@@ -340,7 +340,7 @@ void windowB8(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si = (si + 16) & 127;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx = (bx + 16) & 127;
-      }
+     }
       si++;
       bx--;
       coef += 48;
@@ -350,14 +350,14 @@ void windowB8(float *vbuf, int vb_ptr, unsigned char *pcm)
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = ((unsigned char) (tmp >> 8)) ^ 0x80;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx = (bx + 16) & 127;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -378,14 +378,14 @@ void windowB8(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si = (si + 16) & 127;
 	 sum += (*coef--) * vbuf[bx];
 	 bx = (bx + 16) & 127;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = ((unsigned char) (tmp >> 8)) ^ 0x80;
-   }
+  }
 }
 /*--------------- 8 pt dual window (interleaved output) -----------------*/
 void windowB8_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
@@ -410,7 +410,7 @@ void windowB8_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si = (si + 16) & 127;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx = (bx + 16) & 127;
-      }
+     }
       si++;
       bx--;
       coef += 48;
@@ -421,14 +421,14 @@ void windowB8_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 tmp = -32768;
       *pcm = ((unsigned char) (tmp >> 8)) ^ 0x80;
       pcm += 2;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx = (bx + 16) & 127;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -450,7 +450,7 @@ void windowB8_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 si = (si + 16) & 127;
 	 sum += (*coef--) * vbuf[bx];
 	 bx = (bx + 16) & 127;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
@@ -458,7 +458,7 @@ void windowB8_dual(float *vbuf, int vb_ptr, unsigned char *pcm)
 	 tmp = -32768;
       *pcm = ((unsigned char) (tmp >> 8)) ^ 0x80;
       pcm += 2;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 #endif	// #ifdef COMPILE_ME

@@ -6,13 +6,13 @@ void main()
 	const vec2 positions[] = vec2[3](
 		vec2(-1.0f,  1.0f),
 		vec2(-1.0f, -3.0f),
-		vec2( 3.0f,  1.0f)
+		vec2(3.0f,  1.0f)
 	);
 
 	const vec2 texcoords[] = vec2[3](
-		vec2( 0.0f,  1.0f),
-		vec2( 0.0f, -1.0f),
-		vec2( 2.0f,  1.0f)
+		vec2(0.0f,  1.0f),
+		vec2(0.0f, -1.0f),
+		vec2(2.0f,  1.0f)
 	);
 
 	gl_Position = vec4(positions[gl_VertexID], 0.0, 1.0);
@@ -41,18 +41,18 @@ vec2(0.7320465, 0.6317794)
 // Copyright: Copyleft 2012 :-)
 // Source: http://stackoverflow.com/questions/5149544/can-i-generate-a-random-number-inside-a-pixel-shader
 
-float random( const vec2 p )
+float random(const vec2 p)
 {
   // We need irrationals for pseudo randomness.
   // Most (all?) known transcendental numbers will (generally) work.
   const vec2 r = vec2(
     23.1406926327792690,  // e^pi (Gelfond's constant)
      2.6651441426902251); // 2^sqrt(2) (Gelfond-Schneider constant)
-  //return fract( cos( mod( 123456789., 1e-7 + 256. * dot(p,r) ) ) );
-  return mod( 123456789., 1e-7 + 256. * dot(p,r) );
+  //return fract(cos(mod(123456789., 1e-7 + 256. * dot(p,r))));
+  return mod(123456789., 1e-7 + 256. * dot(p,r));
 }
 
-mat2 randomRotation( const vec2 p )
+mat2 randomRotation(const vec2 p)
 {
 	float r = random(p);
 	float sinr = sin(r);

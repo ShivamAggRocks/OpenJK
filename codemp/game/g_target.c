@@ -28,33 +28,33 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 /*QUAKED target_give (1 0 0) (-8 -8 -8) (8 8 8)
 Gives the activator all the items pointed to.
 */
-void Use_Target_Give( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
+void Use_Target_Give(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 	gentity_t	*t;
 	trace_t		trace;
 
-	if ( !activator->client ) {
+	if (!activator->client) {
 		return;
 	}
 
-	if ( !ent->target ) {
+	if (!ent->target) {
 		return;
 	}
 
-	memset( &trace, 0, sizeof( trace ) );
+	memset(&trace, 0, sizeof(trace));
 	t = NULL;
-	while ( (t = G_Find (t, FOFS(targetname), ent->target)) != NULL ) {
-		if ( !t->item ) {
+	while ((t = G_Find (t, FOFS(targetname), ent->target)) != NULL) {
+		if (!t->item) {
 			continue;
 		}
-		Touch_Item( t, activator, &trace );
+		Touch_Item(t, activator, &trace);
 
 		// make sure it isn't going to respawn or show any events
 		t->nextthink = 0;
-		trap->UnlinkEntity( (sharedEntity_t *)t );
+		trap->UnlinkEntity((sharedEntity_t *)t);
 	}
 }
 
-void SP_target_give( gentity_t *ent ) {
+void SP_target_give(gentity_t *ent) {
 	ent->use = Use_Target_Give;
 }
 
@@ -65,23 +65,23 @@ void SP_target_give( gentity_t *ent ) {
 takes away all the activators powerups.
 Used to drop flight powerups into death puts.
 */
-void Use_target_remove_powerups( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
-	if( !activator->client ) {
+void Use_target_remove_powerups(gentity_t *ent, gentity_t *other, gentity_t *activator) {
+	if(!activator->client) {
 		return;
 	}
 
-	if( activator->client->ps.powerups[PW_REDFLAG] ) {
-		Team_ReturnFlag( TEAM_RED );
-	} else if( activator->client->ps.powerups[PW_BLUEFLAG] ) {
-		Team_ReturnFlag( TEAM_BLUE );
-	} else if( activator->client->ps.powerups[PW_NEUTRALFLAG] ) {
-		Team_ReturnFlag( TEAM_FREE );
+	if(activator->client->ps.powerups[PW_REDFLAG]) {
+		Team_ReturnFlag(TEAM_RED);
+	} else if(activator->client->ps.powerups[PW_BLUEFLAG]) {
+		Team_ReturnFlag(TEAM_BLUE);
+	} else if(activator->client->ps.powerups[PW_NEUTRALFLAG]) {
+		Team_ReturnFlag(TEAM_FREE);
 	}
 
-	memset( activator->client->ps.powerups, 0, sizeof( activator->client->ps.powerups ) );
+	memset(activator->client->ps.powerups, 0, sizeof(activator->client->ps.powerups));
 }
 
-void SP_target_remove_powerups( gentity_t *ent ) {
+void SP_target_remove_powerups(gentity_t *ent) {
 	ent->use = Use_target_remove_powerups;
 }
 
@@ -96,28 +96,28 @@ activated again while it is counting down to an event.
 "wait" seconds to pause before firing targets.
 "random" delay variance, total delay = delay +/- random seconds
 */
-void Think_Target_Delay( gentity_t *ent ) {
-	G_UseTargets( ent, ent->activator );
+void Think_Target_Delay(gentity_t *ent) {
+	G_UseTargets(ent, ent->activator);
 }
 
-void Use_Target_Delay( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
+void Use_Target_Delay(gentity_t *ent, gentity_t *other, gentity_t *activator) {
 	if (ent->nextthink > level.time && (ent->spawnflags & 1))
-	{ //Leave me alone, I am thinking.
+	{//Leave me alone, I am thinking.
 		return;
 	}
 	G_ActivateBehavior(ent,BSET_USE);
-	ent->nextthink = level.time + ( ent->wait + ent->random * Q_flrand(-1.0f, 1.0f) ) * 1000;
+	ent->nextthink = level.time + (ent->wait + ent->random * Q_flrand(-1.0f, 1.0f)) * 1000;
 	ent->think = Think_Target_Delay;
 	ent->activator = activator;
 }
 
-void SP_target_delay( gentity_t *ent ) {
+void SP_target_delay(gentity_t *ent) {
 	// check delay for backwards compatability
-	if ( !G_SpawnFloat( "delay", "0", &ent->wait ) ) {
-		G_SpawnFloat( "wait", "1", &ent->wait );
+	if (!G_SpawnFloat("delay", "0", &ent->wait)) {
+		G_SpawnFloat("wait", "1", &ent->wait);
 	}
 
-	if ( !ent->wait ) {
+	if (!ent->wait) {
 		ent->wait = 1;
 	}
 	ent->use = Use_Target_Delay;
@@ -132,11 +132,11 @@ void SP_target_delay( gentity_t *ent ) {
 The activator is given this many points.
 */
 void Use_Target_Score (gentity_t *ent, gentity_t *other, gentity_t *activator) {
-	AddScore( activator, ent->r.currentOrigin, ent->count );
+	AddScore(activator, ent->r.currentOrigin, ent->count);
 }
 
-void SP_target_score( gentity_t *ent ) {
-	if ( !ent->count ) {
+void SP_target_score(gentity_t *ent) {
+	if (!ent->count) {
 		ent->count = 1;
 	}
 	ent->use = Use_Target_Score;
@@ -204,46 +204,46 @@ void Use_Target_Print (gentity_t *ent, gentity_t *other, gentity_t *activator)
 #endif
 
 	G_ActivateBehavior(ent,BSET_USE);
-	if ( ( ent->spawnflags & 4 ) )
+	if ((ent->spawnflags & 4))
 	{//private, to one client only
 		if (!activator || !activator->inuse)
 		{
 			Com_Printf("ERROR: Bad activator in Use_Target_Print");
 		}
-		if ( activator && activator->client )
+		if (activator && activator->client)
 		{//make sure there's a valid client ent to send it to
 			if (ent->message[0] == '@' && ent->message[1] != '@')
 			{
-				trap->SendServerCommand( activator-g_entities, va("cps \"%s\"", ent->message ));
+				trap->SendServerCommand(activator-g_entities, va("cps \"%s\"", ent->message));
 			}
 			else
 			{
-				trap->SendServerCommand( activator-g_entities, va("cp \"%s\"", ent->message ));
+				trap->SendServerCommand(activator-g_entities, va("cp \"%s\"", ent->message));
 			}
 		}
 		//NOTE: change in functionality - if there *is* no valid client ent, it won't send it to anyone at all
 		return;
 	}
 
-	if ( ent->spawnflags & 3 ) {
-		if ( ent->spawnflags & 1 ) {
+	if (ent->spawnflags & 3) {
+		if (ent->spawnflags & 1) {
 			if (ent->message[0] == '@' && ent->message[1] != '@')
 			{
-				G_TeamCommand( TEAM_RED, va("cps \"%s\"", ent->message) );
+				G_TeamCommand(TEAM_RED, va("cps \"%s\"", ent->message));
 			}
 			else
 			{
-				G_TeamCommand( TEAM_RED, va("cp \"%s\"", ent->message) );
+				G_TeamCommand(TEAM_RED, va("cp \"%s\"", ent->message));
 			}
 		}
-		if ( ent->spawnflags & 2 ) {
+		if (ent->spawnflags & 2) {
 			if (ent->message[0] == '@' && ent->message[1] != '@')
 			{
-				G_TeamCommand( TEAM_BLUE, va("cps \"%s\"", ent->message) );
+				G_TeamCommand(TEAM_BLUE, va("cps \"%s\"", ent->message));
 			}
 			else
 			{
-				G_TeamCommand( TEAM_BLUE, va("cp \"%s\"", ent->message) );
+				G_TeamCommand(TEAM_BLUE, va("cp \"%s\"", ent->message));
 			}
 		}
 		return;
@@ -251,15 +251,15 @@ void Use_Target_Print (gentity_t *ent, gentity_t *other, gentity_t *activator)
 
 	if (ent->message[0] == '@' && ent->message[1] != '@')
 	{
-		trap->SendServerCommand( -1, va("cps \"%s\"", ent->message ));
+		trap->SendServerCommand(-1, va("cps \"%s\"", ent->message));
 	}
 	else
 	{
-		trap->SendServerCommand( -1, va("cp \"%s\"", ent->message ));
+		trap->SendServerCommand(-1, va("cp \"%s\"", ent->message));
 	}
 }
 
-void SP_target_print( gentity_t *ent ) {
+void SP_target_print(gentity_t *ent) {
 	ent->use = Use_Target_Print;
 }
 
@@ -296,43 +296,43 @@ void Use_Target_Speaker (gentity_t *ent, gentity_t *other, gentity_t *activator)
 			ent->s.trickedentindex = 0;
 		}
 	}else {	// normal sound
-		if ( ent->spawnflags & 8 ) {
-			G_AddEvent( activator, EV_GENERAL_SOUND, ent->noise_index );
+		if (ent->spawnflags & 8) {
+			G_AddEvent(activator, EV_GENERAL_SOUND, ent->noise_index);
 		} else if (ent->spawnflags & 4) {
-			G_AddEvent( ent, EV_GLOBAL_SOUND, ent->noise_index );
+			G_AddEvent(ent, EV_GLOBAL_SOUND, ent->noise_index);
 		} else {
-			G_AddEvent( ent, EV_GENERAL_SOUND, ent->noise_index );
+			G_AddEvent(ent, EV_GENERAL_SOUND, ent->noise_index);
 		}
 	}
 }
 
-void SP_target_speaker( gentity_t *ent ) {
+void SP_target_speaker(gentity_t *ent) {
 	char	buffer[MAX_QPATH];
 	char	*s;
 
-	G_SpawnFloat( "wait", "0", &ent->wait );
-	G_SpawnFloat( "random", "0", &ent->random );
+	G_SpawnFloat("wait", "0", &ent->wait);
+	G_SpawnFloat("random", "0", &ent->random);
 
-	if ( G_SpawnString ( "soundSet", "", &s ) )
+	if (G_SpawnString ("soundSet", "", &s))
 	{	// this is a sound set
 		ent->s.soundSetIndex = G_SoundSetIndex(s);
 		ent->s.eFlags = EF_PERMANENT;
-		VectorCopy( ent->s.origin, ent->s.pos.trBase );
+		VectorCopy(ent->s.origin, ent->s.pos.trBase);
 		trap->LinkEntity ((sharedEntity_t *)ent);
 		return;
 	}
 
-	if ( !G_SpawnString( "noise", "NOSOUND", &s ) ) {
-		trap->Error( ERR_DROP, "target_speaker without a noise key at %s", vtos( ent->s.origin ) );
+	if (!G_SpawnString("noise", "NOSOUND", &s)) {
+		trap->Error(ERR_DROP, "target_speaker without a noise key at %s", vtos(ent->s.origin));
 	}
 
 	// force all client reletive sounds to be "activator" speakers that
 	// play on the entity that activates it
-	if ( s[0] == '*' ) {
+	if (s[0] == '*') {
 		ent->spawnflags |= 8;
 	}
 
-	Q_strncpyz( buffer, s, sizeof(buffer) );
+	Q_strncpyz(buffer, s, sizeof(buffer));
 
 	ent->noise_index = G_SoundIndex(buffer);
 
@@ -344,7 +344,7 @@ void SP_target_speaker( gentity_t *ent ) {
 
 
 	// check for prestarted looping sound
-	if ( ent->spawnflags & 1 ) {
+	if (ent->spawnflags & 1) {
 		ent->s.loopSound = ent->noise_index;
 		ent->s.loopIsSoundset = qfalse;
 	}
@@ -355,11 +355,11 @@ void SP_target_speaker( gentity_t *ent ) {
 		ent->r.svFlags |= SVF_BROADCAST;
 	}
 
-	VectorCopy( ent->s.origin, ent->s.pos.trBase );
+	VectorCopy(ent->s.origin, ent->s.pos.trBase);
 
 	// must link the entity so we get areas and clusters so
 	// the server can determine who to send updates to
-	trap->LinkEntity( (sharedEntity_t *)ent );
+	trap->LinkEntity((sharedEntity_t *)ent);
 }
 
 
@@ -375,7 +375,7 @@ void target_laser_think (gentity_t *self) {
 	vec3_t	point;
 
 	// if pointed at another entity, set movedir to point at it
-	if ( self->enemy ) {
+	if (self->enemy) {
 		VectorMA (self->enemy->s.origin, 0.5, self->enemy->r.mins, point);
 		VectorMA (point, 0.5, self->enemy->r.maxs, point);
 		VectorSubtract (point, self->s.origin, self->movedir);
@@ -385,17 +385,17 @@ void target_laser_think (gentity_t *self) {
 	// fire forward and see what we hit
 	VectorMA (self->s.origin, 2048, self->movedir, end);
 
-	trap->Trace( &tr, self->s.origin, NULL, NULL, end, self->s.number, CONTENTS_SOLID|CONTENTS_BODY|CONTENTS_CORPSE, qfalse, 0, 0);
+	trap->Trace(&tr, self->s.origin, NULL, NULL, end, self->s.number, CONTENTS_SOLID|CONTENTS_BODY|CONTENTS_CORPSE, qfalse, 0, 0);
 
-	if ( tr.entityNum ) {
+	if (tr.entityNum) {
 		// hurt it if we can
-		G_Damage ( &g_entities[tr.entityNum], self, self->activator, self->movedir,
+		G_Damage (&g_entities[tr.entityNum], self, self->activator, self->movedir,
 			tr.endpos, self->damage, DAMAGE_NO_KNOCKBACK, MOD_TARGET_LASER);
 	}
 
 	VectorCopy (tr.endpos, self->s.origin2);
 
-	trap->LinkEntity( (sharedEntity_t *)self );
+	trap->LinkEntity((sharedEntity_t *)self);
 	self->nextthink = level.time + FRAMETIME;
 }
 
@@ -408,14 +408,14 @@ void target_laser_on (gentity_t *self)
 
 void target_laser_off (gentity_t *self)
 {
-	trap->UnlinkEntity( (sharedEntity_t *)self );
+	trap->UnlinkEntity((sharedEntity_t *)self);
 	self->nextthink = 0;
 }
 
 void target_laser_use (gentity_t *self, gentity_t *other, gentity_t *activator)
 {
 	self->activator = activator;
-	if ( self->nextthink > 0 )
+	if (self->nextthink > 0)
 		target_laser_off (self);
 	else
 		target_laser_on (self);
@@ -440,7 +440,7 @@ void target_laser_start (gentity_t *self)
 	self->use = target_laser_use;
 	self->think = target_laser_think;
 
-	if ( !self->damage ) {
+	if (!self->damage) {
 		self->damage = 1;
 	}
 
@@ -460,7 +460,7 @@ void SP_target_laser (gentity_t *self)
 
 //==========================================================
 
-void target_teleporter_use( gentity_t *self, gentity_t *other, gentity_t *activator ) {
+void target_teleporter_use(gentity_t *self, gentity_t *other, gentity_t *activator) {
 	gentity_t	*dest;
 
 	if (!activator->client)
@@ -468,19 +468,19 @@ void target_teleporter_use( gentity_t *self, gentity_t *other, gentity_t *activa
 
 	G_ActivateBehavior(self,BSET_USE);
 
-	dest = 	G_PickTarget( self->target );
+	dest = 	G_PickTarget(self->target);
 	if (!dest) {
 		trap->Print ("Couldn't find teleporter destination\n");
 		return;
 	}
 
-	TeleportPlayer( activator, dest->s.origin, dest->s.angles );
+	TeleportPlayer(activator, dest->s.origin, dest->s.angles);
 }
 
 /*QUAKED target_teleporter (1 0 0) (-8 -8 -8) (8 8 8)
 The activator will be teleported away.
 */
-void SP_target_teleporter( gentity_t *self ) {
+void SP_target_teleporter(gentity_t *self) {
 	if (!self->targetname)
 		trap->Print("untargeted %s at %s\n", self->classname, vtos(self->s.origin));
 
@@ -501,24 +501,24 @@ wait - set to -1 to use it only once
 */
 void target_relay_use (gentity_t *self, gentity_t *other, gentity_t *activator) {
 	qboolean ranscript = qfalse;
-	if ( ( self->spawnflags & 1 ) && activator->client
-		&& activator->client->sess.sessionTeam != TEAM_RED ) {
+	if ((self->spawnflags & 1) && activator->client
+		&& activator->client->sess.sessionTeam != TEAM_RED) {
 		return;
 	}
-	if ( ( self->spawnflags & 2 ) && activator->client
-		&& activator->client->sess.sessionTeam != TEAM_BLUE ) {
+	if ((self->spawnflags & 2) && activator->client
+		&& activator->client->sess.sessionTeam != TEAM_BLUE) {
 		return;
 	}
 
-	if ( self->flags & FL_INACTIVE )
+	if (self->flags & FL_INACTIVE)
 	{//set by target_deactivate
 		return;
 	}
 
-	ranscript = G_ActivateBehavior( self, BSET_USE );
-	if ( self->wait == -1 )
+	ranscript = G_ActivateBehavior(self, BSET_USE);
+	if (self->wait == -1)
 	{//never use again
-		if ( ranscript )
+		if (ranscript)
 		{//crap, can't remove!
 			self->use = NULL;
 		}
@@ -528,12 +528,12 @@ void target_relay_use (gentity_t *self, gentity_t *other, gentity_t *activator) 
 			self->nextthink = level.time + FRAMETIME;
 		}
 	}
-	if ( self->spawnflags & 4 ) {
+	if (self->spawnflags & 4) {
 		gentity_t	*ent;
 
-		ent = G_PickTarget( self->target );
-		if ( ent && ent->use ) {
-			GlobalUse( ent, self, activator );
+		ent = G_PickTarget(self->target);
+		if (ent && ent->use) {
+			GlobalUse(ent, self, activator);
 		}
 		return;
 	}
@@ -542,7 +542,7 @@ void target_relay_use (gentity_t *self, gentity_t *other, gentity_t *activator) 
 
 void SP_target_relay (gentity_t *self) {
 	self->use = target_relay_use;
-	if ( self->spawnflags&128 )
+	if (self->spawnflags&128)
 	{
 		self->flags |= FL_INACTIVE;
 	}
@@ -554,22 +554,22 @@ void SP_target_relay (gentity_t *self) {
 /*QUAKED target_kill (.5 .5 .5) (-8 -8 -8) (8 8 8)
 Kills the activator.
 */
-void target_kill_use( gentity_t *self, gentity_t *other, gentity_t *activator ) {
+void target_kill_use(gentity_t *self, gentity_t *other, gentity_t *activator) {
 	G_ActivateBehavior(self,BSET_USE);
-	G_Damage ( activator, NULL, NULL, NULL, NULL, 100000, DAMAGE_NO_PROTECTION, MOD_TELEFRAG);
+	G_Damage (activator, NULL, NULL, NULL, NULL, 100000, DAMAGE_NO_PROTECTION, MOD_TELEFRAG);
 }
 
-void SP_target_kill( gentity_t *self ) {
+void SP_target_kill(gentity_t *self) {
 	self->use = target_kill_use;
 }
 
 /*QUAKED target_position (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for in-game calculation, like jumppad targets.
 */
-void SP_target_position( gentity_t *self ){
-	G_SetOrigin( self, self->s.origin );
+void SP_target_position(gentity_t *self){
+	G_SetOrigin(self, self->s.origin);
 	/*
-	G_SetAngles( self, self->s.angles );
+	G_SetAngles(self, self->s.angles);
 	self->s.eType = ET_INVISIBLE;
 	*/
 }
@@ -582,35 +582,35 @@ Set "count" to 0-7 for color.
 Closest target_location in sight used for the location, if none
 in site, closest in distance
 */
-void SP_target_location( gentity_t *self ) {
-	if ( self->targetname && self->targetname[0] ) {
-		SP_target_position( self );
+void SP_target_location(gentity_t *self) {
+	if (self->targetname && self->targetname[0]) {
+		SP_target_position(self);
 		return;
 	}
 	else {
 		static qboolean didwarn = qfalse;
-		if ( !self->message ) {
-			trap->Print( "target_location with no message at %s\n", vtos( self->s.origin ) );
-			G_FreeEntity( self );
+		if (!self->message) {
+			trap->Print("target_location with no message at %s\n", vtos(self->s.origin));
+			G_FreeEntity(self);
 			return;
 		}
 
-		if ( level.locations.num >= MAX_LOCATIONS ) {
-			if ( !didwarn ) {
-				trap->Print( "Maximum target_locations hit (%d)! Remaining locations will be removed.\n", MAX_LOCATIONS );
+		if (level.locations.num >= MAX_LOCATIONS) {
+			if (!didwarn) {
+				trap->Print("Maximum target_locations hit (%d)! Remaining locations will be removed.\n", MAX_LOCATIONS);
 				didwarn = qtrue;
 			}
-			G_FreeEntity( self );
+			G_FreeEntity(self);
 			return;
 		}
 
-		VectorCopy( self->s.origin, level.locations.data[level.locations.num].origin );
-		Q_strncpyz( level.locations.data[level.locations.num].message, self->message, sizeof( level.locations.data[level.locations.num].message ) );
-		level.locations.data[level.locations.num].count = Com_Clampi( 0, 7, self->count );
+		VectorCopy(self->s.origin, level.locations.data[level.locations.num].origin);
+		Q_strncpyz(level.locations.data[level.locations.num].message, self->message, sizeof(level.locations.data[level.locations.num].message));
+		level.locations.data[level.locations.num].count = Com_Clampi(0, 7, self->count);
 
 		level.locations.num++;
 
-		G_FreeEntity( self );
+		G_FreeEntity(self);
 	}
 }
 
@@ -625,50 +625,50 @@ After the counter has been triggered "count" times (default 2), it will fire all
 
 bounceCount - number of times the counter should reset to it's full count when it's done
 */
-extern void G_DebugPrint( int level, const char *format, ... );
-void target_counter_use( gentity_t *self, gentity_t *other, gentity_t *activator )
+extern void G_DebugPrint(int level, const char *format, ...);
+void target_counter_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 {
-	if ( self->count == 0 )
+	if (self->count == 0)
 	{
 		return;
 	}
 
-	//trap->Printf("target_counter %s used by %s, entnum %d\n", self->targetname, activator->targetname, activator->s.number );
+	//trap->Printf("target_counter %s used by %s, entnum %d\n", self->targetname, activator->targetname, activator->s.number);
 	self->count--;
 
-	if ( activator )
+	if (activator)
 	{
-		G_DebugPrint( WL_VERBOSE, "target_counter %s used by %s (%d/%d)\n", self->targetname, activator->targetname, (self->genericValue1-self->count), self->genericValue1 );
+		G_DebugPrint(WL_VERBOSE, "target_counter %s used by %s (%d/%d)\n", self->targetname, activator->targetname, (self->genericValue1-self->count), self->genericValue1);
 	}
 
-	if ( self->count )
+	if (self->count)
 	{
-		if ( self->target2 )
+		if (self->target2)
 		{
-			//trap->Printf("target_counter %s firing target2 from %s, entnum %d\n", self->targetname, activator->targetname, activator->s.number );
-			G_UseTargets2( self, activator, self->target2 );
+			//trap->Printf("target_counter %s firing target2 from %s, entnum %d\n", self->targetname, activator->targetname, activator->s.number);
+			G_UseTargets2(self, activator, self->target2);
 		}
 		return;
 	}
 
-	G_ActivateBehavior( self,BSET_USE );
+	G_ActivateBehavior(self,BSET_USE);
 
-	if ( self->spawnflags & 128 )
+	if (self->spawnflags & 128)
 	{
 		self->flags |= FL_INACTIVE;
 	}
 
 	self->activator = activator;
-	G_UseTargets( self, activator );
+	G_UseTargets(self, activator);
 
-	if ( self->count == 0 )
+	if (self->count == 0)
 	{
-		if ( self->bounceCount == 0 )
+		if (self->bounceCount == 0)
 		{
 			return;
 		}
 		self->count = self->genericValue1;
-		if ( self->bounceCount > 0 )
+		if (self->bounceCount > 0)
 		{//-1 means bounce back forever
 			self->bounceCount--;
 		}
@@ -682,7 +682,7 @@ void SP_target_counter (gentity_t *self)
 	{
 		self->count = 2;
 	}
-	//if ( self->bounceCount > 0 )//let's always set this anyway
+	//if (self->bounceCount > 0)//let's always set this anyway
 	{//we will reset when we use up our count, remember our initial count
 		self->genericValue1 = self->count;
 	}
@@ -701,7 +701,7 @@ void target_random_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 	int			t_count = 0, pick;
 	gentity_t	*t = NULL;
 
-	//trap->Printf("target_random %s used by %s (entnum %d)\n", self->targetname, activator->targetname, activator->s.number );
+	//trap->Printf("target_random %s used by %s (entnum %d)\n", self->targetname, activator->targetname, activator->s.number);
 	G_ActivateBehavior(self,BSET_USE);
 
 	if(self->spawnflags & 1)
@@ -709,7 +709,7 @@ void target_random_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 		self->use = 0;
 	}
 
-	while ( (t = G_Find (t, FOFS(targetname), self->target)) != NULL )
+	while ((t = G_Find (t, FOFS(targetname), self->target)) != NULL)
 	{
 		if (t != self)
 		{
@@ -731,7 +731,7 @@ void target_random_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 	//FIXME: need a seed
 	pick = Q_irand(1, t_count);
 	t_count = 0;
-	while ( (t = G_Find (t, FOFS(targetname), self->target)) != NULL )
+	while ((t = G_Find (t, FOFS(targetname), self->target)) != NULL)
 	{
 		if (t != self)
 		{
@@ -776,15 +776,15 @@ void scriptrunner_run (gentity_t *self)
 	{
 		char	newname[MAX_FILENAME_LENGTH];
 
-		sprintf((char *) &newname, "%s/%s", Q3_SCRIPT_DIR, self->behaviorSet[BSET_USE] );
+		sprintf((char *) &newname, "%s/%s", Q3_SCRIPT_DIR, self->behaviorSet[BSET_USE]);
 
-		ICARUS_RunScript( self, newname );
+		ICARUS_RunScript(self, newname);
 	}
 	*/
 
-	if ( self->count != -1 )
+	if (self->count != -1)
 	{
-		if ( self->count <= 0 )
+		if (self->count <= 0)
 		{
 			self->use = 0;
 			self->behaviorSet[BSET_USE] = NULL;
@@ -798,9 +798,9 @@ void scriptrunner_run (gentity_t *self)
 
 	if (self->behaviorSet[BSET_USE])
 	{
-		if ( self->spawnflags & 1 )
+		if (self->spawnflags & 1)
 		{
-			if ( !self->activator )
+			if (!self->activator)
 			{
 				if (developer.integer)
 				{
@@ -809,18 +809,18 @@ void scriptrunner_run (gentity_t *self)
 				return;
 			}
 
-			//if ( !self->activator->sequencer || !self->activator->taskManager )
+			//if (!self->activator->sequencer || !self->activator->taskManager)
 			if (!trap->ICARUS_IsInitialized(self->s.number))
 			{//Need to be initialized through ICARUS
-				if ( !self->activator->script_targetname || !self->activator->script_targetname[0] )
+				if (!self->activator->script_targetname || !self->activator->script_targetname[0])
 				{
 					//We don't have a script_targetname, so create a new one
-					self->activator->script_targetname = va( "newICARUSEnt%d", numNewICARUSEnts++ );
+					self->activator->script_targetname = va("newICARUSEnt%d", numNewICARUSEnts++);
 				}
 
-				if ( trap->ICARUS_ValidEnt( (sharedEntity_t *)self->activator ) )
+				if (trap->ICARUS_ValidEnt((sharedEntity_t *)self->activator))
 				{
-					trap->ICARUS_InitEnt( (sharedEntity_t *)self->activator );
+					trap->ICARUS_InitEnt((sharedEntity_t *)self->activator);
 				}
 				else
 				{
@@ -834,21 +834,21 @@ void scriptrunner_run (gentity_t *self)
 
 			if (developer.integer)
 			{
-				Com_Printf( "target_scriptrunner running %s on activator %s\n", self->behaviorSet[BSET_USE], self->activator->targetname );
+				Com_Printf("target_scriptrunner running %s on activator %s\n", self->behaviorSet[BSET_USE], self->activator->targetname);
 			}
-			trap->ICARUS_RunScript( (sharedEntity_t *)self->activator, va( "%s/%s", Q3_SCRIPT_DIR, self->behaviorSet[BSET_USE] ) );
+			trap->ICARUS_RunScript((sharedEntity_t *)self->activator, va("%s/%s", Q3_SCRIPT_DIR, self->behaviorSet[BSET_USE]));
 		}
 		else
 		{
-			if ( developer.integer && self->activator )
+			if (developer.integer && self->activator)
 			{
-				Com_Printf( "target_scriptrunner %s used by %s\n", self->targetname, self->activator->targetname );
+				Com_Printf("target_scriptrunner %s used by %s\n", self->targetname, self->activator->targetname);
 			}
-			G_ActivateBehavior( self, BSET_USE );
+			G_ActivateBehavior(self, BSET_USE);
 		}
 	}
 
-	if ( self->wait )
+	if (self->wait)
 	{
 		self->nextthink = level.time + self->wait;
 	}
@@ -856,14 +856,14 @@ void scriptrunner_run (gentity_t *self)
 
 void target_scriptrunner_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 {
-	if ( self->nextthink > level.time )
+	if (self->nextthink > level.time)
 	{
 		return;
 	}
 
 	self->activator = activator;
 	self->enemy = other;
-	if ( self->delay )
+	if (self->delay)
 	{//delay before firing scriptrunner
 		self->think = scriptrunner_run;
 		self->nextthink = level.time + self->delay;
@@ -886,20 +886,20 @@ wait - can't be used again in this amount of seconds (Default is 1 second if it'
 delay - how long to wait after use to run script
 
 */
-void SP_target_scriptrunner( gentity_t *self )
+void SP_target_scriptrunner(gentity_t *self)
 {
 	float v;
-	if ( self->spawnflags & 128 )
+	if (self->spawnflags & 128)
 	{
 		self->flags |= FL_INACTIVE;
 	}
 
-	if ( !self->count )
+	if (!self->count)
 	{
 		self->count = 1;//default 1 use only
 	}
 	/*
-	else if ( !self->wait )
+	else if (!self->wait)
 	{
 		self->wait = 1;//default wait of 1 sec
 	}
@@ -907,18 +907,18 @@ void SP_target_scriptrunner( gentity_t *self )
 	// FIXME: this is a hack... because delay is read in as an int, so I'm bypassing that because it's too late in the project to change it and I want to be able to set less than a second delays
 	// no one should be setting a radius on a scriptrunner, if they are this would be bad, take this out for the next project
 	v = 0.0f;
-	G_SpawnFloat( "delay", "0", &v );
+	G_SpawnFloat("delay", "0", &v);
 	self->delay = v * 1000;//sec to ms
 	self->wait *= 1000;//sec to ms
 
-	G_SetOrigin( self, self->s.origin );
+	G_SetOrigin(self, self->s.origin);
 	self->use = target_scriptrunner_use;
 }
 
 void G_SetActiveState(char *targetstring, qboolean actState)
 {
 	gentity_t	*target = NULL;
-	while( NULL != (target = G_Find(target, FOFS(targetname), targetstring)) )
+	while(NULL != (target = G_Find(target, FOFS(targetname), targetstring)))
 	{
 		target->flags = actState ? (target->flags&~FL_INACTIVE) : (target->flags|FL_INACTIVE);
 	}
@@ -945,18 +945,18 @@ void target_deactivate_use(gentity_t *self, gentity_t *other, gentity_t *activat
 /*QUAKED target_activate (1 0 0) (-4 -4 -4) (4 4 4)
 Will set the target(s) to be usable/triggerable
 */
-void SP_target_activate( gentity_t *self )
+void SP_target_activate(gentity_t *self)
 {
-	G_SetOrigin( self, self->s.origin );
+	G_SetOrigin(self, self->s.origin);
 	self->use = target_activate_use;
 }
 
 /*QUAKED target_deactivate (1 0 0) (-4 -4 -4) (4 4 4)
 Will set the target(s) to be non-usable/triggerable
 */
-void SP_target_deactivate( gentity_t *self )
+void SP_target_deactivate(gentity_t *self)
 {
-	G_SetOrigin( self, self->s.origin );
+	G_SetOrigin(self, self->s.origin);
 	self->use = target_deactivate_use;
 }
 
@@ -970,27 +970,27 @@ void target_level_change_use(gentity_t *self, gentity_t *other, gentity_t *activ
 /*QUAKED target_level_change (1 0 0) (-4 -4 -4) (4 4 4)
 "mapname" - Name of map to change to
 */
-void SP_target_level_change( gentity_t *self )
+void SP_target_level_change(gentity_t *self)
 {
 	char *s;
 
-	G_SpawnString( "mapname", "", &s );
+	G_SpawnString("mapname", "", &s);
 	self->message = G_NewString(s);
 
-	if ( !self->message || !self->message[0] )
+	if (!self->message || !self->message[0])
 	{
-		trap->Error( ERR_DROP, "target_level_change with no mapname!\n");
+		trap->Error(ERR_DROP, "target_level_change with no mapname!\n");
 		return;
 	}
 
-	G_SetOrigin( self, self->s.origin );
+	G_SetOrigin(self, self->s.origin);
 	self->use = target_level_change_use;
 }
 
 void target_play_music_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 {
 	G_ActivateBehavior(self,BSET_USE);
-	trap->SetConfigstring( CS_MUSIC, self->message );
+	trap->SetConfigstring(CS_MUSIC, self->message);
 }
 
 /*QUAKED target_play_music (1 0 0) (-4 -4 -4) (4 4 4)
@@ -998,20 +998,20 @@ target_play_music
 Plays the requested music files when this target is used.
 
 "targetname"
-"music"		music WAV or MP3 file ( music/introfile.mp3 [optional]  music/loopfile.mp3 )
+"music"		music WAV or MP3 file (music/introfile.mp3 [optional]  music/loopfile.mp3)
 
 If an intro file and loop file are specified, the intro plays first, then the looping
 portion will start and loop indefinetly.  If no introfile is entered, only the loopfile
 will play.
 */
-void SP_target_play_music( gentity_t *self )
+void SP_target_play_music(gentity_t *self)
 {
 	char *s;
 
-	G_SetOrigin( self, self->s.origin );
-	if (!G_SpawnString( "music", "", &s ))
+	G_SetOrigin(self, self->s.origin);
+	if (!G_SpawnString("music", "", &s))
 	{
-		trap->Error( ERR_DROP, "target_play_music without a music key at %s", vtos( self->s.origin ) );
+		trap->Error(ERR_DROP, "target_play_music without a music key at %s", vtos(self->s.origin));
 	}
 
 	self->message = G_NewString(s);

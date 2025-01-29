@@ -55,7 +55,7 @@ vec2 hammersley2D(uint i, uint N) {
      return vec2(float(i)/float(N), radicalInverse_VdC(i));
 }
 
-float D_GGX( in float NH, in float a )
+float D_GGX(in float NH, in float a)
 {
 	float a2 = a * a;
 	float d = (NH * a2 - NH) * NH + 1;
@@ -67,11 +67,11 @@ vec3 ImportanceSampleGGX(vec2 Xi, float Roughness, vec3 N)
 	float a = Roughness * Roughness;
 	float Phi = 2.0 * M_PI * Xi.x;
 	float CosTheta = sqrt((1.0 - Xi.y) / (1.0 + (a * a - 1.0) * Xi.y));
-	float SinTheta = sqrt( 1.0 - CosTheta * CosTheta);
+	float SinTheta = sqrt(1.0 - CosTheta * CosTheta);
 
 	vec3 H;
-	H.x = SinTheta * cos( Phi );
-	H.y = SinTheta * sin( Phi );
+	H.x = SinTheta * cos(Phi);
+	H.y = SinTheta * sin(Phi);
 	H.z = CosTheta;
 
 	vec3 UpVector = abs(N.z) < 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
@@ -81,23 +81,23 @@ vec3 ImportanceSampleGGX(vec2 Xi, float Roughness, vec3 N)
 	return TangentX * H.x + TangentY * H.y + N * H.z;
 }
 
-vec3 PrefilterEnvMap( float Roughness, vec3 R )
+vec3 PrefilterEnvMap(float Roughness, vec3 R)
 {
 	vec3 N = R;
 	vec3 V = R;
 	vec3 PrefilteredColor = vec3(0.0);
 	float TotalWeight = 0.0;
 	uint NumSamples = 256u;
-	for ( uint i = 0u; i < NumSamples; i++ )
+	for (uint i = 0u; i < NumSamples; i++)
 	{
 		vec2 Xi = hammersley2D(i, NumSamples);
 		vec3 H = ImportanceSampleGGX(Xi, Roughness, N);
 		vec3 L = 2.0 * dot(V, H) * H - V;
 		float NoL = clamp(dot(N, L), 0.0, 1.0);
-		if ( NoL > 0.0 )
+		if (NoL > 0.0)
 		{
-			float NH = max(dot ( N, H ), 0.0);
-			float HV = max(dot ( H, V ), 0.0);
+			float NH = max(dot (N, H), 0.0);
+			float HV = max(dot (H, V), 0.0);
 			float D   = D_GGX(NH, Roughness);
 			float pdf = (D * NH / (4.0 * HV)) + 0.0001;
 

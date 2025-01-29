@@ -143,8 +143,8 @@ void dequant(SAMPLE Sample[], int *nsamp,
       {
 	 ncbl = ncbl_mixed;
 	 cbs0 = 3;
-      }
-   }
+     }
+  }
 /* fill in cb_info -- */
    /* This doesn't seem used anywhere...
    cb_info->lb_type = gr->block_type;
@@ -178,14 +178,14 @@ void dequant(SAMPLE Sample[], int *nsamp,
 		float tmpConst = (float)(1.0/3.0);
 	       tmp = (double) Sample[i].s;
 	       Sample[i].x = (float) (xs * tmp * pow(fabs(tmp), tmpConst));
-	    }
-	 }
-      }
+	   }
+	}
+     }
       if (non_zero)
 	 cbmax[0] = cb;
       if (i >= nbands)
 	 break;
-   }
+  }
 
    cb_info->cbmax = cbmax[0];
    cb_info->cbtype = 0;		// type = long
@@ -221,16 +221,16 @@ block type = 2  short blocks
 		  float tmpConst = (float)(1.0/3.0);
 		  tmp = (double) Sample[i].s;
 		  buf[j][w] = (float) (xs * tmp * pow(fabs(tmp), tmpConst));
-	       }
-	    }
-	 }
+	      }
+	   }
+	}
 	 if (non_zero)
 	    cbmax[w] = cb;
-      }
+     }
       if (i >= nbands)
 	 break;
       buf += n;
-   }
+  }
 
 
    memmove(&Sample[i0].x, &re_buf[0][0], sizeof(float) * (i - i0));

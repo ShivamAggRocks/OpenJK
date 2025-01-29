@@ -34,13 +34,13 @@ SV_Netchan_Encode
 
 ==============
 */
-static void SV_Netchan_Encode( client_t *client, msg_t *msg ) {
+static void SV_Netchan_Encode(client_t *client, msg_t *msg) {
 	long /*reliableAcknowledge,*/ i, index;
 	byte key, *string;
         int	srdc, sbit;
 		qboolean soob;
 
-	if ( msg->cursize < SV_ENCODE_START ) {
+	if (msg->cursize < SV_ENCODE_START) {
 		return;
 	}
 
@@ -91,7 +91,7 @@ SV_Netchan_Decode
 
 ==============
 */
-static void SV_Netchan_Decode( client_t *client, msg_t *msg ) {
+static void SV_Netchan_Decode(client_t *client, msg_t *msg) {
 	int serverId, messageAcknowledge, reliableAcknowledge;
 	int i, index, srdc, sbit;
 	qboolean soob;
@@ -139,8 +139,8 @@ static void SV_Netchan_Decode( client_t *client, msg_t *msg ) {
 SV_Netchan_TransmitNextFragment
 =================
 */
-void SV_Netchan_TransmitNextFragment( netchan_t *chan ) {
-	Netchan_TransmitNextFragment( chan );
+void SV_Netchan_TransmitNextFragment(netchan_t *chan) {
+	Netchan_TransmitNextFragment(chan);
 }
 
 
@@ -150,15 +150,15 @@ SV_Netchan_Transmit
 ================
 */
 
-void SV_Netchan_Transmit( client_t *client, msg_t *msg) {	//int length, const byte *data ) {
+void SV_Netchan_Transmit(client_t *client, msg_t *msg) {	//int length, const byte *data) {
 //	int i;
-	MSG_WriteByte( msg, svc_EOF );
+	MSG_WriteByte(msg, svc_EOF);
 //	for(i=SV_ENCODE_START;i<msg->cursize;i++) {
 //		chksum[i-SV_ENCODE_START] = msg->data[i];
 //	}
-//	Huff_Compress( msg, SV_ENCODE_START );
-	SV_Netchan_Encode( client, msg );
-	Netchan_Transmit( &client->netchan, msg->cursize, msg->data );
+//	Huff_Compress(msg, SV_ENCODE_START);
+	SV_Netchan_Encode(client, msg);
+	Netchan_Transmit(&client->netchan, msg->cursize, msg->data);
 }
 
 /*
@@ -166,14 +166,14 @@ void SV_Netchan_Transmit( client_t *client, msg_t *msg) {	//int length, const by
 Netchan_SV_Process
 =================
 */
-qboolean SV_Netchan_Process( client_t *client, msg_t *msg ) {
+qboolean SV_Netchan_Process(client_t *client, msg_t *msg) {
 	int ret;
 //	int i;
-	ret = Netchan_Process( &client->netchan, msg );
+	ret = Netchan_Process(&client->netchan, msg);
 	if (!ret)
 		return qfalse;
-	SV_Netchan_Decode( client, msg );
-//	Huff_Decompress( msg, SV_DECODE_START );
+	SV_Netchan_Decode(client, msg);
+//	Huff_Decompress(msg, SV_DECODE_START);
 //	for(i=SV_DECODE_START+msg->readcount;i<msg->cursize;i++) {
 //		if (msg->data[i] != chksum[i-(SV_DECODE_START+msg->readcount)]) {
 //			Com_Error(ERR_DROP,"bad\n");

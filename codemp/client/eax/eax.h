@@ -63,7 +63,7 @@ extern "C" {
             unsigned short Data2;
             unsigned short Data3;
             unsigned char Data4[8];
-        } GUID;
+       } GUID;
     #endif // GUID_DEFINED
 
     #ifndef DEFINE_GUID
@@ -72,7 +72,7 @@ extern "C" {
                     extern const GUID /*FAR*/ name
         #else
             #define DEFINE_GUID(name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8) \
-                    extern const GUID name = { l, w1, w2, { b1, b2,  b3,  b4,  b5,  b6,  b7,  b8 } }
+                    extern const GUID name = {l, w1, w2, {b1, b2,  b3,  b4,  b5,  b6,  b7,  b8}}
         #endif // INITGUID
     #endif // DEFINE_GUID
 
@@ -142,7 +142,7 @@ typedef struct _EAXCONTEXTPROPERTIES
 //              ...
 //              myBuffer.dwFlags = myFlags /* see EAXSOURCEFLAGS below */ ;
 //       instead of:
-//              myBuffer = { 0, -200, ... , 0x00000003 };
+//              myBuffer = {0, -200, ... , 0x00000003};
 //
 typedef struct _EAXSOURCEPROPERTIES
 {
@@ -247,7 +247,7 @@ typedef struct _EAXSOURCEEXCLUSIONSENDPROPERTIES
 //              myFXSlot.lLock = 1;
 //              myFXSlot.ulFlags = myFlags /* see EAXFXSLOTFLAGS below */ ;
 //       instead of:
-//              myFXSlot = { EAX_REVERB_EFFECT, 0, 1, 0x00000001 };
+//              myFXSlot = {EAX_REVERB_EFFECT, 0, 1, 0x00000001};
 //
 typedef struct _EAXFXSLOTPROPERTIES
 {
@@ -561,18 +561,18 @@ typedef enum
 
 #define EAXSOURCE_DEFAULTFLAGS                 (EAXSOURCEFLAGS_DIRECTHFAUTO |       \
                                                 EAXSOURCEFLAGS_ROOMAUTO     |       \
-                                                EAXSOURCEFLAGS_ROOMHFAUTO  )
+                                                EAXSOURCEFLAGS_ROOMHFAUTO )
 
-#define EAXSOURCE_DEFAULTACTIVEFXSLOTID  {{ EAX_NULL_GUID.Data1, EAX_NULL_GUID.Data2, EAX_NULL_GUID.Data3, \
+#define EAXSOURCE_DEFAULTACTIVEFXSLOTID  {{EAX_NULL_GUID.Data1, EAX_NULL_GUID.Data2, EAX_NULL_GUID.Data3, \
                                     EAX_NULL_GUID.Data4[0],EAX_NULL_GUID.Data4[1],EAX_NULL_GUID.Data4[2],\
                                     EAX_NULL_GUID.Data4[3],EAX_NULL_GUID.Data4[4],EAX_NULL_GUID.Data4[5],\
-                                    EAX_NULL_GUID.Data4[6],EAX_NULL_GUID.Data4[7] },                       \
-                                  { EAX_PrimaryFXSlotID.Data1, EAX_PrimaryFXSlotID.Data2, \
+                                    EAX_NULL_GUID.Data4[6],EAX_NULL_GUID.Data4[7]},                       \
+                                  {EAX_PrimaryFXSlotID.Data1, EAX_PrimaryFXSlotID.Data2, \
                                     EAX_PrimaryFXSlotID.Data3, EAX_PrimaryFXSlotID.Data4[0],\
                                     EAX_PrimaryFXSlotID.Data4[1],EAX_PrimaryFXSlotID.Data4[2],\
                                     EAX_PrimaryFXSlotID.Data4[3],EAX_PrimaryFXSlotID.Data4[4],\
                                     EAX_PrimaryFXSlotID.Data4[5],EAX_PrimaryFXSlotID.Data4[6],\
-                                    EAX_PrimaryFXSlotID.Data4[7] }}
+                                    EAX_PrimaryFXSlotID.Data4[7]}}
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -693,7 +693,7 @@ enum
 //              ...
 //              myReverb.dwFlags = myFlags /* see EAXREVERBFLAGS below */ ;
 //       instead of:
-//              myReverb = { -1000, -100, ... , 0x00000009 };
+//              myReverb = {-1000, -100, ... , 0x00000009};
 //       If you want to save and load presets in binary form, you
 //       should define your own structure to insure future compatibility.
 //

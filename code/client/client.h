@@ -311,10 +311,10 @@ extern	cvar_t	*cl_consoleShiftRequirement;
 
 void CL_Init (void);
 
-void CL_AddReliableCommand( const char *cmd );
+void CL_AddReliableCommand(const char *cmd);
 
 void CL_Disconnect_f (void);
-void CL_Vid_Restart_f( void );
+void CL_Vid_Restart_f(void);
 void CL_Snd_Restart_f (void);
 
 qboolean CL_CheckPaused(void);
@@ -338,19 +338,19 @@ void CL_InitInput (void);
 void CL_SendCmd (void);
 void CL_ClearState (void);
 
-void CL_WritePacket( void );
+void CL_WritePacket(void);
 void IN_CenterView (void);
 
 float CL_KeyState (kbutton_t *key);
-const char *Key_KeynumToString( int keynum/*, qboolean bTranslate*/ ); //note: translate is only called for menu display not configs
+const char *Key_KeynumToString(int keynum/*, qboolean bTranslate*/); //note: translate is only called for menu display not configs
 
 //
 // cl_parse.c
 //
 extern int cl_connectedToCheatServer;
 
-void CL_SystemInfoChanged( void );
-void CL_ParseServerMessage( msg_t *msg );
+void CL_SystemInfoChanged(void);
+void CL_ParseServerMessage(msg_t *msg);
 
 //====================================================================
 
@@ -367,11 +367,11 @@ void Con_DrawNotify (void);
 void Con_ClearNotify (void);
 void Con_RunConsole (void);
 void Con_DrawConsole (void);
-void Con_PageUp( void );
-void Con_PageDown( void );
-void Con_Top( void );
-void Con_Bottom( void );
-void Con_Close( void );
+void Con_PageUp(void);
+void Con_PageDown(void);
+void Con_Top(void);
+void Con_Bottom(void);
+void Con_Close(void);
 
 
 //
@@ -382,18 +382,18 @@ void	SCR_UpdateScreen (void);
 
 void	SCR_DebugGraph (float value, int color);
 
-int		SCR_GetBigStringWidth( const char *str );	// returns in virtual 640x480 coordinates
+int		SCR_GetBigStringWidth(const char *str);	// returns in virtual 640x480 coordinates
 
-void	SCR_FillRect( float x, float y, float width, float height,
-					 const float *color );
-void	SCR_DrawPic( float x, float y, float width, float height, qhandle_t hShader );
-void	SCR_DrawNamedPic( float x, float y, float width, float height, const char *picname );
+void	SCR_FillRect(float x, float y, float width, float height,
+					 const float *color);
+void	SCR_DrawPic(float x, float y, float width, float height, qhandle_t hShader);
+void	SCR_DrawNamedPic(float x, float y, float width, float height, const char *picname);
 
-void	SCR_DrawBigString( int x, int y, const char *s, float alpha, qboolean noColorEscape );			// draws a string with embedded color control characters with fade
-void	SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color, qboolean noColorEscape );	// ignores embedded color control characters
-void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
-void	SCR_DrawBigChar( int x, int y, int ch );
-void	SCR_DrawSmallChar( int x, int y, int ch );
+void	SCR_DrawBigString(int x, int y, const char *s, float alpha, qboolean noColorEscape);			// draws a string with embedded color control characters with fade
+void	SCR_DrawBigStringColor(int x, int y, const char *s, vec4_t color, qboolean noColorEscape);	// ignores embedded color control characters
+void	SCR_DrawSmallStringExt(int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape);
+void	SCR_DrawBigChar(int x, int y, int ch);
+void	SCR_DrawSmallChar(int x, int y, int ch);
 
 #ifdef JK2_MODE
 void	SCR_PrecacheScreenshot();
@@ -402,16 +402,16 @@ void	SCR_PrecacheScreenshot();
 //
 // cl_cin.c
 //
-void CL_PlayCinematic_f( void );
+void CL_PlayCinematic_f(void);
 void CL_PlayInGameCinematic_f(void);
 qboolean CL_CheckPendingCinematic(void);
 qboolean CL_IsRunningInGameCinematic(void);
 qboolean CL_InGameCinematicOnStandBy(void);
 void SCR_DrawCinematic (void);
 void SCR_RunCinematic (void);
-void SCR_StopCinematic( qboolean bAllowRefusal = qfalse );
+void SCR_StopCinematic(qboolean bAllowRefusal = qfalse);
 
-int CIN_PlayCinematic( const char *arg0, int xpos, int ypos, int width, int height, int bits, const char *psAudioFile /* = NULL */);
+int CIN_PlayCinematic(const char *arg0, int xpos, int ypos, int width, int height, int bits, const char *psAudioFile /* = NULL */);
 e_status CIN_StopCinematic(int handle);
 e_status CIN_RunCinematic (int handle);
 void CIN_DrawCinematic (int handle);
@@ -423,22 +423,22 @@ void CIN_CloseAllVideos(void);
 //
 // cl_cgame.c
 //
-qboolean CL_InitCGameVM( void *gameLibrary );
-void CL_InitCGame( void );
-void CL_ShutdownCGame( void );
-qboolean CL_GameCommand( void );
-void CL_CGameRendering( stereoFrame_t stereo );
-void CL_SetCGameTime( void );
-void CL_FirstSnapshot( void );
+qboolean CL_InitCGameVM(void *gameLibrary);
+void CL_InitCGame(void);
+void CL_ShutdownCGame(void);
+qboolean CL_GameCommand(void);
+void CL_CGameRendering(stereoFrame_t stereo);
+void CL_SetCGameTime(void);
+void CL_FirstSnapshot(void);
 
 
 //
 // cl_ui.c
 //
-void CL_InitUI( void );
-void CL_ShutdownUI( void );
+void CL_InitUI(void);
+void CL_ShutdownUI(void);
 void CL_GenericMenu_f(void);
 void CL_DataPad_f(void);
 void CL_EndScreenDissolve_f(void);
-int Key_GetCatcher( void );
-void Key_SetCatcher( int catcher );
+int Key_GetCatcher(void);
+void Key_SetCatcher(int catcher);

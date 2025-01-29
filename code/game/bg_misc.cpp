@@ -37,7 +37,7 @@ extern ammoData_t ammoData[AMMO_MAX];
 
 #define PICKUPSOUND "sound/weapons/w_pkup.wav"
 
-/*QUAKED weapon_***** ( 0 0 0 ) (-16 -16 -16) (16 16 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID VERTICAL INVISIBLE NOGLOW USEPICKUP STATIONARY
+/*QUAKED weapon_***** (0 0 0) (-16 -16 -16) (16 16 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID VERTICAL INVISIBLE NOGLOW USEPICKUP STATIONARY
 DO NOT USE THIS CLASS, IT JUST HOLDS GENERAL INFORMATION for weapons, ammo, and item pickups.
 The suspended flag will allow items to hang in the air, otherwise they are dropped to the next surface.
 The NOPLAYER flag makes it so player cannot pick it up.
@@ -147,7 +147,7 @@ Ammo for the force.
 Ammo for the Bryar and Blaster pistols.
 */
 /*QUAKED ammo_powercell (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
-Ammo for Tenloss Disruptor, Wookie Bowcaster, and the Destructive Electro Magnetic Pulse (demp2 ) guns
+Ammo for Tenloss Disruptor, Wookie Bowcaster, and the Destructive Electro Magnetic Pulse (demp2) guns
 */
 /*QUAKED ammo_metallic_bolts (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 Ammo for Imperial Heavy Repeater and the Golan Arms Flechette
@@ -186,55 +186,55 @@ battery pickup item
 /*QUAKED holocron_force_heal (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force heal pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 /*QUAKED holocron_force_levitation (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force levitation pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 /*QUAKED holocron_force_speed (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force speed pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 /*QUAKED holocron_force_push (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force push pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 /*QUAKED holocron_force_pull (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force pull pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 /*QUAKED holocron_force_telepathy (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force telepathy pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 /*QUAKED holocron_force_grip (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force grip pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 /*QUAKED holocron_force_lightining (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force lighting pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 /*QUAKED holocron_force_saberthrow (.3 .5 1) (-8 -8 -0) (8 8 16) SUSPEND NOPLAYER ALLOWNPC NOTSOLID
 force saberthrow pickup item
 
-"count"     level of force power this holocron gives activator ( range: 0-3, default 1)
+"count"     level of force power this holocron gives activator (range: 0-3, default 1)
 */
 
 gitem_t	bg_itemlist[ITM_NUM_ITEMS+1];//need a null on the end
@@ -250,40 +250,40 @@ FindItemForWeapon
 
 ===============
 */
-gitem_t	*FindItemForWeapon( weapon_t weapon ) {
+gitem_t	*FindItemForWeapon(weapon_t weapon) {
 	int		i;
 
-	for ( i = 1 ; i < bg_numItems ; i++ ) {
-		if ( bg_itemlist[i].giType == IT_WEAPON && bg_itemlist[i].giTag == weapon ) {
+	for (i = 1 ; i < bg_numItems ; i++) {
+		if (bg_itemlist[i].giType == IT_WEAPON && bg_itemlist[i].giTag == weapon) {
 			return &bg_itemlist[i];
 		}
 	}
 
-	Com_Error( ERR_DROP, "Couldn't find item for weapon %i", weapon);
+	Com_Error(ERR_DROP, "Couldn't find item for weapon %i", weapon);
 	return NULL;
 }
 
 //----------------------------------------------
-gitem_t	*FindItemForInventory( int inv )
+gitem_t	*FindItemForInventory(int inv)
 {
 	int		i;
 	gitem_t	*it;
 
 	// Now just check for any other kind of item.
-	for ( i = 1 ; i < bg_numItems ; i++ )
+	for (i = 1 ; i < bg_numItems ; i++)
 	{
 		it = &bg_itemlist[i];
 
-		if ( it->giType == IT_HOLDABLE )
+		if (it->giType == IT_HOLDABLE)
 		{
-			if ( it->giTag == inv )
+			if (it->giTag == inv)
 			{
 				return it;
 			}
 		}
 	}
 
-	Com_Error( ERR_DROP, "Couldn't find item for inventory %i", inv );
+	Com_Error(ERR_DROP, "Couldn't find item for inventory %i", inv);
 	return NULL;
 }
 
@@ -293,19 +293,19 @@ FindItemForWeapon
 
 ===============
 */
-gitem_t	*FindItemForAmmo( ammo_t ammo )
+gitem_t	*FindItemForAmmo(ammo_t ammo)
 {
 	int		i;
 
-	for ( i = 1 ; i < bg_numItems ; i++ )
+	for (i = 1 ; i < bg_numItems ; i++)
 	{
-		if ( bg_itemlist[i].giType == IT_AMMO && bg_itemlist[i].giTag == ammo )
+		if (bg_itemlist[i].giType == IT_AMMO && bg_itemlist[i].giTag == ammo)
 		{
 			return &bg_itemlist[i];
 		}
 	}
 
-	Com_Error( ERR_DROP, "Couldn't find item for ammo %i", ammo );
+	Com_Error(ERR_DROP, "Couldn't find item for ammo %i", ammo);
 	return NULL;
 }
 
@@ -315,11 +315,11 @@ FindItem
 
 ===============
 */
-gitem_t	*FindItem( const char *className ) {
+gitem_t	*FindItem(const char *className) {
 	int		i;
 
-	for ( i = 1 ; i < bg_numItems ; i++ ) {
-		if ( !Q_stricmp( bg_itemlist[i].classname, className ) )
+	for (i = 1 ; i < bg_numItems ; i++) {
+		if (!Q_stricmp(bg_itemlist[i].classname, className))
 			return &bg_itemlist[i];
 	}
 
@@ -335,31 +335,31 @@ Returns false if the item should not be picked up.
 This needs to be the same for client side prediction and server use.
 ================
 */
-qboolean	BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *ps ) {
+qboolean	BG_CanItemBeGrabbed(const entityState_t *ent, const playerState_t *ps) {
 	gitem_t	*item;
 
-	if ( ent->modelindex < 1 || ent->modelindex >= bg_numItems ) {
-		Com_Error( ERR_DROP, "BG_CanItemBeGrabbed: index out of range" );
+	if (ent->modelindex < 1 || ent->modelindex >= bg_numItems) {
+		Com_Error(ERR_DROP, "BG_CanItemBeGrabbed: index out of range");
 	}
 
 	item = &bg_itemlist[ent->modelindex];
 
-	switch( item->giType ) {
+	switch(item->giType) {
 
 	case IT_WEAPON:
 		// See if we already have this weapon.
-		if ( !(ps->stats[ STAT_WEAPONS ] & ( 1 << item->giTag )))
+		if (!(ps->stats[ STAT_WEAPONS ] & (1 << item->giTag)))
 		{
 			// Don't have this weapon yet, so pick it up.
 			return qtrue;
 		}
-		else if ( item->giTag == WP_SABER )
+		else if (item->giTag == WP_SABER)
 		{//always pick up a saber, might be a new one?
 			return qtrue;
 		}
 
 		// Make sure that we aren't already full on ammo for this weapon
-		if ( ps->ammo[weaponData[item->giTag].ammoIndex] >= ammoData[weaponData[item->giTag].ammoIndex].max )
+		if (ps->ammo[weaponData[item->giTag].ammoIndex] >= ammoData[weaponData[item->giTag].ammoIndex].max)
 		{
 			// full, so don't grab the item
 			return qfalse;
@@ -372,29 +372,29 @@ qboolean	BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *ps 
 		if (item->giTag != AMMO_FORCE)
 		{
 			// since the ammo is the weapon in this case, picking up ammo should actually give you the weapon
-			switch( item->giTag )
+			switch(item->giTag)
 			{
 			case AMMO_THERMAL:
-				if( !(ps->stats[STAT_WEAPONS] & ( 1 << WP_THERMAL ) ) )
+				if(!(ps->stats[STAT_WEAPONS] & (1 << WP_THERMAL)))
 				{
 					return qtrue;
 				}
 				break;
 			case AMMO_DETPACK:
-				if( !(ps->stats[STAT_WEAPONS] & ( 1 << WP_DET_PACK ) ) )
+				if(!(ps->stats[STAT_WEAPONS] & (1 << WP_DET_PACK)))
 				{
 					return qtrue;
 				}
 				break;
 			case AMMO_TRIPMINE:
-				if( !(ps->stats[STAT_WEAPONS] & ( 1 << WP_TRIP_MINE ) ) )
+				if(!(ps->stats[STAT_WEAPONS] & (1 << WP_TRIP_MINE)))
 				{
 					return qtrue;
 				}
 				break;
 			}
 
-			if ( ps->ammo[ item->giTag ] >= ammoData[item->giTag].max )	// checkme
+			if (ps->ammo[ item->giTag ] >= ammoData[item->giTag].max)	// checkme
 			{
 				return qfalse;		// can't hold any more
 			}
@@ -412,7 +412,7 @@ qboolean	BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *ps 
 
 	case IT_ARMOR:
 		// we also clamp armor to the maxhealth for handicapping
-		if ( ps->stats[STAT_ARMOR] >= ps->stats[STAT_MAX_HEALTH] ) {
+		if (ps->stats[STAT_ARMOR] >= ps->stats[STAT_MAX_HEALTH]) {
 			return qfalse;
 		}
 		return qtrue;
@@ -423,14 +423,14 @@ qboolean	BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *ps 
 			return qfalse;
 		}
 		// don't pick up if already at max
-		if ( ps->stats[STAT_HEALTH] >= ps->stats[STAT_MAX_HEALTH] ) {
+		if (ps->stats[STAT_HEALTH] >= ps->stats[STAT_MAX_HEALTH]) {
 			return qfalse;
 		}
 		return qtrue;
 
 	case IT_BATTERY:
 		// don't pick up if already at max
-		if ( ps->batteryCharge >= MAX_BATTERIES )
+		if (ps->batteryCharge >= MAX_BATTERIES)
 		{
 			return qfalse;
 		}
@@ -442,10 +442,10 @@ qboolean	BG_CanItemBeGrabbed( const entityState_t *ent, const playerState_t *ps 
 
 
 	case IT_HOLDABLE:
-		if ( item->giTag >= INV_ELECTROBINOCULARS && item->giTag <= INV_SENTRY )
+		if (item->giTag >= INV_ELECTROBINOCULARS && item->giTag <= INV_SENTRY)
 		{
 			// hardcoded--can only pick up five of any holdable
-			if ( ps->inventory[item->giTag] >= 5 )
+			if (ps->inventory[item->giTag] >= 5)
 			{
 				return qfalse;
 			}
@@ -467,60 +467,60 @@ EvaluateTrajectory
 
 ================
 */
-void EvaluateTrajectory( const trajectory_t *tr, int atTime, vec3_t result ) {
+void EvaluateTrajectory(const trajectory_t *tr, int atTime, vec3_t result) {
 	float		deltaTime;
 	float		phase;
 
-	switch( tr->trType ) {
+	switch(tr->trType) {
 	case TR_STATIONARY:
 	case TR_INTERPOLATE:
-		VectorCopy( tr->trBase, result );
+		VectorCopy(tr->trBase, result);
 		break;
 	case TR_LINEAR:
-		deltaTime = ( atTime - tr->trTime ) * 0.001F;	// milliseconds to seconds
-		VectorMA( tr->trBase, deltaTime, tr->trDelta, result );
+		deltaTime = (atTime - tr->trTime) * 0.001F;	// milliseconds to seconds
+		VectorMA(tr->trBase, deltaTime, tr->trDelta, result);
 		break;
 	case TR_SINE:
-		deltaTime = ( atTime - tr->trTime ) / (float) tr->trDuration;
-		phase = (float)sin( deltaTime * M_PI * 2 );
-		VectorMA( tr->trBase, phase, tr->trDelta, result );
+		deltaTime = (atTime - tr->trTime) / (float) tr->trDuration;
+		phase = (float)sin(deltaTime * M_PI * 2);
+		VectorMA(tr->trBase, phase, tr->trDelta, result);
 		break;
 	case TR_LINEAR_STOP:
-		if ( atTime > tr->trTime + tr->trDuration )
+		if (atTime > tr->trTime + tr->trDuration)
 		{
 			atTime = tr->trTime + tr->trDuration;
 		}
 		//old totally linear
-		deltaTime = ( atTime - tr->trTime ) * 0.001F;	// milliseconds to seconds
-		if ( deltaTime < 0 )
+		deltaTime = (atTime - tr->trTime) * 0.001F;	// milliseconds to seconds
+		if (deltaTime < 0)
 		{//going past the total duration
 			deltaTime = 0;
 		}
-		VectorMA( tr->trBase, deltaTime, tr->trDelta, result );
+		VectorMA(tr->trBase, deltaTime, tr->trDelta, result);
 		break;
 	case TR_NONLINEAR_STOP:
-		if ( atTime > tr->trTime + tr->trDuration )
+		if (atTime > tr->trTime + tr->trDuration)
 		{
 			atTime = tr->trTime + tr->trDuration;
 		}
 		//new slow-down at end
-		if ( atTime - tr->trTime > tr->trDuration || atTime - tr->trTime <= 0  )
+		if (atTime - tr->trTime > tr->trDuration || atTime - tr->trTime <= 0 )
 		{
 			deltaTime = 0;
 		}
 		else
 		{//FIXME: maybe scale this somehow?  So that it starts out faster and stops faster?
-			deltaTime = tr->trDuration*0.001f*((float)cos( DEG2RAD(90.0f - (90.0f*((float)atTime-tr->trTime)/(float)tr->trDuration)) ));
+			deltaTime = tr->trDuration*0.001f*((float)cos(DEG2RAD(90.0f - (90.0f*((float)atTime-tr->trTime)/(float)tr->trDuration))));
 		}
-		VectorMA( tr->trBase, deltaTime, tr->trDelta, result );
+		VectorMA(tr->trBase, deltaTime, tr->trDelta, result);
 		break;
 	case TR_GRAVITY:
-		deltaTime = ( atTime - tr->trTime ) * 0.001F;	// milliseconds to seconds
-		VectorMA( tr->trBase, deltaTime, tr->trDelta, result );
+		deltaTime = (atTime - tr->trTime) * 0.001F;	// milliseconds to seconds
+		VectorMA(tr->trBase, deltaTime, tr->trDelta, result);
 		result[2] -= 0.5F * g_gravity->value * deltaTime * deltaTime;//DEFAULT_GRAVITY
 		break;
 	default:
-		Com_Error( ERR_DROP, "EvaluateTrajectory: unknown trType: %i", tr->trTime );
+		Com_Error(ERR_DROP, "EvaluateTrajectory: unknown trType: %i", tr->trTime);
 		break;
 	}
 }
@@ -532,48 +532,48 @@ EvaluateTrajectoryDelta
 Returns current speed at given time
 ================
 */
-void EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result ) {
+void EvaluateTrajectoryDelta(const trajectory_t *tr, int atTime, vec3_t result) {
 	float	deltaTime;
 	float	phase;
 
-	switch( tr->trType ) {
+	switch(tr->trType) {
 	case TR_STATIONARY:
 	case TR_INTERPOLATE:
-		VectorClear( result );
+		VectorClear(result);
 		break;
 	case TR_LINEAR:
-		VectorCopy( tr->trDelta, result );
+		VectorCopy(tr->trDelta, result);
 		break;
 	case TR_SINE:
-		deltaTime = ( atTime - tr->trTime ) / (float) tr->trDuration;
-		phase = (float)cos( deltaTime * M_PI * 2 );	// derivative of sin = cos
+		deltaTime = (atTime - tr->trTime) / (float) tr->trDuration;
+		phase = (float)cos(deltaTime * M_PI * 2);	// derivative of sin = cos
 		phase *= 0.5;
-		VectorScale( tr->trDelta, phase, result );
+		VectorScale(tr->trDelta, phase, result);
 		break;
 	case TR_LINEAR_STOP:
-		if ( atTime > tr->trTime + tr->trDuration )
+		if (atTime > tr->trTime + tr->trDuration)
 		{
-			VectorClear( result );
+			VectorClear(result);
 			return;
 		}
-		VectorCopy( tr->trDelta, result );
+		VectorCopy(tr->trDelta, result);
 		break;
 	case TR_NONLINEAR_STOP:
-		if ( atTime - tr->trTime > tr->trDuration || atTime - tr->trTime <= 0  )
+		if (atTime - tr->trTime > tr->trDuration || atTime - tr->trTime <= 0 )
 		{
-			VectorClear( result );
+			VectorClear(result);
 			return;
 		}
-		deltaTime = tr->trDuration*0.001f*((float)cos( DEG2RAD(90.0f - (90.0f*((float)atTime-tr->trTime)/(float)tr->trDuration)) ));
-		VectorScale( tr->trDelta, deltaTime, result );
+		deltaTime = tr->trDuration*0.001f*((float)cos(DEG2RAD(90.0f - (90.0f*((float)atTime-tr->trTime)/(float)tr->trDuration))));
+		VectorScale(tr->trDelta, deltaTime, result);
 		break;
 	case TR_GRAVITY:
-		deltaTime = ( atTime - tr->trTime ) * 0.001F;	// milliseconds to seconds
-		VectorCopy( tr->trDelta, result );
+		deltaTime = (atTime - tr->trTime) * 0.001F;	// milliseconds to seconds
+		VectorCopy(tr->trDelta, result);
 		result[2] -= g_gravity->value * deltaTime;		// DEFAULT_GRAVITY
 		break;
 	default:
-		Com_Error( ERR_DROP, "EvaluateTrajectoryDelta: unknown trType: %i", tr->trTime );
+		Com_Error(ERR_DROP, "EvaluateTrajectoryDelta: unknown trType: %i", tr->trTime);
 		break;
 	}
 }
@@ -585,7 +585,7 @@ AddEventToPlayerstate
 Handles the sequence numbers
 ===============
 */
-void AddEventToPlayerstate( int newEvent, int eventParm, playerState_t *ps ) {
+void AddEventToPlayerstate(int newEvent, int eventParm, playerState_t *ps) {
 	ps->events[ps->eventSequence & (MAX_PS_EVENTS-1)] = newEvent;
 	ps->eventParms[ps->eventSequence & (MAX_PS_EVENTS-1)] = eventParm;
 	ps->eventSequence++;
@@ -598,7 +598,7 @@ CurrentPlayerstateEvent
 
 ===============
 */
-int	CurrentPlayerstateEvent( playerState_t *ps ) {
+int	CurrentPlayerstateEvent(playerState_t *ps) {
 	return ps->events[ (ps->eventSequence-1) & (MAX_PS_EVENTS-1) ];
 }
 
@@ -610,15 +610,15 @@ This is done after each set of usercmd_t on the server,
 and after local prediction on the client
 ========================
 */
-void PlayerStateToEntityState( playerState_t *ps, entityState_t *s )
+void PlayerStateToEntityState(playerState_t *ps, entityState_t *s)
 {
 	int		i;
 
-	if ( ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR )
+	if (ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR)
 	{
 		s->eType = ET_INVISIBLE;
 	}
-	/*else if ( ps->stats[STAT_HEALTH] <= GIB_HEALTH )
+	/*else if (ps->stats[STAT_HEALTH] <= GIB_HEALTH)
 	{
 		s->eType = ET_INVISIBLE;
 	} */
@@ -630,12 +630,12 @@ void PlayerStateToEntityState( playerState_t *ps, entityState_t *s )
 	s->number = ps->clientNum;
 
 	s->pos.trType = TR_INTERPOLATE;
-	VectorCopy( ps->origin, s->pos.trBase );
-	//SnapVector( s->pos.trBase );
+	VectorCopy(ps->origin, s->pos.trBase);
+	//SnapVector(s->pos.trBase);
 
 	s->apos.trType = TR_INTERPOLATE;
-	VectorCopy( ps->viewangles, s->apos.trBase );
-	//SnapVector( s->apos.trBase );
+	VectorCopy(ps->viewangles, s->apos.trBase);
+	//SnapVector(s->apos.trBase);
 
 	s->angles2[YAW] = ps->movementDir;
 	s->legsAnim = ps->legsAnim;
@@ -651,42 +651,42 @@ void PlayerStateToEntityState( playerState_t *ps, entityState_t *s )
 	// NOTE: Although we store this stuff locally on a vehicle, who's to say we
 	// can't bring back these variables and fill them at the appropriate time? -Aurelio
 	// We need to bring these in from the vehicle NPC.
-	if ( g_entities[ps->clientNum].client && g_entities[ps->clientNum].client->NPC_class == CLASS_VEHICLE && g_entities[ps->clientNum].NPC )
+	if (g_entities[ps->clientNum].client && g_entities[ps->clientNum].client->NPC_class == CLASS_VEHICLE && g_entities[ps->clientNum].NPC)
 	{
 		Vehicle_t *pVeh = g_entities[ps->clientNum].m_pVehicle;
 		s->vehicleArmor = pVeh->m_iArmor;
-		VectorCopy( pVeh->m_vOrientation, s->vehicleAngles );
+		VectorCopy(pVeh->m_vOrientation, s->vehicleAngles);
 	}
 
 	s->weapon = ps->weapon;
 	s->groundEntityNum = ps->groundEntityNum;
 
 	s->powerups = 0;
-	for ( i = 0 ; i < MAX_POWERUPS ; i++ ) {
-		if ( ps->powerups[ i ] ) {
+	for (i = 0 ; i < MAX_POWERUPS ; i++) {
+		if (ps->powerups[ i ]) {
 			s->powerups |= 1 << i;
 		}
 	}
 #if 0
-	if ( ps->externalEvent ) {
+	if (ps->externalEvent) {
 		s->event = ps->externalEvent;
 		s->eventParm = ps->externalEventParm;
 	} else {
 		int		seq;
 
 		seq = (ps->eventSequence-1) & (MAX_PS_EVENTS-1);
-		s->event = ps->events[ seq ] | ( ( ps->eventSequence & 3 ) << 8 );
+		s->event = ps->events[ seq ] | ((ps->eventSequence & 3) << 8);
 		s->eventParm = ps->eventParms[ seq ];
 	}
 
 	// show some roll in the body based on velocity and angle
-	if ( ps->stats[STAT_HEALTH] > 0 ) {
+	if (ps->stats[STAT_HEALTH] > 0) {
 		vec3_t		right;
 		float		sign;
 		float		side;
 		float		value;
 
-		AngleVectors( ps->viewangles, NULL, right, NULL );
+		AngleVectors(ps->viewangles, NULL, right, NULL);
 
 		side = DotProduct (ps->velocity, right);
 		sign = side < 0 ? -1 : 1;
@@ -694,7 +694,7 @@ void PlayerStateToEntityState( playerState_t *ps, entityState_t *s )
 
 		value = 2;	// g_rollangle->value;
 
-		if (side < 200 /* g_rollspeed->value */ )
+		if (side < 200 /* g_rollspeed->value */)
 			side = side * value / 200; // g_rollspeed->value;
 		else
 			side = value;
@@ -712,18 +712,18 @@ BG_PlayerTouchesItem
 Items can be picked up without actually touching their physical bounds
 ============
 */
-qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime ) {
-	vec3_t origin = { 0.0f };
+qboolean	BG_PlayerTouchesItem(playerState_t *ps, entityState_t *item, int atTime) {
+	vec3_t origin = {0.0f};
 
-	EvaluateTrajectory( &item->pos, atTime, origin );
+	EvaluateTrajectory(&item->pos, atTime, origin);
 
 	// we are ignoring ducked differences here
-	if ( ps->origin[0] - origin[0] > 44
+	if (ps->origin[0] - origin[0] > 44
 		|| ps->origin[0] - origin[0] < -50
 		|| ps->origin[1] - origin[1] > 36
 		|| ps->origin[1] - origin[1] < -36
 		|| ps->origin[2] - origin[2] > 36
-		|| ps->origin[2] - origin[2] < -36 ) {
+		|| ps->origin[2] - origin[2] < -36) {
 		return qfalse;
 	}
 
@@ -765,11 +765,11 @@ int BG_EmplacedView(vec3_t baseAngles, vec3_t angles, float *newYaw, float const
 		*newYaw = AngleSubtract(angles[YAW], -dif);
 
 		if (amt > 1.0f || amt < -1.0f)
-		{ //significant, force the view
+		{//significant, force the view
 			return 2;
 		}
 		else
-		{ //just a little out of range
+		{//just a little out of range
 			return 1;
 		}
 	}

@@ -30,7 +30,7 @@ Layer III
 
   cos transform for n=18, n=6
 
-computes  c[k] =  Sum( cos((pi/4*n)*(2*k+1)*(2*p+1))*f[p] )
+computes  c[k] =  Sum(cos((pi/4*n)*(2*k+1)*(2*p+1))*f[p])
                 k = 0, ...n-1,  p = 0...n-1
 
 
@@ -104,7 +104,7 @@ void imdct18(float f[18])	/* 18 point */
       a[5 + p] = ap - a8p;
       b[p] = bp + b8p;
       b[5 + p] = bp - b8p;
-   }
+  }
    g1 = mdct18w[p] * f[p];
    g2 = mdct18w[17 - p] * f[17 - p];
    a[p] = g1 + g2;
@@ -202,7 +202,7 @@ void imdct6_3(float f[])	/* 6 point */
 
       a += 6;
       f++;
-   }
+  }
 
    a = buf;
    for (w = 0; w < 3; w++)
@@ -222,7 +222,7 @@ void imdct6_3(float f[])	/* 6 point */
       c[5] = c[5] - c[4];
       a += 6;
       c += 6;
-   }
+  }
 
    return;
 }

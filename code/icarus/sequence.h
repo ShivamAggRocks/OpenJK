@@ -35,62 +35,62 @@ class CSequence
 public:
 
 	//Constructors / Destructors
-	CSequence( void );
-	~CSequence( void );
+	CSequence(void);
+	~CSequence(void);
 
 	//Creation and deletion
-	static CSequence *Create( void );
-	void Delete( CIcarus* icarus );
+	static CSequence *Create(void);
+	void Delete(CIcarus* icarus);
 
 	//Organization functions
-	void AddChild( CSequence * );
-	void RemoveChild( CSequence * );
+	void AddChild(CSequence *);
+	void RemoveChild(CSequence *);
 
-	void SetParent( CSequence * );
-	CSequence *GetParent( void )	const	{	return m_parent;	}
+	void SetParent(CSequence *);
+	CSequence *GetParent(void)	const	{	return m_parent;	}
 
 	//Block manipulation
-	CBlock *PopCommand( int );
-	int PushCommand( CBlock *, int );
+	CBlock *PopCommand(int);
+	int PushCommand(CBlock *, int);
 
 	//Flag utilties
-	void SetFlag( int );
-	void RemoveFlag( int, bool = false );
-	int  HasFlag( int );
-	int	 GetFlags( void )		const	{	return m_flags;		}
-	void SetFlags( int flags )	{	m_flags = flags;	}
+	void SetFlag(int);
+	void RemoveFlag(int, bool = false);
+	int  HasFlag(int);
+	int	 GetFlags(void)		const	{	return m_flags;		}
+	void SetFlags(int flags)	{	m_flags = flags;	}
 
 	//Various encapsulation utilities
-	int GetIterations( void )		const	{	return m_iterations;	}
-	void SetIterations( int it )	{	m_iterations = it;		}
+	int GetIterations(void)		const	{	return m_iterations;	}
+	void SetIterations(int it)	{	m_iterations = it;		}
 
-	int GetID( void )		const	{	return m_id;			}
-	void SetID( int id )	{	m_id = id;				}
+	int GetID(void)		const	{	return m_id;			}
+	void SetID(int id)	{	m_id = id;				}
 
-	CSequence *GetReturn( void )	const	{	return m_return;		}
+	CSequence *GetReturn(void)	const	{	return m_return;		}
 
-	void SetReturn ( CSequence *sequence );
+	void SetReturn (CSequence *sequence);
 
-	int GetNumCommands( void )	const	{	return m_numCommands;	}
-	int GetNumChildren( void )	const	{	return m_children.size();	}
+	int GetNumCommands(void)	const	{	return m_numCommands;	}
+	int GetNumChildren(void)	const	{	return m_children.size();	}
 
-	CSequence *GetChildByID( int id );
-	CSequence *GetChildByIndex( int iIndex );
-	bool HasChild( CSequence *sequence );
+	CSequence *GetChildByID(int id);
+	CSequence *GetChildByIndex(int iIndex);
+	bool HasChild(CSequence *sequence);
 
 	int Save();
-	int Load( CIcarus* icarus );
+	int Load(CIcarus* icarus);
 
 	// Overloaded new operator.
-	inline void *operator new( size_t size )
+	inline void *operator new(size_t size)
 	{	// Allocate the memory.
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 
 	// Overloaded delete operator.
-	inline void operator delete( void *pRawData )
+	inline void operator delete(void *pRawData)
 	{	// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
 	enum
@@ -115,8 +115,8 @@ public:
 
 protected:
 
-	int SaveCommand( CBlock *block );
-	int LoadCommand( CBlock *block, CIcarus *icarus );
+	int SaveCommand(CBlock *block);
+	int LoadCommand(CBlock *block, CIcarus *icarus);
 
 	//Organization information
 	sequence_l				m_children;

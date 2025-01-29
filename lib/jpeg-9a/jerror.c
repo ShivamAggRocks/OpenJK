@@ -139,11 +139,11 @@ emit_message (j_common_ptr cinfo, int msg_level)
       (*err->output_message) (cinfo);
     /* Always count warnings in num_warnings. */
     err->num_warnings++;
-  } else {
+ } else {
     /* It's a trace message.  Show it if trace_level >= msg_level. */
     if (err->trace_level >= msg_level)
       (*err->output_message) (cinfo);
-  }
+ }
 }
 
 
@@ -167,17 +167,17 @@ format_message (j_common_ptr cinfo, char * buffer)
   /* Look up message string in proper table */
   if (msg_code > 0 && msg_code <= err->last_jpeg_message) {
     msgtext = err->jpeg_message_table[msg_code];
-  } else if (err->addon_message_table != NULL &&
+ } else if (err->addon_message_table != NULL &&
 	     msg_code >= err->first_addon_message &&
 	     msg_code <= err->last_addon_message) {
     msgtext = err->addon_message_table[msg_code - err->first_addon_message];
-  }
+ }
 
   /* Defend against bogus message number */
   if (msgtext == NULL) {
     err->msg_parm.i[0] = msg_code;
     msgtext = err->jpeg_message_table[0];
-  }
+ }
 
   /* Check for string parameter, as indicated by %s in the message text */
   isstring = FALSE;
@@ -186,8 +186,8 @@ format_message (j_common_ptr cinfo, char * buffer)
     if (ch == '%') {
       if (*msgptr == 's') isstring = TRUE;
       break;
-    }
-  }
+   }
+ }
 
   /* Format the message into the passed buffer */
   if (isstring)

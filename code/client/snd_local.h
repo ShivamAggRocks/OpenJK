@@ -54,8 +54,8 @@ void S_AL_MuteAllSounds(qboolean bMute);
 
 
 //from SND_AMBIENT
-extern void AS_Init( void );
-extern void AS_Free( void );
+extern void AS_Init(void);
+extern void AS_Free(void);
 
 
 #define	PAINTBUFFER_SIZE	1024
@@ -211,7 +211,7 @@ extern cvar_t *s_volumeVoice;
 
 wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength);
 
-qboolean S_LoadSound( sfx_t *sfx );
+qboolean S_LoadSound(sfx_t *sfx);
 
 
 void S_PaintChannels(int endtime);

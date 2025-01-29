@@ -36,11 +36,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 	//Could use strap stuff but I don't particularly care at the moment anyway.
 #include "../namespace_begin.h"
-	extern int	trap_FS_FOpenFile( const char *qpath, fileHandle_t *f, fsMode_t mode );
-	extern void	trap_FS_Read( void *buffer, int len, fileHandle_t f );
-	extern void	trap_FS_Write( const void *buffer, int len, fileHandle_t f );
-	extern void	trap_FS_FCloseFile( fileHandle_t f );
-	extern int	trap_FS_GetFileList(  const char *path, const char *extension, char *listbuf, int bufsize );
+	extern int	trap_FS_FOpenFile(const char *qpath, fileHandle_t *f, fsMode_t mode);
+	extern void	trap_FS_Read(void *buffer, int len, fileHandle_t f);
+	extern void	trap_FS_Write(const void *buffer, int len, fileHandle_t f);
+	extern void	trap_FS_FCloseFile(fileHandle_t f);
+	extern int	trap_FS_GetFileList( const char *path, const char *extension, char *listbuf, int bufsize);
 #include "../namespace_end.h"
 #else
 	#include "g_local.h"
@@ -62,28 +62,28 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #ifdef QAGAME
-extern void G_SetSharedVehicleFunctions( vehicleInfo_t *pVehInfo );
-extern int G_ModelIndex( const char *name );
-extern int G_SoundIndex( const char *name );
+extern void G_SetSharedVehicleFunctions(vehicleInfo_t *pVehInfo);
+extern int G_ModelIndex(const char *name);
+extern int G_SoundIndex(const char *name);
 	#ifdef _JK2MP
-		extern int G_EffectIndex( const char *name );
+		extern int G_EffectIndex(const char *name);
 	#endif
 #elif defined CGAME
 #include "../namespace_begin.h"
-extern qhandle_t	trap_R_RegisterModel( const char *name );			// returns rgb axis if not found
-extern qhandle_t	trap_R_RegisterSkin( const char *name );			// returns all white if not found
-extern qhandle_t	trap_R_RegisterShader( const char *name );
-extern qhandle_t	trap_R_RegisterShaderNoMip( const char *name );
+extern qhandle_t	trap_R_RegisterModel(const char *name);			// returns rgb axis if not found
+extern qhandle_t	trap_R_RegisterSkin(const char *name);			// returns all white if not found
+extern qhandle_t	trap_R_RegisterShader(const char *name);
+extern qhandle_t	trap_R_RegisterShaderNoMip(const char *name);
 extern int			trap_FX_RegisterEffect(const char *file);
-extern sfxHandle_t	trap_S_RegisterSound( const char *sample);		// returns buzz if not found
+extern sfxHandle_t	trap_S_RegisterSound(const char *sample);		// returns buzz if not found
 #include "../namespace_end.h"
 #else//UI
 #include "../namespace_begin.h"
-extern qhandle_t	trap_R_RegisterModel( const char *name );			// returns rgb axis if not found
-extern qhandle_t	trap_R_RegisterSkin( const char *name );			// returns all white if not found
-extern qhandle_t	trap_R_RegisterShader( const char *name );			// returns all white if not found
-extern qhandle_t	trap_R_RegisterShaderNoMip( const char *name );			// returns all white if not found
-extern sfxHandle_t	trap_S_RegisterSound( const char *sample);		// returns buzz if not found
+extern qhandle_t	trap_R_RegisterModel(const char *name);			// returns rgb axis if not found
+extern qhandle_t	trap_R_RegisterSkin(const char *name);			// returns all white if not found
+extern qhandle_t	trap_R_RegisterShader(const char *name);			// returns all white if not found
+extern qhandle_t	trap_R_RegisterShaderNoMip(const char *name);			// returns all white if not found
+extern sfxHandle_t	trap_S_RegisterSound(const char *sample);		// returns buzz if not found
 #include "../namespace_end.h"
 #endif
 
@@ -116,10 +116,10 @@ void BG_ClearVehicleParseParms(void)
 
 #ifndef WE_ARE_IN_THE_UI
 //These funcs are actually shared in both projects
-extern void G_SetAnimalVehicleFunctions( vehicleInfo_t *pVehInfo );
-extern void G_SetSpeederVehicleFunctions( vehicleInfo_t *pVehInfo );
-extern void G_SetWalkerVehicleFunctions( vehicleInfo_t *pVehInfo );
-extern void G_SetFighterVehicleFunctions( vehicleInfo_t *pVehInfo );
+extern void G_SetAnimalVehicleFunctions(vehicleInfo_t *pVehInfo);
+extern void G_SetSpeederVehicleFunctions(vehicleInfo_t *pVehInfo);
+extern void G_SetWalkerVehicleFunctions(vehicleInfo_t *pVehInfo);
+extern void G_SetFighterVehicleFunctions(vehicleInfo_t *pVehInfo);
 #endif
 
 vehWeaponInfo_t g_vehWeaponInfo[MAX_VEH_WEAPONS];
@@ -128,7 +128,7 @@ int		numVehicleWeapons = 1;//first one is null/default
 vehicleInfo_t g_vehicleInfo[MAX_VEHICLES];
 int		numVehicles = 0;//first one is null/default
 
-void BG_VehicleLoadParms( void );
+void BG_VehicleLoadParms(void);
 
 typedef enum {
 	VF_IGNORE,
@@ -186,20 +186,20 @@ vehField_t vehWeaponFields[] =
 	{"explodeOnExpire", VWFOFS(bExplodeOnExpire), VF_BOOL},	//when iLifeTime is up, explodes rather than simply removing itself
 };
 
-static const size_t numVehWeaponFields = ARRAY_LEN( vehWeaponFields );
+static const size_t numVehWeaponFields = ARRAY_LEN(vehWeaponFields);
 
-static vehField_t *FindVehWeaponParm( const char *parmName )
+static vehField_t *FindVehWeaponParm(const char *parmName)
 {
 	size_t i;
-	for ( i = 0; i<numVehWeaponFields; i++ )
+	for (i = 0; i<numVehWeaponFields; i++)
 	{
-		if ( vehWeaponFields[i].name && !Q_stricmp( vehWeaponFields[i].name, parmName ) )
+		if (vehWeaponFields[i].name && !Q_stricmp(vehWeaponFields[i].name, parmName))
 			return &vehWeaponFields[i];
 	}
 	return NULL;
 }
 
-static qboolean BG_ParseVehWeaponParm( vehWeaponInfo_t *vehWeapon, const char *parmName, char *pValue )
+static qboolean BG_ParseVehWeaponParm(vehWeaponInfo_t *vehWeapon, const char *parmName, char *pValue)
 {
 	vehField_t *vehWeaponField;
 	vec3_t	vec;
@@ -208,16 +208,16 @@ static qboolean BG_ParseVehWeaponParm( vehWeaponInfo_t *vehWeapon, const char *p
 	vehicleType_t vehType;
 	char	value[1024];
 
-	Q_strncpyz( value, pValue, sizeof(value) );
+	Q_strncpyz(value, pValue, sizeof(value));
 
 	// Loop through possible parameters
-	vehWeaponField = FindVehWeaponParm( parmName );
+	vehWeaponField = FindVehWeaponParm(parmName);
 
-	if ( !vehWeaponField )
+	if (!vehWeaponField)
 		return qfalse;
 
 	// found it
-	switch( vehWeaponField->type )
+	switch(vehWeaponField->type)
 	{
 	case VF_INT:
 		*(int *)(b+vehWeaponField->ofs) = atoi(value);
@@ -227,23 +227,23 @@ static qboolean BG_ParseVehWeaponParm( vehWeaponInfo_t *vehWeapon, const char *p
 		break;
 	case VF_STRING:	// string on disk, pointer in memory
 		if (!*(char **)(b+vehWeaponField->ofs))
-		{ //just use 1024 bytes in case we want to write over the string
+		{//just use 1024 bytes in case we want to write over the string
 #ifdef _JK2MP
 			*(char **)(b+vehWeaponField->ofs) = (char *)BG_Alloc(1024);//(char *)BG_Alloc(strlen(value));
 			strcpy(*(char **)(b+vehWeaponField->ofs), value);
 #else
-			(*(char **)(b+vehWeaponField->ofs)) = G_NewString( value );
+			(*(char **)(b+vehWeaponField->ofs)) = G_NewString(value);
 #endif
 		}
 
 		break;
 	case VF_VECTOR:
 		_iFieldsRead = sscanf (value, "%f %f %f", &vec[0], &vec[1], &vec[2]);
-		//assert(_iFieldsRead==3 );
+		//assert(_iFieldsRead==3);
 		if (_iFieldsRead!=3)
 		{
 			Com_Printf (S_COLOR_YELLOW"BG_ParseVehWeaponParm: VEC3 sscanf() failed to read 3 floats ('angle' key bug?)\n");
-			VectorClear( vec );
+			VectorClear(vec);
 		}
 		((float *)(b+vehWeaponField->ofs))[0] = vec[0];
 		((float *)(b+vehWeaponField->ofs))[1] = vec[1];
@@ -253,76 +253,76 @@ static qboolean BG_ParseVehWeaponParm( vehWeaponInfo_t *vehWeapon, const char *p
 		*(qboolean *)(b+vehWeaponField->ofs) = (qboolean)(atof(value)!=0);
 		break;
 	case VF_VEHTYPE:
-		vehType = (vehicleType_t)GetIDForString( VehicleTable, value );
+		vehType = (vehicleType_t)GetIDForString(VehicleTable, value);
 		*(vehicleType_t *)(b+vehWeaponField->ofs) = vehType;
 		break;
 	case VF_ANIM:
 		{
-			int anim = GetIDForString( animTable, value );
+			int anim = GetIDForString(animTable, value);
 			*(int *)(b+vehWeaponField->ofs) = anim;
 		}
 		break;
 	case VF_WEAPON:	// take string, resolve into index into VehWeaponParms
-		//*(int *)(b+vehWeaponField->ofs) = VEH_VehWeaponIndexForName( value );
+		//*(int *)(b+vehWeaponField->ofs) = VEH_VehWeaponIndexForName(value);
 		break;
 	case VF_MODEL:// take the string, get the G_ModelIndex
 #ifdef QAGAME
-		*(int *)(b+vehWeaponField->ofs) = G_ModelIndex( value );
+		*(int *)(b+vehWeaponField->ofs) = G_ModelIndex(value);
 #else
-		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterModel( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterModel(value);
 #endif
 		break;
 	case VF_MODEL_CLIENT:	// (MP cgame only) take the string, get the G_ModelIndex
 #ifndef _JK2MP
-		*(int *)(b+vehWeaponField->ofs) = G_ModelIndex( value );
+		*(int *)(b+vehWeaponField->ofs) = G_ModelIndex(value);
 #elif defined QAGAME
-		//*(int *)(b+vehWeaponField->ofs) = G_ModelIndex( value );
+		//*(int *)(b+vehWeaponField->ofs) = G_ModelIndex(value);
 #else
-		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterModel( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterModel(value);
 #endif
 		break;
 	case VF_EFFECT:	// take the string, get the G_EffectIndex
 #ifdef QAGAME
-		*(int *)(b+vehWeaponField->ofs) = G_EffectIndex( value );
+		*(int *)(b+vehWeaponField->ofs) = G_EffectIndex(value);
 #elif defined CGAME
-		*(int *)(b+vehWeaponField->ofs) = trap_FX_RegisterEffect( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_FX_RegisterEffect(value);
 #endif
 		break;
 	case VF_EFFECT_CLIENT:	// (MP cgame only) take the string, get the index
 #ifndef _JK2MP
-		*(int *)(b+vehWeaponField->ofs) = G_EffectIndex( value );
+		*(int *)(b+vehWeaponField->ofs) = G_EffectIndex(value);
 #elif defined QAGAME
-		//*(int *)(b+vehWeaponField->ofs) = G_EffectIndex( value );
+		//*(int *)(b+vehWeaponField->ofs) = G_EffectIndex(value);
 #elif defined CGAME
-		*(int *)(b+vehWeaponField->ofs) = trap_FX_RegisterEffect( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_FX_RegisterEffect(value);
 #endif
 		break;
 	case VF_SHADER:	// (cgame only) take the string, call trap_R_RegisterShader
 #ifdef WE_ARE_IN_THE_UI
-		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterShaderNoMip( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterShaderNoMip(value);
 #elif defined CGAME
-		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterShader( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterShader(value);
 #endif
 		break;
 	case VF_SHADER_NOMIP:// (cgame only) take the string, call trap_R_RegisterShaderNoMip
 #ifndef QAGAME
-		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterShaderNoMip( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_R_RegisterShaderNoMip(value);
 #endif
 		break;
 	case VF_SOUND:	// take the string, get the G_SoundIndex
 #ifdef QAGAME
-		*(int *)(b+vehWeaponField->ofs) = G_SoundIndex( value );
+		*(int *)(b+vehWeaponField->ofs) = G_SoundIndex(value);
 #else
-		*(int *)(b+vehWeaponField->ofs) = trap_S_RegisterSound( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_S_RegisterSound(value);
 #endif
 		break;
 	case VF_SOUND_CLIENT:	// (MP cgame only) take the string, get the index
 #ifndef _JK2MP
-		*(int *)(b+vehWeaponField->ofs) = G_SoundIndex( value );
+		*(int *)(b+vehWeaponField->ofs) = G_SoundIndex(value);
 #elif defined QAGAME
-		//*(int *)(b+vehWeaponField->ofs) = G_SoundIndex( value );
+		//*(int *)(b+vehWeaponField->ofs) = G_SoundIndex(value);
 #else
-		*(int *)(b+vehWeaponField->ofs) = trap_S_RegisterSound( value );
+		*(int *)(b+vehWeaponField->ofs) = trap_S_RegisterSound(value);
 #endif
 		break;
 	default:
@@ -333,7 +333,7 @@ static qboolean BG_ParseVehWeaponParm( vehWeaponInfo_t *vehWeapon, const char *p
 	return qtrue;
 }
 
-int VEH_LoadVehWeapon( const char *vehWeaponName )
+int VEH_LoadVehWeapon(const char *vehWeaponName)
 {//load up specified vehWeapon and save in array: g_vehWeaponInfo
 	const char	*token;
 	char		parmName[128];//we'll assume that no parm name is longer than 128
@@ -341,7 +341,7 @@ int VEH_LoadVehWeapon( const char *vehWeaponName )
 	const char	*p;
 	vehWeaponInfo_t	*vehWeapon = NULL;
 
-	//BG_VehWeaponSetDefaults( &g_vehWeaponInfo[0] );//set the first vehicle to default data
+	//BG_VehWeaponSetDefaults(&g_vehWeaponInfo[0]);//set the first vehicle to default data
 
 	//try to parse data out
 	p = VehWeaponParms;
@@ -354,123 +354,123 @@ int VEH_LoadVehWeapon( const char *vehWeaponName )
 
 	vehWeapon = &g_vehWeaponInfo[numVehicleWeapons];
 	// look for the right vehicle weapon
-	while ( p )
+	while (p)
 	{
-		token = COM_ParseExt( &p, qtrue );
-		if ( token[0] == 0 )
+		token = COM_ParseExt(&p, qtrue);
+		if (token[0] == 0)
 		{
-			COM_EndParseSession(  );
+			COM_EndParseSession();
 			return qfalse;
 		}
 
-		if ( !Q_stricmp( token, vehWeaponName ) )
+		if (!Q_stricmp(token, vehWeaponName))
 		{
 			break;
 		}
 
-		SkipBracedSection( &p );
+		SkipBracedSection(&p);
 	}
-	if ( !p )
+	if (!p)
 	{
-		COM_EndParseSession(  );
+		COM_EndParseSession();
 		return qfalse;
 	}
 
-	token = COM_ParseExt( &p, qtrue );
-	if ( token[0] == 0 )
+	token = COM_ParseExt(&p, qtrue);
+	if (token[0] == 0)
 	{//barf
-		COM_EndParseSession(  );
+		COM_EndParseSession();
 		return VEH_WEAPON_NONE;
 	}
 
-	if ( Q_stricmp( token, "{" ) != 0 )
+	if (Q_stricmp(token, "{") != 0)
 	{
-		COM_EndParseSession(  );
+		COM_EndParseSession();
 		return VEH_WEAPON_NONE;
 	}
 
 	// parse the vehWeapon info block
-	while ( 1 )
+	while (1)
 	{
-		SkipRestOfLine( &p );
-		token = COM_ParseExt( &p, qtrue );
-		if ( !token[0] )
+		SkipRestOfLine(&p);
+		token = COM_ParseExt(&p, qtrue);
+		if (!token[0])
 		{
-			Com_Printf( S_COLOR_RED"ERROR: unexpected EOF while parsing Vehicle Weapon '%s'\n", vehWeaponName );
-			COM_EndParseSession(  );
+			Com_Printf(S_COLOR_RED"ERROR: unexpected EOF while parsing Vehicle Weapon '%s'\n", vehWeaponName);
+			COM_EndParseSession();
 			return VEH_WEAPON_NONE;
 		}
 
-		if ( !Q_stricmp( token, "}" ) )
+		if (!Q_stricmp(token, "}"))
 		{
 			break;
 		}
-		Q_strncpyz( parmName, token, sizeof(parmName) );
-		value = COM_ParseExt( &p, qtrue );
-		if ( !value || !value[0] )
+		Q_strncpyz(parmName, token, sizeof(parmName));
+		value = COM_ParseExt(&p, qtrue);
+		if (!value || !value[0])
 		{
-			Com_Printf( S_COLOR_RED"ERROR: Vehicle Weapon token '%s' has no value!\n", parmName );
+			Com_Printf(S_COLOR_RED"ERROR: Vehicle Weapon token '%s' has no value!\n", parmName);
 		}
 		else
 		{
-			if ( !BG_ParseVehWeaponParm( vehWeapon, parmName, value ) )
+			if (!BG_ParseVehWeaponParm(vehWeapon, parmName, value))
 			{
-				Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle Weapon key/value pair '%s','%s'!\n", parmName, value );
+				Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle Weapon key/value pair '%s','%s'!\n", parmName, value);
 			}
 		}
 	}
-	if ( vehWeapon->fHoming )
+	if (vehWeapon->fHoming)
 	{//all lock-on weapons use these 2 sounds
 #ifdef QAGAME
 		//Hmm, no need fo have server register this, is there?
-		//G_SoundIndex( "sound/weapons/torpedo/tick.wav" );
-		//G_SoundIndex( "sound/weapons/torpedo/lock.wav" );
+		//G_SoundIndex("sound/weapons/torpedo/tick.wav");
+		//G_SoundIndex("sound/weapons/torpedo/lock.wav");
 #elif defined CGAME
-		trap_S_RegisterSound( "sound/vehicles/weapons/common/tick.wav" );
-		trap_S_RegisterSound( "sound/vehicles/weapons/common/lock.wav" );
-		trap_S_RegisterSound( "sound/vehicles/common/lockalarm1.wav" );
-		trap_S_RegisterSound( "sound/vehicles/common/lockalarm2.wav" );
-		trap_S_RegisterSound( "sound/vehicles/common/lockalarm3.wav" );
+		trap_S_RegisterSound("sound/vehicles/weapons/common/tick.wav");
+		trap_S_RegisterSound("sound/vehicles/weapons/common/lock.wav");
+		trap_S_RegisterSound("sound/vehicles/common/lockalarm1.wav");
+		trap_S_RegisterSound("sound/vehicles/common/lockalarm2.wav");
+		trap_S_RegisterSound("sound/vehicles/common/lockalarm3.wav");
 #else
-		trap_S_RegisterSound( "sound/vehicles/weapons/common/tick.wav" );
-		trap_S_RegisterSound( "sound/vehicles/weapons/common/lock.wav" );
-		trap_S_RegisterSound( "sound/vehicles/common/lockalarm1.wav" );
-		trap_S_RegisterSound( "sound/vehicles/common/lockalarm2.wav" );
-		trap_S_RegisterSound( "sound/vehicles/common/lockalarm3.wav" );
+		trap_S_RegisterSound("sound/vehicles/weapons/common/tick.wav");
+		trap_S_RegisterSound("sound/vehicles/weapons/common/lock.wav");
+		trap_S_RegisterSound("sound/vehicles/common/lockalarm1.wav");
+		trap_S_RegisterSound("sound/vehicles/common/lockalarm2.wav");
+		trap_S_RegisterSound("sound/vehicles/common/lockalarm3.wav");
 #endif
 	}
-	COM_EndParseSession(  );
+	COM_EndParseSession();
 	return (numVehicleWeapons++);
 }
 
-int VEH_VehWeaponIndexForName( const char *vehWeaponName )
+int VEH_VehWeaponIndexForName(const char *vehWeaponName)
 {
 	int vw;
-	if ( !vehWeaponName || !vehWeaponName[0] )
+	if (!vehWeaponName || !vehWeaponName[0])
 	{
-		Com_Printf( S_COLOR_RED"ERROR: Trying to read Vehicle Weapon with no name!\n" );
+		Com_Printf(S_COLOR_RED"ERROR: Trying to read Vehicle Weapon with no name!\n");
 		return VEH_WEAPON_NONE;
 	}
-	for ( vw = VEH_WEAPON_BASE; vw < numVehicleWeapons; vw++ )
+	for (vw = VEH_WEAPON_BASE; vw < numVehicleWeapons; vw++)
 	{
-		if ( g_vehWeaponInfo[vw].name
-			&& Q_stricmp( g_vehWeaponInfo[vw].name, vehWeaponName ) == 0 )
+		if (g_vehWeaponInfo[vw].name
+			&& Q_stricmp(g_vehWeaponInfo[vw].name, vehWeaponName) == 0)
 		{//already loaded this one
 			return vw;
 		}
 	}
 	//haven't loaded it yet
-	if ( vw >= MAX_VEH_WEAPONS )
+	if (vw >= MAX_VEH_WEAPONS)
 	{//no more room!
-		Com_Printf( S_COLOR_RED"ERROR: Too many Vehicle Weapons (max 16), aborting load on %s!\n", vehWeaponName );
+		Com_Printf(S_COLOR_RED"ERROR: Too many Vehicle Weapons (max 16), aborting load on %s!\n", vehWeaponName);
 		return VEH_WEAPON_NONE;
 	}
 	//we have room for another one, load it up and return the index
 	//HMM... should we not even load the .vwp file until we want to?
-	vw = VEH_LoadVehWeapon( vehWeaponName );
-	if ( vw == VEH_WEAPON_NONE )
+	vw = VEH_LoadVehWeapon(vehWeaponName);
+	if (vw == VEH_WEAPON_NONE)
 	{
-		Com_Printf( S_COLOR_RED"ERROR: Could not find Vehicle Weapon %s!\n", vehWeaponName );
+		Com_Printf(S_COLOR_RED"ERROR: Could not find Vehicle Weapon %s!\n", vehWeaponName);
 	}
 	return vw;
 }
@@ -699,7 +699,7 @@ vehField_t vehicleFields[] =
 //===END TURRETS===========================================================================
 };
 
-static const size_t numVehicleFields = ARRAY_LEN( vehicleFields );
+static const size_t numVehicleFields = ARRAY_LEN(vehicleFields);
 
 stringID_table_t VehicleTable[VH_NUM_VEHICLES+1] =
 {
@@ -709,11 +709,11 @@ stringID_table_t VehicleTable[VH_NUM_VEHICLES+1] =
 	ENUM2STRING(VH_SPEEDER),	//something you ride on that hovers, like a speeder or swoop
 	ENUM2STRING(VH_ANIMAL),		//animal you ride on top of that walks, like a tauntaun
 	ENUM2STRING(VH_FLIER),		//animal you ride on top of that flies, like a giant mynoc?
-	{ 0,	-1 }
+	{0,	-1}
 };
 
 // Setup the shared functions (one's that all vehicles would generally use).
-void BG_SetSharedVehicleFunctions( vehicleInfo_t *pVehInfo )
+void BG_SetSharedVehicleFunctions(vehicleInfo_t *pVehInfo)
 {
 #ifdef QAGAME
 	//only do the whole thing if we're on game
@@ -721,19 +721,19 @@ void BG_SetSharedVehicleFunctions( vehicleInfo_t *pVehInfo )
 #endif
 
 #ifndef WE_ARE_IN_THE_UI
-	switch( pVehInfo->type )
+	switch(pVehInfo->type)
 	{
 		case VH_SPEEDER:
-			G_SetSpeederVehicleFunctions( pVehInfo );
+			G_SetSpeederVehicleFunctions(pVehInfo);
 			break;
 		case VH_ANIMAL:
-			G_SetAnimalVehicleFunctions( pVehInfo );
+			G_SetAnimalVehicleFunctions(pVehInfo);
 			break;
 		case VH_FIGHTER:
-			G_SetFighterVehicleFunctions( pVehInfo );
+			G_SetFighterVehicleFunctions(pVehInfo);
 			break;
 		case VH_WALKER:
-			G_SetWalkerVehicleFunctions( pVehInfo );
+			G_SetWalkerVehicleFunctions(pVehInfo);
 			break;
 		default:
 			break;
@@ -741,7 +741,7 @@ void BG_SetSharedVehicleFunctions( vehicleInfo_t *pVehInfo )
 #endif
 }
 
-void BG_VehicleSetDefaults( vehicleInfo_t *vehicle )
+void BG_VehicleSetDefaults(vehicleInfo_t *vehicle)
 {
 	memset(vehicle, 0, sizeof(vehicleInfo_t));
 /*
@@ -752,7 +752,7 @@ void BG_VehicleSetDefaults( vehicleInfo_t *vehicle )
 	}
 	strcpy(vehicle->name, "default");
 #else
-	vehicle->name = G_NewString( "default" );
+	vehicle->name = G_NewString("default");
 #endif
 
 	//general data
@@ -764,7 +764,7 @@ void BG_VehicleSetDefaults( vehicleInfo_t *vehicle )
 	vehicle->length = 0;					//how long it is - used for body length traces when turning/moving?
 	vehicle->width = 0;						//how wide it is - used for body length traces when turning/moving?
 	vehicle->height = 0;					//how tall it is - used for body length traces when turning/moving?
-	VectorClear( vehicle->centerOfGravity );//offset from origin: {forward, right, up} as a modifier on that dimension (-1.0f is all the way back, 1.0f is all the way forward)
+	VectorClear(vehicle->centerOfGravity);//offset from origin: {forward, right, up} as a modifier on that dimension (-1.0f is all the way back, 1.0f is all the way forward)
 
 	//speed stats - note: these are DESIRED speed, not actual current speed/velocity
 	vehicle->speedMax = VEH_DEFAULT_SPEED_MAX;	//top speed
@@ -844,45 +844,45 @@ void BG_VehicleSetDefaults( vehicleInfo_t *vehicle )
 */
 }
 
-void BG_VehicleClampData( vehicleInfo_t *vehicle )
+void BG_VehicleClampData(vehicleInfo_t *vehicle)
 {//sanity check and clamp the vehicle's data
 	int		i;
 
-	for ( i = 0; i < 3; i++ )
+	for (i = 0; i < 3; i++)
 	{
-		if ( vehicle->centerOfGravity[i] > 1.0f )
+		if (vehicle->centerOfGravity[i] > 1.0f)
 		{
 			vehicle->centerOfGravity[i] = 1.0f;
 		}
-		else if ( vehicle->centerOfGravity[i] < -1.0f )
+		else if (vehicle->centerOfGravity[i] < -1.0f)
 		{
 			vehicle->centerOfGravity[i] = -1.0f;
 		}
 	}
 
 	// Validate passenger max.
-	if ( vehicle->maxPassengers > VEH_MAX_PASSENGERS )
+	if (vehicle->maxPassengers > VEH_MAX_PASSENGERS)
 	{
 		vehicle->maxPassengers = VEH_MAX_PASSENGERS;
 	}
-	else if ( vehicle->maxPassengers < 0 )
+	else if (vehicle->maxPassengers < 0)
 	{
 		vehicle->maxPassengers = 0;
 	}
 }
 
-static vehField_t *FindVehicleParm( const char *parmName )
+static vehField_t *FindVehicleParm(const char *parmName)
 {
 	size_t i;
-	for ( i = 0; i<numVehicleFields; i++ )
+	for (i = 0; i<numVehicleFields; i++)
 	{
-		if ( vehicleFields[i].name && !Q_stricmp( vehicleFields[i].name, parmName ) )
+		if (vehicleFields[i].name && !Q_stricmp(vehicleFields[i].name, parmName))
 			return &vehicleFields[i];
 	}
 	return NULL;
 }
 
-static qboolean BG_ParseVehicleParm( vehicleInfo_t *vehicle, const char *parmName, char *pValue )
+static qboolean BG_ParseVehicleParm(vehicleInfo_t *vehicle, const char *parmName, char *pValue)
 {
 	vehField_t *vehField;
 	vec3_t	vec;
@@ -891,16 +891,16 @@ static qboolean BG_ParseVehicleParm( vehicleInfo_t *vehicle, const char *parmNam
 	vehicleType_t vehType;
 	char value[1024];
 
-	Q_strncpyz( value, pValue, sizeof(value) );
+	Q_strncpyz(value, pValue, sizeof(value));
 
 	// Loop through possible parameters
-	vehField = FindVehicleParm( parmName );
+	vehField = FindVehicleParm(parmName);
 
-	if ( !vehField )
+	if (!vehField)
 		return qfalse;
 
 	// found it
-	switch( vehField->type )
+	switch(vehField->type)
 	{
 	case VF_IGNORE:
 		break;
@@ -912,23 +912,23 @@ static qboolean BG_ParseVehicleParm( vehicleInfo_t *vehicle, const char *parmNam
 		break;
 	case VF_STRING:	// string on disk, pointer in memory
 		if (!*(char **)(b+vehField->ofs))
-		{ //just use 128 bytes in case we want to write over the string
+		{//just use 128 bytes in case we want to write over the string
 #ifdef _JK2MP
 			*(char **)(b+vehField->ofs) = (char *)BG_Alloc(128);//(char *)BG_Alloc(strlen(value));
 			strcpy(*(char **)(b+vehField->ofs), value);
 #else
-			(*(char **)(b+vehField->ofs)) = G_NewString( value );
+			(*(char **)(b+vehField->ofs)) = G_NewString(value);
 #endif
 		}
 
 		break;
 	case VF_VECTOR:
 		_iFieldsRead = sscanf (value, "%f %f %f", &vec[0], &vec[1], &vec[2]);
-		//assert(_iFieldsRead==3 );
+		//assert(_iFieldsRead==3);
 		if (_iFieldsRead!=3)
 		{
 			Com_Printf (S_COLOR_YELLOW"BG_ParseVehicleParm: VEC3 sscanf() failed to read 3 floats ('angle' key bug?)\n");
-			VectorClear( vec );
+			VectorClear(vec);
 		}
 		((float *)(b+vehField->ofs))[0] = vec[0];
 		((float *)(b+vehField->ofs))[1] = vec[1];
@@ -938,76 +938,76 @@ static qboolean BG_ParseVehicleParm( vehicleInfo_t *vehicle, const char *parmNam
 		*(qboolean *)(b+vehField->ofs) = (qboolean)(atof(value)!=0);
 		break;
 	case VF_VEHTYPE:
-		vehType = (vehicleType_t)GetIDForString( VehicleTable, value );
+		vehType = (vehicleType_t)GetIDForString(VehicleTable, value);
 		*(vehicleType_t *)(b+vehField->ofs) = vehType;
 		break;
 	case VF_ANIM:
 		{
-			int anim = GetIDForString( animTable, value );
+			int anim = GetIDForString(animTable, value);
 			*(int *)(b+vehField->ofs) = anim;
 		}
 		break;
 	case VF_WEAPON:	// take string, resolve into index into VehWeaponParms
-		*(int *)(b+vehField->ofs) = VEH_VehWeaponIndexForName( value );
+		*(int *)(b+vehField->ofs) = VEH_VehWeaponIndexForName(value);
 		break;
 	case VF_MODEL:	// take the string, get the G_ModelIndex
 #ifdef QAGAME
-		*(int *)(b+vehField->ofs) = G_ModelIndex( value );
+		*(int *)(b+vehField->ofs) = G_ModelIndex(value);
 #else
-		*(int *)(b+vehField->ofs) = trap_R_RegisterModel( value );
+		*(int *)(b+vehField->ofs) = trap_R_RegisterModel(value);
 #endif
 		break;
 	case VF_MODEL_CLIENT:	// (MP cgame only) take the string, get the G_ModelIndex
 #ifndef _JK2MP
-		*(int *)(b+vehField->ofs) = G_ModelIndex( value );
+		*(int *)(b+vehField->ofs) = G_ModelIndex(value);
 #elif defined QAGAME
-		//*(int *)(b+vehField->ofs) = G_ModelIndex( value );
+		//*(int *)(b+vehField->ofs) = G_ModelIndex(value);
 #else
-		*(int *)(b+vehField->ofs) = trap_R_RegisterModel( value );
+		*(int *)(b+vehField->ofs) = trap_R_RegisterModel(value);
 #endif
 		break;
 	case VF_EFFECT:	// take the string, get the G_EffectIndex
 #ifdef QAGAME
-		*(int *)(b+vehField->ofs) = G_EffectIndex( value );
+		*(int *)(b+vehField->ofs) = G_EffectIndex(value);
 #elif defined CGAME
-		*(int *)(b+vehField->ofs) = trap_FX_RegisterEffect( value );
+		*(int *)(b+vehField->ofs) = trap_FX_RegisterEffect(value);
 #endif
 		break;
 	case VF_EFFECT_CLIENT:	// (MP cgame only) take the string, get the G_EffectIndex
 #ifndef _JK2MP
-		*(int *)(b+vehField->ofs) = G_EffectIndex( value );
+		*(int *)(b+vehField->ofs) = G_EffectIndex(value);
 #elif defined QAGAME
-		//*(int *)(b+vehField->ofs) = G_EffectIndex( value );
+		//*(int *)(b+vehField->ofs) = G_EffectIndex(value);
 #elif defined CGAME
-		*(int *)(b+vehField->ofs) = trap_FX_RegisterEffect( value );
+		*(int *)(b+vehField->ofs) = trap_FX_RegisterEffect(value);
 #endif
 		break;
 	case VF_SHADER:	// (cgame only) take the string, call trap_R_RegisterShader
 #ifdef WE_ARE_IN_THE_UI
-		*(int *)(b+vehField->ofs) = trap_R_RegisterShaderNoMip( value );
+		*(int *)(b+vehField->ofs) = trap_R_RegisterShaderNoMip(value);
 #elif defined CGAME
-		*(int *)(b+vehField->ofs) = trap_R_RegisterShader( value );
+		*(int *)(b+vehField->ofs) = trap_R_RegisterShader(value);
 #endif
 		break;
 	case VF_SHADER_NOMIP:// (cgame only) take the string, call trap_R_RegisterShaderNoMip
 #ifndef QAGAME
-		*(int *)(b+vehField->ofs) = trap_R_RegisterShaderNoMip( value );
+		*(int *)(b+vehField->ofs) = trap_R_RegisterShaderNoMip(value);
 #endif
 		break;
 	case VF_SOUND:	// take the string, get the G_SoundIndex
 #ifdef QAGAME
-		*(int *)(b+vehField->ofs) = G_SoundIndex( value );
+		*(int *)(b+vehField->ofs) = G_SoundIndex(value);
 #else
-		*(int *)(b+vehField->ofs) = trap_S_RegisterSound( value );
+		*(int *)(b+vehField->ofs) = trap_S_RegisterSound(value);
 #endif
 		break;
 	case VF_SOUND_CLIENT:	// (MP cgame only) take the string, get the G_SoundIndex
 #ifndef _JK2MP
-		*(int *)(b+vehField->ofs) = G_SoundIndex( value );
+		*(int *)(b+vehField->ofs) = G_SoundIndex(value);
 #elif defined QAGAME
-		//*(int *)(b+vehField->ofs) = G_SoundIndex( value );
+		//*(int *)(b+vehField->ofs) = G_SoundIndex(value);
 #else
-		*(int *)(b+vehField->ofs) = trap_S_RegisterSound( value );
+		*(int *)(b+vehField->ofs) = trap_S_RegisterSound(value);
 #endif
 		break;
 	default:
@@ -1018,28 +1018,28 @@ static qboolean BG_ParseVehicleParm( vehicleInfo_t *vehicle, const char *parmNam
 	return qtrue;
 }
 
-int VEH_LoadVehicle( const char *vehicleName )
+int VEH_LoadVehicle(const char *vehicleName)
 {//load up specified vehicle and save in array: g_vehicleInfo
 	const char	*token;
 	//we'll assume that no parm name is longer than 128
-	char		parmName[128] = { 0 };
-	char		weap1[128] = { 0 }, weap2[128] = { 0 };
-	char		weapMuzzle1[128] = { 0 };
-	char		weapMuzzle2[128] = { 0 };
-	char		weapMuzzle3[128] = { 0 };
-	char		weapMuzzle4[128] = { 0 };
-	char		weapMuzzle5[128] = { 0 };
-	char		weapMuzzle6[128] = { 0 };
-	char		weapMuzzle7[128] = { 0 };
-	char		weapMuzzle8[128] = { 0 };
-	char		weapMuzzle9[128] = { 0 };
-	char		weapMuzzle10[128] = { 0 };
+	char		parmName[128] = {0};
+	char		weap1[128] = {0}, weap2[128] = {0};
+	char		weapMuzzle1[128] = {0};
+	char		weapMuzzle2[128] = {0};
+	char		weapMuzzle3[128] = {0};
+	char		weapMuzzle4[128] = {0};
+	char		weapMuzzle5[128] = {0};
+	char		weapMuzzle6[128] = {0};
+	char		weapMuzzle7[128] = {0};
+	char		weapMuzzle8[128] = {0};
+	char		weapMuzzle9[128] = {0};
+	char		weapMuzzle10[128] = {0};
 	char		*value = NULL;
 	const char	*p = NULL;
 	vehicleInfo_t	*vehicle = NULL;
 
 	// Load the vehicle parms if no vehicles have been loaded yet.
-	if ( numVehicles == 0 )
+	if (numVehicles == 0)
 	{
 		BG_VehicleLoadParms();
 	}
@@ -1055,234 +1055,234 @@ int VEH_LoadVehicle( const char *vehicleName )
 
 	vehicle = &g_vehicleInfo[numVehicles];
 	// look for the right vehicle
-	while ( p )
+	while (p)
 	{
-		token = COM_ParseExt( &p, qtrue );
-		if ( token[0] == 0 )
+		token = COM_ParseExt(&p, qtrue);
+		if (token[0] == 0)
 		{
-			COM_EndParseSession(  );
+			COM_EndParseSession();
 			return VEHICLE_NONE;
 		}
 
-		if ( !Q_stricmp( token, vehicleName ) )
+		if (!Q_stricmp(token, vehicleName))
 		{
 			break;
 		}
 
-		SkipBracedSection( &p );
+		SkipBracedSection(&p);
 	}
 
-	if ( !p )
+	if (!p)
 	{
-		COM_EndParseSession(  );
+		COM_EndParseSession();
 		return VEHICLE_NONE;
 	}
 
-	token = COM_ParseExt( &p, qtrue );
-	if ( token[0] == 0 )
+	token = COM_ParseExt(&p, qtrue);
+	if (token[0] == 0)
 	{//barf
-		COM_EndParseSession(  );
+		COM_EndParseSession();
 		return VEHICLE_NONE;
 	}
 
-	if ( Q_stricmp( token, "{" ) != 0 )
+	if (Q_stricmp(token, "{") != 0)
 	{
-		COM_EndParseSession(  );
+		COM_EndParseSession();
 		return VEHICLE_NONE;
 	}
 
-	BG_VehicleSetDefaults( vehicle );
+	BG_VehicleSetDefaults(vehicle);
 	// parse the vehicle info block
-	while ( 1 )
+	while (1)
 	{
-		SkipRestOfLine( &p );
-		token = COM_ParseExt( &p, qtrue );
-		if ( !token[0] )
+		SkipRestOfLine(&p);
+		token = COM_ParseExt(&p, qtrue);
+		if (!token[0])
 		{
-			Com_Printf( S_COLOR_RED"ERROR: unexpected EOF while parsing Vehicle '%s'\n", vehicleName );
-			COM_EndParseSession(  );
+			Com_Printf(S_COLOR_RED"ERROR: unexpected EOF while parsing Vehicle '%s'\n", vehicleName);
+			COM_EndParseSession();
 			return VEHICLE_NONE;
 		}
 
-		if ( !Q_stricmp( token, "}" ) )
+		if (!Q_stricmp(token, "}"))
 		{
 			break;
 		}
-		Q_strncpyz( parmName, token, sizeof(parmName) );
-		value = COM_ParseExt( &p, qtrue );
-		if ( !value || !value[0] )
+		Q_strncpyz(parmName, token, sizeof(parmName));
+		value = COM_ParseExt(&p, qtrue);
+		if (!value || !value[0])
 		{
-			Com_Printf( S_COLOR_RED"ERROR: Vehicle token '%s' has no value!\n", parmName );
+			Com_Printf(S_COLOR_RED"ERROR: Vehicle token '%s' has no value!\n", parmName);
 		}
-		else if ( Q_stricmp( "weap1", parmName ) == 0 )
+		else if (Q_stricmp("weap1", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weap1, value, sizeof(weap1) );
+			Q_strncpyz(weap1, value, sizeof(weap1));
 		}
-		else if ( Q_stricmp( "weap2", parmName ) == 0 )
+		else if (Q_stricmp("weap2", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weap2, value, sizeof(weap2) );
+			Q_strncpyz(weap2, value, sizeof(weap2));
 		}
-		else if ( Q_stricmp( "weapMuzzle1", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle1", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle1, value, sizeof(weapMuzzle1) );
+			Q_strncpyz(weapMuzzle1, value, sizeof(weapMuzzle1));
 		}
-		else if ( Q_stricmp( "weapMuzzle2", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle2", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle2, value, sizeof(weapMuzzle2) );
+			Q_strncpyz(weapMuzzle2, value, sizeof(weapMuzzle2));
 		}
-		else if ( Q_stricmp( "weapMuzzle3", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle3", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle3, value, sizeof(weapMuzzle3) );
+			Q_strncpyz(weapMuzzle3, value, sizeof(weapMuzzle3));
 		}
-		else if ( Q_stricmp( "weapMuzzle4", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle4", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle4, value, sizeof(weapMuzzle4) );
+			Q_strncpyz(weapMuzzle4, value, sizeof(weapMuzzle4));
 		}
-		else if ( Q_stricmp( "weapMuzzle5", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle5", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle5, value, sizeof(weapMuzzle5) );
+			Q_strncpyz(weapMuzzle5, value, sizeof(weapMuzzle5));
 		}
-		else if ( Q_stricmp( "weapMuzzle6", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle6", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle6, value, sizeof(weapMuzzle6) );
+			Q_strncpyz(weapMuzzle6, value, sizeof(weapMuzzle6));
 		}
-		else if ( Q_stricmp( "weapMuzzle7", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle7", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle7, value, sizeof(weapMuzzle7) );
+			Q_strncpyz(weapMuzzle7, value, sizeof(weapMuzzle7));
 		}
-		else if ( Q_stricmp( "weapMuzzle8", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle8", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle8, value, sizeof(weapMuzzle8) );
+			Q_strncpyz(weapMuzzle8, value, sizeof(weapMuzzle8));
 		}
-		else if ( Q_stricmp( "weapMuzzle9", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle9", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle9, value, sizeof(weapMuzzle9) );
+			Q_strncpyz(weapMuzzle9, value, sizeof(weapMuzzle9));
 		}
-		else if ( Q_stricmp( "weapMuzzle10", parmName ) == 0 )
+		else if (Q_stricmp("weapMuzzle10", parmName) == 0)
 		{//hmm, store this off because we don't want to call another one of these text parsing routines while we're in the middle of one...
-			Q_strncpyz( weapMuzzle10, value, sizeof(weapMuzzle10) );
+			Q_strncpyz(weapMuzzle10, value, sizeof(weapMuzzle10));
 		}
 		else
 		{
-			if ( !BG_ParseVehicleParm( vehicle, parmName, value ) )
+			if (!BG_ParseVehicleParm(vehicle, parmName, value))
 			{
 #ifndef FINAL_BUILD
-				Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair '%s', '%s'!\n", parmName, value );
+				Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair '%s', '%s'!\n", parmName, value);
 #endif
 			}
 		}
 	}
 	//NOW: if we have any weapons, go ahead and load them
-	if ( weap1[0] )
+	if (weap1[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weap1", weap1 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weap1", weap1))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weap1', '%s'!\n", weap1 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weap1', '%s'!\n", weap1);
 #endif
 		}
 	}
-	if ( weap2[0] )
+	if (weap2[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weap2", weap2 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weap2", weap2))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weap2', '%s'!\n", weap2 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weap2', '%s'!\n", weap2);
 #endif
 		}
 	}
-	if ( weapMuzzle1[0] )
+	if (weapMuzzle1[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle1", weapMuzzle1 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle1", weapMuzzle1))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle1', '%s'!\n", weapMuzzle1 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle1', '%s'!\n", weapMuzzle1);
 #endif
 		}
 	}
-	if ( weapMuzzle2[0] )
+	if (weapMuzzle2[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle2", weapMuzzle2 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle2", weapMuzzle2))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle2', '%s'!\n", weapMuzzle2 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle2', '%s'!\n", weapMuzzle2);
 #endif
 		}
 	}
-	if ( weapMuzzle3[0] )
+	if (weapMuzzle3[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle3", weapMuzzle3 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle3", weapMuzzle3))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle3', '%s'!\n", weapMuzzle3 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle3', '%s'!\n", weapMuzzle3);
 #endif
 		}
 	}
-	if ( weapMuzzle4[0] )
+	if (weapMuzzle4[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle4", weapMuzzle4 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle4", weapMuzzle4))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle4', '%s'!\n", weapMuzzle4 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle4', '%s'!\n", weapMuzzle4);
 #endif
 		}
 	}
-	if ( weapMuzzle5[0] )
+	if (weapMuzzle5[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle5", weapMuzzle5 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle5", weapMuzzle5))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle5', '%s'!\n", weapMuzzle5 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle5', '%s'!\n", weapMuzzle5);
 #endif
 		}
 	}
-	if ( weapMuzzle6[0] )
+	if (weapMuzzle6[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle6", weapMuzzle6 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle6", weapMuzzle6))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle6', '%s'!\n", weapMuzzle6 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle6', '%s'!\n", weapMuzzle6);
 #endif
 		}
 	}
-	if ( weapMuzzle7[0] )
+	if (weapMuzzle7[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle7", weapMuzzle7 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle7", weapMuzzle7))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle7', '%s'!\n", weapMuzzle7 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle7', '%s'!\n", weapMuzzle7);
 #endif
 		}
 	}
-	if ( weapMuzzle8[0] )
+	if (weapMuzzle8[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle8", weapMuzzle8 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle8", weapMuzzle8))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle8', '%s'!\n", weapMuzzle8 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle8', '%s'!\n", weapMuzzle8);
 #endif
 		}
 	}
-	if ( weapMuzzle9[0] )
+	if (weapMuzzle9[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle9", weapMuzzle9 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle9", weapMuzzle9))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle9', '%s'!\n", weapMuzzle9 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle9', '%s'!\n", weapMuzzle9);
 #endif
 		}
 	}
-	if ( weapMuzzle10[0] )
+	if (weapMuzzle10[0])
 	{
-		if ( !BG_ParseVehicleParm( vehicle, "weapMuzzle10", weapMuzzle10 ) )
+		if (!BG_ParseVehicleParm(vehicle, "weapMuzzle10", weapMuzzle10))
 		{
 #ifndef FINAL_BUILD
-			Com_Printf( S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle10', '%s'!\n", weapMuzzle10 );
+			Com_Printf(S_COLOR_RED"ERROR: Unknown Vehicle key/value pair 'weapMuzzle10', '%s'!\n", weapMuzzle10);
 #endif
 		}
 	}
 
-	COM_EndParseSession(  );
+	COM_EndParseSession();
 
 #ifdef _JK2MP
 	//let's give these guys some defaults
@@ -1304,141 +1304,141 @@ int VEH_LoadVehicle( const char *vehicleName )
 	}
 #endif
 
-	if ( vehicle->model )
+	if (vehicle->model)
 	{
 #ifdef QAGAME
-		vehicle->modelIndex = G_ModelIndex( va( "models/players/%s/model.glm", vehicle->model ) );
+		vehicle->modelIndex = G_ModelIndex(va("models/players/%s/model.glm", vehicle->model));
 #else
-		vehicle->modelIndex = trap_R_RegisterModel( va( "models/players/%s/model.glm", vehicle->model ) );
+		vehicle->modelIndex = trap_R_RegisterModel(va("models/players/%s/model.glm", vehicle->model));
 #endif
 	}
 
 #ifndef _JK2MP
 	//SP
-	if ( vehicle->skin
-		&& vehicle->skin[0] )
+	if (vehicle->skin
+		&& vehicle->skin[0])
 	{
 		ratl::string_vs<256>			skins(vehicle->skin);
 		for (ratl::string_vs<256>::tokenizer i = skins.begin("|"); i!=skins.end(); i++)
 		{
 			//this will just turn off surfs if there is a *off shader on a surf, the skin will actually get thrown away when cgame starts
-			gi.RE_RegisterSkin( va( "models/players/%s/model_%s.skin", vehicle->model, *i) );
+			gi.RE_RegisterSkin(va("models/players/%s/model_%s.skin", vehicle->model, *i));
 			//this is for the server-side call, it will propgate down to cgame with configstrings and register it at the same time as all the other skins for ghoul2 models
-			G_SkinIndex( va( "models/players/%s/model_%s.skin", vehicle->model, *i) );
+			G_SkinIndex(va("models/players/%s/model_%s.skin", vehicle->model, *i));
 		}
 	}
 	else
 	{
 		//this will just turn off surfs if there is a *off shader on a surf, the skin will actually get thrown away when cgame starts
-		gi.RE_RegisterSkin( va( "models/players/%s/model_default.skin", vehicle->model) );
+		gi.RE_RegisterSkin(va("models/players/%s/model_default.skin", vehicle->model));
 		//this is for the server-side call, it will propgate down to cgame with configstrings and register it at the same time as all the other skins for ghoul2 models
-		G_SkinIndex( va( "models/players/%s/model_default.skin", vehicle->model) );
+		G_SkinIndex(va("models/players/%s/model_default.skin", vehicle->model));
 	}
 #else
 #ifndef QAGAME
-	if ( vehicle->skin
-		&& vehicle->skin[0] )
+	if (vehicle->skin
+		&& vehicle->skin[0])
 	{
-		trap_R_RegisterSkin( va( "models/players/%s/model_%s.skin", vehicle->model, vehicle->skin) );
+		trap_R_RegisterSkin(va("models/players/%s/model_%s.skin", vehicle->model, vehicle->skin));
 	}
 #endif
 #endif
 	//sanity check and clamp the vehicle's data
-	BG_VehicleClampData( vehicle );
+	BG_VehicleClampData(vehicle);
 	// Setup the shared function pointers.
-	BG_SetSharedVehicleFunctions( vehicle );
+	BG_SetSharedVehicleFunctions(vehicle);
 	//misc effects... FIXME: not even used in MP, are they?
-	if ( vehicle->explosionDamage )
+	if (vehicle->explosionDamage)
 	{
 #ifdef QAGAME
-		G_EffectIndex( "ships/ship_explosion_mark" );
+		G_EffectIndex("ships/ship_explosion_mark");
 #elif defined CGAME
-		trap_FX_RegisterEffect( "ships/ship_explosion_mark" );
+		trap_FX_RegisterEffect("ships/ship_explosion_mark");
 #endif
 	}
-	if ( vehicle->flammable )
+	if (vehicle->flammable)
 	{
 #ifdef QAGAME
-		G_SoundIndex( "sound/vehicles/common/fire_lp.wav" );
+		G_SoundIndex("sound/vehicles/common/fire_lp.wav");
 #elif defined CGAME
-		trap_S_RegisterSound( "sound/vehicles/common/fire_lp.wav" );
+		trap_S_RegisterSound("sound/vehicles/common/fire_lp.wav");
 #else
-		trap_S_RegisterSound( "sound/vehicles/common/fire_lp.wav" );
+		trap_S_RegisterSound("sound/vehicles/common/fire_lp.wav");
 #endif
 	}
 
-	if ( vehicle->hoverHeight > 0 )
+	if (vehicle->hoverHeight > 0)
 	{
 #ifndef _JK2MP
-		G_EffectIndex( "ships/swoop_dust" );
+		G_EffectIndex("ships/swoop_dust");
 #elif defined QAGAME
-		G_EffectIndex( "ships/swoop_dust" );
+		G_EffectIndex("ships/swoop_dust");
 #elif defined CGAME
-		trap_FX_RegisterEffect( "ships/swoop_dust" );
+		trap_FX_RegisterEffect("ships/swoop_dust");
 #endif
 	}
 
 #ifdef QAGAME
-	G_EffectIndex( "volumetric/black_smoke" );
-	G_EffectIndex( "ships/fire" );
-	G_SoundIndex( "sound/vehicles/common/release.wav" );
+	G_EffectIndex("volumetric/black_smoke");
+	G_EffectIndex("ships/fire");
+	G_SoundIndex("sound/vehicles/common/release.wav");
 #elif defined CGAME
-	trap_R_RegisterShader( "gfx/menus/radar/bracket" );
-	trap_R_RegisterShader( "gfx/menus/radar/lead" );
-	trap_R_RegisterShaderNoMip( "gfx/menus/radar/asteroid" );
-	trap_S_RegisterSound( "sound/vehicles/common/impactalarm.wav" );
-	trap_S_RegisterSound( "sound/vehicles/common/linkweaps.wav" );
-	trap_S_RegisterSound( "sound/vehicles/common/release.wav" );
+	trap_R_RegisterShader("gfx/menus/radar/bracket");
+	trap_R_RegisterShader("gfx/menus/radar/lead");
+	trap_R_RegisterShaderNoMip("gfx/menus/radar/asteroid");
+	trap_S_RegisterSound("sound/vehicles/common/impactalarm.wav");
+	trap_S_RegisterSound("sound/vehicles/common/linkweaps.wav");
+	trap_S_RegisterSound("sound/vehicles/common/release.wav");
 	trap_FX_RegisterEffect("effects/ships/dest_burning.efx");
 	trap_FX_RegisterEffect("effects/ships/dest_destroyed.efx");
-	trap_FX_RegisterEffect( "volumetric/black_smoke" );
-	trap_FX_RegisterEffect( "ships/fire" );
+	trap_FX_RegisterEffect("volumetric/black_smoke");
+	trap_FX_RegisterEffect("ships/fire");
 	trap_FX_RegisterEffect("ships/hyperspace_stars");
 
-	if ( vehicle->hideRider )
+	if (vehicle->hideRider)
 	{
-		trap_R_RegisterShaderNoMip( "gfx/menus/radar/circle_base" );
-		trap_R_RegisterShaderNoMip( "gfx/menus/radar/circle_base_frame" );
-		trap_R_RegisterShaderNoMip( "gfx/menus/radar/circle_base_shield" );
+		trap_R_RegisterShaderNoMip("gfx/menus/radar/circle_base");
+		trap_R_RegisterShaderNoMip("gfx/menus/radar/circle_base_frame");
+		trap_R_RegisterShaderNoMip("gfx/menus/radar/circle_base_shield");
 	}
 #endif
 
 	return (numVehicles++);
 }
 
-int VEH_VehicleIndexForName( const char *vehicleName )
+int VEH_VehicleIndexForName(const char *vehicleName)
 {
 	int v;
-	if ( !vehicleName || !vehicleName[0] )
+	if (!vehicleName || !vehicleName[0])
 	{
-		Com_Printf( S_COLOR_RED"ERROR: Trying to read Vehicle with no name!\n" );
+		Com_Printf(S_COLOR_RED"ERROR: Trying to read Vehicle with no name!\n");
 		return VEHICLE_NONE;
 	}
-	for (  v = VEHICLE_BASE; v < numVehicles; v++ )
+	for ( v = VEHICLE_BASE; v < numVehicles; v++)
 	{
-		if ( g_vehicleInfo[v].name
-			&& Q_stricmp( g_vehicleInfo[v].name, vehicleName ) == 0 )
+		if (g_vehicleInfo[v].name
+			&& Q_stricmp(g_vehicleInfo[v].name, vehicleName) == 0)
 		{//already loaded this one
 			return v;
 		}
 	}
 	//haven't loaded it yet
-	if ( v >= MAX_VEHICLES )
+	if (v >= MAX_VEHICLES)
 	{//no more room!
-		Com_Printf( S_COLOR_RED"ERROR: Too many Vehicles (max 64), aborting load on %s!\n", vehicleName );
+		Com_Printf(S_COLOR_RED"ERROR: Too many Vehicles (max 64), aborting load on %s!\n", vehicleName);
 		return VEHICLE_NONE;
 	}
 	//we have room for another one, load it up and return the index
 	//HMM... should we not even load the .veh file until we want to?
-	v = VEH_LoadVehicle( vehicleName );
- 	if ( v == VEHICLE_NONE )
+	v = VEH_LoadVehicle(vehicleName);
+ 	if (v == VEHICLE_NONE)
 	{
-		Com_Printf( S_COLOR_RED"ERROR: Could not find Vehicle %s!\n", vehicleName );
+		Com_Printf(S_COLOR_RED"ERROR: Could not find Vehicle %s!\n", vehicleName);
 	}
 	return v;
 }
 
-void BG_VehWeaponLoadParms( void )
+void BG_VehWeaponLoadParms(void)
 {
 	int			len, totallen, vehExtFNLen, mainBlockLen, fileCnt, i;
 	char		*holdChar, *marker;
@@ -1455,9 +1455,9 @@ void BG_VehWeaponLoadParms( void )
 
 	//now load in the extra .veh extensions
 #ifdef _JK2MP
-	fileCnt = trap_FS_GetFileList("ext_data/vehicles/weapons", ".vwp", vehWeaponExtensionListBuf, sizeof(vehWeaponExtensionListBuf) );
+	fileCnt = trap_FS_GetFileList("ext_data/vehicles/weapons", ".vwp", vehWeaponExtensionListBuf, sizeof(vehWeaponExtensionListBuf));
 #else
-	fileCnt = gi.FS_GetFileList("ext_data/vehicles/weapons", ".vwp", vehWeaponExtensionListBuf, sizeof(vehWeaponExtensionListBuf) );
+	fileCnt = gi.FS_GetFileList("ext_data/vehicles/weapons", ".vwp", vehWeaponExtensionListBuf, sizeof(vehWeaponExtensionListBuf));
 #endif
 
 	holdChar = vehWeaponExtensionListBuf;
@@ -1465,29 +1465,29 @@ void BG_VehWeaponLoadParms( void )
 #ifdef _JK2MP
 	tempReadBuffer = (char *)BG_TempAlloc(MAX_VEH_WEAPON_DATA_SIZE);
 #else
-	tempReadBuffer = (char *)gi.Malloc( MAX_VEH_WEAPON_DATA_SIZE, TAG_G_ALLOC, qtrue );
+	tempReadBuffer = (char *)gi.Malloc(MAX_VEH_WEAPON_DATA_SIZE, TAG_G_ALLOC, qtrue);
 #endif
 
 	// NOTE: Not use TempAlloc anymore...
 	//Make ABSOLUTELY CERTAIN that BG_Alloc/etc. is not used before
 	//the subsequent BG_TempFree or the pool will be screwed.
 
-	for ( i = 0; i < fileCnt; i++, holdChar += vehExtFNLen + 1 )
+	for (i = 0; i < fileCnt; i++, holdChar += vehExtFNLen + 1)
 	{
-		vehExtFNLen = strlen( holdChar );
+		vehExtFNLen = strlen(holdChar);
 
-//		Com_Printf( "Parsing %s\n", holdChar );
+//		Com_Printf("Parsing %s\n", holdChar);
 
 #ifdef _JK2MP
-		len = trap_FS_FOpenFile(va( "ext_data/vehicles/weapons/%s", holdChar), &f, FS_READ);
+		len = trap_FS_FOpenFile(va("ext_data/vehicles/weapons/%s", holdChar), &f, FS_READ);
 #else
-//		len = gi.FS_ReadFile( va( "ext_data/vehicles/weapons/%s", holdChar), (void **) &buffer );
-		len = gi.FS_FOpenFile(va( "ext_data/vehicles/weapons/%s", holdChar), &f, FS_READ);
+//		len = gi.FS_ReadFile(va("ext_data/vehicles/weapons/%s", holdChar), (void **) &buffer);
+		len = gi.FS_FOpenFile(va("ext_data/vehicles/weapons/%s", holdChar), &f, FS_READ);
 #endif
 
-		if ( len == -1 )
+		if (len == -1)
 		{
-			Com_Printf( "error reading file\n" );
+			Com_Printf("error reading file\n");
 		}
 		else
 		{
@@ -1499,22 +1499,22 @@ void BG_VehWeaponLoadParms( void )
 			tempReadBuffer[len] = 0;
 #endif
 
-			// Don't let it end on a } because that should be a stand-alone token.
-			if ( totallen && *(marker-1) == '}' )
+			// Don't let it end on a} because that should be a stand-alone token.
+			if (totallen && *(marker-1) == '}')
 			{
-				strcat( marker, " " );
+				strcat(marker, " ");
 				totallen++;
 				marker++;
 			}
 
-			if ( totallen + len >= MAX_VEH_WEAPON_DATA_SIZE ) {
-				Com_Error(ERR_DROP, "Vehicle Weapon extensions (*.vwp) are too large" );
+			if (totallen + len >= MAX_VEH_WEAPON_DATA_SIZE) {
+				Com_Error(ERR_DROP, "Vehicle Weapon extensions (*.vwp) are too large");
 			}
-			strcat( marker, tempReadBuffer );
+			strcat(marker, tempReadBuffer);
 #ifdef _JK2MP
-			trap_FS_FCloseFile( f );
+			trap_FS_FCloseFile(f);
 #else
-			gi.FS_FCloseFile( f );
+			gi.FS_FCloseFile(f);
 #endif
 
 			totallen += len;
@@ -1529,7 +1529,7 @@ void BG_VehWeaponLoadParms( void )
 #endif
 }
 
-void BG_VehicleLoadParms( void )
+void BG_VehicleLoadParms(void)
 {//HMM... only do this if there's a vehicle on the level?
 	int			len, totallen, vehExtFNLen, mainBlockLen, fileCnt, i;
 //	const char	*filename = "ext_data/vehicles.dat";
@@ -1547,9 +1547,9 @@ void BG_VehicleLoadParms( void )
 
 	//now load in the extra .veh extensions
 #ifdef _JK2MP
-	fileCnt = trap_FS_GetFileList("ext_data/vehicles", ".veh", vehExtensionListBuf, sizeof(vehExtensionListBuf) );
+	fileCnt = trap_FS_GetFileList("ext_data/vehicles", ".veh", vehExtensionListBuf, sizeof(vehExtensionListBuf));
 #else
-	fileCnt = gi.FS_GetFileList("ext_data/vehicles", ".veh", vehExtensionListBuf, sizeof(vehExtensionListBuf) );
+	fileCnt = gi.FS_GetFileList("ext_data/vehicles", ".veh", vehExtensionListBuf, sizeof(vehExtensionListBuf));
 #endif
 
 	holdChar = vehExtensionListBuf;
@@ -1557,29 +1557,29 @@ void BG_VehicleLoadParms( void )
 #ifdef _JK2MP
 	tempReadBuffer = (char *)BG_TempAlloc(MAX_VEHICLE_DATA_SIZE);
 #else
-	tempReadBuffer = (char *)gi.Malloc( MAX_VEHICLE_DATA_SIZE, TAG_G_ALLOC, qtrue );
+	tempReadBuffer = (char *)gi.Malloc(MAX_VEHICLE_DATA_SIZE, TAG_G_ALLOC, qtrue);
 #endif
 
 	// NOTE: Not use TempAlloc anymore...
 	//Make ABSOLUTELY CERTAIN that BG_Alloc/etc. is not used before
 	//the subsequent BG_TempFree or the pool will be screwed.
 
-	for ( i = 0; i < fileCnt; i++, holdChar += vehExtFNLen + 1 )
+	for (i = 0; i < fileCnt; i++, holdChar += vehExtFNLen + 1)
 	{
-		vehExtFNLen = strlen( holdChar );
+		vehExtFNLen = strlen(holdChar);
 
-//		Com_Printf( "Parsing %s\n", holdChar );
+//		Com_Printf("Parsing %s\n", holdChar);
 
 #ifdef _JK2MP
-		len = trap_FS_FOpenFile(va( "ext_data/vehicles/%s", holdChar), &f, FS_READ);
+		len = trap_FS_FOpenFile(va("ext_data/vehicles/%s", holdChar), &f, FS_READ);
 #else
-//		len = gi.FS_ReadFile( va( "ext_data/vehicles/%s", holdChar), (void **) &buffer );
-		len = gi.FS_FOpenFile(va( "ext_data/vehicles/%s", holdChar), &f, FS_READ);
+//		len = gi.FS_ReadFile(va("ext_data/vehicles/%s", holdChar), (void **) &buffer);
+		len = gi.FS_FOpenFile(va("ext_data/vehicles/%s", holdChar), &f, FS_READ);
 #endif
 
-		if ( len == -1 )
+		if (len == -1)
 		{
-			Com_Printf( "error reading file\n" );
+			Com_Printf("error reading file\n");
 		}
 		else
 		{
@@ -1591,22 +1591,22 @@ void BG_VehicleLoadParms( void )
 			tempReadBuffer[len] = 0;
 #endif
 
-			// Don't let it end on a } because that should be a stand-alone token.
-			if ( totallen && *(marker-1) == '}' )
+			// Don't let it end on a} because that should be a stand-alone token.
+			if (totallen && *(marker-1) == '}')
 			{
-				strcat( marker, " " );
+				strcat(marker, " ");
 				totallen++;
 				marker++;
 			}
 
-			if ( totallen + len >= MAX_VEHICLE_DATA_SIZE ) {
-				Com_Error(ERR_DROP, "Vehicle extensions (*.veh) are too large" );
+			if (totallen + len >= MAX_VEHICLE_DATA_SIZE) {
+				Com_Error(ERR_DROP, "Vehicle extensions (*.veh) are too large");
 			}
-			strcat( marker, tempReadBuffer );
+			strcat(marker, tempReadBuffer);
 #ifdef _JK2MP
-			trap_FS_FCloseFile( f );
+			trap_FS_FCloseFile(f);
 #else
-			gi.FS_FCloseFile( f );
+			gi.FS_FCloseFile(f);
 #endif
 
 			totallen += len;
@@ -1622,19 +1622,19 @@ void BG_VehicleLoadParms( void )
 
 	numVehicles = 1;//first one is null/default
 	//set the first vehicle to default data
-	BG_VehicleSetDefaults( &g_vehicleInfo[VEHICLE_BASE] );
+	BG_VehicleSetDefaults(&g_vehicleInfo[VEHICLE_BASE]);
 	//sanity check and clamp the vehicle's data
-	BG_VehicleClampData( &g_vehicleInfo[VEHICLE_BASE] );
+	BG_VehicleClampData(&g_vehicleInfo[VEHICLE_BASE]);
 	// Setup the shared function pointers.
-	BG_SetSharedVehicleFunctions( &g_vehicleInfo[VEHICLE_BASE] );
+	BG_SetSharedVehicleFunctions(&g_vehicleInfo[VEHICLE_BASE]);
 
 	//Load the Vehicle Weapons data, too
 	BG_VehWeaponLoadParms();
 }
 
-int BG_VehicleGetIndex( const char *vehicleName )
+int BG_VehicleGetIndex(const char *vehicleName)
 {
-	return (VEH_VehicleIndexForName( vehicleName ));
+	return (VEH_VehicleIndexForName(vehicleName));
 }
 
 //We get the vehicle name passed in as modelname
@@ -1666,8 +1666,8 @@ void BG_GetVehicleSkinName(char *skinname)
 		Com_Error(ERR_DROP, "BG_GetVehicleSkinName:  couldn't find vehicle %s", vehName);
 	}
 
-    if ( !g_vehicleInfo[vIndex].skin
-		|| !g_vehicleInfo[vIndex].skin[0] )
+    if (!g_vehicleInfo[vIndex].skin
+		|| !g_vehicleInfo[vIndex].skin[0])
 	{
 		skinname[0] = 0;
 	}
@@ -1685,10 +1685,10 @@ extern int BG_GetTime(void);
 extern int trap_G2API_AddBolt(void *ghoul2, int modelIndex, const char *boneName);
 extern qboolean trap_G2API_GetBoltMatrix(void *ghoul2, const int modelIndex, const int boltIndex, mdxaBone_t *matrix,
 								const vec3_t angles, const vec3_t position, const int frameNum, qhandle_t *modelList, vec3_t scale);
-void AttachRidersGeneric( Vehicle_t *pVeh )
+void AttachRidersGeneric(Vehicle_t *pVeh)
 {
 	// If we have a pilot, attach him to the driver tag.
-	if ( pVeh->m_pPilot )
+	if (pVeh->m_pPilot)
 	{
 		mdxaBone_t boltMatrix;
 		vec3_t	yawOnlyAngles;
@@ -1701,10 +1701,10 @@ void AttachRidersGeneric( Vehicle_t *pVeh )
 		VectorSet(yawOnlyAngles, 0, parent->playerState->viewangles[YAW], 0);
 
 		// Get the driver tag.
-		trap_G2API_GetBoltMatrix( parent->ghoul2, 0, crotchBolt, &boltMatrix,
+		trap_G2API_GetBoltMatrix(parent->ghoul2, 0, crotchBolt, &boltMatrix,
 								yawOnlyAngles, parent->playerState->origin,
-								BG_GetTime(), NULL, parent->modelScale );
-		BG_GiveMeVectorFromMatrix( &boltMatrix, ORIGIN, pilot->playerState->origin );
+								BG_GetTime(), NULL, parent->modelScale);
+		BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, pilot->playerState->origin);
 	}
 }
 #endif

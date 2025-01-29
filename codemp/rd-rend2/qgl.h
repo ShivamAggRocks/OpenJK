@@ -1,20 +1,20 @@
 #pragma once
 
-#if defined( __LINT__ )
+#if defined(__LINT__)
 #	include <GL/gl.h>
-#elif defined( _WIN32 )
+#elif defined(_WIN32)
 #	include <windows.h>
 #	include <gl/gl.h>
 #elif defined(MACOS_X)
 #	include <OpenGL/gl3.h>
-#elif defined( __linux__ )
+#elif defined(__linux__)
 #	include <GL/gl.h>
 #	include <GL/glx.h>
 // bk001129 - from cvs1.17 (mkv)
 #	if defined(__FX__)
 #		include <GL/fxmesa.h>
 #	endif
-#elif defined( __FreeBSD__ ) // rb010123
+#elif defined(__FreeBSD__) // rb010123
 #	include <GL/gl.h>
 #	include <GL/glx.h>
 #	if defined(__FX__)

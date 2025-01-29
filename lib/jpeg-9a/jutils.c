@@ -167,7 +167,7 @@ jzero_far (void FAR * target, size_t bytestozero)
 
   for (count = bytestozero; count > 0; count--) {
     *ptr++ = 0;
-  }
+ }
 }
 #endif
 #endif
@@ -203,7 +203,7 @@ jcopy_sample_rows (JSAMPARRAY input_array, int source_row,
     for (count = num_cols; count > 0; count--)
       *outptr++ = *inptr++;	/* needn't bother with GETJSAMPLE() here */
 #endif
-  }
+ }
 }
 
 
@@ -222,6 +222,6 @@ jcopy_block_row (JBLOCKROW input_row, JBLOCKROW output_row,
   outptr = (JCOEFPTR) output_row;
   for (count = (long) num_blocks * DCTSIZE2; count > 0; count--) {
     *outptr++ = *inptr++;
-  }
+ }
 #endif
 }

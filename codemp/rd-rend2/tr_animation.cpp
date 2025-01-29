@@ -42,23 +42,23 @@ R_MDRCullModel
 =============
 */
 
-static int R_MDRCullModel( mdrHeader_t *header, trRefEntity_t *ent ) {
+static int R_MDRCullModel(mdrHeader_t *header, trRefEntity_t *ent) {
 	vec3_t		bounds[2];
 	mdrFrame_t	*oldFrame, *newFrame;
 	int			i, frameSize;
 
-	frameSize = (size_t)( &((mdrFrame_t *)0)->bones[ header->numBones ] );
+	frameSize = (size_t)(&((mdrFrame_t *)0)->bones[ header->numBones ]);
 
 	// compute frame pointers
-	newFrame = ( mdrFrame_t * ) ( ( byte * ) header + header->ofsFrames + frameSize * ent->e.frame);
-	oldFrame = ( mdrFrame_t * ) ( ( byte * ) header + header->ofsFrames + frameSize * ent->e.oldframe);
+	newFrame = (mdrFrame_t *) ((byte *) header + header->ofsFrames + frameSize * ent->e.frame);
+	oldFrame = (mdrFrame_t *) ((byte *) header + header->ofsFrames + frameSize * ent->e.oldframe);
 
 	// cull bounding sphere ONLY if this is not an upscaled entity
-	if ( !ent->e.nonNormalizedAxes )
+	if (!ent->e.nonNormalizedAxes)
 	{
-		if ( ent->e.frame == ent->e.oldframe )
+		if (ent->e.frame == ent->e.oldframe)
 		{
-			switch ( R_CullLocalPointAndRadius( newFrame->localOrigin, newFrame->radius ) )
+			switch (R_CullLocalPointAndRadius(newFrame->localOrigin, newFrame->radius))
 			{
 				// Ummm... yeah yeah I know we don't really have an md3 here.. but we pretend
 				// we do. After all, the purpose of mdrs are not that different, are they?
@@ -80,21 +80,21 @@ static int R_MDRCullModel( mdrHeader_t *header, trRefEntity_t *ent ) {
 		{
 			int sphereCull, sphereCullB;
 
-			sphereCull  = R_CullLocalPointAndRadius( newFrame->localOrigin, newFrame->radius );
-			if ( newFrame == oldFrame ) {
+			sphereCull  = R_CullLocalPointAndRadius(newFrame->localOrigin, newFrame->radius);
+			if (newFrame == oldFrame) {
 				sphereCullB = sphereCull;
 			} else {
-				sphereCullB = R_CullLocalPointAndRadius( oldFrame->localOrigin, oldFrame->radius );
+				sphereCullB = R_CullLocalPointAndRadius(oldFrame->localOrigin, oldFrame->radius);
 			}
 
-			if ( sphereCull == sphereCullB )
+			if (sphereCull == sphereCullB)
 			{
-				if ( sphereCull == CULL_OUT )
+				if (sphereCull == CULL_OUT)
 				{
 					tr.pc.c_sphere_cull_md3_out++;
 					return CULL_OUT;
 				}
-				else if ( sphereCull == CULL_IN )
+				else if (sphereCull == CULL_IN)
 				{
 					tr.pc.c_sphere_cull_md3_in++;
 					return CULL_IN;
@@ -113,7 +113,7 @@ static int R_MDRCullModel( mdrHeader_t *header, trRefEntity_t *ent ) {
 		bounds[1][i] = oldFrame->bounds[1][i] > newFrame->bounds[1][i] ? oldFrame->bounds[1][i] : newFrame->bounds[1][i];
 	}
 
-	switch ( R_CullLocalBox( bounds ) )
+	switch (R_CullLocalBox(bounds))
 	{
 		case CULL_IN:
 			tr.pc.c_box_cull_md3_in++;
@@ -135,33 +135,33 @@ R_MDRComputeFogNum
 =================
 */
 
-int R_MDRComputeFogNum( mdrHeader_t *header, trRefEntity_t *ent ) {
+int R_MDRComputeFogNum(mdrHeader_t *header, trRefEntity_t *ent) {
 	int				i, j;
 	fog_t			*fog;
 	mdrFrame_t		*mdrFrame;
 	vec3_t			localOrigin;
 	int frameSize;
 
-	if ( tr.refdef.rdflags & RDF_NOWORLDMODEL ) {
+	if (tr.refdef.rdflags & RDF_NOWORLDMODEL) {
 		return 0;
 	}
 
-	frameSize = (size_t)( &((mdrFrame_t *)0)->bones[ header->numBones ] );
+	frameSize = (size_t)(&((mdrFrame_t *)0)->bones[ header->numBones ]);
 
 	// FIXME: non-normalized axis issues
-	mdrFrame = ( mdrFrame_t * ) ( ( byte * ) header + header->ofsFrames + frameSize * ent->e.frame);
-	VectorAdd( ent->e.origin, mdrFrame->localOrigin, localOrigin );
-	for ( i = 1 ; i < tr.world->numfogs ; i++ ) {
+	mdrFrame = (mdrFrame_t *) ((byte *) header + header->ofsFrames + frameSize * ent->e.frame);
+	VectorAdd(ent->e.origin, mdrFrame->localOrigin, localOrigin);
+	for (i = 1 ; i < tr.world->numfogs ; i++) {
 		fog = &tr.world->fogs[i];
-		for ( j = 0 ; j < 3 ; j++ ) {
-			if ( localOrigin[j] - mdrFrame->radius >= fog->bounds[1][j] ) {
+		for (j = 0 ; j < 3 ; j++) {
+			if (localOrigin[j] - mdrFrame->radius >= fog->bounds[1][j]) {
 				break;
 			}
-			if ( localOrigin[j] + mdrFrame->radius <= fog->bounds[0][j] ) {
+			if (localOrigin[j] + mdrFrame->radius <= fog->bounds[0][j]) {
 				break;
 			}
 		}
-		if ( j == 3 ) {
+		if (j == 3) {
 			return i;
 		}
 	}
@@ -178,7 +178,7 @@ R_MDRAddAnimSurfaces
 
 // much stuff in there is just copied from R_AddMd3Surfaces in tr_mesh.c
 
-void R_MDRAddAnimSurfaces( trRefEntity_t *ent, int entityNum ) {
+void R_MDRAddAnimSurfaces(trRefEntity_t *ent, int entityNum) {
 	mdrHeader_t		*header;
 	mdrSurface_t	*surface;
 	mdrLOD_t		*lod;
@@ -198,7 +198,7 @@ void R_MDRAddAnimSurfaces( trRefEntity_t *ent, int entityNum ) {
 		!(tr.viewParms.isPortal ||
 			(tr.viewParms.flags & VPF_DEPTHSHADOW)));
 
-	if ( ent->e.renderfx & RF_WRAP_FRAMES )
+	if (ent->e.renderfx & RF_WRAP_FRAMES)
 	{
 		ent->e.frame %= header->numFrames;
 		ent->e.oldframe %= header->numFrames;
@@ -213,10 +213,10 @@ void R_MDRAddAnimSurfaces( trRefEntity_t *ent, int entityNum ) {
 	if ((ent->e.frame >= header->numFrames)
 		|| (ent->e.frame < 0)
 		|| (ent->e.oldframe >= header->numFrames)
-		|| (ent->e.oldframe < 0) )
+		|| (ent->e.oldframe < 0))
 	{
-		ri.Printf( PRINT_DEVELOPER, "R_MDRAddAnimSurfaces: no such frame %d to %d for '%s'\n",
-			   ent->e.oldframe, ent->e.frame, tr.currentModel->name );
+		ri.Printf(PRINT_DEVELOPER, "R_MDRAddAnimSurfaces: no such frame %d to %d for '%s'\n",
+			   ent->e.oldframe, ent->e.frame, tr.currentModel->name);
 		ent->e.frame = 0;
 		ent->e.oldframe = 0;
 	}
@@ -226,7 +226,7 @@ void R_MDRAddAnimSurfaces( trRefEntity_t *ent, int entityNum ) {
 	// is outside the view frustum.
 	//
 	cull = R_MDRCullModel (header, ent);
-	if ( cull == CULL_OUT ) {
+	if (cull == CULL_OUT) {
 		return;
 	}
 
@@ -238,20 +238,20 @@ void R_MDRAddAnimSurfaces( trRefEntity_t *ent, int entityNum ) {
 	if(header->numLODs <= lodnum)
 		lodnum = header->numLODs - 1;
 
-	lod = (mdrLOD_t *)( (byte *)header + header->ofsLODs);
+	lod = (mdrLOD_t *)((byte *)header + header->ofsLODs);
 	for(i = 0; i < lodnum; i++)
 	{
 		lod = (mdrLOD_t *) ((byte *) lod + lod->ofsEnd);
 	}
 
 	// fogNum?
-	fogNum = R_MDRComputeFogNum( header, ent );
+	fogNum = R_MDRComputeFogNum(header, ent);
 
 	cubemapIndex = R_CubemapForPoint(ent->e.origin);
 
-	surface = (mdrSurface_t *)( (byte *)lod + lod->ofsSurfaces );
+	surface = (mdrSurface_t *)((byte *)lod + lod->ofsSurfaces);
 
-	for ( i = 0 ; i < lod->numSurfaces ; i++ )
+	for (i = 0 ; i < lod->numSurfaces ; i++)
 	{
 
 		if(ent->e.customShader)
@@ -271,35 +271,35 @@ void R_MDRAddAnimSurfaces( trRefEntity_t *ent, int entityNum ) {
 			}
 		}
 		else if(surface->shaderIndex > 0)
-			shader = R_GetShaderByHandle( surface->shaderIndex );
+			shader = R_GetShaderByHandle(surface->shaderIndex);
 		else
 			shader = tr.defaultShader;
 
 		// we will add shadows even if the main object isn't visible in the view
 
 		// stencil shadows can't do personal models unless I polyhedron clip
-		if ( !personalModel
+		if (!personalModel
 		        && r_shadows->integer == 2
 			&& fogNum == 0
-			&& !(ent->e.renderfx & ( RF_NOSHADOW | RF_DEPTHHACK ) )
-			&& shader->sort == SS_OPAQUE )
+			&& !(ent->e.renderfx & (RF_NOSHADOW | RF_DEPTHHACK))
+			&& shader->sort == SS_OPAQUE)
 		{
-			R_AddDrawSurf( (surfaceType_t *)surface, entityNum, tr.shadowShader, 0, qfalse, R_IsPostRenderEntity(ent), 0 );
+			R_AddDrawSurf((surfaceType_t *)surface, entityNum, tr.shadowShader, 0, qfalse, R_IsPostRenderEntity(ent), 0);
 		}
 
 		// projection shadows work fine with personal models
-		if ( r_shadows->integer == 3
+		if (r_shadows->integer == 3
 			&& fogNum == 0
-			&& (ent->e.renderfx & RF_SHADOW_PLANE )
-			&& shader->sort == SS_OPAQUE )
+			&& (ent->e.renderfx & RF_SHADOW_PLANE)
+			&& shader->sort == SS_OPAQUE)
 		{
-			R_AddDrawSurf( (surfaceType_t *)surface, entityNum, tr.projectionShadowShader, 0, qfalse, R_IsPostRenderEntity(ent), 0 );
+			R_AddDrawSurf((surfaceType_t *)surface, entityNum, tr.projectionShadowShader, 0, qfalse, R_IsPostRenderEntity(ent), 0);
 		}
 
 		if (!personalModel)
-			R_AddDrawSurf( (surfaceType_t *)surface, entityNum, shader, fogNum, qfalse, R_IsPostRenderEntity(ent), cubemapIndex );
+			R_AddDrawSurf((surfaceType_t *)surface, entityNum, shader, fogNum, qfalse, R_IsPostRenderEntity(ent), cubemapIndex);
 
-		surface = (mdrSurface_t *)( (byte *)surface + surface->ofsEnd );
+		surface = (mdrSurface_t *)((byte *)surface + surface->ofsEnd);
 	}
 }
 
@@ -308,7 +308,7 @@ void R_MDRAddAnimSurfaces( trRefEntity_t *ent, int entityNum ) {
 RB_MDRSurfaceAnim
 ==============
 */
-void RB_MDRSurfaceAnim( mdrSurface_t *surface )
+void RB_MDRSurfaceAnim(mdrSurface_t *surface)
 {
 	int				i, j, k;
 	float			frontlerp, backlerp;
@@ -339,14 +339,14 @@ void RB_MDRSurfaceAnim( mdrSurface_t *surface )
 
 	header = (mdrHeader_t *)((byte *)surface + surface->ofsHeader);
 
-	frameSize = (size_t)( &((mdrFrame_t *)0)->bones[ header->numBones ] );
+	frameSize = (size_t)(&((mdrFrame_t *)0)->bones[ header->numBones ]);
 
 	frame = (mdrFrame_t *)((byte *)header + header->ofsFrames +
-		backEnd.currentEntity->e.frame * frameSize );
+		backEnd.currentEntity->e.frame * frameSize);
 	oldFrame = (mdrFrame_t *)((byte *)header + header->ofsFrames +
-		backEnd.currentEntity->e.oldframe * frameSize );
+		backEnd.currentEntity->e.oldframe * frameSize);
 
-	RB_CheckOverflow( surface->numVerts, surface->numTriangles );
+	RB_CheckOverflow(surface->numVerts, surface->numTriangles);
 
 	triangles	= (int *) ((byte *)surface + surface->ofsTriangles);
 	indexes		= surface->numTriangles * 3;
@@ -363,7 +363,7 @@ void RB_MDRSurfaceAnim( mdrSurface_t *surface )
 	//
 	// lerp all the needed bones
 	//
-	if ( !backlerp )
+	if (!backlerp)
 	{
 		// no lerping needed
 		bonePtr = frame->bones;
@@ -372,7 +372,7 @@ void RB_MDRSurfaceAnim( mdrSurface_t *surface )
 	{
 		bonePtr = bones;
 
-		for ( i = 0 ; i < header->numBones*12 ; i++ )
+		for (i = 0 ; i < header->numBones*12 ; i++)
 		{
 			((float *)bonePtr)[i] = frontlerp * ((float *)frame->bones)[i] + backlerp * ((float *)oldFrame->bones)[i];
 		}
@@ -383,25 +383,25 @@ void RB_MDRSurfaceAnim( mdrSurface_t *surface )
 	//
 	numVerts = surface->numVerts;
 	v = (mdrVertex_t *) ((byte *)surface + surface->ofsVerts);
-	for ( j = 0; j < numVerts; j++ )
+	for (j = 0; j < numVerts; j++)
 	{
 		vec3_t	tempVert, tempNormal;
 		mdrWeight_t	*w;
 
-		VectorClear( tempVert );
-		VectorClear( tempNormal );
+		VectorClear(tempVert);
+		VectorClear(tempNormal);
 		w = v->weights;
-		for ( k = 0 ; k < v->numWeights ; k++, w++ )
+		for (k = 0 ; k < v->numWeights ; k++, w++)
 		{
 			bone = bonePtr + w->boneIndex;
 
-			tempVert[0] += w->boneWeight * ( DotProduct( bone->matrix[0], w->offset ) + bone->matrix[0][3] );
-			tempVert[1] += w->boneWeight * ( DotProduct( bone->matrix[1], w->offset ) + bone->matrix[1][3] );
-			tempVert[2] += w->boneWeight * ( DotProduct( bone->matrix[2], w->offset ) + bone->matrix[2][3] );
+			tempVert[0] += w->boneWeight * (DotProduct(bone->matrix[0], w->offset) + bone->matrix[0][3]);
+			tempVert[1] += w->boneWeight * (DotProduct(bone->matrix[1], w->offset) + bone->matrix[1][3]);
+			tempVert[2] += w->boneWeight * (DotProduct(bone->matrix[2], w->offset) + bone->matrix[2][3]);
 
-			tempNormal[0] += w->boneWeight * DotProduct( bone->matrix[0], v->normal );
-			tempNormal[1] += w->boneWeight * DotProduct( bone->matrix[1], v->normal );
-			tempNormal[2] += w->boneWeight * DotProduct( bone->matrix[2], v->normal );
+			tempNormal[0] += w->boneWeight * DotProduct(bone->matrix[0], v->normal);
+			tempNormal[1] += w->boneWeight * DotProduct(bone->matrix[1], v->normal);
+			tempNormal[2] += w->boneWeight * DotProduct(bone->matrix[2], v->normal);
 		}
 
 		tess.xyz[baseVertex + j][0] = tempVert[0];

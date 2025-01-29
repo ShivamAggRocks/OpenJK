@@ -275,7 +275,7 @@ void main()
 	var_TexCoords.zw = GenTexCoords(u_TCGen1, vec3(0.0), vec3(0.0), vec3(0.0), vec3(0.0));
 #endif
 
-	if ( u_FXVolumetricBase > 0.0 )
+	if (u_FXVolumetricBase > 0.0)
 	{
 		vec3 viewForward = u_ViewForward.xyz;
 
@@ -454,34 +454,34 @@ out vec4 out_Glow;
 // Copyright: Copyleft 2012 :-)
 // Source: http://stackoverflow.com/questions/5149544/can-i-generate-a-random-number-inside-a-pixel-shader
 
-float random( const vec2 p )
+float random(const vec2 p)
 {
   // We need irrationals for pseudo randomness.
   // Most (all?) known transcendental numbers will (generally) work.
   const vec2 r = vec2(
     23.1406926327792690,  // e^pi (Gelfond's constant)
      2.6651441426902251); // 2^sqrt(2) (Gelfond-Schneider constant)
-  //return fract( cos( mod( 123456789., 1e-7 + 256. * dot(p,r) ) ) );
-  return mod( 123456789., 1e-7 + 256. * dot(p,r) );
+  //return fract(cos(mod(123456789., 1e-7 + 256. * dot(p,r))));
+  return mod(123456789., 1e-7 + 256. * dot(p,r));
 }
 
 const vec2 poissonDisk[16] = vec2[16](
-	vec2( -0.94201624, -0.39906216 ),
-	vec2( 0.94558609, -0.76890725 ),
-	vec2( -0.094184101, -0.92938870 ),
-	vec2( 0.34495938, 0.29387760 ),
-	vec2( -0.91588581, 0.45771432 ),
-	vec2( -0.81544232, -0.87912464 ),
-	vec2( -0.38277543, 0.27676845 ),
-	vec2( 0.97484398, 0.75648379 ),
-	vec2( 0.44323325, -0.97511554 ),
-	vec2( 0.53742981, -0.47373420 ),
-	vec2( -0.26496911, -0.41893023 ),
-	vec2( 0.79197514, 0.19090188 ),
-	vec2( -0.24188840, 0.99706507 ),
-	vec2( -0.81409955, 0.91437590 ),
-	vec2( 0.19984126, 0.78641367 ),
-	vec2( 0.14383161, -0.14100790 )
+	vec2(-0.94201624, -0.39906216),
+	vec2(0.94558609, -0.76890725),
+	vec2(-0.094184101, -0.92938870),
+	vec2(0.34495938, 0.29387760),
+	vec2(-0.91588581, 0.45771432),
+	vec2(-0.81544232, -0.87912464),
+	vec2(-0.38277543, 0.27676845),
+	vec2(0.97484398, 0.75648379),
+	vec2(0.44323325, -0.97511554),
+	vec2(0.53742981, -0.47373420),
+	vec2(-0.26496911, -0.41893023),
+	vec2(0.79197514, 0.19090188),
+	vec2(-0.24188840, 0.99706507),
+	vec2(-0.81409955, 0.91437590),
+	vec2(0.19984126, 0.78641367),
+	vec2(0.14383161, -0.14100790)
 );
 
 float PCF(const sampler2DArrayShadow shadowmap, const float layer, const vec2 st, const float dist, float PCFScale)
@@ -534,7 +534,7 @@ float sunShadow(in vec3 viewOrigin, in vec3 viewDir, in vec3 biasOffset)
 	float cameraDistance = length(viewDir);
 
 	const float PCFScale = 1.5;
-	const float edgeBias = 0.5 - ( 4.0 * PCFScale / r_shadowMapSize );
+	const float edgeBias = 0.5 - (4.0 * PCFScale / r_shadowMapSize);
 	float edgefactor = 0.0;
 	const float fadeTo = 1.0;
 	float result = 1.0;
@@ -687,7 +687,7 @@ float D_Ashikhmin(float roughness, float nh){
                 float cot2 = -cos2h / (a2 * sin2h);
 	            return 1.0 / (M_PI * (4.0 * a2 + 1.0) * sin4h) * (4.0 * exp(cot2) + sin4h);
 
-            }
+           }
 
 vec3 Specular_CharlieSheen(float Roughness, float NoH, float NoV, float NoL, vec3 SpecularColor, float cloth)
 {
@@ -717,7 +717,7 @@ vec3 F_Schlick(in vec3 SpecularColor, in float VH)
 	return clamp(50.0 * SpecularColor.g, 0.0, 1.0) * Fc + (1 - Fc) * SpecularColor; //hacky way to decide if reflectivity is too low (< 2%)
 }
 
-float D_GGX( in float NH, in float a )
+float D_GGX(in float NH, in float a)
 {
 	/*float alphaSq = roughness*roughness;
 	float f = (NH * alphaSq - NH) * NH + 1.0;
@@ -906,9 +906,9 @@ vec3 CalcDynamicLightContribution(
 	vec3 outColor = vec3(0.0);
 	vec3 position = viewOrigin - viewDir;
 
-	for ( int i = 0; i < u_NumLights; i++ )
+	for (int i = 0; i < u_NumLights; i++)
 	{
-		if ( ( u_LightMask & ( 1 << i ) ) == 0 ) {
+		if ((u_LightMask & (1 << i)) == 0) {
 			continue;
 		}
 		Light light = u_Lights[i];
@@ -973,7 +973,7 @@ vec3 CalcIBLContribution(
 #endif
 }
 
-vec3 CalcNormal( in vec3 vertexNormal, in vec4 vertexTangent, in vec2 texCoords )
+vec3 CalcNormal(in vec3 vertexNormal, in vec4 vertexTangent, in vec2 texCoords)
 {
 #if defined(USE_NORMALMAP)
 	vec3 biTangent = vertexTangent.w * cross(vertexNormal, vertexTangent.xyz);

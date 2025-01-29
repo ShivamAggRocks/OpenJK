@@ -124,9 +124,9 @@ start_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
       for (i = 0; i < cinfo->actual_number_of_colors; i++) {
         dest->colormap[ci * CMAPLENGTH + i] =
           GETJSAMPLE(cinfo->colormap[ci][i]) << 8;
-      }
-    }
-  }
+     }
+   }
+ }
 
   /* Set the output buffer to the first row */
   dest->pub.buffer = (*cinfo->mem->access_virt_sarray)
@@ -138,7 +138,7 @@ start_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
 #ifdef PROGRESS_REPORT
   if (progress != NULL) {
     progress->total_extra_passes++;  /* count file writing as separate pass */
-  }
+ }
 #endif
 }
 
@@ -159,7 +159,7 @@ rle_put_pixel_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
     dest->pub.buffer = (*cinfo->mem->access_virt_sarray)
       ((j_common_ptr) cinfo, dest->image,
        cinfo->output_scanline, (JDIMENSION) 1, TRUE);
-  }
+ }
 }
 
 /*
@@ -193,7 +193,7 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
   header.ncolors  = cinfo->output_components;
   for (ci = 0; ci < cinfo->output_components; ci++) {
     RLE_SET_BIT(header, ci);
-  }
+ }
   if (cinfo->quantize_colors) {
     header.ncmap   = cinfo->out_color_components;
     header.cmaplen = CMAPBITS;
@@ -201,7 +201,7 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
     /* Add a comment to the output image with the true colormap length. */
     sprintf(cmapcomment, "color_map_length=%d", cinfo->actual_number_of_colors);
     rle_putcom(cmapcomment, &header);
-  }
+ }
 
   /* Emit the RLE header and color map (if any) */
   rle_put_setup(&header);
@@ -216,7 +216,7 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
     progress->pub.pass_limit = cinfo->output_height;
     progress->pub.pass_counter = 0;
     (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-  }
+ }
 #endif
 
   if (cinfo->output_components == 1) {
@@ -229,10 +229,10 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
       if (progress != NULL) {
         progress->pub.pass_counter++;
         (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-      }
+     }
 #endif
-    }
-  } else {
+   }
+ } else {
     for (row = cinfo->output_height-1; row >= 0; row--) {
       rle_row = (rle_pixel **) dest->rle_row;
       output_row = * (*cinfo->mem->access_virt_sarray)
@@ -245,16 +245,16 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
         *red++ = GETJSAMPLE(*output_row++);
         *green++ = GETJSAMPLE(*output_row++);
         *blue++ = GETJSAMPLE(*output_row++);
-      }
+     }
       rle_putrow(rle_row, (int) cinfo->output_width, &header);
 #ifdef PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
         (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-      }
+     }
 #endif
-    }
-  }
+   }
+ }
 
 #ifdef PROGRESS_REPORT
   if (progress != NULL)

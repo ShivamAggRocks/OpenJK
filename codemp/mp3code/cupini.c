@@ -219,8 +219,8 @@ static void table_init()
 		  {
 		 group3_table[i][j] = (char) ((code % 3) - 1);
 		 code /= 3;
-		  }
-	   }
+		 }
+	  }
 
 	/*--  grouped 5 level lookup table 7 bit token --*/
 	   for (i = 0; i < 128; i++)
@@ -230,8 +230,8 @@ static void table_init()
 		  {
 		 group5_table[i][j] = (char) ((code % 5) - 2);
 		 code /= 5;
-		  }
-	   }
+		 }
+	  }
 
 	/*--  grouped 9 level lookup table 10 bit token --*/
 	   for (i = 0; i < 1024; i++)
@@ -241,9 +241,9 @@ static void table_init()
 		  {
 		 group9_table[i][j] = (short) ((code % 9) - 4);
 		 code /= 9;
-		  }
-	   }
-   }
+		 }
+	  }
+  }
 }
 /*---------------------------------------------------------*/
 int L1audio_decode_init(MPEG_HEAD * h, int framebytes_arg,
@@ -270,7 +270,7 @@ int audio_decode_init(MPEG_HEAD * h, int framebytes_arg,
    {
       table_init();
       first_pass = 0;
-   }
+  }
 
 /* select decoder routine Layer I,II,III */
    audio_decode_routine = decode_routine_table[h->option & 3];
@@ -340,14 +340,14 @@ int audio_decode_init(MPEG_HEAD * h, int framebytes_arg,
 		pMP3Stream->nbat[i] *= 2;
       pMP3Stream->max_sb *= 2;
       pMP3Stream->nsb_limit *= 2;
-   }
+  }
 
 /* set sbt function */
    k = 1 + convert_code;
    if (h->mode == 3)
    {
       k = 0;
-   }
+  }
    pMP3Stream->sbt = sbt_table[bit_code][reduction_code][k];
    pMP3Stream->outvalues *= out_chans[k];
    if (bit_code)

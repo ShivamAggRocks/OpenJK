@@ -169,7 +169,7 @@ term_destination (j_compress_ptr cinfo)
   if (datacount > 0) {
     if (JFWRITE(dest->outfile, dest->buffer, datacount) != datacount)
       ERREXIT(cinfo, JERR_FILE_WRITE);
-  }
+ }
   fflush(dest->outfile);
   /* Make sure we wrote the output file OK */
   if (ferror(dest->outfile))
@@ -207,7 +207,7 @@ jpeg_stdio_dest (j_compress_ptr cinfo, FILE * outfile)
     cinfo->dest = (struct jpeg_destination_mgr *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
 				  SIZEOF(my_destination_mgr));
-  }
+ }
 
   dest = (my_dest_ptr) cinfo->dest;
   dest->pub.init_destination = init_destination;
@@ -247,7 +247,7 @@ jpeg_mem_dest (j_compress_ptr cinfo,
     cinfo->dest = (struct jpeg_destination_mgr *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
 				  SIZEOF(my_mem_destination_mgr));
-  }
+ }
 
   dest = (my_mem_dest_ptr) cinfo->dest;
   dest->pub.init_destination = init_mem_destination;
@@ -263,7 +263,7 @@ jpeg_mem_dest (j_compress_ptr cinfo,
     if (dest->newbuffer == NULL)
       ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 10);
     *outsize = OUTPUT_BUF_SIZE;
-  }
+ }
 
   dest->pub.next_output_byte = dest->buffer = *outbuffer;
   dest->pub.free_in_buffer = dest->bufsize = *outsize;

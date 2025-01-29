@@ -14,27 +14,27 @@ namespace FS
 {
 	class FileBuffer
 	{
-		friend FileBuffer ReadFile( gsl::czstring );
+		friend FileBuffer ReadFile(gsl::czstring);
 		// called by ReadFile()
-		FileBuffer( void* buffer, const long size ) NOEXCEPT;
+		FileBuffer(void* buffer, const long size) NOEXCEPT;
 	public:
 		FileBuffer() NOEXCEPT = default;
 		~FileBuffer() NOEXCEPT;
 		// noncopyable
-		FileBuffer( const FileBuffer& ) = delete;
-		FileBuffer& operator=( const FileBuffer& ) = delete;
+		FileBuffer(const FileBuffer&) = delete;
+		FileBuffer& operator=(const FileBuffer&) = delete;
 		// movable
-		FileBuffer( FileBuffer&& rhs ) NOEXCEPT;
-		FileBuffer& operator=( FileBuffer&& rhs ) NOEXCEPT;
+		FileBuffer(FileBuffer&& rhs) NOEXCEPT;
+		FileBuffer& operator=(FileBuffer&& rhs) NOEXCEPT;
 
 		/// nullptr if no such file
 		const char* begin() const NOEXCEPT
 		{
-			return static_cast< const char* >( _buffer );
+			return static_cast< const char* >(_buffer);
 		}
 		const char* end() const NOEXCEPT
 		{
-			return static_cast< const char* >( _buffer ) + _size;
+			return static_cast< const char* >(_buffer) + _size;
 		}
 		long size() const NOEXCEPT
 		{
@@ -46,7 +46,7 @@ namespace FS
 		}
 		gsl::cstring_span view() const NOEXCEPT
 		{
-			return{ begin(), end() };
+			return{begin(), end()};
 		}
 
 	private:
@@ -55,25 +55,25 @@ namespace FS
 		long _size = 0;
 	};
 
-	FileBuffer ReadFile( gsl::czstring path );
+	FileBuffer ReadFile(gsl::czstring path);
 
 	// FileList only available in Client; Library exclusively uses FS_GetFileList(), which by supplying a buffer avoids dynamic allocations.
 	// TODO: investigate making FS_ListFiles available in Library Code?
-#if !defined( SP_GAME )
+#if !defined(SP_GAME)
 	class FileList
 	{
-		friend FileList ListFiles( const char*, const char* );
+		friend FileList ListFiles(const char*, const char*);
 		// called by ListFiles()
-		FileList( char** files, int numFiles ) NOEXCEPT;
+		FileList(char** files, int numFiles) NOEXCEPT;
 	public:
 		FileList() NOEXCEPT = default;
 		~FileList() NOEXCEPT;
 		// noncopyable
-		FileList( const FileList& ) = delete;
-		FileList& operator=( const FileList& ) = delete;
+		FileList(const FileList&) = delete;
+		FileList& operator=(const FileList&) = delete;
 		// movable
-		FileList( FileList&& rhs ) NOEXCEPT;
-		FileList& operator=( FileList&& rhs ) NOEXCEPT;
+		FileList(FileList&& rhs) NOEXCEPT;
+		FileList& operator=(FileList&& rhs) NOEXCEPT;
 
 		const char *const *begin() const NOEXCEPT
 		{
@@ -85,7 +85,7 @@ namespace FS
 		}
 		std::size_t size() const NOEXCEPT
 		{
-			return static_cast< std::size_t >( _end - begin() );
+			return static_cast< std::size_t >(_end - begin());
 		}
 
 	private:
@@ -104,6 +104,6 @@ namespace FS
 	@param directory should not have either a leading or trailing /
 	@param extension if "/", only subdirectories will be returned
 	*/
-	FileList ListFiles( const char* directory, const char* extension );
+	FileList ListFiles(const char* directory, const char* extension);
 #endif
 }

@@ -109,7 +109,7 @@ fill_input_buffer (j_decompress_ptr cinfo)
     src->buffer[0] = (JOCTET) 0xFF;
     src->buffer[1] = (JOCTET) JPEG_EOI;
     nbytes = 2;
-  }
+ }
 
   src->pub.next_input_byte = src->buffer;
   src->pub.bytes_in_buffer = nbytes;
@@ -123,7 +123,7 @@ fill_mem_input_buffer (j_decompress_ptr cinfo)
 {
   static const JOCTET mybuffer[4] = {
     (JOCTET) 0xFF, (JOCTET) JPEG_EOI, 0, 0
-  };
+ };
 
   /* The whole JPEG data is expected to reside in the supplied memory
    * buffer, so any request for more data beyond the given buffer size
@@ -168,10 +168,10 @@ skip_input_data (j_decompress_ptr cinfo, long num_bytes)
       /* note we assume that fill_input_buffer will never return FALSE,
        * so suspension need not be handled.
        */
-    }
+   }
     src->next_input_byte += (size_t) num_bytes;
     src->bytes_in_buffer -= (size_t) num_bytes;
-  }
+ }
 }
 
 
@@ -226,7 +226,7 @@ jpeg_stdio_src (j_decompress_ptr cinfo, FILE * infile)
     src->buffer = (JOCTET *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
 				  INPUT_BUF_SIZE * SIZEOF(JOCTET));
-  }
+ }
 
   src = (my_src_ptr) cinfo->src;
   src->pub.init_source = init_source;
@@ -262,7 +262,7 @@ jpeg_mem_src (j_decompress_ptr cinfo,
     cinfo->src = (struct jpeg_source_mgr *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
 				  SIZEOF(struct jpeg_source_mgr));
-  }
+ }
 
   src = cinfo->src;
   src->init_source = init_mem_source;

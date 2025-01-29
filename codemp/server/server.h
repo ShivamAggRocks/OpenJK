@@ -293,12 +293,12 @@ struct leakyBucket_s {
 
 extern leakyBucket_t outboundLeakyBucket;
 
-qboolean SVC_RateLimit( leakyBucket_t *bucket, int burst, int period, int now );
-qboolean SVC_RateLimitAddress( const netadr_t *from, int burst, int period, int now );
-void SVC_LoadWhitelist( void );
-void SVC_WhitelistAdr( const netadr_t *adr );
+qboolean SVC_RateLimit(leakyBucket_t *bucket, int burst, int period, int now);
+qboolean SVC_RateLimitAddress(const netadr_t *from, int burst, int period, int now);
+void SVC_LoadWhitelist(void);
+void SVC_WhitelistAdr(const netadr_t *adr);
 void SV_FinalMessage (char *message);
-void QDECL SV_SendServerCommand( client_t *cl, const char *fmt, ...);
+void QDECL SV_SendServerCommand(client_t *cl, const char *fmt, ...);
 
 
 void SV_AddOperatorCommands (void);
@@ -314,15 +314,15 @@ void SV_MasterShutdown (void);
 //
 // sv_init.c
 //
-void SV_SetConfigstring( int index, const char *val );
-void SV_GetConfigstring( int index, char *buffer, int bufferSize );
-void SV_UpdateConfigstrings( client_t *client );
+void SV_SetConfigstring(int index, const char *val);
+void SV_GetConfigstring(int index, char *buffer, int bufferSize);
+void SV_UpdateConfigstrings(client_t *client);
 
-void SV_SetUserinfo( int index, const char *val );
-void SV_GetUserinfo( int index, char *buffer, int bufferSize );
+void SV_SetUserinfo(int index, const char *val);
+void SV_GetUserinfo(int index, char *buffer, int bufferSize);
 
-void SV_ChangeMaxClients( void );
-void SV_SpawnServer( char *server, qboolean killBots, ForceReload_e eForceReload );
+void SV_ChangeMaxClients(void);
+void SV_SpawnServer(char *server, qboolean killBots, ForceReload_e eForceReload);
 
 
 
@@ -337,64 +337,64 @@ qboolean SV_VerifyChallenge(int receivedChallenge, const netadr_t *from);
 //
 // sv_client.c
 //
-void SV_GetChallenge( const netadr_t *from );
+void SV_GetChallenge(const netadr_t *from);
 
-void SV_DirectConnect( const netadr_t *from );
+void SV_DirectConnect(const netadr_t *from);
 
-void SV_SendClientMapChange( client_t *client );
-void SV_ExecuteClientMessage( client_t *cl, msg_t *msg );
-void SV_UserinfoChanged( client_t *cl );
+void SV_SendClientMapChange(client_t *client);
+void SV_ExecuteClientMessage(client_t *cl, msg_t *msg);
+void SV_UserinfoChanged(client_t *cl);
 
-void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd );
-void SV_DropClient( client_t *drop, const char *reason );
+void SV_ClientEnterWorld(client_t *client, usercmd_t *cmd);
+void SV_DropClient(client_t *drop, const char *reason);
 
-void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK );
+void SV_ExecuteClientCommand(client_t *cl, const char *s, qboolean clientOK);
 void SV_ClientThink (client_t *cl, usercmd_t *cmd);
 
-void SV_WriteDownloadToClient( client_t *cl , msg_t *msg );
+void SV_WriteDownloadToClient(client_t *cl , msg_t *msg);
 
 //
 // sv_ccmds.c
 //
-void SV_Heartbeat_f( void );
-void SV_RecordDemo( client_t *cl, char *demoName );
-void SV_StopRecordDemo( client_t *cl );
-void SV_AutoRecordDemo( client_t *cl );
+void SV_Heartbeat_f(void);
+void SV_RecordDemo(client_t *cl, char *demoName);
+void SV_StopRecordDemo(client_t *cl);
+void SV_AutoRecordDemo(client_t *cl);
 void SV_StopAutoRecordDemos();
 void SV_BeginAutoRecordDemos();
 
 //
 // sv_snapshot.c
 //
-void SV_AddServerCommand( client_t *client, const char *cmd );
-void SV_UpdateServerCommandsToClient( client_t *client, msg_t *msg );
+void SV_AddServerCommand(client_t *client, const char *cmd);
+void SV_UpdateServerCommandsToClient(client_t *client, msg_t *msg);
 void SV_WriteFrameToClient (client_t *client, msg_t *msg);
-void SV_SendMessageToClient( msg_t *msg, client_t *client );
-void SV_SendClientMessages( void );
-void SV_SendClientSnapshot( client_t *client );
+void SV_SendMessageToClient(msg_t *msg, client_t *client);
+void SV_SendClientMessages(void);
+void SV_SendClientSnapshot(client_t *client);
 
 //
 // sv_game.c
 //
-int	SV_NumForGentity( sharedEntity_t *ent );
-sharedEntity_t *SV_GentityNum( int num );
-playerState_t *SV_GameClientNum( int num );
-svEntity_t	*SV_SvEntityForGentity( sharedEntity_t *gEnt );
-sharedEntity_t *SV_GEntityForSvEntity( svEntity_t *svEnt );
-void		SV_InitGameProgs ( void );
-void		SV_ShutdownGameProgs ( void );
+int	SV_NumForGentity(sharedEntity_t *ent);
+sharedEntity_t *SV_GentityNum(int num);
+playerState_t *SV_GameClientNum(int num);
+svEntity_t	*SV_SvEntityForGentity(sharedEntity_t *gEnt);
+sharedEntity_t *SV_GEntityForSvEntity(svEntity_t *svEnt);
+void		SV_InitGameProgs (void);
+void		SV_ShutdownGameProgs (void);
 qboolean	SV_inPVS (const vec3_t p1, const vec3_t p2);
 
 //
 // sv_bot.c
 //
-void		SV_BotFrame( int time );
+void		SV_BotFrame(int time);
 int			SV_BotAllocateClient(void);
-void		SV_BotFreeClient( int clientNum );
+void		SV_BotFreeClient(int clientNum);
 
 void		SV_BotInitCvars(void);
-int			SV_BotGetSnapshotEntity( int client, int ent );
-int			SV_BotGetConsoleMessage( int client, char *buf, int size );
+int			SV_BotGetSnapshotEntity(int client, int ent);
+int			SV_BotGetConsoleMessage(int client, char *buf, int size);
 
 void *Bot_GetMemoryGame(int size);
 void Bot_FreeMemoryGame(void *ptr);
@@ -410,11 +410,11 @@ void BotImport_DebugPolygonDelete(int id);
 void SV_ClearWorld (void);
 // called after the world model has been loaded, before linking any entities
 
-void SV_UnlinkEntity( sharedEntity_t *ent );
+void SV_UnlinkEntity(sharedEntity_t *ent);
 // call before removing an entity, and before trying to move one,
 // so it doesn't clip against itself
 
-void SV_LinkEntity( sharedEntity_t *ent );
+void SV_LinkEntity(sharedEntity_t *ent);
 // Needs to be called any time an entity changes origin, mins, maxs,
 // or solid.  Automatically unlinks if needed.
 // sets ent->v.absmin and ent->v.absmax
@@ -422,13 +422,13 @@ void SV_LinkEntity( sharedEntity_t *ent );
 // is not solid
 
 
-clipHandle_t SV_ClipHandleForEntity( const sharedEntity_t *ent );
+clipHandle_t SV_ClipHandleForEntity(const sharedEntity_t *ent);
 
 
-void SV_SectorList_f( void );
+void SV_SectorList_f(void);
 
 
-int SV_AreaEntities( const vec3_t mins, const vec3_t maxs, int *entityList, int maxcount );
+int SV_AreaEntities(const vec3_t mins, const vec3_t maxs, int *entityList, int maxcount);
 // fills in a table of entity numbers with entities that have bounding boxes
 // that intersect the given area.  It is possible for a non-axial bmodel
 // to be returned that doesn't actually intersect the area on an exact
@@ -437,11 +437,11 @@ int SV_AreaEntities( const vec3_t mins, const vec3_t maxs, int *entityList, int 
 // The world entity is never returned in this list.
 
 
-int SV_PointContents( const vec3_t p, int passEntityNum );
+int SV_PointContents(const vec3_t p, int passEntityNum);
 // returns the CONTENTS_* value from the world and all entities at the given point.
 
 
-void SV_Trace( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask, int capsule, int traceFlags, int useLod );
+void SV_Trace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask, int capsule, int traceFlags, int useLod);
 // mins and maxs are relative
 
 // if the entire move stays in a solid volume, trace.allsolid will be set,
@@ -453,12 +453,12 @@ void SV_Trace( trace_t *results, const vec3_t start, const vec3_t mins, const ve
 // passEntityNum is explicitly excluded from clipping checks (normally ENTITYNUM_NONE)
 
 
-void SV_ClipToEntity( trace_t *trace, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int entityNum, int contentmask, int capsule );
+void SV_ClipToEntity(trace_t *trace, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int entityNum, int contentmask, int capsule);
 // clip to a specific entity
 
 //
 // sv_net_chan.c
 //
-void SV_Netchan_Transmit( client_t *client, msg_t *msg);	//int length, const byte *data );
-void SV_Netchan_TransmitNextFragment( netchan_t *chan );
-qboolean SV_Netchan_Process( client_t *client, msg_t *msg );
+void SV_Netchan_Transmit(client_t *client, msg_t *msg);	//int length, const byte *data);
+void SV_Netchan_TransmitNextFragment(netchan_t *chan);
+qboolean SV_Netchan_Process(client_t *client, msg_t *msg);

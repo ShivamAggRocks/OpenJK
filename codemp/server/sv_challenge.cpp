@@ -126,8 +126,8 @@ static int SV_CreateChallenge(int timestamp, const netadr_t *from)
 	challenge |= (unsigned int)(timestamp & 0x1) << 31;
 
 #ifdef DEBUG_SV_CHALLENGE
-	if ( com_developer->integer ) {
-		Com_Printf( "Generated challenge %d (timestamp = %d) for %s\n", challenge, timestamp, NET_AdrToString( from ) );
+	if (com_developer->integer) {
+		Com_Printf("Generated challenge %d (timestamp = %d) for %s\n", challenge, timestamp, NET_AdrToString(from));
 	}
 #endif
 
@@ -176,8 +176,8 @@ qboolean SV_VerifyChallenge(int receivedChallenge, const netadr_t *from)
 	int challengeTimestamp = currentTimestamp - (currentPeriod ^ challengePeriod);
 
 #ifdef DEBUG_SV_CHALLENGE
-	if ( com_developer->integer ) {
-		Com_Printf( "Verifying challenge %d (timestamp = %d) for %s\n", receivedChallenge, challengeTimestamp, NET_AdrToString( from ) );
+	if (com_developer->integer) {
+		Com_Printf("Verifying challenge %d (timestamp = %d) for %s\n", receivedChallenge, challengeTimestamp, NET_AdrToString(from));
 	}
 #endif
 

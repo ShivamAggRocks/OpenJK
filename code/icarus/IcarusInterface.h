@@ -44,7 +44,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 class IIcarusInterface
 {
 public:
-	enum { ICARUS_INVALID = 0 };
+	enum {ICARUS_INVALID = 0};
 	virtual ~IIcarusInterface();
 
 	// Get a static singleton instance (of a specific flavor).
@@ -59,10 +59,10 @@ public:
 	virtual int Run(int icarusID, char* buffer, long length) = 0;	// Execute a script.
 	virtual void DeleteIcarusID(int &icarusID) = 0;				// Delete an Icarus ID from the list (making the ID Invalid on the other end through reference).
 	virtual int GetIcarusID(int gameID) = 0;					// Get an Icarus ID.
-	virtual int Update( int icarusID ) = 0;						// Update all internal Icarus structures.
-	virtual int IsRunning( int icarusID ) = 0;					// Whether a Icarus is running or not.
-	virtual void Completed( int icarusID, int taskID ) = 0;		// Tells Icarus a task is completed.
-	virtual void Precache( char* buffer, long length ) = 0;		// Precache a Script in memory.
+	virtual int Update(int icarusID) = 0;						// Update all internal Icarus structures.
+	virtual int IsRunning(int icarusID) = 0;					// Whether a Icarus is running or not.
+	virtual void Completed(int icarusID, int taskID) = 0;		// Tells Icarus a task is completed.
+	virtual void Precache(char* buffer, long length) = 0;		// Precache a Script in memory.
 };
 
 // Description: The Game Interface is used by the Icarus Interface to access specific
@@ -77,13 +77,13 @@ protected:
 
 public:
 	//For system-wide prints
-	enum e_DebugPrintLevel { WL_ERROR = 1, WL_WARNING, WL_VERBOSE, WL_DEBUG };
+	enum e_DebugPrintLevel {WL_ERROR = 1, WL_WARNING, WL_VERBOSE, WL_DEBUG};
 
 	// How many flavors are needed.
 	static int s_IcarusFlavorsNeeded;
 
 	// Get a static singleton instance (of a specific flavor).
-	static IGameInterface *GetGame( int flavor = 0 );
+	static IGameInterface *GetGame(int flavor = 0);
 
 	// Destroy the static singleton instance (NOTE: Destroy the Game Interface BEFORE the Icarus Interface).
 	static void Destroy();
@@ -93,67 +93,67 @@ public:
 	// NOTE: This is what was called before:
 	/*
 	// Description	: Reads in a file and attaches the script directory properly
-	extern int ICARUS_GetScript( const char *name, char **buf );	//g_icarus.cpp
-	static int Q3_ReadScript( const char *name, void **buf )
+	extern int ICARUS_GetScript(const char *name, char **buf);	//g_icarus.cpp
+	static int Q3_ReadScript(const char *name, void **buf)
 	{
-		return ICARUS_GetScript( va( "%s/%s", Q3_SCRIPT_DIR, name ), (char**)buf );	//get a (hopefully) cached file
+		return ICARUS_GetScript(va("%s/%s", Q3_SCRIPT_DIR, name), (char**)buf);	//get a (hopefully) cached file
 	}
 	*/
 	virtual int		GetFlavor() = 0;
 
-	virtual int		LoadFile( const char *name, void **buf ) = 0;
-	virtual void	CenterPrint( const char *format, ... ) = 0;
-	virtual void	DebugPrint( e_DebugPrintLevel, const char *, ... ) = 0;
-	virtual unsigned int GetTime( void ) = 0;							//Gets the current time
-	virtual int 	PlayIcarusSound( int taskID, int gameID, const char *name, const char *channel ) = 0;
-	virtual void	Lerp2Pos( int taskID, int gameID, float origin[3], float angles[3], float duration ) = 0;
-	virtual void	Lerp2Angles( int taskID, int gameID, float angles[3], float duration ) = 0;
-	virtual int		GetTag( int gameID, const char *name, int lookup, float info[3] ) = 0;
-	virtual void	Set( int taskID, int gameID, const char *type_name, const char *data ) = 0;
-	virtual void	Use( int gameID, const char *name ) = 0;
-	virtual void	Activate( int gameID, const char *name ) = 0;
-	virtual void	Deactivate( int gameID, const char *name ) = 0;
-	virtual void	Kill( int gameID, const char *name ) = 0;
-	virtual void	Remove( int gameID, const char *name )  = 0;
-	virtual float	Random( float min, float max ) = 0;
-	virtual void	Play( int taskID, int gameID, const char *type, const char *name ) = 0;
+	virtual int		LoadFile(const char *name, void **buf) = 0;
+	virtual void	CenterPrint(const char *format, ...) = 0;
+	virtual void	DebugPrint(e_DebugPrintLevel, const char *, ...) = 0;
+	virtual unsigned int GetTime(void) = 0;							//Gets the current time
+	virtual int 	PlayIcarusSound(int taskID, int gameID, const char *name, const char *channel) = 0;
+	virtual void	Lerp2Pos(int taskID, int gameID, float origin[3], float angles[3], float duration) = 0;
+	virtual void	Lerp2Angles(int taskID, int gameID, float angles[3], float duration) = 0;
+	virtual int		GetTag(int gameID, const char *name, int lookup, float info[3]) = 0;
+	virtual void	Set(int taskID, int gameID, const char *type_name, const char *data) = 0;
+	virtual void	Use(int gameID, const char *name) = 0;
+	virtual void	Activate(int gameID, const char *name) = 0;
+	virtual void	Deactivate(int gameID, const char *name) = 0;
+	virtual void	Kill(int gameID, const char *name) = 0;
+	virtual void	Remove(int gameID, const char *name)  = 0;
+	virtual float	Random(float min, float max) = 0;
+	virtual void	Play(int taskID, int gameID, const char *type, const char *name) = 0;
 
 	// Camera functions
-	virtual void	CameraPan( float angles[3], float dir[3], float duration ) = 0;
-	virtual void	CameraMove( float origin[3], float duration ) = 0;
-	virtual void	CameraZoom( float fov, float duration ) = 0;
-	virtual void	CameraRoll( float angle, float duration ) = 0;
-	virtual void	CameraFollow( const char *name, float speed, float initLerp ) = 0;
-	virtual void	CameraTrack( const char *name, float speed, float initLerp ) = 0;
-	virtual void	CameraDistance( float dist, float initLerp ) = 0;
-	virtual void	CameraFade( float sr, float sg, float sb, float sa, float dr, float dg, float db, float da, float duration ) = 0;
-	virtual void	CameraPath( const char *name ) = 0;
-	virtual void	CameraEnable( void ) = 0;
-	virtual void	CameraDisable( void ) = 0;
-	virtual void	CameraShake( float intensity, int duration ) = 0;
+	virtual void	CameraPan(float angles[3], float dir[3], float duration) = 0;
+	virtual void	CameraMove(float origin[3], float duration) = 0;
+	virtual void	CameraZoom(float fov, float duration) = 0;
+	virtual void	CameraRoll(float angle, float duration) = 0;
+	virtual void	CameraFollow(const char *name, float speed, float initLerp) = 0;
+	virtual void	CameraTrack(const char *name, float speed, float initLerp) = 0;
+	virtual void	CameraDistance(float dist, float initLerp) = 0;
+	virtual void	CameraFade(float sr, float sg, float sb, float sa, float dr, float dg, float db, float da, float duration) = 0;
+	virtual void	CameraPath(const char *name) = 0;
+	virtual void	CameraEnable(void) = 0;
+	virtual void	CameraDisable(void) = 0;
+	virtual void	CameraShake(float intensity, int duration) = 0;
 
-	virtual int		GetFloat( int gameID, const char *name, float *value ) = 0;
+	virtual int		GetFloat(int gameID, const char *name, float *value) = 0;
 	// Should be float return type?
-	virtual int		GetVector( int gameID, const char *name, float value[3] ) = 0;
-	virtual int		GetString( int gameID, const char *name, char **value ) = 0;
+	virtual int		GetVector(int gameID, const char *name, float value[3]) = 0;
+	virtual int		GetString(int gameID, const char *name, char **value) = 0;
 
-	virtual int		Evaluate( int p1Type, const char *p1, int p2Type, const char *p2, int operatorType ) = 0;
+	virtual int		Evaluate(int p1Type, const char *p1, int p2Type, const char *p2, int operatorType) = 0;
 
-	virtual void	DeclareVariable( int type, const char *name ) = 0;
-	virtual void	FreeVariable( const char *name ) = 0;
+	virtual void	DeclareVariable(int type, const char *name) = 0;
+	virtual void	FreeVariable(const char *name) = 0;
 
 	// Save / Load functions
 
-	virtual int		LinkGame( int gameID, int icarusID ) = 0;
+	virtual int		LinkGame(int gameID, int icarusID) = 0;
 	virtual ojk::ISavedGame* get_saved_game_file() = 0;
 
 	// Access functions
 
-	virtual int		CreateIcarus( int gameID) = 0;
-	virtual int		GetByName( const char *name ) = 0;		//Polls the engine for the sequencer of the entity matching the name passed
+	virtual int		CreateIcarus(int gameID) = 0;
+	virtual int		GetByName(const char *name) = 0;		//Polls the engine for the sequencer of the entity matching the name passed
 	virtual int		IsFrozen(int gameID) = 0;					// (g_entities[m_ownerID].svFlags&SVF_ICARUS_FREEZE)																	// return -1 indicates invalid
 	virtual void	Free(void* data) = 0;
-	virtual void*	Malloc( int size ) = 0;
+	virtual void*	Malloc(int size) = 0;
 	virtual float	MaxFloat(void) = 0;
 
 	// Script precache functions.

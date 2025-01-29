@@ -90,7 +90,7 @@ int uiForcePowersRank[NUM_FORCE_POWERS] = {
 };
 
 int uiForcePowerDarkLight[NUM_FORCE_POWERS] = //0 == neutral
-{ //nothing should be usable at rank 0..
+{//nothing should be usable at rank 0..
 	FORCE_LIGHTSIDE,//FP_HEAL,//instant
 	0,//FP_LEVITATION,//hold/duration
 	0,//FP_SPEED,//duration
@@ -171,11 +171,11 @@ void UI_DrawForceStars(rectDef_t *rect, float scale, vec4_t color, int textStyle
 
 			if (val >= i)
 			{	// Draw a star.
-				UI_DrawHandlePic( xPos, rect->y+6, width, width, uiForceStarShaders[starcolor][1] );
+				UI_DrawHandlePic(xPos, rect->y+6, width, width, uiForceStarShaders[starcolor][1]);
 			}
 			else
 			{	// Draw a circle.
-				UI_DrawHandlePic( xPos, rect->y+6, width, width, uiForceStarShaders[starcolor][0] );
+				UI_DrawHandlePic(xPos, rect->y+6, width, width, uiForceStarShaders[starcolor][0]);
 			}
 
 			if (uiForcePowersDisabled[forceindex])
@@ -191,24 +191,24 @@ void UI_DrawForceStars(rectDef_t *rect, float scale, vec4_t color, int textStyle
 // Set the client's force power layout.
 void UI_UpdateClientForcePowers(const char *teamArg)
 {
-	trap->Cvar_Set( "forcepowers", va("%i-%i-%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i",
+	trap->Cvar_Set("forcepowers", va("%i-%i-%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i",
 		uiForceRank, uiForceSide, uiForcePowersRank[0], uiForcePowersRank[1],
 		uiForcePowersRank[2], uiForcePowersRank[3], uiForcePowersRank[4],
 		uiForcePowersRank[5], uiForcePowersRank[6], uiForcePowersRank[7],
 		uiForcePowersRank[8], uiForcePowersRank[9], uiForcePowersRank[10],
 		uiForcePowersRank[11], uiForcePowersRank[12], uiForcePowersRank[13],
 		uiForcePowersRank[14], uiForcePowersRank[15], uiForcePowersRank[16],
-		uiForcePowersRank[17]) );
+		uiForcePowersRank[17]));
 
 	if (gTouchedForce)
 	{
 		if (teamArg && teamArg[0])
 		{
-			trap->Cmd_ExecuteText( EXEC_APPEND, va("forcechanged \"%s\"\n", teamArg) );
+			trap->Cmd_ExecuteText(EXEC_APPEND, va("forcechanged \"%s\"\n", teamArg));
 		}
 		else
 		{
-			trap->Cmd_ExecuteText( EXEC_APPEND, "forcechanged\n" );
+			trap->Cmd_ExecuteText(EXEC_APPEND, "forcechanged\n");
 		}
 	}
 
@@ -243,11 +243,11 @@ void UI_SaveForceTemplate()
 	}
 
 	if (uiForceSide == FORCE_LIGHTSIDE)
-	{ //write it into the light side folder
+	{//write it into the light side folder
 		trap->FS_Open(va("forcecfg/light/%s.fcf", selectedName), &f, FS_WRITE);
 	}
 	else
-	{ //if it isn't light it must be dark
+	{//if it isn't light it must be dark
 		trap->FS_Open(va("forcecfg/dark/%s.fcf", selectedName), &f, FS_WRITE);
 	}
 
@@ -304,7 +304,7 @@ void UI_SaveForceTemplate()
 
 
 //
-extern qboolean UI_TrueJediEnabled( void );
+extern qboolean UI_TrueJediEnabled(void);
 void UpdateForceUsed()
 {
 	int curpower, currank;
@@ -322,57 +322,57 @@ void UpdateForceUsed()
 		uiForcePowersRank[FP_LEVITATION]=1;
 	}
 
-	if ( UI_TrueJediEnabled() )
+	if (UI_TrueJediEnabled())
 	{//true jedi mode is set
-		if ( uiJediNonJedi == -1 )
+		if (uiJediNonJedi == -1)
 		{
 			int x = 0;
 			qboolean clear = qfalse, update = qfalse;
 			uiJediNonJedi = FORCE_NONJEDI;
-			while ( x < NUM_FORCE_POWERS )
+			while (x < NUM_FORCE_POWERS)
 			{//if any force power is set, we must be a jedi
-				if ( x == FP_LEVITATION || x == FP_SABER_OFFENSE )
+				if (x == FP_LEVITATION || x == FP_SABER_OFFENSE)
 				{
-					if ( uiForcePowersRank[x] > 1 )
+					if (uiForcePowersRank[x] > 1)
 					{
 						uiJediNonJedi = FORCE_JEDI;
 						break;
 					}
-					else if ( uiForcePowersRank[x] > 0 )
+					else if (uiForcePowersRank[x] > 0)
 					{
 						clear = qtrue;
 					}
 				}
-				else if ( uiForcePowersRank[x] > 0 )
+				else if (uiForcePowersRank[x] > 0)
 				{
 					uiJediNonJedi = FORCE_JEDI;
 					break;
 				}
 				x++;
 			}
-			if ( uiJediNonJedi == FORCE_JEDI )
+			if (uiJediNonJedi == FORCE_JEDI)
 			{
-				if ( uiForcePowersRank[FP_SABER_OFFENSE] < 1 )
+				if (uiForcePowersRank[FP_SABER_OFFENSE] < 1)
 				{
 					uiForcePowersRank[FP_SABER_OFFENSE]=1;
 					update = qtrue;
 				}
 			}
-			else if ( clear )
+			else if (clear)
 			{
 				x = 0;
-				while ( x < NUM_FORCE_POWERS )
+				while (x < NUM_FORCE_POWERS)
 				{//clear all force
 					uiForcePowersRank[x] = 0;
 					x++;
 				}
 				update = qtrue;
 			}
-			if ( update )
+			if (update)
 			{
 				int myTeam;
 				myTeam = (int)(trap->Cvar_VariableValue("ui_myteam"));
-				if ( myTeam != TEAM_SPECTATOR )
+				if (myTeam != TEAM_SPECTATOR)
 				{
 					UI_UpdateClientForcePowers(UI_TeamName(myTeam));//will cause him to respawn, if it's been 5 seconds since last one
 				}
@@ -453,7 +453,7 @@ void UpdateForceUsed()
 			{	// Do not charge the player for the one freebie in jump, or if there is one in saber.
 				if  (	(curpower == FP_LEVITATION && currank == FORCE_LEVEL_1) ||
 						(curpower == FP_SABER_OFFENSE && currank == FORCE_LEVEL_1 && ui_freeSaber.integer) ||
-						(curpower == FP_SABER_DEFENSE && currank == FORCE_LEVEL_1 && ui_freeSaber.integer) )
+						(curpower == FP_SABER_DEFENSE && currank == FORCE_LEVEL_1 && ui_freeSaber.integer))
 				{
 					// Do nothing (written this way for clarity)
 				}
@@ -514,7 +514,7 @@ void UI_ReadLegalForce(void)
 	info[0] = '\0';
 	trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
 
-	if (atoi( Info_ValueForKey( info, "g_forceBasedTeams" ) ))
+	if (atoi(Info_ValueForKey(info, "g_forceBasedTeams")))
 	{
 		switch((int)(trap->Cvar_VariableValue("ui_myteam")))
 		{
@@ -529,8 +529,8 @@ void UI_ReadLegalForce(void)
 		}
 	}
 	//Second, legalize them.
-	if (!BG_LegalizedForcePowers(fcfString, sizeof (fcfString), uiMaxRank, ui_freeSaber.integer, forceTeam, atoi( Info_ValueForKey( info, "g_gametype" )), 0))
-	{ //if they were illegal, we should refresh them.
+	if (!BG_LegalizedForcePowers(fcfString, sizeof (fcfString), uiMaxRank, ui_freeSaber.integer, forceTeam, atoi(Info_ValueForKey(info, "g_gametype")), 0))
+	{//if they were illegal, we should refresh them.
 		updateForceLater = qtrue;
 	}
 
@@ -550,7 +550,7 @@ void UI_ReadLegalForce(void)
 	iBuf = atoi(singleBuf);
 
 	if (iBuf > uiMaxRank || iBuf < 0)
-	{ //this force config uses a rank level higher than our currently restricted level.. so we can't use it
+	{//this force config uses a rank level higher than our currently restricted level.. so we can't use it
 	  //FIXME: Print a message indicating this to the user
 	//	return;
 	}
@@ -600,12 +600,12 @@ void UI_ReadLegalForce(void)
 		forcePowerRank = iBuf;
 
 		if (forcePowerRank > FORCE_LEVEL_3 || forcePowerRank < 0)
-		{ //err..  not correct
+		{//err..  not correct
 			continue;  // skip this power
 		}
 
 		if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide)
-		{ //Apparently the user has crafted a force config that has powers that don't fit with the config's side.
+		{//Apparently the user has crafted a force config that has powers that don't fit with the config's side.
 			continue;  // skip this power
 		}
 
@@ -732,7 +732,7 @@ void UI_UpdateForcePowers()
 			}
 
 			if (i_f < NUM_FORCE_POWERS)
-			{ //info for all the powers wasn't there..
+			{//info for all the powers wasn't there..
 				uiForceSide = 0;
 				goto validitycheck;
 			}
@@ -799,7 +799,7 @@ qboolean UI_SkinColor_HandleKey(int flags, float *special, int key, int num, int
 	else if (i > max)
 	{
       i = min;
-    }
+   }
 
     num = i;
 
@@ -810,7 +810,7 @@ qboolean UI_SkinColor_HandleKey(int flags, float *special, int key, int num, int
 	UI_FeederSelection(FEEDER_Q3HEADS, uiInfo.q3SelectedHead, NULL);
 
     return qtrue;
-  }
+ }
   return qfalse;
 }
 
@@ -824,7 +824,7 @@ qboolean UI_ForceSide_HandleKey(int flags, float *special, int key, int num, int
 	info[0] = '\0';
 	trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
 
-	if (atoi( Info_ValueForKey( info, "g_forceBasedTeams" ) ))
+	if (atoi(Info_ValueForKey(info, "g_forceBasedTeams")))
 	{
 		switch((int)(trap->Cvar_VariableValue("ui_myteam")))
 		{
@@ -892,7 +892,7 @@ qboolean UI_JediNonJedi_HandleKey(int flags, float *special, int key, int num, i
 	info[0] = '\0';
 	trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
 
-	if ( !UI_TrueJediEnabled() )
+	if (!UI_TrueJediEnabled())
 	{//true jedi mode is not set
 		return qfalse;
 	}
@@ -925,15 +925,15 @@ qboolean UI_JediNonJedi_HandleKey(int flags, float *special, int key, int num, i
 		uiJediNonJedi = num;
 
 		// Resetting power ranks based on if light or dark side is chosen
-		if ( !num )
+		if (!num)
 		{//not a jedi?
 			int myTeam = (int)(trap->Cvar_VariableValue("ui_myteam"));
-			while ( x < NUM_FORCE_POWERS )
+			while (x < NUM_FORCE_POWERS)
 			{//clear all force powers
 				uiForcePowersRank[x] = 0;
 				x++;
 			}
-			if ( myTeam != TEAM_SPECTATOR )
+			if (myTeam != TEAM_SPECTATOR)
 			{
 				UI_UpdateClientForcePowers(UI_TeamName(myTeam));//will cause him to respawn, if it's been 5 seconds since last one
 			}
@@ -942,13 +942,13 @@ qboolean UI_JediNonJedi_HandleKey(int flags, float *special, int key, int num, i
 				UI_UpdateClientForcePowers(NULL);//just update powers
 			}
 		}
-		else if ( num )
+		else if (num)
 		{//a jedi, set the minimums, hopefuly they know to set the rest!
-			if ( uiForcePowersRank[FP_LEVITATION] < FORCE_LEVEL_1 )
+			if (uiForcePowersRank[FP_LEVITATION] < FORCE_LEVEL_1)
 			{//force jump 1 minimum
 				uiForcePowersRank[FP_LEVITATION] = FORCE_LEVEL_1;
 			}
-			if ( uiForcePowersRank[FP_SABER_OFFENSE] < FORCE_LEVEL_1 )
+			if (uiForcePowersRank[FP_SABER_OFFENSE] < FORCE_LEVEL_1)
 			{//saber attack 1, minimum
 				uiForcePowersRank[FP_SABER_OFFENSE] = FORCE_LEVEL_1;
 			}
@@ -984,13 +984,13 @@ qboolean UI_ForceMaxRank_HandleKey(int flags, float *special, int key, int num, 
 	else if (i > max)
 	{
       i = min;
-    }
+   }
 
     num = i;
 
 	uiMaxRank = num;
 
-	trap->Cvar_Set( "g_maxForceRank", va("%i", num));
+	trap->Cvar_Set("g_maxForceRank", va("%i", num));
 
 	// The update force used will remove overallocated powers automatically.
 	UpdateForceUsed();
@@ -998,7 +998,7 @@ qboolean UI_ForceMaxRank_HandleKey(int flags, float *special, int key, int num, 
 	gTouchedForce = qtrue;
 
     return qtrue;
-  }
+ }
   return qfalse;
 }
 
@@ -1125,7 +1125,7 @@ int gCustPowersRank[NUM_FORCE_POWERS] = {
 UI_ForceConfigHandle
 =================
 */
-void UI_ForceConfigHandle( int oldindex, int newindex )
+void UI_ForceConfigHandle(int oldindex, int newindex)
 {
 	fileHandle_t f;
 	int len = 0;
@@ -1138,7 +1138,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 	int forceTeam = 0;
 
 	if (oldindex == 0)
-	{ //switching out from custom config, so first shove the current values into the custom storage
+	{//switching out from custom config, so first shove the current values into the custom storage
 		i = 0;
 
 		while (i < NUM_FORCE_POWERS)
@@ -1151,7 +1151,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 	}
 
 	if (newindex == 0)
-	{ //switching back to custom, shove the values back in from the custom storage
+	{//switching back to custom, shove the values back in from the custom storage
 		i = 0;
 		uiForceUsed = 0;
 		gTouchedForce = qtrue;
@@ -1171,38 +1171,38 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 
 	//If we made it here, we want to load in a new config
 	if (uiForceSide == FORCE_LIGHTSIDE)
-	{ //we should only be displaying lightside configs, so.. look in the light folder
+	{//we should only be displaying lightside configs, so.. look in the light folder
 		newindex += uiInfo.forceConfigLightIndexBegin;
 		if (newindex >= uiInfo.forceConfigCount)
 			return;
 		len = trap->FS_Open(va("forcecfg/light/%s.fcf", uiInfo.forceConfigNames[newindex]), &f, FS_READ);
 	}
 	else
-	{ //else dark
+	{//else dark
 		newindex += uiInfo.forceConfigDarkIndexBegin;
 		if (newindex >= uiInfo.forceConfigCount || newindex > uiInfo.forceConfigLightIndexBegin)
-		{ //dark gets read in before light
+		{//dark gets read in before light
 			return;
 		}
 		len = trap->FS_Open(va("forcecfg/dark/%s.fcf", uiInfo.forceConfigNames[newindex]), &f, FS_READ);
 	}
 
 	if (len <= 0)
-	{ //This should not have happened. But, before we quit out, attempt searching the other light/dark folder for the file.
+	{//This should not have happened. But, before we quit out, attempt searching the other light/dark folder for the file.
 		if (uiForceSide == FORCE_LIGHTSIDE)
 			len = trap->FS_Open(va("forcecfg/dark/%s.fcf", uiInfo.forceConfigNames[newindex]), &f, FS_READ);
 		else
 			len = trap->FS_Open(va("forcecfg/light/%s.fcf", uiInfo.forceConfigNames[newindex]), &f, FS_READ);
 
 		if (len <= 0)
-		{ //still failure? Oh well.
+		{//still failure? Oh well.
 			return;
 		}
 	}
 
 	if (len >= 8192)
 	{
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 		return;
 	}
 
@@ -1215,7 +1215,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 	info[0] = '\0';
 	trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
 
-	if (atoi( Info_ValueForKey( info, "g_forceBasedTeams" ) ))
+	if (atoi(Info_ValueForKey(info, "g_forceBasedTeams")))
 	{
 		switch((int)(trap->Cvar_VariableValue("ui_myteam")))
 		{
@@ -1230,7 +1230,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 		}
 	}
 
-	BG_LegalizedForcePowers(fcfBuffer, sizeof (fcfBuffer), uiMaxRank, ui_freeSaber.integer, forceTeam, atoi( Info_ValueForKey( info, "g_gametype" )), 0);
+	BG_LegalizedForcePowers(fcfBuffer, sizeof (fcfBuffer), uiMaxRank, ui_freeSaber.integer, forceTeam, atoi(Info_ValueForKey(info, "g_gametype")), 0);
 	//legalize the config based on the max rank
 
 	//now that we're done with the handle, it's time to parse our force data out of the string
@@ -1248,7 +1248,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 	iBuf = atoi(singleBuf);
 
 	if (iBuf > uiMaxRank || iBuf < 0)
-	{ //this force config uses a rank level higher than our currently restricted level.. so we can't use it
+	{//this force config uses a rank level higher than our currently restricted level.. so we can't use it
 	  //FIXME: Print a message indicating this to the user
 		return;
 	}
@@ -1317,12 +1317,12 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 		forcePowerRank = iBuf;
 
 		if (forcePowerRank > FORCE_LEVEL_3 || forcePowerRank < 0)
-		{ //err..  not correct
+		{//err..  not correct
 			continue;  // skip this power
 		}
 
 		if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide)
-		{ //Apparently the user has crafted a force config that has powers that don't fit with the config's side.
+		{//Apparently the user has crafted a force config that has powers that don't fit with the config's side.
 			continue;  // skip this power
 		}
 

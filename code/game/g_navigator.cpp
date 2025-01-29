@@ -48,8 +48,8 @@ bool	HFILEclose(int& handle)									{gi.FS_FCloseFile(handle); return true;}
 ////////////////////////////////////////////////////////////////////////////////////////
 // Externs
 ////////////////////////////////////////////////////////////////////////////////////////
-extern gentity_t*	G_FindDoorTrigger( gentity_t *ent );
-extern qboolean		G_EntIsBreakable( int entityNum, gentity_t *breaker );
+extern gentity_t*	G_FindDoorTrigger(gentity_t *ent);
+extern qboolean		G_EntIsBreakable(int entityNum, gentity_t *breaker);
 extern qboolean		G_CheckInSolidTeleport (const vec3_t& teleportPos, gentity_t *self);
 
 extern cvar_t*		g_nav1;
@@ -639,9 +639,9 @@ public:
 				}
 			}
 		}
-		else if ( Edge.BlockingBreakable())
+		else if (Edge.BlockingBreakable())
 		{//we had a breakable in our way, now it's gone, see if there is anything else in the way
-			if ( NAV::TestEdge( Edge.mNodeA, Edge.mNodeB, qfalse ) )
+			if (NAV::TestEdge(Edge.mNodeA, Edge.mNodeB, qfalse))
 			{//clear it
 				Edge.mFlags.clear_bit(CWayEdge::WE_BLOCKING_BREAK);
 			}
@@ -831,7 +831,7 @@ bool		ViewTrace(const CVec3& a, const CVec3& b)
 	mViewTraceCount++;
 	gi.trace(&mViewTrace, a.v, 0, 0, b.v, ENTITYNUM_NONE, contents, (EG2_Collision)0, 0);
 
-	if ((mViewTrace.allsolid==qfalse) && (mViewTrace.startsolid==qfalse ) && (mViewTrace.fraction==1.0f))
+	if ((mViewTrace.allsolid==qfalse) && (mViewTrace.startsolid==qfalse) && (mViewTrace.fraction==1.0f))
 	{
 		return true;
 	}
@@ -848,7 +848,7 @@ bool		ViewNavTrace(const CVec3& a, const CVec3& b)
 	mViewTraceCount++;
 	gi.trace(&mViewTrace, a.v, 0, 0, b.v, ENTITYNUM_NONE, contents, (EG2_Collision)0, 0);
 
-	if ((mViewTrace.allsolid==qfalse) && (mViewTrace.startsolid==qfalse ) && (mViewTrace.fraction==1.0f))
+	if ((mViewTrace.allsolid==qfalse) && (mViewTrace.startsolid==qfalse) && (mViewTrace.fraction==1.0f))
 	{
 		return true;
 	}
@@ -888,7 +888,7 @@ bool		MoveTrace(const CVec3& Start, const CVec3& Stop, const CVec3& Mins, const 
 
 	// Did It Make It?
 	//-----------------
-	if ((mMoveTrace.allsolid==qfalse) && (mMoveTrace.startsolid==qfalse ) && (mMoveTrace.fraction==1.0f))
+	if ((mMoveTrace.allsolid==qfalse) && (mMoveTrace.startsolid==qfalse) && (mMoveTrace.fraction==1.0f))
 	{
 		return true;
 	}
@@ -906,7 +906,7 @@ bool		MoveTrace(const CVec3& Start, const CVec3& Stop, const CVec3& Mins, const 
 
 		// Did It Make It?
 		//-----------------
-		if ((mMoveTrace.allsolid==qfalse) && (mMoveTrace.startsolid==qfalse ) && (mMoveTrace.fraction==1.0f))
+		if ((mMoveTrace.allsolid==qfalse) && (mMoveTrace.startsolid==qfalse) && (mMoveTrace.fraction==1.0f))
 		{
 			return true;
 		}
@@ -1208,9 +1208,9 @@ bool			NAV::LoadFromFile(const char *filename, int checksum)
 ////////////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////////////
-bool			NAV::TestEdge( TNodeHandle NodeA, TNodeHandle NodeB, qboolean IsDebugEdge )
+bool			NAV::TestEdge(TNodeHandle NodeA, TNodeHandle NodeB, qboolean IsDebugEdge)
 {
-	int			atHandle = mGraph.get_edge_across( NodeA, NodeB );
+	int			atHandle = mGraph.get_edge_across(NodeA, NodeB);
 	CWayEdge&	at = mGraph.get_edge(atHandle);
 	CWayNode&	a = mGraph.get_node(at.mNodeA);
 	CWayNode&	b = mGraph.get_node(at.mNodeB);
@@ -1684,8 +1684,8 @@ bool			NAV::LoadFromEntitiesAndSaveToFile(const char *filename, int checksum)
 			if (nameFinder==mNodeNames.end())
 			{
 #ifdef _DEBUG
-				gi.Printf( S_COLOR_YELLOW "WARNING: nav unable to locate target (%s) from node (%s)\n", tgtNameStr,
-					atNameStr );
+				gi.Printf(S_COLOR_YELLOW "WARNING: nav unable to locate target (%s) from node (%s)\n", tgtNameStr,
+					atNameStr);
 #endif // _DEBUG
 				continue;
 			}
@@ -1911,7 +1911,7 @@ bool			NAV::LoadFromEntitiesAndSaveToFile(const char *filename, int checksum)
 
 		// Try Medium
 		//------------
-		CanGo = TestEdge( at.mNodeA, at.mNodeB, (qboolean)IsDebugEdge );
+		CanGo = TestEdge(at.mNodeA, at.mNodeB, (qboolean)IsDebugEdge);
 		if (!CanGo)
 		{
 			at.mFlags.clear_bit(CWayEdge::WE_SIZE_LARGE);
@@ -1920,7 +1920,7 @@ bool			NAV::LoadFromEntitiesAndSaveToFile(const char *filename, int checksum)
 			{
 				gi.Printf("Nav(%s)<->(%s): Attempting Size Medium...\n", aName, bName);
 			}
-			CanGo = TestEdge( at.mNodeA, at.mNodeB, (qboolean)IsDebugEdge );
+			CanGo = TestEdge(at.mNodeA, at.mNodeB, (qboolean)IsDebugEdge);
 		}
 
 		// If This Edge Can't Go At Any Size, Dump It
@@ -1931,7 +1931,7 @@ bool			NAV::LoadFromEntitiesAndSaveToFile(const char *filename, int checksum)
 			if (IsDebugEdge)
 			{
 				CVec3	ContactNormal(mMoveTrace.plane.normal);
-				CVec3	ContactPoint( mMoveTrace.endpos);
+				CVec3	ContactPoint(mMoveTrace.endpos);
 
 				char	cpointstr[256] = {0};
 				char	cnormstr[256] = {0};
@@ -1997,8 +1997,8 @@ bool			NAV::LoadFromEntitiesAndSaveToFile(const char *filename, int checksum)
 			mGraph.get_node(at.mNodeB).mPoint.ToStr(mLocStringB);
 
 #ifdef _DEBUG
-			gi.Printf( S_COLOR_RED "ERROR: Nav connect failed: %s@%s <-> %s@%s\n", aHstr.c_str(), mLocStringA,
-				bHstr.c_str(), mLocStringB );
+			gi.Printf(S_COLOR_RED "ERROR: Nav connect failed: %s@%s <-> %s@%s\n", aHstr.c_str(), mLocStringA,
+				bHstr.c_str(), mLocStringB);
 #endif // _DEBUG
 			delayedShutDown = level.time + 100;
 		}
@@ -2023,7 +2023,7 @@ bool			NAV::LoadFromEntitiesAndSaveToFile(const char *filename, int checksum)
 			if (at->mType==NAV::PT_COMBATNODE)
 			{
 #ifndef FINAL_BUILD
-				gi.Printf( S_COLOR_RED"ERROR: Combat Point %s@%s Is Not Connected To Anything\n", at->mName.c_str(), mLocStringA);
+				gi.Printf(S_COLOR_RED"ERROR: Combat Point %s@%s Is Not Connected To Anything\n", at->mName.c_str(), mLocStringA);
 				delayedShutDown = level.time + 100;
 #endif
 			}
@@ -2036,7 +2036,7 @@ bool			NAV::LoadFromEntitiesAndSaveToFile(const char *filename, int checksum)
 				if (!ViewTrace(at->mPoint, Down))
 				{
 #ifndef FINAL_BUILD
-					gi.Printf( S_COLOR_RED"ERROR: Nav Goal %s@%s Is Not Connected To Anything\n", at->mName.c_str(), mLocStringA);
+					gi.Printf(S_COLOR_RED"ERROR: Nav Goal %s@%s Is Not Connected To Anything\n", at->mName.c_str(), mLocStringA);
 					delayedShutDown = level.time + 100;
 #endif
 				}
@@ -2067,14 +2067,14 @@ bool			NAV::LoadFromEntitiesAndSaveToFile(const char *filename, int checksum)
 	if (!mRegion.find_regions(mUser))
 	{
 #ifndef FINAL_BUILD
-		gi.Printf( S_COLOR_RED"ERROR: Too Many Regions!\n");
+		gi.Printf(S_COLOR_RED"ERROR: Too Many Regions!\n");
 		delayedShutDown = level.time + 100;
 #endif
 	}
 	if (!mRegion.find_region_edges())
 	{
 #ifndef FINAL_BUILD
-		gi.Printf( S_COLOR_RED"ERROR: Too Many Region Edges!\n");
+		gi.Printf(S_COLOR_RED"ERROR: Too Many Region Edges!\n");
 		delayedShutDown = level.time + 100;
 #endif
 	}
@@ -2301,7 +2301,7 @@ void			NAV::SpawnedPoint(gentity_t* ent, NAV::EPointType type)
 	if (mGraph.size_nodes()>=NUM_NODES)
 	{
 #ifndef FINAL_BUILD
-		gi.Printf( "SpawnedPoint: Max Nav points reached (%d)!\n",NUM_NODES );
+		gi.Printf("SpawnedPoint: Max Nav points reached (%d)!\n",NUM_NODES);
 #endif
         return;
 	}
@@ -2330,7 +2330,7 @@ void			NAV::SpawnedPoint(gentity_t* ent, NAV::EPointType type)
 		if (!MoveTrace(Start, Stop, Mins, Maxs, 0, true, false))
 		{
 			assert("ERROR: Nav in solid!"==0);
-			gi.Printf( S_COLOR_RED"ERROR: Nav(%d) in solid: %s@%s\n", type, pointName, mLocStringA);
+			gi.Printf(S_COLOR_RED"ERROR: Nav(%d) in solid: %s@%s\n", type, pointName, mLocStringA);
 			delayedShutDown = level.time + 100;
 			return;
 		}
@@ -2368,7 +2368,7 @@ void			NAV::SpawnedPoint(gentity_t* ent, NAV::EPointType type)
 		//--------------
 		if (!MoveTrace(Start, Stop, Mins, Maxs, 0, true, false))
 		{
-			gi.Printf( S_COLOR_YELLOW"WARNING: Nav Moved To Solid, Resetting: (%s)\n", pointName);
+			gi.Printf(S_COLOR_YELLOW"WARNING: Nav Moved To Solid, Resetting: (%s)\n", pointName);
 			assert("WARNING: Nav Moved To Solid, Resetting!"==0);
 			node.mPoint		= ent->currentOrigin;
 		}
@@ -3844,33 +3844,33 @@ void			NAV::ShowDebugInfo(const vec3_t& PlayerPosition, int PlayerWaypoint)
 					{
 						if (at.mFlags.get_bit(CWayNode::WN_FLOATING))
 						{
-							CG_DrawEdge(at.mPoint.v, atEnd.v, EDGE_NODE_FLOATING );
+							CG_DrawEdge(at.mPoint.v, atEnd.v, EDGE_NODE_FLOATING);
 						}
 						else
 						{
-							CG_DrawEdge(at.mPoint.v, atEnd.v, EDGE_NODE_NORMAL );
+							CG_DrawEdge(at.mPoint.v, atEnd.v, EDGE_NODE_NORMAL);
 						}
 					}
 					else
 					{
 						if (at.mFlags.get_bit(CWayNode::WN_FLOATING))
 						{
-							CG_DrawNode(at.mPoint.v, NODE_FLOATING );
+							CG_DrawNode(at.mPoint.v, NODE_FLOATING);
 						}
 						else
 						{
-							CG_DrawNode(at.mPoint.v, NODE_NORMAL );
+							CG_DrawNode(at.mPoint.v, NODE_NORMAL);
 						}
 					}
 					if (NAVDEBUG_showRadius && at.mPoint.Dist2(PlayerPosition)<(at.mRadius*at.mRadius))
 					{
 						if (at.mFlags.get_bit(CWayNode::WN_FLOATING))
 						{
-							CG_DrawRadius(at.mPoint.v, at.mRadius, NODE_FLOATING );
+							CG_DrawRadius(at.mPoint.v, at.mRadius, NODE_FLOATING);
 						}
 						else
 						{
-							CG_DrawRadius(at.mPoint.v, at.mRadius, NODE_NORMAL );
+							CG_DrawRadius(at.mPoint.v, at.mRadius, NODE_NORMAL);
 						}
 					}
 				}
@@ -3878,7 +3878,7 @@ void			NAV::ShowDebugInfo(const vec3_t& PlayerPosition, int PlayerWaypoint)
 				{
 					if (NAVDEBUG_showPointLines)
 					{
-						CG_DrawEdge(at.mPoint.v, atEnd.v, EDGE_NODE_COMBAT );
+						CG_DrawEdge(at.mPoint.v, atEnd.v, EDGE_NODE_COMBAT);
 					}
 					else
 					{
@@ -3889,7 +3889,7 @@ void			NAV::ShowDebugInfo(const vec3_t& PlayerPosition, int PlayerWaypoint)
 				{
 					if (NAVDEBUG_showPointLines)
 					{
-						CG_DrawEdge(at.mPoint.v, atEnd.v, EDGE_NODE_GOAL );
+						CG_DrawEdge(at.mPoint.v, atEnd.v, EDGE_NODE_GOAL);
 					}
 					else
 					{
@@ -3980,12 +3980,12 @@ void			NAV::ShowDebugInfo(const vec3_t& PlayerPosition, int PlayerWaypoint)
 		}
 	}
 
-	if ( NAVDEBUG_showTestPath )
+	if (NAVDEBUG_showTestPath)
 	{
 		// NAV_TODO: Allow Test Paths
 	}
 
-	if ( NAVDEBUG_showNearest && player && (player->waypoint!=0 || player->lastWaypoint!=0))
+	if (NAVDEBUG_showNearest && player && (player->waypoint!=0 || player->lastWaypoint!=0))
 	{
 		PlayerWaypoint = (player->waypoint)?(player->waypoint):(player->lastWaypoint);
 		CVec3	PPos(PlayerPosition);
@@ -4404,7 +4404,7 @@ void			STEER::DeActivate(gentity_t* actor, usercmd_t* ucmd)
 						)
 					{
 						G_SetOrigin(actor, NAV::GetNodePosition(actor->lastWaypoint));
-						G_SoundOnEnt( NPC, CHAN_BODY, "sound/weapons/force/jump.wav" );
+						G_SoundOnEnt(NPC, CHAN_BODY, "sound/weapons/force/jump.wav");
 					}
 					else
 					{
@@ -4493,7 +4493,7 @@ bool			STEER::SafeToGoTo(gentity_t* actor, const vec3_t& targetPosition, int tar
 
 			if (TIMER_Done(actor, "SafeToGoToCHECK"))
 			{
-				TIMER_Set( actor, "SafeToGoToCHECK", 1500);			// Check Every 1.5 Seconds
+				TIMER_Set(actor, "SafeToGoToCHECK", 1500);			// Check Every 1.5 Seconds
 				if (MoveTrace(actor, targetPosition, true))
 				{
 					TIMER_Set(actor, "SafeToGoToDURATION", 2000);	// Safe For 2 Seconds
@@ -4961,7 +4961,7 @@ float			STEER::Cohesion(gentity_t* actor, float Scale)
 
 	if (!suser.mNeighbors.empty())
 	{
-		CVec3 AvePosition( 0.0f, 0.0f, 0.0f );
+		CVec3 AvePosition(0.0f, 0.0f, 0.0f);
 		for (int i=0; i<suser.mNeighbors.size(); i++)
 		{
 			AvePosition += CVec3(suser.mNeighbors[i]->currentOrigin);
@@ -4982,7 +4982,7 @@ gentity_t*		STEER::SelectLeader(gentity_t* actor)
 
 	for (int i=0; i<suser.mNeighbors.size(); i++)
 	{
-		if (suser.mNeighbors[i]->s.number>actor->s.number && !Q_stricmp(suser.mNeighbors[i]->NPC_type, actor->NPC_type ))
+		if (suser.mNeighbors[i]->s.number>actor->s.number && !Q_stricmp(suser.mNeighbors[i]->NPC_type, actor->NPC_type))
 		{
 			return suser.mNeighbors[i];
 		}
@@ -5196,7 +5196,7 @@ bool		TestCollision(gentity_t* actor, SSteerUser& suser, const CVec3& ProjectVel
 	// Need These Vectors To Draw The Lines Below
 	//--------------------------------------------
 	CVec3	ContactNormal(mMoveTrace.plane.normal);
-	CVec3	ContactPoint( mMoveTrace.endpos);
+	CVec3	ContactPoint(mMoveTrace.endpos);
 	int		ContactNum =  mMoveTrace.entityNum;
 
 
@@ -5490,7 +5490,7 @@ bool	STEER::Reached(gentity_t* actor, NAV::TNodeHandle target, float targetRadiu
 ////////////////////////////////////////////////////////////////////////////////////
 bool	STEER::Reached(gentity_t* actor, const vec3_t& target, float targetRadius, bool flying)
 {
-	if (!actor || VectorCompare(target, vec3_origin) )
+	if (!actor || VectorCompare(target, vec3_origin))
 	{
 		return false;
 	}
@@ -5529,7 +5529,7 @@ bool	STEER::Reached(gentity_t* actor, const vec3_t& target, float targetRadius, 
 void	ClearAllNavStructures(void)
 {
 	TEntEdgeMap::iterator i = mEntEdgeMap.begin();
-	for ( ; i != mEntEdgeMap.end(); ++i)
+	for (; i != mEntEdgeMap.end(); ++i)
 	{
 		i->clear();
 	}

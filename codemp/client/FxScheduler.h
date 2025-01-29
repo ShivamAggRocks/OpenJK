@@ -82,11 +82,11 @@ private:
 
 public:
 
-	void	AddHandle( int item )	{ mMediaList.push_back( item );	}
-	int		GetHandle()				{ if (mMediaList.size()==0) {return 0;}
-										else {return mMediaList[irand(0,(int)mMediaList.size()-1)];} }
+	void	AddHandle(int item)	{mMediaList.push_back(item);	}
+	int		GetHandle()				{if (mMediaList.size()==0) {return 0;}
+										else {return mMediaList[irand(0,(int)mMediaList.size()-1)];}}
 
-	CMediaHandles &operator=(const CMediaHandles &that );
+	CMediaHandles &operator=(const CMediaHandles &that);
 };
 
 
@@ -108,19 +108,19 @@ private:
 
 public:
 
-	CFxRange(void) 									{ mMin = 0.0f; mMax = 0.0f; }
+	CFxRange(void) 									{mMin = 0.0f; mMax = 0.0f;}
 
-	inline void		SetRange(float min,float max)	{ mMin = min; mMax = max; }
+	inline void		SetRange(float min,float max)	{mMin = min; mMax = max;}
 
-	inline float	GetMax(void) const				{ return mMax; }
-	inline float	GetMin(void) const				{ return mMin; }
-	inline float	GetVal(float fraction) const	{ if(mMin != mMax) { return mMin + fraction * (mMax - mMin); } else { return mMin; } }
-	inline float	GetVal(void) const	 			{ if(mMin != mMax) { return flrand(mMin,mMax); } else { return mMin; } }
+	inline float	GetMax(void) const				{return mMax;}
+	inline float	GetMin(void) const				{return mMin;}
+	inline float	GetVal(float fraction) const	{if(mMin != mMax) {return mMin + fraction * (mMax - mMin);} else {return mMin;}}
+	inline float	GetVal(void) const	 			{if(mMin != mMax) {return flrand(mMin,mMax);} else {return mMin;}}
 
 	inline int		GetRoundedVal() const			{if(mMin == mMax){return (int)mMin;}
 														return (int)(flrand(mMin, mMax) + 0.5f);}
 
-	bool operator==(const CFxRange &rhs) const		{ return ((mMin == rhs.mMin) &&	(mMax == rhs.mMax)); }
+	bool operator==(const CFxRange &rhs) const		{return ((mMin == rhs.mMin) &&	(mMax == rhs.mMax));}
 };
 
 
@@ -265,78 +265,78 @@ public:
 	int				mSoundVolume;
 
 	// Lower level parsing utilities
-	bool ParseVector( const char *val, vec3_t min, vec3_t max );
-	bool ParseFloat( const char *val, float *min, float *max );
-	bool ParseGroupFlags( const char *val, int *flags );
+	bool ParseVector(const char *val, vec3_t min, vec3_t max);
+	bool ParseFloat(const char *val, float *min, float *max);
+	bool ParseGroupFlags(const char *val, int *flags);
 
 	// Base key processing
 	// Note that these all have their own parse functions in case it becomes important to do certain kinds
 	//	of validation specific to that type.
-	bool ParseMin( const char *val );
-	bool ParseMax( const char *val );
-	bool ParseDelay( const char *val );
-	bool ParseCount( const char *val );
-	bool ParseLife( const char *val );
-	bool ParseElasticity( const char *val );
-	bool ParseFlags( const char *val );
-	bool ParseSpawnFlags( const char *val );
+	bool ParseMin(const char *val);
+	bool ParseMax(const char *val);
+	bool ParseDelay(const char *val);
+	bool ParseCount(const char *val);
+	bool ParseLife(const char *val);
+	bool ParseElasticity(const char *val);
+	bool ParseFlags(const char *val);
+	bool ParseSpawnFlags(const char *val);
 
-	bool ParseOrigin1( const char *val );
-	bool ParseOrigin2( const char *val );
-	bool ParseRadius( const char *val );
-	bool ParseHeight( const char *val );
-	bool ParseWindModifier( const char *val );
-	bool ParseRotation( const char *val );
-	bool ParseRotationDelta( const char *val );
-	bool ParseAngle( const char *val );
-	bool ParseAngleDelta( const char *val );
-	bool ParseVelocity( const char *val );
-	bool ParseAcceleration( const char *val );
-	bool ParseGravity( const char *val );
-	bool ParseDensity( const char *val );
-	bool ParseVariance( const char *val );
+	bool ParseOrigin1(const char *val);
+	bool ParseOrigin2(const char *val);
+	bool ParseRadius(const char *val);
+	bool ParseHeight(const char *val);
+	bool ParseWindModifier(const char *val);
+	bool ParseRotation(const char *val);
+	bool ParseRotationDelta(const char *val);
+	bool ParseAngle(const char *val);
+	bool ParseAngleDelta(const char *val);
+	bool ParseVelocity(const char *val);
+	bool ParseAcceleration(const char *val);
+	bool ParseGravity(const char *val);
+	bool ParseDensity(const char *val);
+	bool ParseVariance(const char *val);
 
 	// Group type processing
-	bool ParseRGB( CGPGroup *grp );
-	bool ParseAlpha( CGPGroup *grp );
-	bool ParseSize( CGPGroup *grp );
-	bool ParseSize2( CGPGroup *grp );
-	bool ParseLength( CGPGroup *grp );
+	bool ParseRGB(CGPGroup *grp);
+	bool ParseAlpha(CGPGroup *grp);
+	bool ParseSize(CGPGroup *grp);
+	bool ParseSize2(CGPGroup *grp);
+	bool ParseLength(CGPGroup *grp);
 
-	bool ParseModels( CGPValue *grp );
-	bool ParseShaders( CGPValue *grp );
-	bool ParseSounds( CGPValue *grp );
+	bool ParseModels(CGPValue *grp);
+	bool ParseShaders(CGPValue *grp);
+	bool ParseSounds(CGPValue *grp);
 
-	bool ParseImpactFxStrings( CGPValue *grp );
-	bool ParseDeathFxStrings( CGPValue *grp );
-	bool ParseEmitterFxStrings( CGPValue *grp );
-	bool ParsePlayFxStrings( CGPValue *grp );
+	bool ParseImpactFxStrings(CGPValue *grp);
+	bool ParseDeathFxStrings(CGPValue *grp);
+	bool ParseEmitterFxStrings(CGPValue *grp);
+	bool ParsePlayFxStrings(CGPValue *grp);
 
 	// Group keys
-	bool ParseRGBStart( const char *val );
-	bool ParseRGBEnd( const char *val );
-	bool ParseRGBParm( const char *val );
-	bool ParseRGBFlags( const char *val );
+	bool ParseRGBStart(const char *val);
+	bool ParseRGBEnd(const char *val);
+	bool ParseRGBParm(const char *val);
+	bool ParseRGBFlags(const char *val);
 
-	bool ParseAlphaStart( const char *val );
-	bool ParseAlphaEnd( const char *val );
-	bool ParseAlphaParm( const char *val );
-	bool ParseAlphaFlags( const char *val );
+	bool ParseAlphaStart(const char *val);
+	bool ParseAlphaEnd(const char *val);
+	bool ParseAlphaParm(const char *val);
+	bool ParseAlphaFlags(const char *val);
 
-	bool ParseSizeStart( const char *val );
-	bool ParseSizeEnd( const char *val );
-	bool ParseSizeParm( const char *val );
-	bool ParseSizeFlags( const char *val );
+	bool ParseSizeStart(const char *val);
+	bool ParseSizeEnd(const char *val);
+	bool ParseSizeParm(const char *val);
+	bool ParseSizeFlags(const char *val);
 
-	bool ParseSize2Start( const char *val );
-	bool ParseSize2End( const char *val );
-	bool ParseSize2Parm( const char *val );
-	bool ParseSize2Flags( const char *val );
+	bool ParseSize2Start(const char *val);
+	bool ParseSize2End(const char *val);
+	bool ParseSize2Parm(const char *val);
+	bool ParseSize2Flags(const char *val);
 
-	bool ParseLengthStart( const char *val );
-	bool ParseLengthEnd( const char *val );
-	bool ParseLengthParm( const char *val );
-	bool ParseLengthFlags( const char *val );
+	bool ParseLengthStart(const char *val);
+	bool ParseLengthEnd(const char *val);
+	bool ParseLengthParm(const char *val);
+	bool ParseLengthFlags(const char *val);
 
 	bool ParseMaterialImpact(const char *val);
 
@@ -345,7 +345,7 @@ public:
 	CPrimitiveTemplate();
 	~CPrimitiveTemplate()	{};
 
-	bool ParsePrimitive( CGPGroup *grp );
+	bool ParsePrimitive(CGPGroup *grp);
 
 	CPrimitiveTemplate &operator=(const CPrimitiveTemplate &that);
 };
@@ -365,7 +365,7 @@ struct SEffectTemplate
 
 	bool operator == (const char * name) const
 	{
-		return !Q_stricmp( mEffectName, name );
+		return !Q_stricmp(mEffectName, name);
 	}
 	SEffectTemplate &operator=(const SEffectTemplate &that);
 };
@@ -380,7 +380,7 @@ public:
 		, numFree (N)
 		, highWatermark (0)
 	{
-		for ( int i = 0; i < N; i++ )
+		for (int i = 0; i < N; i++)
 		{
 			freeAndAllocated[i] = i;
 		}
@@ -388,7 +388,7 @@ public:
 
 	T *Alloc()
 	{
-		if ( numFree == 0 )
+		if (numFree == 0)
 		{
 			return NULL;
 		}
@@ -403,7 +403,7 @@ public:
 		return ptr;
 	}
 
-	void TransferTo ( PoolAllocator<T, N>& allocator )
+	void TransferTo (PoolAllocator<T, N>& allocator)
 	{
 		allocator.freeAndAllocated = freeAndAllocated;
 		allocator.highWatermark = highWatermark;
@@ -416,20 +416,20 @@ public:
 		pool = NULL;
 	}
 
-	bool OwnsPtr ( const T *ptr ) const
+	bool OwnsPtr (const T *ptr) const
 	{
 		return ptr >= pool && ptr < (pool + N);
 	}
 
-	void Free ( T *ptr )
+	void Free (T *ptr)
 	{
-		for ( int i = numFree; i < N; i++ )
+		for (int i = numFree; i < N; i++)
 		{
 			T *p = &pool[freeAndAllocated[i]];
 
-			if ( p == ptr )
+			if (p == ptr)
 			{
-				if ( i > numFree )
+				if (i > numFree)
 				{
 					std::rotate (freeAndAllocated + numFree, freeAndAllocated + i, freeAndAllocated + i + 1);
 				}
@@ -442,11 +442,11 @@ public:
 		}
 	}
 
-	int GetHighWatermark() const { return highWatermark; }
+	int GetHighWatermark() const {return highWatermark;}
 
 	~PoolAllocator()
 	{
-		for ( int i = numFree; i < N; i++ )
+		for (int i = numFree; i < N; i++)
 		{
 			T *p = &pool[freeAndAllocated[i]];
 
@@ -458,8 +458,8 @@ public:
 	}
 
 private:
-	PoolAllocator ( const PoolAllocator<T, N>& );
-	PoolAllocator& operator = ( const PoolAllocator<T, N>& );
+	PoolAllocator (const PoolAllocator<T, N>&);
+	PoolAllocator& operator = (const PoolAllocator<T, N>&);
 
 	T *pool;
 
@@ -484,15 +484,15 @@ class PagedPoolAllocator
 		T *Alloc ()
 		{
 			T *ptr = NULL;
-			for ( int i = 0; i < numPages && ptr == NULL; i++ )
+			for (int i = 0; i < numPages && ptr == NULL; i++)
 			{
 				ptr = pages[i].Alloc ();
 			}
 
-			if ( ptr == NULL )
+			if (ptr == NULL)
 			{
 				PoolAllocator<T, N> *newPages = new PoolAllocator<T, N>[numPages + 1] ();
-				for ( int i = 0; i < numPages; i++ )
+				for (int i = 0; i < numPages; i++)
 				{
 					pages[i].TransferTo (newPages[i]);
 				}
@@ -501,7 +501,7 @@ class PagedPoolAllocator
 				pages = newPages;
 
 				ptr = pages[numPages].Alloc ();
-				if ( ptr == NULL )
+				if (ptr == NULL)
 				{
 					return NULL;
 				}
@@ -512,11 +512,11 @@ class PagedPoolAllocator
 			return ptr;
 		}
 
-		void Free ( T *ptr )
+		void Free (T *ptr)
 		{
-			for ( int i = 0; i < numPages; i++ )
+			for (int i = 0; i < numPages; i++)
 			{
-				if ( pages[i].OwnsPtr (ptr) )
+				if (pages[i].OwnsPtr (ptr))
 				{
 					pages[i].Free (ptr);
 					break;
@@ -527,7 +527,7 @@ class PagedPoolAllocator
 		int GetHighWatermark () const
 		{
 			int total = 0;
-			for ( int i = 0; i < numPages; i++ )
+			for (int i = 0; i < numPages; i++)
 			{
 				total += pages[i].GetHighWatermark ();
 			}
@@ -589,8 +589,8 @@ private:
 
 	SLoopedEffect	mLoopedEffectArray[MAX_LOOPED_FX];
 
-	int		ScheduleLoopedEffect( int id, int boltInfo, CGhoul2Info_v *ghoul2, bool isPortal, int iLoopTime, bool isRelative );
-	void	AddLoopedEffects( );
+	int		ScheduleLoopedEffect(int id, int boltInfo, CGhoul2Info_v *ghoul2, bool isPortal, int iLoopTime, bool isRelative);
+	void	AddLoopedEffects();
 
 
 	class CScheduled2DEffect
@@ -632,48 +632,48 @@ private:
 	PagedPoolAllocator<SScheduledEffect, 1024> mScheduledEffectsPool;
 
 	// Private function prototypes
-	SEffectTemplate *GetNewEffectTemplate( int *id, const char *file );
+	SEffectTemplate *GetNewEffectTemplate(int *id, const char *file);
 
-	void	AddPrimitiveToEffect( SEffectTemplate *fx, CPrimitiveTemplate *prim );
-	int		ParseEffect( const char *file, CGPGroup *base );
+	void	AddPrimitiveToEffect(SEffectTemplate *fx, CPrimitiveTemplate *prim);
+	int		ParseEffect(const char *file, CGPGroup *base);
 
-	void	CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, matrix3_t axis, int lateTime, int fxParm = -1,  CGhoul2Info_v *ghoul2 = NULL, int entNum = -1, int modelNum = -1, int boltNum = -1);
-	void	CreateEffect( CPrimitiveTemplate *fx, SScheduledEffect *schedFx );
+	void	CreateEffect(CPrimitiveTemplate *fx, const vec3_t origin, matrix3_t axis, int lateTime, int fxParm = -1,  CGhoul2Info_v *ghoul2 = NULL, int entNum = -1, int modelNum = -1, int boltNum = -1);
+	void	CreateEffect(CPrimitiveTemplate *fx, SScheduledEffect *schedFx);
 
 public:
 
 	CFxScheduler();
 
-	int		RegisterEffect( const char *file, bool bHasCorrectPath = false );	// handles pre-caching
+	int		RegisterEffect(const char *file, bool bHasCorrectPath = false);	// handles pre-caching
 
 	// Nasty overloaded madness
 	//rww - maybe this should be done differently.. it's more than a bit confusing.
 	//Remind me when I don't have 50 files checked out.
-	void	PlayEffect( int id, vec3_t org, vec3_t fwd, int vol = -1, int rad = -1, bool isPortal = false );				// builds arbitrary perp. right vector, does a cross product to define up
-	void	PlayEffect( int id, vec3_t origin, matrix3_t axis, const int boltInfo=-1, CGhoul2Info_v *ghoul2 = NULL,
-				int fxParm = -1, int vol = -1, int rad = -1, bool isPortal = false, int iLoopTime = false, bool isRelative = false  );
-	void	PlayEffect( const char *file, vec3_t org, int vol = -1, int rad = -1 );					// uses a default up axis
-	void	PlayEffect( const char *file, vec3_t org, vec3_t fwd, int vol = -1, int rad = -1 );		// builds arbitrary perp. right vector, does a cross product to define up
-	void	PlayEffect( const char *file, vec3_t origin,
-				matrix3_t axis, const int boltInfo = -1, CGhoul2Info_v *ghoul2 = NULL, int fxParm = -1, int vol = -1, int rad = -1, int iLoopTime = false, bool isRelative = false );
+	void	PlayEffect(int id, vec3_t org, vec3_t fwd, int vol = -1, int rad = -1, bool isPortal = false);				// builds arbitrary perp. right vector, does a cross product to define up
+	void	PlayEffect(int id, vec3_t origin, matrix3_t axis, const int boltInfo=-1, CGhoul2Info_v *ghoul2 = NULL,
+				int fxParm = -1, int vol = -1, int rad = -1, bool isPortal = false, int iLoopTime = false, bool isRelative = false );
+	void	PlayEffect(const char *file, vec3_t org, int vol = -1, int rad = -1);					// uses a default up axis
+	void	PlayEffect(const char *file, vec3_t org, vec3_t fwd, int vol = -1, int rad = -1);		// builds arbitrary perp. right vector, does a cross product to define up
+	void	PlayEffect(const char *file, vec3_t origin,
+				matrix3_t axis, const int boltInfo = -1, CGhoul2Info_v *ghoul2 = NULL, int fxParm = -1, int vol = -1, int rad = -1, int iLoopTime = false, bool isRelative = false);
 
-	void	StopEffect( const char *file, const int boltInfo, bool isPortal = false );	//find a scheduled Looping effect with these parms and kill it
-	void	AddScheduledEffects( bool portal );								// call once per CGame frame
+	void	StopEffect(const char *file, const int boltInfo, bool isPortal = false);	//find a scheduled Looping effect with these parms and kill it
+	void	AddScheduledEffects(bool portal);								// call once per CGame frame
 
 	// kef -- called for a 2D effect instead of addRefToScene
 	bool	Add2DEffect(float x, float y, float w, float h, vec4_t color, qhandle_t shaderHandle);
 	// kef -- called once per cgame frame AFTER trap->RenderScene
 	void	Draw2DEffects(float screenXScale, float screenYScale);
 
-	int		GetHighWatermark() const { return mScheduledEffectsPool.GetHighWatermark(); }
-	int		NumScheduledFx()	{ return (int)mFxSchedule.size();	}
+	int		GetHighWatermark() const {return mScheduledEffectsPool.GetHighWatermark();}
+	int		NumScheduledFx()	{return (int)mFxSchedule.size();	}
 	void	Clean(bool bRemoveTemplates = true, int idToPreserve = 0);	// clean out the system
 
 	// FX Override functions
-	SEffectTemplate		*GetEffectCopy( int fxHandle, int *newHandle );
-	SEffectTemplate		*GetEffectCopy( const char *file, int *newHandle );
+	SEffectTemplate		*GetEffectCopy(int fxHandle, int *newHandle);
+	SEffectTemplate		*GetEffectCopy(const char *file, int *newHandle);
 
-	CPrimitiveTemplate	*GetPrimitiveCopy( SEffectTemplate *effectCopy, const char *componentName );
+	CPrimitiveTemplate	*GetPrimitiveCopy(SEffectTemplate *effectCopy, const char *componentName);
 
 	void	MaterialImpact(trace_t *tr, CEffect *effect);
 };

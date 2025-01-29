@@ -37,7 +37,7 @@ png_destroy_png_struct(png_structrp png_ptr)
          /* We may have a jmp_buf left to deallocate. */
          png_free_jmpbuf(&dummy_struct);
 #     endif
-   }
+  }
 }
 
 /* Allocate memory.  For reasonable files, size should never exceed
@@ -81,7 +81,7 @@ png_malloc_base,(png_const_structrp png_ptr, png_alloc_size_t size),
 #     ifdef PNG_MAX_MALLOC_64K
          && size <= 65536U
 #     endif
-      )
+     )
    {
 #ifdef PNG_USER_MEM_SUPPORTED
       if (png_ptr != NULL && png_ptr->malloc_fn != NULL)
@@ -90,7 +90,7 @@ png_malloc_base,(png_const_structrp png_ptr, png_alloc_size_t size),
       else
 #endif
          return malloc((size_t)size); /* checked for truncation above */
-   }
+  }
 
    else
       return NULL;
@@ -154,8 +154,8 @@ png_realloc_array,(png_const_structrp png_ptr, png_const_voidp old_array,
             element_size*(unsigned)add_elements);
 
          return new_array;
-      }
-   }
+     }
+  }
 
    return NULL; /* error */
 }
@@ -217,7 +217,7 @@ png_malloc_warn,(png_const_structrp png_ptr, png_alloc_size_t size),
          return ret;
 
       png_warning(png_ptr, "Out of memory");
-   }
+  }
 
    return NULL;
 }
@@ -262,7 +262,7 @@ png_set_mem_fn(png_structrp png_ptr, png_voidp mem_ptr, png_malloc_ptr
       png_ptr->mem_ptr = mem_ptr;
       png_ptr->malloc_fn = malloc_fn;
       png_ptr->free_fn = free_fn;
-   }
+  }
 }
 
 /* This function returns a pointer to the mem_ptr associated with the user

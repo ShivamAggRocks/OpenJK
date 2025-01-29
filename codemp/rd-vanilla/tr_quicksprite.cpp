@@ -27,7 +27,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_quicksprite.h"
 
-void R_BindAnimatedImage( textureBundle_t *bundle );
+void R_BindAnimatedImage(textureBundle_t *bundle);
 
 
 //////////////////////////////////////////////////////////////////////
@@ -49,9 +49,9 @@ CQuickSpriteSystem::CQuickSpriteSystem() :
 {
 	int i;
 
-	memset( mVerts, 0, sizeof( mVerts ) );
-	memset( mFogTextureCoords, 0, sizeof( mFogTextureCoords ) );
-	memset( mColors, 0, sizeof( mColors ) );
+	memset(mVerts, 0, sizeof(mVerts));
+	memset(mFogTextureCoords, 0, sizeof(mFogTextureCoords));
+	memset(mColors, 0, sizeof(mColors));
 
 	for (i=0; i<SHADER_MAX_VERTEXES; i+=4)
 	{
@@ -86,7 +86,7 @@ void CQuickSpriteSystem::Flush(void)
 	/*
 	if (mUseFog && r_drawfog->integer == 2 &&
 		mFogIndex == tr.world->globalFog)
-	{ //enable hardware fog when we draw this thing if applicable -rww
+	{//enable hardware fog when we draw this thing if applicable -rww
 		fog_t *fog = tr.world->fogs + mFogIndex;
 
 		qglFogf(GL_FOG_MODE, GL_EXP2);
@@ -100,24 +100,24 @@ void CQuickSpriteSystem::Flush(void)
 	//
 	// render the main pass
 	//
-	R_BindAnimatedImage( mTexBundle );
+	R_BindAnimatedImage(mTexBundle);
 	GL_State(mGLStateBits);
 
 	//
 	// set arrays and lock
 	//
-	qglTexCoordPointer( 2, GL_FLOAT, 0, mTextureCoords );
-	qglEnableClientState( GL_TEXTURE_COORD_ARRAY);
+	qglTexCoordPointer(2, GL_FLOAT, 0, mTextureCoords);
+	qglEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	qglEnableClientState( GL_COLOR_ARRAY);
-	qglColorPointer( 4, GL_UNSIGNED_BYTE, 0, mColors );
+	qglEnableClientState(GL_COLOR_ARRAY);
+	qglColorPointer(4, GL_UNSIGNED_BYTE, 0, mColors);
 
 	qglVertexPointer (3, GL_FLOAT, 16, mVerts);
 
-	if ( qglLockArraysEXT )
+	if (qglLockArraysEXT)
 	{
 		qglLockArraysEXT(0, mNextVert);
-		GLimp_LogComment( "glLockArraysEXT\n" );
+		GLimp_LogComment("glLockArraysEXT\n");
 	}
 
 	qglDrawArrays(GL_QUADS, 0, mNextVert);
@@ -134,16 +134,16 @@ void CQuickSpriteSystem::Flush(void)
 		//
 		// render the fog pass
 		//
-		GL_Bind( tr.fogImage );
-		GL_State( GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA | GLS_DEPTHFUNC_EQUAL );
+		GL_Bind(tr.fogImage);
+		GL_State(GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA | GLS_DEPTHFUNC_EQUAL);
 
 		//
 		// set arrays and lock
 		//
-		qglTexCoordPointer( 2, GL_FLOAT, 0, mFogTextureCoords);
-//		qglEnableClientState( GL_TEXTURE_COORD_ARRAY);	// Done above
+		qglTexCoordPointer(2, GL_FLOAT, 0, mFogTextureCoords);
+//		qglEnableClientState(GL_TEXTURE_COORD_ARRAY);	// Done above
 
-		qglDisableClientState( GL_COLOR_ARRAY );
+		qglDisableClientState(GL_COLOR_ARRAY);
 		qglColor4ubv((GLubyte *)&fog->colorInt);
 
 //		qglVertexPointer (3, GL_FLOAT, 16, mVerts);	// Done above
@@ -160,14 +160,14 @@ void CQuickSpriteSystem::Flush(void)
 	if (qglUnlockArraysEXT)
 	{
 		qglUnlockArraysEXT();
-		GLimp_LogComment( "glUnlockArraysEXT\n" );
+		GLimp_LogComment("glUnlockArraysEXT\n");
 	}
 
 	mNextVert=0;
 }
 
 
-void CQuickSpriteSystem::StartGroup(textureBundle_t *bundle, uint32_t glbits, int fogIndex )
+void CQuickSpriteSystem::StartGroup(textureBundle_t *bundle, uint32_t glbits, int fogIndex)
 {
 	mNextVert = 0;
 

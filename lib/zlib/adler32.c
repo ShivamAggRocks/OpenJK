@@ -27,23 +27,23 @@ local uLong adler32_combine_ OF((uLong adler1, uLong adler2, z_off64_t len2));
 /* note that this assumes BASE is 65521, where 65536 % 65521 == 15
    (thank you to John Reiser for pointing this out) */
 #  define CHOP(a) \
-    do { \
+    do {\
         unsigned long tmp = a >> 16; \
         a &= 0xffffUL; \
         a += (tmp << 4) - tmp; \
-    } while (0)
+   } while (0)
 #  define MOD28(a) \
-    do { \
+    do {\
         CHOP(a); \
         if (a >= BASE) a -= BASE; \
-    } while (0)
+   } while (0)
 #  define MOD(a) \
-    do { \
+    do {\
         CHOP(a); \
         MOD28(a); \
-    } while (0)
+   } while (0)
 #  define MOD63(a) \
-    do { /* this assumes a is not negative */ \
+    do {/* this assumes a is not negative */ \
         z_off64_t tmp = a >> 32; \
         a &= 0xffffffffL; \
         a += (tmp << 8) - (tmp << 5) + tmp; \
@@ -54,7 +54,7 @@ local uLong adler32_combine_ OF((uLong adler1, uLong adler2, z_off64_t len2));
         a &= 0xffffL; \
         a += (tmp << 4) - tmp; \
         if (a >= BASE) a -= BASE; \
-    } while (0)
+   } while (0)
 #else
 #  define MOD(a) a %= BASE
 #  define MOD28(a) a %= BASE
@@ -83,7 +83,7 @@ uLong ZEXPORT adler32(adler, buf, len)
         if (sum2 >= BASE)
             sum2 -= BASE;
         return adler | (sum2 << 16);
-    }
+   }
 
     /* initial Adler-32 value (deferred check for len == 1 speed) */
     if (buf == Z_NULL)
@@ -94,12 +94,12 @@ uLong ZEXPORT adler32(adler, buf, len)
         while (len--) {
             adler += *buf++;
             sum2 += adler;
-        }
+       }
         if (adler >= BASE)
             adler -= BASE;
         MOD28(sum2);            /* only added so many BASE's */
         return adler | (sum2 << 16);
-    }
+   }
 
     /* do length NMAX blocks -- requires just one modulo operation */
     while (len >= NMAX) {
@@ -108,25 +108,25 @@ uLong ZEXPORT adler32(adler, buf, len)
         do {
             DO16(buf);          /* 16 sums unrolled */
             buf += 16;
-        } while (--n);
+       } while (--n);
         MOD(adler);
         MOD(sum2);
-    }
+   }
 
     /* do remaining bytes (less than NMAX, still just one modulo) */
-    if (len) {                  /* avoid modulos if none remaining */
+    if (len) {                 /* avoid modulos if none remaining */
         while (len >= 16) {
             len -= 16;
             DO16(buf);
             buf += 16;
-        }
+       }
         while (len--) {
             adler += *buf++;
             sum2 += adler;
-        }
+       }
         MOD(adler);
         MOD(sum2);
-    }
+   }
 
     /* return recombined sums */
     return adler | (sum2 << 16);

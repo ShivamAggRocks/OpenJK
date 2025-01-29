@@ -59,30 +59,30 @@ extern cvar_t	*se_language;
 
 // available API calls...
 //
-void	SE_Init				( void );
-void	SE_ShutDown			( void );
+void	SE_Init				(void);
+void	SE_ShutDown			(void);
 void	SE_CheckForLanguageUpdates(void);
-int		SE_GetNumLanguages	( void );
-const char *SE_GetLanguageName	( int iLangIndex );	// eg "german"
-const char *SE_GetLanguageDir	( int iLangIndex );	// eg "strings/german"
-const char *SE_LoadLanguage		( const char *psLanguage, SE_BOOL bLoadDebug = SE_TRUE );
-void	SE_NewLanguage		( void );
+int		SE_GetNumLanguages	(void);
+const char *SE_GetLanguageName	(int iLangIndex);	// eg "german"
+const char *SE_GetLanguageDir	(int iLangIndex);	// eg "strings/german"
+const char *SE_LoadLanguage		(const char *psLanguage, SE_BOOL bLoadDebug = SE_TRUE);
+void	SE_NewLanguage		(void);
 //
 // for convenience, two ways of getting at the same data...
 //
-const char *SE_GetString		( const char *psPackageReference, const char *psStringReference);
-const char *SE_GetString		( const char *psPackageAndStringReference);
+const char *SE_GetString		(const char *psPackageReference, const char *psStringReference);
+const char *SE_GetString		(const char *psPackageAndStringReference);
 //
 // ditto...
 //
-int		SE_GetFlags			( const char *psPackageReference, const char *psStringReference );
-int		SE_GetFlags			( const char *psPackageAndStringReference );
+int		SE_GetFlags			(const char *psPackageReference, const char *psStringReference);
+int		SE_GetFlags			(const char *psPackageAndStringReference);
 //
 // general flag functions... (SEP_GetFlagMask() return should be used with SEP_GetFlags() return)
 //
-int		SE_GetNumFlags		( void );
-const char *SE_GetFlagName		( int iFlagIndex );
-int		SE_GetFlagMask		( const char *psFlagName );
+int		SE_GetNumFlags		(void);
+const char *SE_GetFlagName		(int iFlagIndex);
+int		SE_GetFlagMask		(const char *psFlagName);
 
 
 // note that so far the only place in the game that needs to know these is the font system so it can know how to

@@ -119,7 +119,7 @@ tbool genTangSpace(const SMikkTSpaceContext * pContext, const float fAngularThre
 // The most efficient transformation we can possibly do in the pixel shader is
 // achieved by using, directly, the "unnormalized" interpolated tangent, bitangent and vertex normal: vT, vB and vN.
 // pixel shader (fast transform out)
-// vNout = normalize( vNt.x * vT + vNt.y * vB + vNt.z * vN );
+// vNout = normalize(vNt.x * vT + vNt.y * vB + vNt.z * vN);
 // where vNt is the tangent space normal. The normal map sampler must likewise use the
 // interpolated and "unnormalized" tangent, bitangent and vertex normal to be compliant with the pixel shader.
 // sampler does (exact inverse of pixel shader):
@@ -127,7 +127,7 @@ tbool genTangSpace(const SMikkTSpaceContext * pContext, const float fAngularThre
 // float3 row1 = cross(vN, vT);
 // float3 row2 = cross(vT, vB);
 // float fSign = dot(vT, row0)<0 ? -1 : 1;
-// vNt = normalize( fSign * float3(dot(vNout,row0), dot(vNout,row1), dot(vNout,row2)) );
+// vNt = normalize(fSign * float3(dot(vNout,row0), dot(vNout,row1), dot(vNout,row2)));
 // where vNout is the sampled normal in some chosen 3D space.
 //
 // Should you choose to reconstruct the bitangent in the pixel shader instead

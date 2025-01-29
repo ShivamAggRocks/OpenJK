@@ -38,8 +38,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////////////////////
 // Externs & Fwd Decl.
 ////////////////////////////////////////////////////////////////////////////////////////
-extern void		G_SoundAtSpot( vec3_t org, int soundIndex, qboolean broadcast );
-extern void CG_DrawEdge( vec3_t start, vec3_t end, int type );
+extern void		G_SoundAtSpot(vec3_t org, int soundIndex, qboolean broadcast);
+extern void CG_DrawEdge(vec3_t start, vec3_t end, int type);
 
 class	CRailTrack;
 class	CRailLane;
@@ -422,8 +422,8 @@ public:
 		ent->s.pos.trDuration	= 0;
 		ent->s.pos.trTime		= 0;
 
-		VectorCopy( ent->pos1, ent->currentOrigin );
-		VectorCopy( ent->pos1, ent->s.pos.trBase );
+		VectorCopy(ent->pos1, ent->currentOrigin);
+		VectorCopy(ent->pos1, ent->s.pos.trBase);
 
 
 		gi.linkentity(ent);
@@ -650,14 +650,14 @@ void	Rail_Update()
 
 					// Is It Close Enough?
 					//---------------------
-					if ((( mover.mLane || !mover.mCenter) &&								// Not Center Track
+					if (((mover.mLane || !mover.mCenter) &&								// Not Center Track
 						 (playerToMoverDistance<WOOSH_ALL_RANGE) && 						//  And Close Enough
 						 (DotProduct(playerToMover, mover.mTrack->mDirection.v)>-0.45f))	//  And On The Side
 						||																	//OR
 						((!mover.mLane &&  mover.mCenter) &&								// Is Center Track
 						  (playerToMoverDistance<WOOSH_SUPPORT_RANGE ||						//  And Close Enough for Support
 						  (playerToMoverDistance<WOOSH_TUNNEL_RANGE && mover.mRows>10))		//   Or Close Enough For Tunnel
-						 ))
+						))
 					{
 						mover.mSoundPlayed = true;
 						wooshSound = 0;
@@ -882,7 +882,7 @@ void	CRailTrack::Update()
 				{
 					StartPos[mWAxis] = mGridCenter[mWAxis];
 					float	deltaOffset = mGridCenter[mWAxis] - mover->mOriginOffset[mWAxis];
-					if (deltaOffset<(mGridCellSize*0.5f) )
+					if (deltaOffset<(mGridCellSize*0.5f))
 					{
 						StartPos[mWAxis] -= deltaOffset;
 					}

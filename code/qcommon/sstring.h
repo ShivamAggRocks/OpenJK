@@ -61,13 +61,13 @@ public:
 		//strcpy(mStorage.data,s);
 		Q_strncpyz(mStorage.data,s,sizeof(mStorage.data));
 	}
-	sstring( const gsl::cstring_span& v )
+	sstring(const gsl::cstring_span& v)
 	{
-		if( v.size() + 1 > sizeof( mStorage.data ) )
+		if(v.size() + 1 > sizeof(mStorage.data))
 		{
-			Com_Error( ERR_FATAL, "String dest buffer too small (%d) to hold string of length %d", sizeof( mStorage.data ), v.size() );
+			Com_Error(ERR_FATAL, "String dest buffer too small (%d) to hold string of length %d", sizeof(mStorage.data), v.size());
 		}
-		std::copy( v.begin(), v.end(), mStorage.data );
+		std::copy(v.begin(), v.end(), mStorage.data);
 		mStorage.data[ v.size() ] = '\0';
 	}
 	sstring()

@@ -48,8 +48,8 @@ static char cgParseObjectives[MAX_SIEGE_INFO_SIZE];
 
 extern void CG_LoadCISounds(clientInfo_t *ci, qboolean modelloaded); //cg_players.c
 
-void CG_DrawSiegeMessage( const char *str, int objectiveScreen );
-void CG_DrawSiegeMessageNonMenu( const char *str );
+void CG_DrawSiegeMessage(const char *str, int objectiveScreen);
+void CG_DrawSiegeMessageNonMenu(const char *str);
 void CG_SiegeBriefingDisplay(int team, int dontshow);
 
 void CG_PrecacheSiegeObjectiveAssetsForTeam(int myTeam)
@@ -60,7 +60,7 @@ void CG_PrecacheSiegeObjectiveAssetsForTeam(int myTeam)
 
 	if (!siege_valid)
 	{
-		trap->Error( ERR_DROP, "Siege data does not exist on client!\n");
+		trap->Error(ERR_DROP, "Siege data does not exist on client!\n");
 		return;
 	}
 
@@ -77,7 +77,7 @@ void CG_PrecacheSiegeObjectiveAssetsForTeam(int myTeam)
 	{
 		int i = 1;
 		while (i < 32)
-		{ //eh, just try 32 I guess
+		{//eh, just try 32 I guess
 			Com_sprintf(objstr, sizeof(objstr), "Objective%i", i);
 
 			if (BG_SiegeGetValueGroup(cgParseObjectives, objstr, foundobjective))
@@ -110,7 +110,7 @@ void CG_PrecacheSiegeObjectiveAssetsForTeam(int myTeam)
 				}
 			}
 			else
-			{ //no more
+			{//no more
 				break;
 			}
 			i++;
@@ -126,7 +126,7 @@ void CG_PrecachePlayersForSiegeTeam(int team)
 	stm = BG_SiegeFindThemeForTeam(team);
 
 	if (!stm)
-	{ //invalid team/no theme for team?
+	{//invalid team/no theme for team?
 		return;
 	}
 
@@ -188,11 +188,11 @@ void CG_InitSiegeMode(void)
 
 	len = trap->FS_Open(levelname, &f, FS_READ);
 
-	if ( !f ) {
+	if (!f) {
 		goto failure;
 	}
-	if ( len >= MAX_SIEGE_INFO_SIZE ) {
-		trap->FS_Close( f );
+	if (len >= MAX_SIEGE_INFO_SIZE) {
+		trap->FS_Close(f);
 		goto failure;
 	}
 
@@ -217,7 +217,7 @@ void CG_InitSiegeMode(void)
 		}
 
 		if (team1[0] == '@')
-		{ //it's a damn stringed reference.
+		{//it's a damn stringed reference.
 			char b[256];
 			trap->SE_GetStringTextString(team1+1, b, 256);
 			trap->Cvar_Set("cg_siegeTeam1Name", b);
@@ -238,7 +238,7 @@ void CG_InitSiegeMode(void)
 		}
 
 		if (team2[0] == '@')
-		{ //it's a damn stringed reference.
+		{//it's a damn stringed reference.
 			char b[256];
 			trap->SE_GetStringTextString(team2+1, b, 256);
 			trap->Cvar_Set("cg_siegeTeam2Name", b);
@@ -250,20 +250,20 @@ void CG_InitSiegeMode(void)
 	}
 	else
 	{
-		trap->Error( ERR_DROP, "Siege teams not defined");
+		trap->Error(ERR_DROP, "Siege teams not defined");
 	}
 
 	if (BG_SiegeGetValueGroup(siege_info, team1, teamInfo))
 	{
 		if (BG_SiegeGetPairedValue(teamInfo, "TeamIcon", teamIcon))
 		{
-			trap->Cvar_Set( "team1_icon", teamIcon);
+			trap->Cvar_Set("team1_icon", teamIcon);
 		}
 
 		if (BG_SiegeGetPairedValue(teamInfo, "Timed", btime))
 		{
 			team1Timed = atoi(btime)*1000;
-			CG_SetSiegeTimerCvar ( team1Timed );
+			CG_SetSiegeTimerCvar (team1Timed);
 		}
 		else
 		{
@@ -272,7 +272,7 @@ void CG_InitSiegeMode(void)
 	}
 	else
 	{
-		trap->Error( ERR_DROP, "No team entry for '%s'\n", team1);
+		trap->Error(ERR_DROP, "No team entry for '%s'\n", team1);
 	}
 
 	if (BG_SiegeGetPairedValue(siege_info, "mapgraphic", teamInfo))
@@ -297,13 +297,13 @@ void CG_InitSiegeMode(void)
 	{
 		if (BG_SiegeGetPairedValue(teamInfo, "TeamIcon", teamIcon))
 		{
-			trap->Cvar_Set( "team2_icon", teamIcon);
+			trap->Cvar_Set("team2_icon", teamIcon);
 		}
 
 		if (BG_SiegeGetPairedValue(teamInfo, "Timed", btime))
 		{
 			team2Timed = atoi(btime)*1000;
-			CG_SetSiegeTimerCvar ( team2Timed );
+			CG_SetSiegeTimerCvar (team2Timed);
 		}
 		else
 		{
@@ -312,23 +312,23 @@ void CG_InitSiegeMode(void)
 	}
 	else
 	{
-		trap->Error( ERR_DROP, "No team entry for '%s'\n", team2);
+		trap->Error(ERR_DROP, "No team entry for '%s'\n", team2);
 	}
 
 	//Load the player class types
 	BG_SiegeLoadClasses(NULL);
 
 	if (!bgNumSiegeClasses)
-	{ //We didn't find any?!
-		trap->Error( ERR_DROP, "Couldn't find any player classes for Siege");
+	{//We didn't find any?!
+		trap->Error(ERR_DROP, "Couldn't find any player classes for Siege");
 	}
 
 	//Now load the teams since we have class data.
 	BG_SiegeLoadTeams();
 
 	if (!bgNumSiegeTeams)
-	{ //React same as with classes.
-		trap->Error( ERR_DROP, "Couldn't find any player teams for Siege");
+	{//React same as with classes.
+		trap->Error(ERR_DROP, "Couldn't find any player teams for Siege");
 	}
 
 	//Get and set the team themes for each team. This will control which classes can be
@@ -394,11 +394,11 @@ void CG_InitSiegeMode(void)
 			cl = sTeam->classes[j];
 
 			if (cl->forcedModel[0])
-			{ //This class has a forced model, so precache it.
+			{//This class has a forced model, so precache it.
 				trap->R_RegisterModel(va("models/players/%s/model.glm", cl->forcedModel));
 
 				if (cl->forcedSkin[0])
-				{ //also has a forced skin, precache it.
+				{//also has a forced skin, precache it.
 					char *useSkinName;
 
 					if (strchr(cl->forcedSkin, '|'))
@@ -452,9 +452,9 @@ static char QINLINE *CG_SiegeObjectiveBuffer(int team, int objective)
 	}
 
 	if (BG_SiegeGetValueGroup(siege_info, teamstr, cgParseObjectives))
-	{ //found the team group
+	{//found the team group
 		if (BG_SiegeGetValueGroup(cgParseObjectives, va("Objective%i", objective), buf))
-		{ //found the objective group
+		{//found the objective group
 			return buf;
 		}
 	}
@@ -478,7 +478,7 @@ void CG_ParseSiegeObjectiveStatus(const char *str)
 	while (str[i])
 	{
 		if (str[i] == '|')
-		{ //switch over to team2, this is the next section
+		{//switch over to team2, this is the next section
             team = SIEGETEAM_TEAM2;
 			objectiveNum = 0;
 		}
@@ -489,17 +489,17 @@ void CG_ParseSiegeObjectiveStatus(const char *str)
 
 			cvarName = va("team%i_objective%i", team, objectiveNum);
 			if (str[i] == '1')
-			{ //it's completed
+			{//it's completed
 				trap->Cvar_Set(cvarName, "1");
 			}
 			else
-			{ //otherwise assume it is not
+			{//otherwise assume it is not
 				trap->Cvar_Set(cvarName, "0");
 			}
 
 			s = CG_SiegeObjectiveBuffer(team, objectiveNum);
 			if (s && s[0])
-			{ //now set the description and graphic cvars to by read by the menu
+			{//now set the description and graphic cvars to by read by the menu
 				char buffer[8192];
 
 				cvarName = va("team%i_objective%i_longdesc", team, objectiveNum);
@@ -567,7 +567,7 @@ void CG_ParseSiegeObjectiveStatus(const char *str)
 	}
 
 	if (cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-	{ //update menu cvars
+	{//update menu cvars
 		CG_SiegeBriefingDisplay(cg.predictedPlayerState.persistant[PERS_TEAM], 1);
 	}
 }
@@ -583,12 +583,12 @@ void CG_SiegeRoundOver(centity_t *ent, int won)
 
 	if (!siege_valid)
 	{
-		trap->Error( ERR_DROP, "ERROR: Siege data does not exist on client!\n");
+		trap->Error(ERR_DROP, "ERROR: Siege data does not exist on client!\n");
 		return;
 	}
 
 	if (cg.snap)
-	{ //this should always be true, if it isn't though use the predicted ps as a fallback
+	{//this should always be true, if it isn't though use the predicted ps as a fallback
 		ps = &cg.snap->ps;
 	}
 	else
@@ -688,16 +688,16 @@ void CG_SiegeGetObjectiveDescription(int team, int objective, char *buffer)
 	}
 
 	if (BG_SiegeGetValueGroup(siege_info, teamstr, cgParseObjectives))
-	{ //found the team group
+	{//found the team group
 		if (BG_SiegeGetValueGroup(cgParseObjectives, va("Objective%i", objective), objectiveStr))
-		{ //found the objective group
+		{//found the objective group
 			//Parse the name right into the buffer.
 			BG_SiegeGetPairedValue(objectiveStr, "goalname", buffer);
 		}
 	}
 }
 
-int CG_SiegeGetObjectiveFinal(int team, int objective )
+int CG_SiegeGetObjectiveFinal(int team, int objective)
 {
 	char finalStr[64];
 	char teamstr[1024];
@@ -713,12 +713,12 @@ int CG_SiegeGetObjectiveFinal(int team, int objective )
 	}
 
 	if (BG_SiegeGetValueGroup(siege_info, teamstr, cgParseObjectives))
-	{ //found the team group
+	{//found the team group
 		if (BG_SiegeGetValueGroup(cgParseObjectives, va("Objective%i", objective), objectiveStr))
-		{ //found the objective group
+		{//found the objective group
 			//Parse the name right into the buffer.
 			BG_SiegeGetPairedValue(objectiveStr, "final", finalStr);
-			return (atoi( finalStr ));
+			return (atoi(finalStr));
 		}
 	}
 	return 0;
@@ -754,14 +754,14 @@ void CG_SiegeBriefingDisplay(int team, int dontshow)
 	}
 
 	if (useTeam != SIEGETEAM_TEAM1 && useTeam != SIEGETEAM_TEAM2)
-	{ //This shouldn't be happening. But just fall back to team 2 anyway.
+	{//This shouldn't be happening. But just fall back to team 2 anyway.
 		useTeam = SIEGETEAM_TEAM2;
 	}
 
 	trap->Cvar_Set(va("siege_primobj_inuse"), "0");
 
 	while (i < 16)
-	{ //do up to 16 objectives I suppose
+	{//do up to 16 objectives I suppose
 		//Get the value for this objective on this team
 		//Now set the cvar for the menu to display.
 
@@ -831,8 +831,8 @@ void CG_SiegeBriefingDisplay(int team, int dontshow)
 		CG_SiegeGetObjectiveDescription(useTeam, i, objectiveDesc);
 
 		if (objectiveDesc[0])
-		{ //found a valid objective description
-			if ( primary )
+		{//found a valid objective description
+			if (primary)
 			{
 				trap->Cvar_Set(va("siege_primobj_desc"), objectiveDesc);
 				//this one is marked not in use because it gets primobj
@@ -851,7 +851,7 @@ void CG_SiegeBriefingDisplay(int team, int dontshow)
 			}
 		}
 		else
-		{ //didn't find one, so set the "inuse" cvar to 0 for the objective and mark it non-complete.
+		{//didn't find one, so set the "inuse" cvar to 0 for the objective and mark it non-complete.
 			trap->Cvar_Set(va("siege_objective%i_inuse", i), "0");
 			trap->Cvar_Set(va("siege_objective%i", i), "0");
 			trap->Cvar_Set(va("team%i_objective%i_inuse", useTeam, i), "0");
@@ -895,12 +895,12 @@ void CG_SiegeObjectiveCompleted(centity_t *ent, int won, int objectivenum)
 
 	if (!siege_valid)
 	{
-		trap->Error( ERR_DROP, "Siege data does not exist on client!\n");
+		trap->Error(ERR_DROP, "Siege data does not exist on client!\n");
 		return;
 	}
 
 	if (cg.snap)
-	{ //this should always be true, if it isn't though use the predicted ps as a fallback
+	{//this should always be true, if it isn't though use the predicted ps as a fallback
 		ps = &cg.snap->ps;
 	}
 	else
@@ -1048,18 +1048,18 @@ void CG_ParseSiegeExtendedDataEntry(const char *conStr)
 	cent = &cg_entities[clNum];
 
 	maxAmmo = ammoData[weaponData[cent->currentState.weapon].ammoIndex].max;
-	if ( (cent->currentState.eFlags & EF_DOUBLE_AMMO) )
+	if ((cent->currentState.eFlags & EF_DOUBLE_AMMO))
 	{
 		maxAmmo *= 2.0f;
 	}
-	if (ammo >= 0 && ammo <= maxAmmo )
-	{ //assure the weapon number is valid and not over max
+	if (ammo >= 0 && ammo <= maxAmmo)
+	{//assure the weapon number is valid and not over max
 		//keep the weapon so if it changes before our next ext data update we'll know
 		//that the ammo is not applicable.
 		cg_siegeExtendedData[clNum].weapon = cent->currentState.weapon;
 	}
 	else
-	{ //not valid? Oh well, just invalidate the weapon too then so we don't display ammo
+	{//not valid? Oh well, just invalidate the weapon too then so we don't display ammo
 		cg_siegeExtendedData[clNum].weapon = -1;
 	}
 
@@ -1085,7 +1085,7 @@ void CG_ParseSiegeExtendedData(void)
 	}
 }
 
-void CG_SetSiegeTimerCvar ( int msec )
+void CG_SetSiegeTimerCvar (int msec)
 {
 	int seconds;
 	int mins;
@@ -1097,5 +1097,5 @@ void CG_SetSiegeTimerCvar ( int msec )
 	tens = seconds / 10;
 	seconds -= tens * 10;
 
-	trap->Cvar_Set("ui_siegeTimer", va( "%i:%i%i", mins, tens, seconds ) );
+	trap->Cvar_Set("ui_siegeTimer", va("%i:%i%i", mins, tens, seconds));
 }

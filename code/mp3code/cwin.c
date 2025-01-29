@@ -59,7 +59,7 @@ void window(float *vbuf, int vb_ptr, short *pcm)
 	 si = (si + 64) & 511;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx = (bx + 64) & 511;
-      }
+     }
       si++;
       bx--;
       tmp = (long) sum;
@@ -68,14 +68,14 @@ void window(float *vbuf, int vb_ptr, short *pcm)
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = (short)tmp;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx = (bx + 64) & 511;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -95,14 +95,14 @@ void window(float *vbuf, int vb_ptr, short *pcm)
 	 si = (si + 64) & 511;
 	 sum += (*coef--) * vbuf[bx];
 	 bx = (bx + 64) & 511;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = (short)tmp;
-   }
+  }
 }
 
 
@@ -130,7 +130,7 @@ void window_dual(float *vbuf, int vb_ptr, short *pcm)
 	 si = (si + 64) & 511;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx = (bx + 64) & 511;
-      }
+     }
       si++;
       bx--;
       tmp = (long) sum;
@@ -140,14 +140,14 @@ void window_dual(float *vbuf, int vb_ptr, short *pcm)
 	 tmp = -32768;
       *pcm = (short)tmp;
       pcm += 2;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx = (bx + 64) & 511;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -168,7 +168,7 @@ void window_dual(float *vbuf, int vb_ptr, short *pcm)
 	 si = (si + 64) & 511;
 	 sum += (*coef--) * vbuf[bx];
 	 bx = (bx + 64) & 511;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
@@ -176,7 +176,7 @@ void window_dual(float *vbuf, int vb_ptr, short *pcm)
 	 tmp = -32768;
       *pcm = (short)tmp;
       pcm += 2;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 /*------------------- 16 pt window ------------------------------*/
@@ -202,7 +202,7 @@ void window16(float *vbuf, int vb_ptr, short *pcm)
 	 si += 32;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx += 32;
-      }
+     }
       si++;
       bx--;
       coef += 16;
@@ -212,14 +212,14 @@ void window16(float *vbuf, int vb_ptr, short *pcm)
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = (short)tmp;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx += 32;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -240,14 +240,14 @@ void window16(float *vbuf, int vb_ptr, short *pcm)
 	 si += 32;
 	 sum += (*coef--) * vbuf[bx];
 	 bx += 32;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = (short)tmp;
-   }
+  }
 }
 /*--------------- 16 pt dual window (interleaved output) -----------------*/
 void window16_dual(float *vbuf, int vb_ptr, short *pcm)
@@ -272,7 +272,7 @@ void window16_dual(float *vbuf, int vb_ptr, short *pcm)
 	 si += 32;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx += 32;
-      }
+     }
       si++;
       bx--;
       coef += 16;
@@ -283,14 +283,14 @@ void window16_dual(float *vbuf, int vb_ptr, short *pcm)
 	 tmp = -32768;
       *pcm = (short)tmp;
       pcm += 2;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx += 32;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -312,7 +312,7 @@ void window16_dual(float *vbuf, int vb_ptr, short *pcm)
 	 si += 32;
 	 sum += (*coef--) * vbuf[bx];
 	 bx += 32;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
@@ -320,7 +320,7 @@ void window16_dual(float *vbuf, int vb_ptr, short *pcm)
 	 tmp = -32768;
       *pcm = (short)tmp;
       pcm += 2;
-   }
+  }
 }
 /*------------------- 8 pt window ------------------------------*/
 void window8(float *vbuf, int vb_ptr, short *pcm)
@@ -345,7 +345,7 @@ void window8(float *vbuf, int vb_ptr, short *pcm)
 	 si = (si + 16) & 127;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx = (bx + 16) & 127;
-      }
+     }
       si++;
       bx--;
       coef += 48;
@@ -355,14 +355,14 @@ void window8(float *vbuf, int vb_ptr, short *pcm)
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = (short)tmp;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx = (bx + 16) & 127;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -383,14 +383,14 @@ void window8(float *vbuf, int vb_ptr, short *pcm)
 	 si = (si + 16) & 127;
 	 sum += (*coef--) * vbuf[bx];
 	 bx = (bx + 16) & 127;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
       else if (tmp < -32768)
 	 tmp = -32768;
       *pcm++ = (short)tmp;
-   }
+  }
 }
 /*--------------- 8 pt dual window (interleaved output) -----------------*/
 void window8_dual(float *vbuf, int vb_ptr, short *pcm)
@@ -415,7 +415,7 @@ void window8_dual(float *vbuf, int vb_ptr, short *pcm)
 	 si = (si + 16) & 127;
 	 sum -= (*coef++) * vbuf[bx];
 	 bx = (bx + 16) & 127;
-      }
+     }
       si++;
       bx--;
       coef += 48;
@@ -426,14 +426,14 @@ void window8_dual(float *vbuf, int vb_ptr, short *pcm)
 	 tmp = -32768;
       *pcm = (short)tmp;
       pcm += 2;
-   }
+  }
 /*--  special case --*/
    sum = 0.0F;
    for (j = 0; j < 8; j++)
    {
       sum += (*coef++) * vbuf[bx];
       bx = (bx + 16) & 127;
-   }
+  }
    tmp = (long) sum;
    if (tmp > 32767)
       tmp = 32767;
@@ -455,7 +455,7 @@ void window8_dual(float *vbuf, int vb_ptr, short *pcm)
 	 si = (si + 16) & 127;
 	 sum += (*coef--) * vbuf[bx];
 	 bx = (bx + 16) & 127;
-      }
+     }
       tmp = (long) sum;
       if (tmp > 32767)
 	 tmp = 32767;
@@ -463,7 +463,7 @@ void window8_dual(float *vbuf, int vb_ptr, short *pcm)
 	 tmp = -32768;
       *pcm = (short)tmp;
       pcm += 2;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 #endif	// #ifdef COMPILE_ME

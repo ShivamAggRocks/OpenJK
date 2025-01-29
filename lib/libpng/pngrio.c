@@ -110,7 +110,7 @@ png_set_read_fn(png_structrp png_ptr, png_voidp io_ptr,
       png_warning(png_ptr,
           "Can't set both read_data_fn and write_data_fn in the"
           " same structure");
-   }
+  }
 #endif
 
 #ifdef PNG_WRITE_FLUSH_SUPPORTED

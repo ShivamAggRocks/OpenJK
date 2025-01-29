@@ -102,8 +102,8 @@ jpeg_copy_critical_parameters (j_decompress_ptr srcinfo,
 	      srcinfo->quant_tbl_ptrs[tblno]->quantval,
 	      SIZEOF((*qtblptr)->quantval));
       (*qtblptr)->sent_table = FALSE;
-    }
-  }
+   }
+ }
   /* Copy the source's per-component info.
    * Note we assume jpeg_set_defaults has allocated the dest comp_info array.
    */
@@ -131,12 +131,12 @@ jpeg_copy_critical_parameters (j_decompress_ptr srcinfo,
       for (coefi = 0; coefi < DCTSIZE2; coefi++) {
 	if (c_quant->quantval[coefi] != slot_quant->quantval[coefi])
 	  ERREXIT1(dstinfo, JERR_MISMATCHED_QUANT_TABLE, tblno);
-      }
-    }
+     }
+   }
     /* Note: we do not copy the source's entropy table assignments;
      * instead we rely on jpeg_set_colorspace to have made a suitable choice.
      */
-  }
+ }
   /* Also copy JFIF version and resolution information, if available.
    * Strictly speaking this isn't "critical" info, but it's nearly
    * always appropriate to copy it if available.  In particular,
@@ -149,11 +149,11 @@ jpeg_copy_critical_parameters (j_decompress_ptr srcinfo,
 	srcinfo->JFIF_major_version == 2) {
       dstinfo->JFIF_major_version = srcinfo->JFIF_major_version;
       dstinfo->JFIF_minor_version = srcinfo->JFIF_minor_version;
-    }
+   }
     dstinfo->density_unit = srcinfo->density_unit;
     dstinfo->X_density = srcinfo->X_density;
     dstinfo->Y_density = srcinfo->Y_density;
-  }
+ }
 }
 
 
@@ -174,7 +174,7 @@ transencode_master_selection (j_compress_ptr cinfo,
     jinit_arith_encoder(cinfo);
   else {
     jinit_huff_encoder(cinfo);
-  }
+ }
 
   /* We need a special coefficient buffer controller. */
   transencode_coef_controller(cinfo, coef_arrays);
@@ -232,12 +232,12 @@ start_iMCU_row (j_compress_ptr cinfo)
    */
   if (cinfo->comps_in_scan > 1) {
     coef->MCU_rows_per_iMCU_row = 1;
-  } else {
+ } else {
     if (coef->iMCU_row_num < (cinfo->total_iMCU_rows-1))
       coef->MCU_rows_per_iMCU_row = cinfo->cur_comp_info[0]->v_samp_factor;
     else
       coef->MCU_rows_per_iMCU_row = cinfo->cur_comp_info[0]->last_row_height;
-  }
+ }
 
   coef->mcu_ctr = 0;
   coef->MCU_vert_offset = 0;
@@ -292,7 +292,7 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
       ((j_common_ptr) cinfo, coef->whole_image[compptr->component_index],
        coef->iMCU_row_num * compptr->v_samp_factor,
        (JDIMENSION) compptr->v_samp_factor, FALSE);
-  }
+ }
 
   /* Loop to process one whole iMCU row */
   for (yoffset = coef->MCU_vert_offset; yoffset < coef->MCU_rows_per_iMCU_row;
@@ -313,10 +313,10 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
 	    buffer_ptr = buffer[ci][yindex+yoffset] + start_col;
 	    for (xindex = 0; xindex < blockcnt; xindex++)
 	      MCU_buffer[blkn++] = buffer_ptr++;
-	  } else {
+	 } else {
 	    /* At bottom of image, need a whole row of dummy blocks */
 	    xindex = 0;
-	  }
+	 }
 	  /* Fill in any dummy blocks needed in this row.
 	   * Dummy blocks are filled in the same way as in jccoefct.c:
 	   * all zeroes in the AC entries, DC entries equal to previous
@@ -327,20 +327,20 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
 	    MCU_buffer[blkn] = coef->dummy_buffer[blkn];
 	    MCU_buffer[blkn][0][0] = MCU_buffer[blkn-1][0][0];
 	    blkn++;
-	  }
+	 }
 	}
-      }
+     }
       /* Try to write the MCU. */
       if (! (*cinfo->entropy->encode_mcu) (cinfo, MCU_buffer)) {
 	/* Suspension forced; update state counters and exit */
 	coef->MCU_vert_offset = yoffset;
 	coef->mcu_ctr = MCU_col_num;
 	return FALSE;
-      }
-    }
+     }
+   }
     /* Completed an MCU row, but perhaps not an iMCU row */
     coef->mcu_ctr = 0;
-  }
+ }
   /* Completed the iMCU row, advance counters for next one */
   coef->iMCU_row_num++;
   start_iMCU_row(cinfo);
@@ -381,5 +381,5 @@ transencode_coef_controller (j_compress_ptr cinfo,
   FMEMZERO((void FAR *) buffer, C_MAX_BLOCKS_IN_MCU * SIZEOF(JBLOCK));
   for (i = 0; i < C_MAX_BLOCKS_IN_MCU; i++) {
     coef->dummy_buffer[i] = buffer + i;
-  }
+ }
 }

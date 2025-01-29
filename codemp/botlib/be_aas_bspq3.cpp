@@ -437,7 +437,7 @@ void AAS_ParseBSPEntities(void)
 		} //end while
 		if (strcmp(token.string, "}"))
 		{
-			ScriptError(script, "missing }");
+			ScriptError(script, "missing}");
 			AAS_FreeBSPEntities();
 			FreeScript(script);
 			return;
@@ -470,7 +470,7 @@ void AAS_DumpBSPData(void)
 	bspworld.entdatasize = 0;
 	//
 	bspworld.loaded = qfalse;
-	Com_Memset( &bspworld, 0, sizeof(bspworld) );
+	Com_Memset(&bspworld, 0, sizeof(bspworld));
 } //end of the function AAS_DumpBSPData
 //===========================================================================
 // load a .bsp file

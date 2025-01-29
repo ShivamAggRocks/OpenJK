@@ -298,75 +298,75 @@ typedef struct vehicleInfo_s {
 	// inherited from, only contained and reimplemented (through an object and a setup function respectively)). -AReis
 
 	// Makes sure that the vehicle is properly animated.
-	void (*AnimateVehicle)( Vehicle_t *pVeh );
+	void (*AnimateVehicle)(Vehicle_t *pVeh);
 
 	// Makes sure that the rider's in this vehicle are properly animated.
-	void (*AnimateRiders)( Vehicle_t *pVeh );
+	void (*AnimateRiders)(Vehicle_t *pVeh);
 
 	// Determine whether this entity is able to board this vehicle or not.
-	qboolean (*ValidateBoard)( Vehicle_t *pVeh, bgEntity_t *pEnt );
+	qboolean (*ValidateBoard)(Vehicle_t *pVeh, bgEntity_t *pEnt);
 
 	// Set the parent entity of this Vehicle NPC.
-	void (*SetParent)( Vehicle_t *pVeh, bgEntity_t *pParentEntity );
+	void (*SetParent)(Vehicle_t *pVeh, bgEntity_t *pParentEntity);
 
 	// Add a pilot to the vehicle.
-	void (*SetPilot)( Vehicle_t *pVeh, bgEntity_t *pPilot );
+	void (*SetPilot)(Vehicle_t *pVeh, bgEntity_t *pPilot);
 
 	// Add a passenger to the vehicle (false if we're full).
-	qboolean (*AddPassenger)( Vehicle_t *pVeh );
+	qboolean (*AddPassenger)(Vehicle_t *pVeh);
 
 	// Animate the vehicle and it's riders.
-	void (*Animate)( Vehicle_t *pVeh );
+	void (*Animate)(Vehicle_t *pVeh);
 
 	// Board this Vehicle (get on). The first entity to board an empty vehicle becomes the Pilot.
-	qboolean (*Board)( Vehicle_t *pVeh, bgEntity_t *pEnt );
+	qboolean (*Board)(Vehicle_t *pVeh, bgEntity_t *pEnt);
 
 	// Eject an entity from the vehicle.
-	qboolean (*Eject)( Vehicle_t *pVeh, bgEntity_t *pEnt, qboolean forceEject );
+	qboolean (*Eject)(Vehicle_t *pVeh, bgEntity_t *pEnt, qboolean forceEject);
 
 	// Eject all the inhabitants of this vehicle.
-	qboolean (*EjectAll)( Vehicle_t *pVeh );
+	qboolean (*EjectAll)(Vehicle_t *pVeh);
 
 	// Start a delay until the vehicle dies.
-	void (*StartDeathDelay)( Vehicle_t *pVeh, int iDelayTime );
+	void (*StartDeathDelay)(Vehicle_t *pVeh, int iDelayTime);
 
 	// Update death sequence.
-	void (*DeathUpdate)( Vehicle_t *pVeh );
+	void (*DeathUpdate)(Vehicle_t *pVeh);
 
 	// Register all the assets used by this vehicle.
-	void (*RegisterAssets)( Vehicle_t *pVeh );
+	void (*RegisterAssets)(Vehicle_t *pVeh);
 
 	// Initialize the vehicle (should be called by Spawn?).
-	qboolean (*Initialize)( Vehicle_t *pVeh );
+	qboolean (*Initialize)(Vehicle_t *pVeh);
 
 	// Like a think or move command, this updates various vehicle properties.
-	qboolean (*Update)( Vehicle_t *pVeh, const usercmd_t *pUcmd );
+	qboolean (*Update)(Vehicle_t *pVeh, const usercmd_t *pUcmd);
 
 	// Update the properties of a Rider (that may reflect what happens to the vehicle).
 	//
 	//	[return]		bool			True if still in vehicle, false if otherwise.
-	qboolean (*UpdateRider)( Vehicle_t *pVeh, bgEntity_t *pRider, usercmd_t *pUcmd );
+	qboolean (*UpdateRider)(Vehicle_t *pVeh, bgEntity_t *pRider, usercmd_t *pUcmd);
 
 	// ProcessMoveCommands the Vehicle.
-	void (*ProcessMoveCommands)( Vehicle_t *pVeh );
+	void (*ProcessMoveCommands)(Vehicle_t *pVeh);
 
 	// ProcessOrientCommands the Vehicle.
-	void (*ProcessOrientCommands)( Vehicle_t *pVeh );
+	void (*ProcessOrientCommands)(Vehicle_t *pVeh);
 
 	// Attachs all the riders of this vehicle to their appropriate position/tag (*driver, *pass1, *pass2, whatever...).
-	void (*AttachRiders)( Vehicle_t *pVeh );
+	void (*AttachRiders)(Vehicle_t *pVeh);
 
 	// Make someone invisible and un-collidable.
-	void (*Ghost)( Vehicle_t *pVeh, bgEntity_t *pEnt );
+	void (*Ghost)(Vehicle_t *pVeh, bgEntity_t *pEnt);
 
 	// Make someone visible and collidable.
-	void (*UnGhost)( Vehicle_t *pVeh, bgEntity_t *pEnt );
+	void (*UnGhost)(Vehicle_t *pVeh, bgEntity_t *pEnt);
 
 	// Get the pilot of this vehicle.
-	const bgEntity_t *(*GetPilot)( Vehicle_t *pVeh );
+	const bgEntity_t *(*GetPilot)(Vehicle_t *pVeh);
 
 	// Whether this vehicle is currently inhabited (by anyone) or not.
-	qboolean (*Inhabited)( Vehicle_t *pVeh );
+	qboolean (*Inhabited)(Vehicle_t *pVeh);
 } vehicleInfo_t;
 
 
@@ -635,4 +635,4 @@ typedef struct Vehicle_s
 	} Vehicle_t;
 #endif
 
-extern int BG_VehicleGetIndex( const char *vehicleName );
+extern int BG_VehicleGetIndex(const char *vehicleName);

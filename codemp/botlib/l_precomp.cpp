@@ -581,7 +581,7 @@ void PC_AddDefineToHash(define_t *define, define_t **definehash)
 	int hash;
 
 
-	if ( addGlobalDefine )
+	if (addGlobalDefine)
 	{
 		definehash = globaldefines;
 		define->flags |= DEFINE_GLOBAL;
@@ -591,7 +591,7 @@ void PC_AddDefineToHash(define_t *define, define_t **definehash)
 	define->hashnext = definehash[hash];
 	definehash[hash] = define;
 
-	if ( addGlobalDefine )
+	if (addGlobalDefine)
 	{
 		define->globalnext = define->hashnext;
 	}
@@ -691,13 +691,13 @@ void PC_AddBuiltinDefines(source_t *source)
 	{
 		char *string;
 		int mBuiltin;
-	} builtin[] = { // bk001204 - brackets
-		{ "__LINE__",	BUILTIN_LINE },
-		{ "__FILE__",	BUILTIN_FILE },
-		{ "__DATE__",	BUILTIN_DATE },
-		{ "__TIME__",	BUILTIN_TIME },
-//		{ "__STDC__", BUILTIN_STDC },
-		{ NULL, 0 }
+	} builtin[] = {// bk001204 - brackets
+		{"__LINE__",	BUILTIN_LINE},
+		{"__FILE__",	BUILTIN_FILE},
+		{"__DATE__",	BUILTIN_DATE},
+		{"__TIME__",	BUILTIN_TIME},
+//		{"__STDC__", BUILTIN_STDC},
+		{NULL, 0}
 	};
 
 	for (i = 0; builtin[i].string; i++)
@@ -891,7 +891,7 @@ int PC_ExpandDefine(source_t *source, token_t *deftoken, define_t *define,
 		} //end else
 	} //end for
 	//check for the merging operator
-	for (t = first; t; )
+	for (t = first; t;)
 	{
 		if (t->next)
 		{
@@ -1161,7 +1161,7 @@ int PC_Directive_undef(source_t *source)
 				if (lastdefine) lastdefine->hashnext = define->hashnext;
 				else source->definehash[hash] = define->hashnext;
 
-				if ( !(define->flags & DEFINE_GLOBAL ) )
+				if (!(define->flags & DEFINE_GLOBAL))
 				{
 					PC_FreeDefine(define);
 				}
@@ -1403,9 +1403,9 @@ int PC_AddDefine(source_t *source, char *string)
 {
 	define_t *define;
 
-	if ( addGlobalDefine )
+	if (addGlobalDefine)
 	{
-		return PC_AddGlobalDefine ( string );
+		return PC_AddGlobalDefine (string);
 	}
 
 	define = PC_DefineFromString(string);
@@ -1471,7 +1471,7 @@ void PC_RemoveAllGlobalDefines(void)
 
 #if DEFINEHASHING
 	int i;
-	if ( globaldefines )
+	if (globaldefines)
 	{
 		for (i = 0; i < DEFINEHASHSIZE; i++)
 		{
@@ -1824,7 +1824,7 @@ int PC_EvaluateTokens(source_t *source, token_t *tokens, signed long int *intval
 					t = t->next;
 					if (!t || strcmp(t->string, ")"))
 					{
-						SourceError(source, "defined without ) in #if/#elif");
+						SourceError(source, "defined without) in #if/#elif");
 						error = 1;
 						break;
 					} //end if
@@ -1884,7 +1884,7 @@ int PC_EvaluateTokens(source_t *source, token_t *tokens, signed long int *intval
 					parentheses--;
 					if (parentheses < 0)
 					{
-						SourceError(source, "too many ) in #if/#elsif");
+						SourceError(source, "too many) in #if/#elsif");
 						error = 1;
 					} //end if
 					break;
@@ -2004,7 +2004,7 @@ int PC_EvaluateTokens(source_t *source, token_t *tokens, signed long int *intval
 		} //end if
 		else if (parentheses)
 		{
-			SourceError(source, "too many ( in #if/#elif");
+			SourceError(source, "too many (in #if/#elif");
 			error = 1;
 		} //end else if
 	} //end if
@@ -2307,7 +2307,7 @@ int PC_DollarEvaluate(source_t *source, signed long int *intvalue,
 	//
 	if (!PC_ReadSourceToken(source, &token))
 	{
-		SourceError(source, "no leading ( after $evalint/$evalfloat");
+		SourceError(source, "no leading (after $evalint/$evalfloat");
 		return qfalse;
 	} //end if
 	if (!PC_ReadSourceToken(source, &token))
@@ -2782,8 +2782,8 @@ int PC_ReadToken(source_t *source, token_t *token)
 
 			PC_ReadSourceToken(source, token);
 			holdString = &token->string[1];
-			Com_Memcpy( holdString2, token->string, sizeof(token->string));
-			Com_Memcpy( holdString, holdString2, sizeof(token->string));
+			Com_Memcpy(holdString2, token->string, sizeof(token->string));
+			Com_Memcpy(holdString, holdString2, sizeof(token->string));
 			token->string[0] = '@';
 			return qtrue;
 		}
@@ -3071,7 +3071,7 @@ source_t *LoadSourceFile(const char *filename)
 	PC_InitTokenHeap();
 
 #if DEFINEHASHING
-	if ( !globaldefines )
+	if (!globaldefines)
 	{
 		globaldefines = (struct define_s **)GetClearedMemory(DEFINEHASHSIZE * sizeof(define_t *));
 	}
@@ -3169,7 +3169,7 @@ void FreeSource(source_t *source)
 		{
 			nextdefine = define->hashnext;
 
-			if ( !(define->flags & DEFINE_GLOBAL) )
+			if (!(define->flags & DEFINE_GLOBAL))
 			{
 				PC_FreeDefine(define);
 			}
@@ -3250,23 +3250,23 @@ int PC_FreeSourceHandle(int handle)
 	return qtrue;
 } //end of the function PC_FreeSourceHandle
 
-int PC_LoadGlobalDefines ( const char* filename )
+int PC_LoadGlobalDefines (const char* filename)
 {
 	int		handle;
 	token_t token;
 
-	handle = PC_LoadSourceHandle ( filename );
-	if ( handle < 1 )
+	handle = PC_LoadSourceHandle (filename);
+	if (handle < 1)
 		return qfalse;
 
 	addGlobalDefine = qtrue;
 
 	// Read all the token files which will add the defines globally
-	while ( PC_ReadToken(sourceFiles[handle], &token) );
+	while (PC_ReadToken(sourceFiles[handle], &token));
 
 	addGlobalDefine = qfalse;
 
-	PC_FreeSourceHandle ( handle );
+	PC_FreeSourceHandle (handle);
 
 	return qtrue;
 }

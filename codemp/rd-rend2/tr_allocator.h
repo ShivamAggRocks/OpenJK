@@ -23,19 +23,19 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 class Allocator
 {
 public:
-	Allocator( void *memory, size_t memorySize, size_t alignment = 16 );
-	Allocator( size_t memorySize, size_t alignment = 16 );
+	Allocator(void *memory, size_t memorySize, size_t alignment = 16);
+	Allocator(size_t memorySize, size_t alignment = 16);
 	~Allocator();
 
-	Allocator( const Allocator& ) = delete;
-	Allocator& operator=( const Allocator& ) = delete;
+	Allocator(const Allocator&) = delete;
+	Allocator& operator=(const Allocator&) = delete;
 
 	size_t GetSize() const;
 	void *Base() const;
-	void *Alloc( size_t allocSize );
+	void *Alloc(size_t allocSize);
 	void *Mark() const;
 	void Reset();
-	void ResetTo( void *mark );
+	void ResetTo(void *mark);
 
 private:
 	size_t alignment;
@@ -47,18 +47,18 @@ private:
 };
 
 template<typename T>
-T *ojkAllocArray( Allocator& allocator, size_t count )
+T *ojkAllocArray(Allocator& allocator, size_t count)
 {
 	return static_cast<T *>(allocator.Alloc(sizeof(T) * count));
 }
 
-inline char *ojkAllocString( Allocator& allocator, size_t stringLength )
+inline char *ojkAllocString(Allocator& allocator, size_t stringLength)
 {
 	return ojkAllocArray<char>(allocator, stringLength + 1);
 }
 
 template<typename T>
-T *ojkAlloc( Allocator& allocator )
+T *ojkAlloc(Allocator& allocator)
 {
 	return ojkAllocArray<T>(allocator, 1);
 }

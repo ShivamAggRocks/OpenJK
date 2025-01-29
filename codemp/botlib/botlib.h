@@ -201,11 +201,11 @@ typedef struct botlib_import_s
 	int			(*AvailableMemory)(void);		// available Zone memory
 	void		*(*HunkAlloc)(int size);		// allocate from hunk
 	//file system access
-	int			(*FS_FOpenFile)( const char *qpath, fileHandle_t *file, fsMode_t mode );
-	int			(*FS_Read)( void *buffer, int len, fileHandle_t f );
-	int			(*FS_Write)( const void *buffer, int len, fileHandle_t f );
-	void		(*FS_FCloseFile)( fileHandle_t f );
-	int			(*FS_Seek)( fileHandle_t f, long offset, int origin );
+	int			(*FS_FOpenFile)(const char *qpath, fileHandle_t *file, fsMode_t mode);
+	int			(*FS_Read)(void *buffer, int len, fileHandle_t f);
+	int			(*FS_Write)(const void *buffer, int len, fileHandle_t f);
+	void		(*FS_FCloseFile)(fileHandle_t f);
+	int			(*FS_Seek)(fileHandle_t f, long offset, int origin);
 	//debug visualisation stuff
 	int			(*DebugLineCreate)(void);
 	void		(*DebugLineDelete)(int line);
@@ -231,10 +231,10 @@ typedef struct aas_export_s
 	// be_aas_sample.c
 	//--------------------------------------------
 	int			(*AAS_PointAreaNum)(vec3_t point);
-	int			(*AAS_PointReachabilityAreaIndex)( vec3_t point );
+	int			(*AAS_PointReachabilityAreaIndex)(vec3_t point);
 	int			(*AAS_TraceAreas)(vec3_t start, vec3_t end, int *areas, vec3_t *points, int maxareas);
 	int			(*AAS_BBoxAreas)(vec3_t absmins, vec3_t absmaxs, int *areas, int maxareas);
-	int			(*AAS_AreaInfo)( int areanum, struct aas_areainfo_s *info );
+	int			(*AAS_AreaInfo)(int areanum, struct aas_areainfo_s *info);
 	//--------------------------------------------
 	// be_aas_bspq3.c
 	//--------------------------------------------
@@ -278,7 +278,7 @@ typedef struct aas_export_s
 typedef struct ea_export_s
 {
 	//ClientCommand elementary actions
-	void	(*EA_Command)(int client, char *command );
+	void	(*EA_Command)(int client, char *command);
 	void	(*EA_Say)(int client, char *str);
 	void	(*EA_SayTeam)(int client, char *str);
 	//
@@ -431,8 +431,8 @@ typedef struct botlib_export_s
 	int (*PC_FreeSourceHandle)(int handle);
 	int (*PC_ReadTokenHandle)(int handle, pc_token_t *pc_token);
 	int (*PC_SourceFileAndLine)(int handle, char *filename, int *line);
-	int (*PC_LoadGlobalDefines)(const char* filename );
-	void (*PC_RemoveAllGlobalDefines) ( void );
+	int (*PC_LoadGlobalDefines)(const char* filename);
+	void (*PC_RemoveAllGlobalDefines) (void);
 
 	//start a frame in the bot library
 	int (*BotLibStartFrame)(float time);
@@ -445,7 +445,7 @@ typedef struct botlib_export_s
 } botlib_export_t;
 
 //linking of bot library
-botlib_export_t *GetBotLibAPI( int apiVersion, botlib_import_t *import );
+botlib_export_t *GetBotLibAPI(int apiVersion, botlib_import_t *import);
 
 /* Library variables:
 

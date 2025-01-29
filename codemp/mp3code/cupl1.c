@@ -65,8 +65,8 @@ static void unpack_baL1()
 	 samp_dispatch[j + 1] = samp_dispatch[j];	/* flag for sf */
 	 c_value[j + 1] = c_value[j];
 	 j++;
-      }
-   }
+     }
+  }
 /*-- terminate with bit skip and end --*/
    samp_dispatch[pMP3Stream->nsb_limit] = 31;
    samp_dispatch[j] = 30;
@@ -82,8 +82,8 @@ static void unpack_sfL1(void)	/* unpack scale factor */
       {
 	 mac_load_check(6);
 	 pMP3Stream->cs_factorL1[i] = c_value[i] * sf_table[mac_load(6)];
-      }
-   }
+     }
+  }
 /*-- done --*/
 }
 /*-------------------------------------------------------------------------*/
@@ -178,8 +178,8 @@ static void unpack_sampL1()	/* unpack samples */
 	    skip(pMP3Stream->bit_skip);
 	 case 30:
 	    s += 64;
-      }				/* end switch */
-   }				/* end j loop */
+     }				/* end switch */
+  }				/* end j loop */
 
 /*-- done --*/
 }
@@ -238,7 +238,7 @@ int L1audio_decode_init(MPEG_HEAD * h, int framebytes_arg,
       for (step = 4, i = 1; i < 16; i++, step <<= 1)
 	 look_c_valueL1[i] = (float) (2.0 / (step - 1));
       first_pass = 0;
-   }
+  }
    pMP3Stream->cs_factorL1 = pMP3Stream->cs_factor[0];
 
    bit_code = 0;
@@ -279,14 +279,14 @@ int L1audio_decode_init(MPEG_HEAD * h, int framebytes_arg,
       pMP3Stream->nbatL1 *= 2;
       pMP3Stream->max_sb *= 2;
       pMP3Stream->nsb_limit *= 2;
-   }
+  }
 
 /* set sbt function */
    k = 1 + convert_code;
    if (h->mode == 3)
    {
       k = 0;
-   }
+  }
    pMP3Stream->sbt = sbt_table[bit_code][reduction_code][k];
    pMP3Stream->outvalues *= out_chans[k];
 

@@ -104,7 +104,7 @@ static const char *GetString_FailedToOpenSaveGame(const char *psFilename, qboole
 #else
 	const char *psReference = bOpen ? "MENUS_FAILED_TO_OPEN_SAVEGAME" : "MENUS3_FAILED_TO_CREATE_SAVEGAME";
 #endif
-	Q_strncpyz(sTemp + strlen(sTemp), va( SE_GetString(psReference), psFilename),sizeof(sTemp));
+	Q_strncpyz(sTemp + strlen(sTemp), va(SE_GetString(psReference), psFilename),sizeof(sTemp));
 	strcat(sTemp,"\n");
 	return sTemp;
 }
@@ -142,7 +142,7 @@ void SV_WipeGame_f(void)
 		Com_Printf (S_COLOR_RED "USAGE: wipe <name>\n");
 		return;
 	}
-	if (!Q_stricmp (Cmd_Argv(1), "auto") )
+	if (!Q_stricmp (Cmd_Argv(1), "auto"))
 	{
 		Com_Printf (S_COLOR_RED "Can't wipe 'auto'\n");
 		return;
@@ -161,13 +161,13 @@ void SG_StoreSaveGameComment(const char *sComment)
 	memmove(saveGameComment,sComment,iSG_COMMENT_SIZE);
 }
 
-qboolean SV_TryLoadTransition( const char *mapname )
+qboolean SV_TryLoadTransition(const char *mapname)
 {
-	char *psFilename = va( "hub/%s", mapname );
+	char *psFilename = va("hub/%s", mapname);
 
 	Com_Printf (S_COLOR_CYAN "Restoring game \"%s\"...\n", psFilename);
 
-	if ( !SG_ReadSavegame( psFilename ) )
+	if (!SG_ReadSavegame(psFilename))
 	{//couldn't load a savegame
 		return qfalse;
 	}
@@ -185,15 +185,15 @@ void SV_LoadGame_f(void)
 {
 	if (gbAlreadyDoingLoad)
 	{
-		Com_DPrintf ("( Already loading, ignoring extra 'load' commands... )\n");
+		Com_DPrintf ("(Already loading, ignoring extra 'load' commands...)\n");
 		return;
 	}
 
 //	// check server is running
 //	//
-//	if ( !com_sv_running->integer )
+//	if (!com_sv_running->integer)
 //	{
-//		Com_Printf( "Server is not running\n" );
+//		Com_Printf("Server is not running\n");
 //		return;
 //	}
 
@@ -204,7 +204,7 @@ void SV_LoadGame_f(void)
 	}
 
 	const char *psFilename = Cmd_Argv(1);
-	if (strstr (psFilename, "..") || strstr (psFilename, "/") || strstr (psFilename, "\\") )
+	if (strstr (psFilename, "..") || strstr (psFilename, "/") || strstr (psFilename, "\\"))
 	{
 		Com_Printf (S_COLOR_RED "Bad loadgame name.\n");
 		return;
@@ -225,16 +225,16 @@ void SV_LoadGame_f(void)
 
 		// see if there's a last-loaded file to even check against as regards loading...
 		//
-		if ( sLastSaveFileLoaded[0] )
+		if (sLastSaveFileLoaded[0])
 		{
 			const char *psServerInfo = sv.configstrings[CS_SERVERINFO];
-			const char *psMapName    = Info_ValueForKey( psServerInfo, "mapname" );
+			const char *psMapName    = Info_ValueForKey(psServerInfo, "mapname");
 
 			char *psMapNameOfAutoSave = SG_GetSaveGameMapName("auto");
 
-			if ( !Q_stricmp(psMapName,"_brig") )
+			if (!Q_stricmp(psMapName,"_brig"))
 			{//if you're in the brig and there is no autosave, load the last loaded savegame
-				if ( !psMapNameOfAutoSave )
+				if (!psMapNameOfAutoSave)
 				{
 					psFilename = sLastSaveFileLoaded;
 				}
@@ -291,9 +291,9 @@ void SV_SaveGame_f(void)
 {
 	// check server is running
 	//
-	if ( !com_sv_running->integer )
+	if (!com_sv_running->integer)
 	{
-		Com_Printf( S_COLOR_RED "Server is not running\n" );
+		Com_Printf(S_COLOR_RED "Server is not running\n");
 		return;
 	}
 
@@ -305,9 +305,9 @@ void SV_SaveGame_f(void)
 
 	// check args...
 	//
-	if ( Cmd_Argc() != 2 )
+	if (Cmd_Argc() != 2)
 	{
-		Com_Printf( "USAGE: save <filename>\n" );
+		Com_Printf("USAGE: save <filename>\n");
 		return;
 	}
 
@@ -346,7 +346,7 @@ void SV_SaveGame_f(void)
 		return;
 	}
 
-	if (strstr (filename, "..") || strstr (filename, "/") || strstr (filename, "\\") )
+	if (strstr (filename, "..") || strstr (filename, "/") || strstr (filename, "\\"))
 	{
 		Com_Printf (S_COLOR_RED "Bad savegame name.\n");
 		return;
@@ -356,15 +356,15 @@ void SV_SaveGame_f(void)
 		return;	// this prevents people saving via quick-save now during cinematics.
 
 #ifdef JK2_MODE
-	if ( !Q_stricmp (filename, "quik*") || !Q_stricmp (filename, "auto*") )
+	if (!Q_stricmp (filename, "quik*") || !Q_stricmp (filename, "auto*"))
 	{
 		SCR_PrecacheScreenshot();
-		if ( filename[4]=='*' )
+		if (filename[4]=='*')
 			filename[4]=0;	//remove the *
 		SG_StoreSaveGameComment("");	// clear previous comment/description, which will force time/date comment.
 	}
 #else
-	if ( !Q_stricmp (filename, "auto") )
+	if (!Q_stricmp (filename, "auto"))
 	{
 		SG_StoreSaveGameComment("");	// clear previous comment/description, which will force time/date comment.
 	}
@@ -418,7 +418,7 @@ static void WriteGame(qboolean autosave)
 		// write health/armour etc...
 		//
 		memset(s,0,sizeof(s));
-		Cvar_VariableStringBuffer( sCVARNAME_PLAYERSAVE, s, sizeof(s) );
+		Cvar_VariableStringBuffer(sCVARNAME_PLAYERSAVE, s, sizeof(s));
 
 		saved_game.write_chunk(
 			INT_ID('C', 'V', 'S', 'V'),
@@ -427,7 +427,7 @@ static void WriteGame(qboolean autosave)
 		// write ammo...
 		//
 		memset(s,0,sizeof(s));
-		Cvar_VariableStringBuffer( "playerammo", s, sizeof(s) );
+		Cvar_VariableStringBuffer("playerammo", s, sizeof(s));
 
 		saved_game.write_chunk(
 			INT_ID('A', 'M', 'M', 'O'),
@@ -436,7 +436,7 @@ static void WriteGame(qboolean autosave)
 		// write inventory...
 		//
 		memset(s,0,sizeof(s));
-		Cvar_VariableStringBuffer( "playerinv", s, sizeof(s) );
+		Cvar_VariableStringBuffer("playerinv", s, sizeof(s));
 
 		saved_game.write_chunk(
 			INT_ID('I', 'V', 'T', 'Y'),
@@ -445,7 +445,7 @@ static void WriteGame(qboolean autosave)
 		// the new JK2 stuff - force powers, etc...
 		//
 		memset(s,0,sizeof(s));
-		Cvar_VariableStringBuffer( "playerfplvl", s, sizeof(s) );
+		Cvar_VariableStringBuffer("playerfplvl", s, sizeof(s));
 
 		saved_game.write_chunk(
 			INT_ID('F', 'P', 'L', 'V'),
@@ -476,7 +476,7 @@ static qboolean ReadGame (void)
 			INT_ID('C', 'V', 'S', 'V'),
 			s);
 
-		Cvar_Set( sCVARNAME_PLAYERSAVE, s );
+		Cvar_Set(sCVARNAME_PLAYERSAVE, s);
 
 		// read ammo...
 		//
@@ -486,7 +486,7 @@ static qboolean ReadGame (void)
 			INT_ID('A', 'M', 'M', 'O'),
 			s);
 
-		Cvar_Set( "playerammo", s);
+		Cvar_Set("playerammo", s);
 
 		// read inventory...
 		//
@@ -496,7 +496,7 @@ static qboolean ReadGame (void)
 			INT_ID('I', 'V', 'T', 'Y'),
 			s);
 
-		Cvar_Set( "playerinv", s);
+		Cvar_Set("playerinv", s);
 
 		// read force powers...
 		//
@@ -506,7 +506,7 @@ static qboolean ReadGame (void)
 			INT_ID('F', 'P', 'L', 'V'),
 			s);
 
-		Cvar_Set( "playerfplvl", s );
+		Cvar_Set("playerfplvl", s);
 	}
 
 	return qbAutoSave;
@@ -616,7 +616,7 @@ void SG_WriteServerConfigStrings()
 
 	// count how many non-blank server strings there are...
 	//
-	for ( i=0; i<MAX_CONFIGSTRINGS; i++)
+	for (i=0; i<MAX_CONFIGSTRINGS; i++)
 	{
 		if (i!=CS_SYSTEMINFO)
 		{
@@ -652,7 +652,7 @@ void SG_WriteServerConfigStrings()
 	}
 }
 
-void SG_ReadServerConfigStrings( void )
+void SG_ReadServerConfigStrings(void)
 {
 	// trash the whole table...
 	//
@@ -660,9 +660,9 @@ void SG_ReadServerConfigStrings( void )
 	{
 		if (i!=CS_SYSTEMINFO)
 		{
-			if ( sv.configstrings[i] )
+			if (sv.configstrings[i])
 			{
-				Z_Free( sv.configstrings[i] );
+				Z_Free(sv.configstrings[i]);
 			}
 			sv.configstrings[i] = CopyString("");
 		}
@@ -679,7 +679,7 @@ void SG_ReadServerConfigStrings( void )
 		INT_ID('C', 'S', 'C', 'N'),
 		iCount);
 
-	Com_DPrintf( "Reading %d configstrings...\n",iCount);
+	Com_DPrintf("Reading %d configstrings...\n",iCount);
 
 	for (int i = 0; i<iCount; i++)
 	{
@@ -696,14 +696,14 @@ void SG_ReadServerConfigStrings( void )
 		psName = reinterpret_cast<const char*>(
 			saved_game.get_buffer_data());
 
-		Com_DPrintf( "Cfg str %d = %s\n",iIndex, psName);
+		Com_DPrintf("Cfg str %d = %s\n",iIndex, psName);
 
 		//sv.configstrings[iIndex] = psName;
 		SV_SetConfigstring(iIndex, psName);
 	}
 }
 
-static unsigned int SG_UnixTimestamp ( const time_t& t )
+static unsigned int SG_UnixTimestamp (const time_t& t)
 {
 	return static_cast<unsigned int>(t);
 }
@@ -715,9 +715,9 @@ static void SG_WriteComment(qboolean qbAutosave, const char *psMapName)
 
 	char	sComment[iSG_COMMENT_SIZE];
 
-	if ( qbAutosave || !*saveGameComment)
+	if (qbAutosave || !*saveGameComment)
 	{
-		Com_sprintf( sComment, sizeof(sComment), "---> %s", psMapName );
+		Com_sprintf(sComment, sizeof(sComment), "---> %s", psMapName);
 	}
 	else
 	{
@@ -738,7 +738,7 @@ static void SG_WriteComment(qboolean qbAutosave, const char *psMapName)
 	Com_DPrintf("Saving: current (%s)\n", sComment);
 }
 
-static time_t SG_GetTime ( unsigned int timestamp )
+static time_t SG_GetTime (unsigned int timestamp)
 {
 	return static_cast<time_t>(timestamp);
 }
@@ -1031,7 +1031,7 @@ static void SG_WriteScreenshot(qboolean qbAutosave, const char *psMapName)
 	byte *pbRawScreenShot = NULL;
 	byte *byBlank = NULL;
 
-	if( qbAutosave )
+	if(qbAutosave)
 	{
 		// try to read a levelshot (any valid TGA/JPG etc named the same as the map)...
 		//
@@ -1067,7 +1067,7 @@ static void SG_WriteScreenshot(qboolean qbAutosave, const char *psMapName)
 
 	size_t iJPGDataSize = 0;
 	size_t bufSize = SG_SCR_WIDTH * SG_SCR_HEIGHT * 3;
-	byte *pJPGData = (byte *)Z_Malloc( static_cast<int>(bufSize), TAG_TEMP_WORKSPACE, qfalse, 4 );
+	byte *pJPGData = (byte *)Z_Malloc(static_cast<int>(bufSize), TAG_TEMP_WORKSPACE, qfalse, 4);
 
 #ifdef JK2_MODE
 	bool flip_vertical = true;
@@ -1075,8 +1075,8 @@ static void SG_WriteScreenshot(qboolean qbAutosave, const char *psMapName)
 	bool flip_vertical = false;
 #endif // JK2_MODE
 
-	iJPGDataSize = re.SaveJPGToBuffer(pJPGData, bufSize, JPEG_IMAGE_QUALITY, SG_SCR_WIDTH, SG_SCR_HEIGHT, pbRawScreenShot, 0, flip_vertical );
-	if ( qbAutosave )
+	iJPGDataSize = re.SaveJPGToBuffer(pJPGData, bufSize, JPEG_IMAGE_QUALITY, SG_SCR_WIDTH, SG_SCR_HEIGHT, pbRawScreenShot, 0, flip_vertical);
+	if (qbAutosave)
 		delete[] byBlank;
 
 	saved_game.write_chunk<uint32_t>(
@@ -1097,9 +1097,9 @@ static void SG_WriteScreenshot(qboolean qbAutosave, const char *psMapName)
 qboolean SG_GameAllowedToSaveHere(qboolean inCamera)
 {
 	if (!inCamera) {
-		if ( !com_sv_running || !com_sv_running->integer )
+		if (!com_sv_running || !com_sv_running->integer)
 		{
-			return qfalse;	//		Com_Printf( S_COLOR_RED "Server is not running\n" );
+			return qfalse;	//		Com_Printf(S_COLOR_RED "Server is not running\n");
 		}
 
 		if (CL_IsRunningInGameCinematic())
@@ -1113,7 +1113,7 @@ qboolean SG_GameAllowedToSaveHere(qboolean inCamera)
 		}
 
 		//No savegames from "_" maps
-		if ( !sv_mapname || (sv_mapname->string != NULL && sv_mapname->string[0] == '_') )
+		if (!sv_mapname || (sv_mapname->string != NULL && sv_mapname->string[0] == '_'))
 		{
 			return qfalse;	//		Com_Printf (S_COLOR_RED "Cannot save on holodeck or brig.\n");
 		}
@@ -1140,12 +1140,12 @@ qboolean SG_WriteSavegame(const char *psPathlessBaseName, qboolean qbAutosave)
 	// Write out server data...
 	//
 	const char *psServerInfo = sv.configstrings[CS_SERVERINFO];
-	const char *psMapName    = Info_ValueForKey( psServerInfo, "mapname" );
+	const char *psMapName    = Info_ValueForKey(psServerInfo, "mapname");
 //JLF
 #ifdef JK2_MODE
-	if ( !strcmp("quik",psPathlessBaseName))
+	if (!strcmp("quik",psPathlessBaseName))
 #else
-	if ( !strcmp("quick",psPathlessBaseName))
+	if (!strcmp("quick",psPathlessBaseName))
 #endif
 	{
 		SG_StoreSaveGameComment(va("--> %s <--",psMapName));
@@ -1153,10 +1153,10 @@ qboolean SG_WriteSavegame(const char *psPathlessBaseName, qboolean qbAutosave)
 
 	ojk::SavedGame& saved_game = ojk::SavedGame::get_instance();
 
-	if(!saved_game.create( "current" ))
+	if(!saved_game.create("current"))
 	{
 		Com_Printf (GetString_FailedToOpenSaveGame("current",qfalse));//S_COLOR_RED "Failed to create savegame\n");
-		SG_WipeSavegame( "current" );
+		SG_WipeSavegame("current");
 		sv_testsave->integer = iPrevTestSave;
 		return qfalse;
 	}
@@ -1166,7 +1166,7 @@ qboolean SG_WriteSavegame(const char *psPathlessBaseName, qboolean qbAutosave)
 		&saved_game);
 
 	char   sMapCmd[iSG_MAPCMD_SIZE]={0};
-	Q_strncpyz( sMapCmd,psMapName, sizeof(sMapCmd));	// need as array rather than ptr because const strlen needed for MPCM chunk
+	Q_strncpyz(sMapCmd,psMapName, sizeof(sMapCmd));	// need as array rather than ptr because const strlen needed for MPCM chunk
 
 	SG_WriteComment(qbAutosave, sMapCmd);
 #ifdef JK2_MODE
@@ -1205,7 +1205,7 @@ qboolean SG_WriteSavegame(const char *psPathlessBaseName, qboolean qbAutosave)
 	if (is_write_failed)
 	{
 		Com_Printf (GetString_FailedToOpenSaveGame("current",qfalse));//S_COLOR_RED "Failed to write savegame!\n");
-		SG_WipeSavegame( "current" );
+		SG_WipeSavegame("current");
 		sv_testsave->integer = iPrevTestSave;
 		return qfalse;
 	}

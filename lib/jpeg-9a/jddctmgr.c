@@ -249,13 +249,13 @@ start_pass (j_decompress_ptr cinfo)
       default:
 	ERREXIT(cinfo, JERR_NOT_COMPILED);
 	break;
-      }
+     }
       break;
     default:
       ERREXIT2(cinfo, JERR_BAD_DCTSIZE,
 	       compptr->DCT_h_scaled_size, compptr->DCT_v_scaled_size);
       break;
-    }
+   }
     idct->pub.inverse_DCT[ci] = method_ptr;
     /* Create multiplier table from quant table.
      * However, we can skip this if the component is uninteresting
@@ -281,7 +281,7 @@ start_pass (j_decompress_ptr cinfo)
 	for (i = 0; i < DCTSIZE2; i++) {
 	  ismtbl[i] = (ISLOW_MULT_TYPE) qtbl->quantval[i];
 	}
-      }
+     }
       break;
 #endif
 #ifdef DCT_IFAST_SUPPORTED
@@ -315,7 +315,7 @@ start_pass (j_decompress_ptr cinfo)
 				  (INT32) aanscales[i]),
 		    CONST_BITS-IFAST_SCALE_BITS);
 	}
-      }
+     }
       break;
 #endif
 #ifdef DCT_FLOAT_SUPPORTED
@@ -341,16 +341,16 @@ start_pass (j_decompress_ptr cinfo)
 	      ((double) qtbl->quantval[i] *
 	       aanscalefactor[row] * aanscalefactor[col] * 0.125);
 	    i++;
-	  }
+	 }
 	}
-      }
+     }
       break;
 #endif
     default:
       ERREXIT(cinfo, JERR_NOT_COMPILED);
       break;
-    }
-  }
+   }
+ }
 }
 
 
@@ -380,5 +380,5 @@ jinit_inverse_dct (j_decompress_ptr cinfo)
     MEMZERO(compptr->dct_table, SIZEOF(multiplier_table));
     /* Mark multiplier table not yet set up for any method */
     idct->cur_method[ci] = -1;
-  }
+ }
 }

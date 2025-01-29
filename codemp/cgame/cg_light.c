@@ -40,11 +40,11 @@ void CG_ClearLightStyles (void)
 {
 	int	i;
 
-	memset( cl_lightstyle, 0, sizeof( cl_lightstyle ) );
+	memset(cl_lightstyle, 0, sizeof(cl_lightstyle));
 	lastofs = -1;
 
-	for ( i=0; i<MAX_LIGHT_STYLES*3; i++ )
-		CG_SetLightstyle( i );
+	for (i=0; i<MAX_LIGHT_STYLES*3; i++)
+		CG_SetLightstyle(i);
 }
 
 /*
@@ -58,18 +58,18 @@ void CG_RunLightStyles (void)
 	clightstyle_t *ls;
 
 	ofs = cg.time / 50;
-//	if ( ofs == lastofs )
+//	if (ofs == lastofs)
 //		return;
 	lastofs = ofs;
 
-	for ( i=0, ls=cl_lightstyle; i<MAX_LIGHT_STYLES; i++, ls++ ) {
+	for (i=0, ls=cl_lightstyle; i<MAX_LIGHT_STYLES; i++, ls++) {
 		byteAlias_t *ba = (byteAlias_t *)&ls->value;
 
 		ls->value[3] = 255;
-		if ( !ls->length ) {
+		if (!ls->length) {
 			ls->value[0] = ls->value[1] = ls->value[2] = 255;
 		}
-		else if ( ls->length == 1 ) {
+		else if (ls->length == 1) {
 			ls->value[0] = ls->map[0][0];
 			ls->value[1] = ls->map[0][1];
 			ls->value[2] = ls->map[0][2];
@@ -82,7 +82,7 @@ void CG_RunLightStyles (void)
 		//	ls->value[3] = ls->map[ofs%ls->length][3];
 		}
 
-		trap->R_SetLightStyle( i, ba->i );
+		trap->R_SetLightStyle(i, ba->i);
 	}
 }
 
@@ -91,7 +91,7 @@ void CG_SetLightstyle (int i)
 	const char	*s;
 	int			j, k;
 
-	s = CG_ConfigString( i+CS_LIGHT_STYLES );
+	s = CG_ConfigString(i+CS_LIGHT_STYLES);
 	j = strlen (s);
 	if (j >= MAX_QPATH)
 	{

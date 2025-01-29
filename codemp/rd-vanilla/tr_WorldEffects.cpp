@@ -78,7 +78,7 @@ inline float WE_flrand(float min, float max) {
 ////////////////////////////////////////////////////////////////////////////////////////
 // Externs & Fwd Decl.
 ////////////////////////////////////////////////////////////////////////////////////////
-extern void			SetViewportAndScissor( void );
+extern void			SetViewportAndScissor(void);
 
 inline void VectorFloor(vec3_t in)
 {
@@ -558,7 +558,7 @@ public:
 		//---------------------------------------------------------------------
 		if (!mWeatherZones.size())
 		{
-			ri.Printf( PRINT_ALL, "WARNING: No Weather Zones Encountered\n");
+			ri.Printf(PRINT_ALL, "WARNING: No Weather Zones Encountered\n");
 			AddWeatherZone(tr.world->bmodels[0].bounds[0], tr.world->bmodels[0].bounds[1]);
 		}
 
@@ -607,7 +607,7 @@ public:
 								else if (SWeatherZone::mMarkedOutside!=curPosOutside)
 								{
 									assert(0);
-									Com_Error (ERR_DROP, "Weather Effect: Both Indoor and Outdoor brushs encountered in map.\n" );
+									Com_Error (ERR_DROP, "Weather Effect: Both Indoor and Outdoor brushs encountered in map.\n");
 									return;
 								}
 
@@ -1288,28 +1288,28 @@ public:
 			else
 			{
 				// Left bottom.
-				qglTexCoord2f( 0.0, 0.0 );
+				qglTexCoord2f(0.0, 0.0);
 				qglVertex3f(part->mPosition[0] - mCameraLeftMinusUp[0],
 							part->mPosition[1] - mCameraLeftMinusUp[1],
-							part->mPosition[2] - mCameraLeftMinusUp[2] );
+							part->mPosition[2] - mCameraLeftMinusUp[2]);
 
 				// Right bottom.
-				qglTexCoord2f( 1.0, 0.0 );
+				qglTexCoord2f(1.0, 0.0);
 				qglVertex3f(part->mPosition[0] - mCameraLeftPlusUp[0],
 							part->mPosition[1] - mCameraLeftPlusUp[1],
-							part->mPosition[2] - mCameraLeftPlusUp[2] );
+							part->mPosition[2] - mCameraLeftPlusUp[2]);
 
 				// Right top.
-				qglTexCoord2f( 1.0, 1.0 );
+				qglTexCoord2f(1.0, 1.0);
 				qglVertex3f(part->mPosition[0] + mCameraLeftMinusUp[0],
 							part->mPosition[1] + mCameraLeftMinusUp[1],
-							part->mPosition[2] + mCameraLeftMinusUp[2] );
+							part->mPosition[2] + mCameraLeftMinusUp[2]);
 
 				// Left top.
-				qglTexCoord2f( 0.0, 1.0 );
+				qglTexCoord2f(0.0, 1.0);
 				qglVertex3f(part->mPosition[0] + mCameraLeftPlusUp[0],
 							part->mPosition[1] + mCameraLeftPlusUp[1],
-							part->mPosition[2] + mCameraLeftPlusUp[2] );
+							part->mPosition[2] + mCameraLeftPlusUp[2]);
 			}
 		}
 		qglEnd();
@@ -1416,7 +1416,7 @@ void RB_RenderWorldEffects(void)
 		}
 		if (false)
 		{
-			ri.Printf( PRINT_ALL, "Weather: %d Particles Rendered\n", mParticlesRendered);
+			ri.Printf(PRINT_ALL, "Weather: %d Particles Rendered\n", mParticlesRendered);
 		}
 	}
 }
@@ -1425,8 +1425,8 @@ void RB_RenderWorldEffects(void)
 void R_WorldEffect_f(void)
 {
 	char temp[2048] = {0};
-	ri.Cmd_ArgsBuffer( temp, sizeof( temp ) );
-	RE_WorldEffectCommand( temp );
+	ri.Cmd_ArgsBuffer(temp, sizeof(temp));
+	RE_WorldEffectCommand(temp);
 }
 
 /*
@@ -1434,29 +1434,29 @@ void R_WorldEffect_f(void)
 WE_ParseVector
 ===============
 */
-qboolean WE_ParseVector( const char **text, int count, float *v ) {
+qboolean WE_ParseVector(const char **text, int count, float *v) {
 	char	*token;
 	int		i;
 
 	// FIXME: spaces are currently required after parens, should change parseext...
-	token = COM_ParseExt( text, qfalse );
-	if ( strcmp( token, "(" ) ) {
-		ri.Printf (PRINT_WARNING, "WARNING: missing parenthesis in weather effect\n" );
+	token = COM_ParseExt(text, qfalse);
+	if (strcmp(token, "(")) {
+		ri.Printf (PRINT_WARNING, "WARNING: missing parenthesis in weather effect\n");
 		return qfalse;
 	}
 
-	for ( i = 0 ; i < count ; i++ ) {
-		token = COM_ParseExt( text, qfalse );
-		if ( !token[0] ) {
-			ri.Printf (PRINT_WARNING, "WARNING: missing vector element in weather effect\n" );
+	for (i = 0 ; i < count ; i++) {
+		token = COM_ParseExt(text, qfalse);
+		if (!token[0]) {
+			ri.Printf (PRINT_WARNING, "WARNING: missing vector element in weather effect\n");
 			return qfalse;
 		}
-		v[i] = atof( token );
+		v[i] = atof(token);
 	}
 
-	token = COM_ParseExt( text, qfalse );
-	if ( strcmp( token, ")" ) ) {
-		ri.Printf (PRINT_WARNING, "WARNING: missing parenthesis in weather effect\n" );
+	token = COM_ParseExt(text, qfalse);
+	if (strcmp(token, ")")) {
+		ri.Printf (PRINT_WARNING, "WARNING: missing parenthesis in weather effect\n");
 		return qfalse;
 	}
 
@@ -1465,7 +1465,7 @@ qboolean WE_ParseVector( const char **text, int count, float *v ) {
 
 void RE_WorldEffectCommand(const char *command)
 {
-	if ( !command )
+	if (!command)
 	{
 		return;
 	}
@@ -1476,7 +1476,7 @@ void RE_WorldEffectCommand(const char *command)
 
 	token = COM_ParseExt(&command, qfalse);
 
-	if ( !token )
+	if (!token)
 	{
 		return;
 	}
@@ -1830,27 +1830,27 @@ void RE_WorldEffectCommand(const char *command)
 	}
 	else
 	{
-		ri.Printf( PRINT_ALL, "Weather Effect: Please enter a valid command.\n" );
-		ri.Printf( PRINT_ALL, "	die\n" );
-		ri.Printf( PRINT_ALL, "	clear\n" );
-		ri.Printf( PRINT_ALL, "	freeze\n" );
-		ri.Printf( PRINT_ALL, "	zone (mins) (maxs)\n" );
-		ri.Printf( PRINT_ALL, "	wind\n" );
-		ri.Printf( PRINT_ALL, "	constantwind (velocity)\n" );
-		ri.Printf( PRINT_ALL, "	gustingwind\n" );
-		//ri.Printf( PRINT_ALL, "	windzone (mins) (maxs) (velocity)\n" );
-		ri.Printf( PRINT_ALL, "	lightrain\n" );
-		ri.Printf( PRINT_ALL, "	rain\n" );
-		ri.Printf( PRINT_ALL, "	acidrain\n" );
-		ri.Printf( PRINT_ALL, "	heavyrain\n" );
-		ri.Printf( PRINT_ALL, "	snow\n" );
-		ri.Printf( PRINT_ALL, "	spacedust\n" );
-		ri.Printf( PRINT_ALL, "	sand\n" );
-		ri.Printf( PRINT_ALL, "	fog\n" );
-		ri.Printf( PRINT_ALL, "	heavyrainfog\n" );
-		ri.Printf( PRINT_ALL, "	light_fog\n" );
-		ri.Printf( PRINT_ALL, "	outsideshake\n" );
-		ri.Printf( PRINT_ALL, "	outsidepain\n" );
+		ri.Printf(PRINT_ALL, "Weather Effect: Please enter a valid command.\n");
+		ri.Printf(PRINT_ALL, "	die\n");
+		ri.Printf(PRINT_ALL, "	clear\n");
+		ri.Printf(PRINT_ALL, "	freeze\n");
+		ri.Printf(PRINT_ALL, "	zone (mins) (maxs)\n");
+		ri.Printf(PRINT_ALL, "	wind\n");
+		ri.Printf(PRINT_ALL, "	constantwind (velocity)\n");
+		ri.Printf(PRINT_ALL, "	gustingwind\n");
+		//ri.Printf(PRINT_ALL, "	windzone (mins) (maxs) (velocity)\n");
+		ri.Printf(PRINT_ALL, "	lightrain\n");
+		ri.Printf(PRINT_ALL, "	rain\n");
+		ri.Printf(PRINT_ALL, "	acidrain\n");
+		ri.Printf(PRINT_ALL, "	heavyrain\n");
+		ri.Printf(PRINT_ALL, "	snow\n");
+		ri.Printf(PRINT_ALL, "	spacedust\n");
+		ri.Printf(PRINT_ALL, "	sand\n");
+		ri.Printf(PRINT_ALL, "	fog\n");
+		ri.Printf(PRINT_ALL, "	heavyrainfog\n");
+		ri.Printf(PRINT_ALL, "	light_fog\n");
+		ri.Printf(PRINT_ALL, "	outsideshake\n");
+		ri.Printf(PRINT_ALL, "	outsidepain\n");
 	}
 }
 
@@ -1881,6 +1881,6 @@ bool R_IsRaining()
 }
 
 bool R_IsPuffing()
-{ //Eh? Don't want surfacesprites to know this?
+{//Eh? Don't want surfacesprites to know this?
 	return false;
 }

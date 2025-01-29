@@ -28,57 +28,57 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 typedef struct {
 	const char	*name;
-	void	(*func)(centity_t *cent, const struct weaponInfo_s *weapon );
+	void	(*func)(centity_t *cent, const struct weaponInfo_s *weapon);
 } func_t;
 
 // Bryar
-void FX_BryarProjectileThink(  centity_t *cent, const struct weaponInfo_s *weapon );
-void FX_BryarAltProjectileThink(  centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_BryarProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon);
+void FX_BryarAltProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Blaster
-void FX_BlasterProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
-void FX_BlasterAltFireThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_BlasterProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
+void FX_BlasterAltFireThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Bowcaster
-void FX_BowcasterProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_BowcasterProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Heavy Repeater
-void FX_RepeaterProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
-void FX_RepeaterAltProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_RepeaterProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
+void FX_RepeaterAltProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // DEMP2
-void FX_DEMP2_ProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
-void FX_DEMP2_AltProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_DEMP2_ProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
+void FX_DEMP2_AltProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Golan Arms Flechette
-void FX_FlechetteProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
-void FX_FlechetteAltProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_FlechetteProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
+void FX_FlechetteAltProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Personal Rocket Launcher
-void FX_RocketProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
-void FX_RocketAltProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_RocketProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
+void FX_RocketAltProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Concussion Rifle
-void FX_ConcProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_ConcProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Emplaced weapon
-void FX_EmplacedProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_EmplacedProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Turret weapon
-void FX_TurretProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_TurretProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // ATST Main weapon
-void FX_ATSTMainProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_ATSTMainProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // ATST Side weapons
-void FX_ATSTSideMainProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
-void FX_ATSTSideAltProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_ATSTSideMainProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
+void FX_ATSTSideAltProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 //Tusken projectile
-void FX_TuskenShotProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_TuskenShotProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 //Noghri projectile
-void FX_NoghriShotProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
+void FX_NoghriShotProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon);
 
 // Table used to attach an extern missile function string to the actual cgame function
 func_t	funcs[] = {
@@ -106,9 +106,9 @@ func_t	funcs[] = {
 	{NULL,					NULL}
 };
 
-//qboolean COM_ParseInt( char **data, int *i );
-//qboolean COM_ParseString( char **data, char **s );
-//qboolean COM_ParseFloat( char **data, float *f );
+//qboolean COM_ParseInt(char **data, int *i);
+//qboolean COM_ParseString(char **data, char **s);
+//qboolean COM_ParseFloat(char **data, float *f);
 
 struct wpnParms_s
 {
@@ -124,13 +124,13 @@ void WPN_AmmoType (const char **holdBuf);
 void WPN_EnergyPerShot (const char **holdBuf);
 void WPN_FireTime (const char **holdBuf);
 void WPN_FiringSnd (const char **holdBuf);
-void WPN_AltFiringSnd(const char **holdBuf );
-void WPN_StopSnd( const char **holdBuf );
+void WPN_AltFiringSnd(const char **holdBuf);
+void WPN_StopSnd(const char **holdBuf);
 void WPN_ChargeSnd (const char **holdBuf);
 void WPN_AltChargeSnd (const char **holdBuf);
 void WPN_SelectSnd (const char **holdBuf);
 void WPN_Range (const char **holdBuf);
-void WPN_WeaponClass ( const char **holdBuf);
+void WPN_WeaponClass (const char **holdBuf);
 void WPN_WeaponIcon (const char **holdBuf);
 void WPN_WeaponModel (const char **holdBuf);
 void WPN_WeaponType (const char **holdBuf);
@@ -396,67 +396,67 @@ const float defaultAltSplashRadius[] = {
 
 wpnParms_t WpnParms[] =
 {
-	{ "ammo",				WPN_Ammo },	//ammo
-	{ "ammoicon",			WPN_AmmoIcon },
-	{ "ammomax",			WPN_AmmoMax },
-	{ "ammolowcount",		WPN_AmmoLowCnt }, //weapons
-	{ "ammotype",			WPN_AmmoType },
-	{ "energypershot",	WPN_EnergyPerShot },
-	{ "fireTime",			WPN_FireTime },
-	{ "firingsound",		WPN_FiringSnd },
-	{ "altfiringsound",	WPN_AltFiringSnd },
-//	{ "flashsound",		WPN_FlashSnd },
-//	{ "altflashsound",	WPN_AltFlashSnd },
-	{ "stopsound",		WPN_StopSnd },
-	{ "chargesound",		WPN_ChargeSnd },
-	{ "altchargesound",	WPN_AltChargeSnd },
-	{ "selectsound",		WPN_SelectSnd },
-	{ "range",			WPN_Range },
-	{ "weaponclass",		WPN_WeaponClass },
-	{ "weaponicon",		WPN_WeaponIcon },
-	{ "weaponmodel",		WPN_WeaponModel },
-	{ "weapontype",		WPN_WeaponType },
-	{ "altenergypershot",	WPN_AltEnergyPerShot },
-	{ "altfireTime",		WPN_AltFireTime },
-	{ "altrange",			WPN_AltRange },
-	{ "barrelcount",		WPN_BarrelCount },
-	{ "missileModel",		WPN_MissileName },
-	{ "altmissileModel", 	WPN_AltMissileName },
-	{ "missileSound",		WPN_MissileSound },
-	{ "altmissileSound", 	WPN_AltMissileSound },
-	{ "missileLight",		WPN_MissileLight },
-	{ "altmissileLight", 	WPN_AltMissileLight },
-	{ "missileLightColor",WPN_MissileLightColor },
-	{ "altmissileLightColor",	WPN_AltMissileLightColor },
-	{ "missileFuncName",		WPN_FuncName },
-	{ "altmissileFuncName",	WPN_AltFuncName },
-	{ "missileHitSound",		WPN_MissileHitSound },
-	{ "altmissileHitSound",	WPN_AltMissileHitSound },
-	{ "muzzleEffect",			WPN_MuzzleEffect },
-	{ "altmuzzleEffect",		WPN_AltMuzzleEffect },
+	{"ammo",				WPN_Ammo},	//ammo
+	{"ammoicon",			WPN_AmmoIcon},
+	{"ammomax",			WPN_AmmoMax},
+	{"ammolowcount",		WPN_AmmoLowCnt}, //weapons
+	{"ammotype",			WPN_AmmoType},
+	{"energypershot",	WPN_EnergyPerShot},
+	{"fireTime",			WPN_FireTime},
+	{"firingsound",		WPN_FiringSnd},
+	{"altfiringsound",	WPN_AltFiringSnd},
+//	{"flashsound",		WPN_FlashSnd},
+//	{"altflashsound",	WPN_AltFlashSnd},
+	{"stopsound",		WPN_StopSnd},
+	{"chargesound",		WPN_ChargeSnd},
+	{"altchargesound",	WPN_AltChargeSnd},
+	{"selectsound",		WPN_SelectSnd},
+	{"range",			WPN_Range},
+	{"weaponclass",		WPN_WeaponClass},
+	{"weaponicon",		WPN_WeaponIcon},
+	{"weaponmodel",		WPN_WeaponModel},
+	{"weapontype",		WPN_WeaponType},
+	{"altenergypershot",	WPN_AltEnergyPerShot},
+	{"altfireTime",		WPN_AltFireTime},
+	{"altrange",			WPN_AltRange},
+	{"barrelcount",		WPN_BarrelCount},
+	{"missileModel",		WPN_MissileName},
+	{"altmissileModel", 	WPN_AltMissileName},
+	{"missileSound",		WPN_MissileSound},
+	{"altmissileSound", 	WPN_AltMissileSound},
+	{"missileLight",		WPN_MissileLight},
+	{"altmissileLight", 	WPN_AltMissileLight},
+	{"missileLightColor",WPN_MissileLightColor},
+	{"altmissileLightColor",	WPN_AltMissileLightColor},
+	{"missileFuncName",		WPN_FuncName},
+	{"altmissileFuncName",	WPN_AltFuncName},
+	{"missileHitSound",		WPN_MissileHitSound},
+	{"altmissileHitSound",	WPN_AltMissileHitSound},
+	{"muzzleEffect",			WPN_MuzzleEffect},
+	{"altmuzzleEffect",		WPN_AltMuzzleEffect},
 	// OPENJK NEW FIELDS
-	{ "damage",			WPN_Damage },
-	{ "altdamage",		WPN_AltDamage },
-	{ "splashDamage",		WPN_SplashDamage },
-	{ "splashRadius",		WPN_SplashRadius },
-	{ "altSplashDamage",	WPN_AltSplashDamage },
-	{ "altSplashRadius",	WPN_AltSplashRadius },
+	{"damage",			WPN_Damage},
+	{"altdamage",		WPN_AltDamage},
+	{"splashDamage",		WPN_SplashDamage},
+	{"splashRadius",		WPN_SplashRadius},
+	{"altSplashDamage",	WPN_AltSplashDamage},
+	{"altSplashRadius",	WPN_AltSplashRadius},
 
 	// Old legacy files contain these, so we skip them to shut up warnings
-	{ "firingforce",		WPN_FuncSkip },
-	{ "chargeforce",		WPN_FuncSkip },
-	{ "altchargeforce",	WPN_FuncSkip },
-	{ "selectforce",		WPN_FuncSkip },
+	{"firingforce",		WPN_FuncSkip},
+	{"chargeforce",		WPN_FuncSkip},
+	{"altchargeforce",	WPN_FuncSkip},
+	{"selectforce",		WPN_FuncSkip},
 };
 
 static const size_t numWpnParms = ARRAY_LEN(WpnParms);
 
-void WPN_FuncSkip( const char **holdBuf)
+void WPN_FuncSkip(const char **holdBuf)
 {
 	SkipRestOfLine(holdBuf);
 }
 
-void WPN_WeaponType( const char **holdBuf)
+void WPN_WeaponType(const char **holdBuf)
 {
 	int weaponNum;
 	const char	*tokenStr;
@@ -563,7 +563,7 @@ void WPN_WeaponModel(const char **holdBuf)
 	int len;
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -585,7 +585,7 @@ void WPN_WeaponIcon(const char **holdBuf)
 	int len;
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -606,13 +606,13 @@ void WPN_AmmoType(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < AMMO_NONE ) || (tokenInt >= AMMO_MAX ))
+	if ((tokenInt < AMMO_NONE) || (tokenInt >= AMMO_MAX))
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad Ammotype in external weapon data '%d'\n", tokenInt);
 		return;
@@ -626,13 +626,13 @@ void WPN_AmmoLowCnt(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 200 )) // FIXME :What are the right values?
+	if ((tokenInt < 0) || (tokenInt > 200)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad Ammolowcount in external weapon data '%d'\n", tokenInt);
 		return;
@@ -647,7 +647,7 @@ void WPN_FiringSnd(const char **holdBuf)
 	const char	*tokenStr;
 	int		len;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -664,12 +664,12 @@ void WPN_FiringSnd(const char **holdBuf)
 }
 
 //--------------------------------------------
-void WPN_AltFiringSnd( const char **holdBuf )
+void WPN_AltFiringSnd(const char **holdBuf)
 {
 	const char	*tokenStr;
 	int		len;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -686,12 +686,12 @@ void WPN_AltFiringSnd( const char **holdBuf )
 }
 
 //--------------------------------------------
-void WPN_StopSnd( const char **holdBuf )
+void WPN_StopSnd(const char **holdBuf)
 {
 	const char	*tokenStr;
 	int		len;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -713,7 +713,7 @@ void WPN_ChargeSnd(const char **holdBuf)
 	const char	*tokenStr;
 	int		len;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -735,7 +735,7 @@ void WPN_AltChargeSnd(const char **holdBuf)
 	const char	*tokenStr;
 	int		len;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -752,17 +752,17 @@ void WPN_AltChargeSnd(const char **holdBuf)
 }
 
 //--------------------------------------------
-void WPN_SelectSnd( const char **holdBuf )
+void WPN_SelectSnd(const char **holdBuf)
 {
 	const char	*tokenStr;
 	int		len;
 
-	if ( COM_ParseString( holdBuf,&tokenStr ))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
 
-	len = strlen( tokenStr );
+	len = strlen(tokenStr);
 	len++;
 
 	if (len > 64)
@@ -771,7 +771,7 @@ void WPN_SelectSnd( const char **holdBuf )
 		gi.Printf(S_COLOR_YELLOW"WARNING: selectSnd too long in external WEAPONS.DAT '%s'\n", tokenStr);
 	}
 
-	Q_strncpyz( weaponData[wpnParms.weaponNum].selectSnd,tokenStr,len);
+	Q_strncpyz(weaponData[wpnParms.weaponNum].selectSnd,tokenStr,len);
 }
 
 //--------------------------------------------
@@ -779,13 +779,13 @@ void WPN_FireTime(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 10000 )) // FIXME :What are the right values?
+	if ((tokenInt < 0) || (tokenInt > 10000)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad Firetime in external weapon data '%d'\n", tokenInt);
 		return;
@@ -798,13 +798,13 @@ void WPN_Range(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 10000 )) // FIXME :What are the right values?
+	if ((tokenInt < 0) || (tokenInt > 10000)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad Range in external weapon data '%d'\n", tokenInt);
 		return;
@@ -818,13 +818,13 @@ void WPN_EnergyPerShot(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 1000 )) // FIXME :What are the right values?
+	if ((tokenInt < 0) || (tokenInt > 1000)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad EnergyPerShot in external weapon data '%d'\n", tokenInt);
 		return;
@@ -837,13 +837,13 @@ void WPN_AltFireTime(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 10000 )) // FIXME :What are the right values?
+	if ((tokenInt < 0) || (tokenInt > 10000)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad altFireTime in external weapon data '%d'\n", tokenInt);
 		return;
@@ -856,13 +856,13 @@ void WPN_AltRange(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 10000 )) // FIXME :What are the right values?
+	if ((tokenInt < 0) || (tokenInt > 10000)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad AltRange in external weapon data '%d'\n", tokenInt);
 		return;
@@ -876,13 +876,13 @@ void WPN_AltEnergyPerShot(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 1000 )) // FIXME :What are the right values?
+	if ((tokenInt < 0) || (tokenInt > 1000)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad AltEnergyPerShot in external weapon data '%d'\n", tokenInt);
 		return;
@@ -895,7 +895,7 @@ void WPN_Ammo(const char **holdBuf)
 {
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -933,7 +933,7 @@ void WPN_AmmoIcon(const char **holdBuf)
 	const char	*tokenStr;
 	int		len;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -955,13 +955,13 @@ void WPN_AmmoMax(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 1000 ))
+	if ((tokenInt < 0) || (tokenInt > 1000))
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad Ammo Max in external weapon data '%d'\n", tokenInt);
 		return;
@@ -974,13 +974,13 @@ void WPN_BarrelCount(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 4 ))
+	if ((tokenInt < 0) || (tokenInt > 4))
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad Range in external weapon data '%d'\n", tokenInt);
 		return;
@@ -998,9 +998,9 @@ static void WP_ParseWeaponParms(const char **holdBuf)
 
 	while (holdBuf)
 	{
-		token = COM_ParseExt( holdBuf, qtrue );
+		token = COM_ParseExt(holdBuf, qtrue);
 
-		if (!Q_stricmp( token, "}" ))	// End of data for this weapon
+		if (!Q_stricmp(token, "}"))	// End of data for this weapon
 			break;
 
 		// Loop through possible parameters
@@ -1027,7 +1027,7 @@ void WPN_MissileName(const char **holdBuf)
 	int len;
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -1050,7 +1050,7 @@ void WPN_AltMissileName(const char **holdBuf)
 	int len;
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -1074,7 +1074,7 @@ void WPN_MissileHitSound(const char **holdBuf)
 	int len;
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -1096,7 +1096,7 @@ void WPN_AltMissileHitSound(const char **holdBuf)
 	int len;
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -1118,7 +1118,7 @@ void WPN_MissileSound(const char **holdBuf)
 	int len;
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -1142,7 +1142,7 @@ void WPN_AltMissileSound(const char **holdBuf)
 	int len;
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -1167,13 +1167,13 @@ void WPN_MissileLightColor(const char **holdBuf)
 
 	for (i=0;i<3;++i)
 	{
-		if ( COM_ParseFloat(holdBuf,&tokenFlt))
+		if (COM_ParseFloat(holdBuf,&tokenFlt))
 		{
 			SkipRestOfLine(holdBuf);
 			continue;
 		}
 
-		if ((tokenFlt < 0) || (tokenFlt > 1 ))
+		if ((tokenFlt < 0) || (tokenFlt > 1))
 		{
 			gi.Printf(S_COLOR_YELLOW"WARNING: bad missilelightcolor in external weapon data '%f'\n", tokenFlt);
 			continue;
@@ -1191,13 +1191,13 @@ void WPN_AltMissileLightColor(const char **holdBuf)
 
 	for (i=0;i<3;++i)
 	{
-		if ( COM_ParseFloat(holdBuf,&tokenFlt))
+		if (COM_ParseFloat(holdBuf,&tokenFlt))
 		{
 			SkipRestOfLine(holdBuf);
 			continue;
 		}
 
-		if ((tokenFlt < 0) || (tokenFlt > 1 ))
+		if ((tokenFlt < 0) || (tokenFlt > 1))
 		{
 			gi.Printf(S_COLOR_YELLOW"WARNING: bad altmissilelightcolor in external weapon data '%f'\n", tokenFlt);
 			continue;
@@ -1213,12 +1213,12 @@ void WPN_MissileLight(const char **holdBuf)
 {
 	float	tokenFlt;
 
-	if ( COM_ParseFloat(holdBuf,&tokenFlt))
+	if (COM_ParseFloat(holdBuf,&tokenFlt))
 	{
 		SkipRestOfLine(holdBuf);
 	}
 
-	if ((tokenFlt < 0) || (tokenFlt > 255 )) // FIXME :What are the right values?
+	if ((tokenFlt < 0) || (tokenFlt > 255)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad missilelight in external weapon data '%f'\n", tokenFlt);
 	}
@@ -1230,12 +1230,12 @@ void WPN_AltMissileLight(const char **holdBuf)
 {
 	float	tokenFlt;
 
-	if ( COM_ParseFloat(holdBuf,&tokenFlt))
+	if (COM_ParseFloat(holdBuf,&tokenFlt))
 	{
 		SkipRestOfLine(holdBuf);
 	}
 
-	if ((tokenFlt < 0) || (tokenFlt > 255 )) // FIXME :What are the right values?
+	if ((tokenFlt < 0) || (tokenFlt > 255)) // FIXME :What are the right values?
 	{
 		gi.Printf(S_COLOR_YELLOW"WARNING: bad altmissilelight in external weapon data '%f'\n", tokenFlt);
 	}
@@ -1248,7 +1248,7 @@ void WPN_FuncName(const char **holdBuf)
 {
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -1261,8 +1261,8 @@ void WPN_FuncName(const char **holdBuf)
 		gi.Printf(S_COLOR_YELLOW"WARNING: FuncName '%s' too long in external WEAPONS.DAT\n", tokenStr);
 	}
 
-	for ( func_t* s=funcs ; s->name ; s++ ) {
-		if ( !Q_stricmp(s->name, tokenStr) ) {
+	for (func_t* s=funcs ; s->name ; s++) {
+		if (!Q_stricmp(s->name, tokenStr)) {
 			// found it
 			weaponData[wpnParms.weaponNum].func = (void*)s->func;
 			return;
@@ -1277,7 +1277,7 @@ void WPN_AltFuncName(const char **holdBuf)
 {
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
@@ -1290,8 +1290,8 @@ void WPN_AltFuncName(const char **holdBuf)
 		gi.Printf(S_COLOR_YELLOW"WARNING: AltFuncName '%s' too long in external WEAPONS.DAT\n", tokenStr);
 	}
 
-	for ( func_t* s=funcs ; s->name ; s++ ) {
-		if ( !Q_stricmp(s->name, tokenStr) ) {
+	for (func_t* s=funcs ; s->name ; s++) {
+		if (!Q_stricmp(s->name, tokenStr)) {
 			// found it
 			weaponData[wpnParms.weaponNum].altfunc = (void*)s->func;
 			return;
@@ -1305,11 +1305,11 @@ void WPN_MuzzleEffect(const char **holdBuf)
 {
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
-	size_t len = strlen( tokenStr );
+	size_t len = strlen(tokenStr);
 
 	len++;
 	if (len > 64)
@@ -1318,7 +1318,7 @@ void WPN_MuzzleEffect(const char **holdBuf)
 		gi.Printf(S_COLOR_YELLOW"WARNING: MuzzleEffect '%s' too long in external WEAPONS.DAT\n", tokenStr);
 	}
 
-	G_EffectIndex( tokenStr );
+	G_EffectIndex(tokenStr);
 	Q_strncpyz(weaponData[wpnParms.weaponNum].mMuzzleEffect,tokenStr,len);
 }
 
@@ -1327,11 +1327,11 @@ void WPN_AltMuzzleEffect(const char **holdBuf)
 {
 	const char	*tokenStr;
 
-	if ( COM_ParseString(holdBuf,&tokenStr))
+	if (COM_ParseString(holdBuf,&tokenStr))
 	{
 		return;
 	}
-	size_t len = strlen( tokenStr );
+	size_t len = strlen(tokenStr);
 
 	len++;
 	if (len > 64)
@@ -1340,7 +1340,7 @@ void WPN_AltMuzzleEffect(const char **holdBuf)
 		gi.Printf(S_COLOR_YELLOW"WARNING: AltMuzzleEffect '%s' too long in external WEAPONS.DAT\n", tokenStr);
 	}
 
-	G_EffectIndex( tokenStr );
+	G_EffectIndex(tokenStr);
 	Q_strncpyz(weaponData[wpnParms.weaponNum].mAltMuzzleEffect,tokenStr,len);
 }
 
@@ -1350,7 +1350,7 @@ void WPN_Damage(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if( COM_ParseInt(holdBuf,&tokenInt))
+	if(COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
@@ -1365,7 +1365,7 @@ void WPN_AltDamage(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if( COM_ParseInt(holdBuf,&tokenInt))
+	if(COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
@@ -1380,7 +1380,7 @@ void WPN_SplashDamage(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if( COM_ParseInt(holdBuf,&tokenInt))
+	if(COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
@@ -1395,7 +1395,7 @@ void WPN_SplashRadius(const char **holdBuf)
 {
 	float	tokenFlt;
 
-	if( COM_ParseFloat(holdBuf,&tokenFlt))
+	if(COM_ParseFloat(holdBuf,&tokenFlt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
@@ -1410,7 +1410,7 @@ void WPN_AltSplashDamage(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if( COM_ParseInt(holdBuf,&tokenInt))
+	if(COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
@@ -1425,7 +1425,7 @@ void WPN_AltSplashRadius(const char **holdBuf)
 {
 	float	tokenFlt;
 
-	if( COM_ParseFloat(holdBuf,&tokenFlt))
+	if(COM_ParseFloat(holdBuf,&tokenFlt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
@@ -1443,18 +1443,18 @@ static void WP_ParseParms(const char *buffer)
 	holdBuf = buffer;
 	COM_BeginParseSession();
 
-	while ( holdBuf )
+	while (holdBuf)
 	{
-		token = COM_ParseExt( &holdBuf, qtrue );
+		token = COM_ParseExt(&holdBuf, qtrue);
 
-		if ( !Q_stricmp( token, "{" ) )
+		if (!Q_stricmp(token, "{"))
 		{
 			WP_ParseWeaponParms(&holdBuf);
 		}
 
 	}
 
-	COM_EndParseSession(  );
+	COM_EndParseSession();
 
 }
 
@@ -1487,5 +1487,5 @@ void WP_LoadWeaponParms (void)
 
 	WP_ParseParms(buffer);
 
-	gi.FS_FreeFile( buffer );	//let go of the buffer
+	gi.FS_FreeFile(buffer);	//let go of the buffer
 }

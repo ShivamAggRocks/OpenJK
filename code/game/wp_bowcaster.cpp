@@ -31,7 +31,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //-------------------
 
 //---------------------------------------------------------
-static void WP_BowcasterMainFire( gentity_t *ent )
+static void WP_BowcasterMainFire(gentity_t *ent)
 //---------------------------------------------------------
 {
 	int			damage	= weaponData[WP_BOWCASTER].damage, count;
@@ -39,17 +39,17 @@ static void WP_BowcasterMainFire( gentity_t *ent )
 	vec3_t		angs, dir, start;
 	gentity_t	*missile;
 
-	VectorCopy( muzzle, start );
-	WP_TraceSetStart( ent, start, vec3_origin, vec3_origin );//make sure our start point isn't on the other side of a wall
+	VectorCopy(muzzle, start);
+	WP_TraceSetStart(ent, start, vec3_origin, vec3_origin);//make sure our start point isn't on the other side of a wall
 
 	// Do the damages
-	if ( ent->s.number != 0 )
+	if (ent->s.number != 0)
 	{
-		if ( g_spskill->integer == 0 )
+		if (g_spskill->integer == 0)
 		{
 			damage = BOWCASTER_NPC_DAMAGE_EASY;
 		}
-		else if ( g_spskill->integer == 1 )
+		else if (g_spskill->integer == 1)
 		{
 			damage = BOWCASTER_NPC_DAMAGE_NORMAL;
 		}
@@ -59,62 +59,62 @@ static void WP_BowcasterMainFire( gentity_t *ent )
 		}
 	}
 
-	count = ( level.time - ent->client->ps.weaponChargeTime ) / BOWCASTER_CHARGE_UNIT;
+	count = (level.time - ent->client->ps.weaponChargeTime) / BOWCASTER_CHARGE_UNIT;
 
-	if ( count < 1 )
+	if (count < 1)
 	{
 		count = 1;
 	}
-	else if ( count > 5 )
+	else if (count > 5)
 	{
 		count = 5;
 	}
 
-	if ( !(count & 1 ))
+	if (!(count & 1))
 	{
 		// if we aren't odd, knock us down a level
 		count--;
 	}
 
-//	if ( ent->client && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > 0 && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > cg.time )
+//	if (ent->client && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > 0 && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > cg.time)
 //	{
 //		// in overcharge mode, so doing double damage
 //		damage *= 2;
 //	}
 
 	WP_MissileTargetHint(ent, start, forwardVec);
-	for ( int i = 0; i < count; i++ )
+	for (int i = 0; i < count; i++)
 	{
 		// create a range of different velocities
-		vel = BOWCASTER_VELOCITY * ( Q_flrand(-1.0f, 1.0f) * BOWCASTER_VEL_RANGE + 1.0f );
+		vel = BOWCASTER_VELOCITY * (Q_flrand(-1.0f, 1.0f) * BOWCASTER_VEL_RANGE + 1.0f);
 
-		vectoangles( forwardVec, angs );
+		vectoangles(forwardVec, angs);
 
-		if ( !(ent->client->ps.forcePowersActive&(1<<FP_SEE))
-			|| ent->client->ps.forcePowerLevel[FP_SEE] < FORCE_LEVEL_2 )
+		if (!(ent->client->ps.forcePowersActive&(1<<FP_SEE))
+			|| ent->client->ps.forcePowerLevel[FP_SEE] < FORCE_LEVEL_2)
 		{//force sight 2+ gives perfect aim
 			//FIXME: maybe force sight level 3 autoaims some?
 			// add some slop to the fire direction
 			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BOWCASTER_ALT_SPREAD * 0.2f;
-			angs[YAW]	+= ((i+0.5f) * BOWCASTER_ALT_SPREAD - count * 0.5f * BOWCASTER_ALT_SPREAD );
-			if ( ent->NPC )
+			angs[YAW]	+= ((i+0.5f) * BOWCASTER_ALT_SPREAD - count * 0.5f * BOWCASTER_ALT_SPREAD);
+			if (ent->NPC)
 			{
-				angs[PITCH] += ( Q_flrand(-1.0f, 1.0f) * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f) );
-				angs[YAW]	+= ( Q_flrand(-1.0f, 1.0f) * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f) );
+				angs[PITCH] += (Q_flrand(-1.0f, 1.0f) * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));
+				angs[YAW]	+= (Q_flrand(-1.0f, 1.0f) * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));
 			}
 		}
 
-		AngleVectors( angs, dir, NULL, NULL );
+		AngleVectors(angs, dir, NULL, NULL);
 
-		missile = CreateMissile( start, dir, vel, 10000, ent );
+		missile = CreateMissile(start, dir, vel, 10000, ent);
 
 		missile->classname = "bowcaster_proj";
 		missile->s.weapon = WP_BOWCASTER;
 
-		VectorSet( missile->maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE );
-		VectorScale( missile->maxs, -1, missile->mins );
+		VectorSet(missile->maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
+		VectorScale(missile->maxs, -1, missile->mins);
 
-//		if ( ent->client && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > 0 && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > cg.time )
+//		if (ent->client && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > 0 && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > cg.time)
 //		{
 //			missile->flags |= FL_OVERCHARGED;
 //		}
@@ -133,30 +133,30 @@ static void WP_BowcasterMainFire( gentity_t *ent )
 }
 
 //---------------------------------------------------------
-static void WP_BowcasterAltFire( gentity_t *ent )
+static void WP_BowcasterAltFire(gentity_t *ent)
 //---------------------------------------------------------
 {
 	vec3_t	start;
 	int		damage	= weaponData[WP_BOWCASTER].altDamage;
 
-	VectorCopy( muzzle, start );
-	WP_TraceSetStart( ent, start, vec3_origin, vec3_origin );//make sure our start point isn't on the other side of a wall
+	VectorCopy(muzzle, start);
+	WP_TraceSetStart(ent, start, vec3_origin, vec3_origin);//make sure our start point isn't on the other side of a wall
 
 	WP_MissileTargetHint(ent, start, forwardVec);
 
-	gentity_t *missile = CreateMissile( start, forwardVec, BOWCASTER_VELOCITY, 10000, ent, qtrue );
+	gentity_t *missile = CreateMissile(start, forwardVec, BOWCASTER_VELOCITY, 10000, ent, qtrue);
 
 	missile->classname = "bowcaster_alt_proj";
 	missile->s.weapon = WP_BOWCASTER;
 
 	// Do the damages
-	if ( ent->s.number != 0 )
+	if (ent->s.number != 0)
 	{
-		if ( g_spskill->integer == 0 )
+		if (g_spskill->integer == 0)
 		{
 			damage = BOWCASTER_NPC_DAMAGE_EASY;
 		}
-		else if ( g_spskill->integer == 1 )
+		else if (g_spskill->integer == 1)
 		{
 			damage = BOWCASTER_NPC_DAMAGE_NORMAL;
 		}
@@ -166,10 +166,10 @@ static void WP_BowcasterAltFire( gentity_t *ent )
 		}
 	}
 
-	VectorSet( missile->maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE );
-	VectorScale( missile->maxs, -1, missile->mins );
+	VectorSet(missile->maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
+	VectorScale(missile->maxs, -1, missile->mins);
 
-//	if ( ent->client && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > 0 && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > cg.time )
+//	if (ent->client && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > 0 && ent->client->ps.powerups[PW_WEAPON_OVERCHARGE] > cg.time)
 //	{
 //		// in overcharge mode, so doing double damage
 //		missile->flags |= FL_OVERCHARGED;
@@ -188,15 +188,15 @@ static void WP_BowcasterAltFire( gentity_t *ent )
 }
 
 //---------------------------------------------------------
-void WP_FireBowcaster( gentity_t *ent, qboolean alt_fire )
+void WP_FireBowcaster(gentity_t *ent, qboolean alt_fire)
 //---------------------------------------------------------
 {
-	if ( alt_fire )
+	if (alt_fire)
 	{
-		WP_BowcasterAltFire( ent );
+		WP_BowcasterAltFire(ent);
 	}
 	else
 	{
-		WP_BowcasterMainFire( ent );
+		WP_BowcasterMainFire(ent);
 	}
 }

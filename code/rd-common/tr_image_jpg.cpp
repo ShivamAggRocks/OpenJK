@@ -59,11 +59,11 @@ static void R_JPGOutputMessage(j_common_ptr cinfo)
 	Com_Printf("%s\n", buffer);
 }
 
-void LoadJPG( const char *filename, unsigned char **pic, int *width, int *height ) {
+void LoadJPG(const char *filename, unsigned char **pic, int *width, int *height) {
 	/* This struct contains the JPEG decompression parameters and pointers to
 	* working space (which is allocated as needed by the JPEG library).
 	*/
-	struct jpeg_decompress_struct cinfo = { NULL };
+	struct jpeg_decompress_struct cinfo = {NULL};
 	/* We use our private extension JPEG error handler.
 	* Note that this struct must live as long as the main JPEG parameter
 	* struct, to avoid dangling-pointer problems.
@@ -94,7 +94,7 @@ void LoadJPG( const char *filename, unsigned char **pic, int *width, int *height
 	* requires it in order to read binary files.
 	*/
 
-	int len = ri.FS_ReadFile ( ( char * ) filename, &fbuffer.v);
+	int len = ri.FS_ReadFile ((char *) filename, &fbuffer.v);
 	if (!fbuffer.b || len < 0) {
 		return;
 	}
@@ -158,7 +158,7 @@ void LoadJPG( const char *filename, unsigned char **pic, int *width, int *height
 		ri.FS_FreeFile (fbuffer.v);
 		jpeg_destroy_decompress(&cinfo);
 
-		ri.Printf( PRINT_ALL, "LoadJPG: %s has an invalid image format: %dx%d*4=%d, components: %d", filename,
+		ri.Printf(PRINT_ALL, "LoadJPG: %s has an invalid image format: %dx%d*4=%d, components: %d", filename,
 			cinfo.output_width, cinfo.output_height, pixelcount * 4, cinfo.output_components);
 		return;
 	}
@@ -227,11 +227,11 @@ void LoadJPG( const char *filename, unsigned char **pic, int *width, int *height
 }
 
 #ifdef JK2_MODE
-void LoadJPGFromBuffer( byte *inputBuffer, size_t len, unsigned char **pic, int *width, int *height ) {
+void LoadJPGFromBuffer(byte *inputBuffer, size_t len, unsigned char **pic, int *width, int *height) {
 	/* This struct contains the JPEG decompression parameters and pointers to
 	 * working space (which is allocated as needed by the JPEG library).
 	 */
-	struct jpeg_decompress_struct cinfo = { NULL };
+	struct jpeg_decompress_struct cinfo = {NULL};
 	/* We use our private extension JPEG error handler.
 	 * Note that this struct must live as long as the main JPEG parameter
 	 * struct, to avoid dangling-pointer problems.
@@ -310,12 +310,12 @@ void LoadJPGFromBuffer( byte *inputBuffer, size_t len, unsigned char **pic, int 
 	if(!cinfo.output_width || !cinfo.output_height
 	   || ((pixelcount * 4) / cinfo.output_width) / 4 != cinfo.output_height
 	   || pixelcount > 0x1FFFFFFF || cinfo.output_components != 3
-	   )
+	  )
 	{
 		// Free the memory to make sure we don't leak memory
 		jpeg_destroy_decompress(&cinfo);
 
-		ri.Printf( PRINT_ALL, "LoadJPG: invalid image format: %dx%d*4=%d, components: %d",
+		ri.Printf(PRINT_ALL, "LoadJPG: invalid image format: %dx%d*4=%d, components: %d",
 				  cinfo.output_width, cinfo.output_height, pixelcount * 4, cinfo.output_components);
 		return;
 	}
@@ -575,7 +575,7 @@ void RE_SaveJPG(const char * filename, int quality, int image_width, int image_h
 	size_t bufSize;
 
 	bufSize = image_width * image_height * 3;
-	out = (byte *) R_Malloc( bufSize, TAG_TEMP_WORKSPACE, qfalse );
+	out = (byte *) R_Malloc(bufSize, TAG_TEMP_WORKSPACE, qfalse);
 
 	bufSize = RE_SaveJPGToBuffer(out, bufSize, quality, image_width, image_height, image_buffer, padding, false);
 	ri.FS_WriteFile(filename, out, bufSize);

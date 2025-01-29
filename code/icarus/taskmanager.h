@@ -54,29 +54,29 @@ public:
 	CTask();
 	~CTask();
 
-	static CTask *Create( int GUID, CBlock *block );
+	static CTask *Create(int GUID, CBlock *block);
 
-	void	Free( void );
+	void	Free(void);
 
-	unsigned int	GetTimeStamp( void )	const	{	return m_timeStamp;				}
-	CBlock	*GetBlock( void )		const	{	return m_block;					}
-	int		GetGUID( void)			const	{	return m_id;					}
-	int		GetID( void )			const	{	return m_block->GetBlockID();	}
+	unsigned int	GetTimeStamp(void)	const	{	return m_timeStamp;				}
+	CBlock	*GetBlock(void)		const	{	return m_block;					}
+	int		GetGUID(void)			const	{	return m_id;					}
+	int		GetID(void)			const	{	return m_block->GetBlockID();	}
 
-	void	SetTimeStamp( unsigned int	timeStamp )		{	m_timeStamp = timeStamp;	}
-	void	SetBlock( CBlock *block )			{	m_block = block;			}
-	void	SetGUID( int id )					{	m_id = id;					}
+	void	SetTimeStamp(unsigned int	timeStamp)		{	m_timeStamp = timeStamp;	}
+	void	SetBlock(CBlock *block)			{	m_block = block;			}
+	void	SetGUID(int id)					{	m_id = id;					}
 
 	// Overloaded new operator.
-	inline void *operator new( size_t size )
+	inline void *operator new(size_t size)
 	{	// Allocate the memory.
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 
 	// Overloaded delete operator.
-	inline void operator delete( void *pRawData )
+	inline void operator delete(void *pRawData)
 	{	// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
 protected:
@@ -94,32 +94,32 @@ public:
 
 	typedef std::map < int, bool > taskCallback_m;
 
-	CTaskGroup( void );
-	~CTaskGroup( void );
+	CTaskGroup(void);
+	~CTaskGroup(void);
 
-	void Init( void );
+	void Init(void);
 
-	int Add( CTask *task );
+	int Add(CTask *task);
 
-	void SetGUID( int GUID );
-	void SetParent( CTaskGroup *group )	{	m_parent = group;	}
+	void SetGUID(int GUID);
+	void SetParent(CTaskGroup *group)	{	m_parent = group;	}
 
-	bool Complete(void)		const { return ( m_numCompleted == m_completedTasks.size() ); }
+	bool Complete(void)		const {return (m_numCompleted == m_completedTasks.size());}
 
-	bool MarkTaskComplete( int id );
+	bool MarkTaskComplete(int id);
 
-	CTaskGroup *GetParent( void )	const	{	return m_parent;	}
-	int	GetGUID( void )				const	{	return m_GUID;		}
+	CTaskGroup *GetParent(void)	const	{	return m_parent;	}
+	int	GetGUID(void)				const	{	return m_GUID;		}
 
 	// Overloaded new operator.
-	static void *operator new( size_t size )
+	static void *operator new(size_t size)
 	{	// Allocate the memory.
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 	// Overloaded delete operator.
-	static void operator delete( void *pRawData )
+	static void operator delete(void *pRawData)
 	{	// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
 //protected:
@@ -151,77 +151,77 @@ public:
 
 	int GetID();
 
-	static CTaskManager *Create( void );
+	static CTaskManager *Create(void);
 
-	CBlock *GetCurrentTask( void );
+	CBlock *GetCurrentTask(void);
 
-	int Init( CSequencer *owner );
-	int	Free( void );
+	int Init(CSequencer *owner);
+	int	Free(void);
 
-	int	Flush( void );
+	int	Flush(void);
 
-	int	SetCommand( CBlock *block, int type, CIcarus* icarus );
-	int Completed( int id );
+	int	SetCommand(CBlock *block, int type, CIcarus* icarus);
+	int Completed(int id);
 
-	int Update( CIcarus* icarus );
-	int IsRunning( void ) const { return(!m_tasks.empty()); };
-	bool IsResident( void ) const { return m_resident;};
+	int Update(CIcarus* icarus);
+	int IsRunning(void) const {return(!m_tasks.empty());};
+	bool IsResident(void) const {return m_resident;};
 
-	CTaskGroup *AddTaskGroup( const char *name , CIcarus* icarus);
-	CTaskGroup *GetTaskGroup( const char *name, CIcarus* icarus);
-	CTaskGroup *GetTaskGroup( int id, CIcarus* icarus );
+	CTaskGroup *AddTaskGroup(const char *name , CIcarus* icarus);
+	CTaskGroup *GetTaskGroup(const char *name, CIcarus* icarus);
+	CTaskGroup *GetTaskGroup(int id, CIcarus* icarus);
 
-	int MarkTask( int id, int operation, CIcarus* icarus );
-	CBlock *RecallTask( void );
+	int MarkTask(int id, int operation, CIcarus* icarus);
+	CBlock *RecallTask(void);
 
 	void Save();
-	void Load( CIcarus* icarus );
+	void Load(CIcarus* icarus);
 
 	// Overloaded new operator.
-	inline void* operator new( size_t size )
+	inline void* operator new(size_t size)
 	{	// Allocate the memory.
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 
 	// Overloaded delete operator.
-	inline void operator delete( void *pRawData )
+	inline void operator delete(void *pRawData)
 	{	// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
 protected:
 
-	int	Go( CIcarus* icarus );	//Heartbeat function called once per game frame
-	int CallbackCommand( CTask *task, int returnCode, CIcarus* icarus );
+	int	Go(CIcarus* icarus);	//Heartbeat function called once per game frame
+	int CallbackCommand(CTask *task, int returnCode, CIcarus* icarus);
 
-	inline bool Check( int targetID, CBlock *block, int memberNum ) const;
+	inline bool Check(int targetID, CBlock *block, int memberNum) const;
 
-	int GetVector( int entID, CBlock *block, int &memberNum, vec3_t &value, CIcarus* icarus );
-	int GetFloat( int entID, CBlock *block, int &memberNum, float &value, CIcarus* icarus );
-	int Get( int entID, CBlock *block, int &memberNum, char **value, CIcarus* icarus );
+	int GetVector(int entID, CBlock *block, int &memberNum, vec3_t &value, CIcarus* icarus);
+	int GetFloat(int entID, CBlock *block, int &memberNum, float &value, CIcarus* icarus);
+	int Get(int entID, CBlock *block, int &memberNum, char **value, CIcarus* icarus);
 
-	int	PushTask( CTask *task, int flag );
-	CTask *PopTask( int flag );
+	int	PushTask(CTask *task, int flag);
+	CTask *PopTask(int flag);
 
 	// Task functions
-	int Rotate( CTask *task, CIcarus* icarus );
-	int Remove( CTask *task , CIcarus* icarus);
-	int Camera( CTask *task, CIcarus* icarus );
-	int Print( CTask *task , CIcarus* icarus);
-	int Sound( CTask *task, CIcarus* icarus );
-	int Move( CTask *task , CIcarus* icarus);
-	int Kill( CTask *task , CIcarus* icarus);
-	int Set( CTask *task, CIcarus* icarus );
-	int Use( CTask *task , CIcarus* icarus);
-	int DeclareVariable( CTask *task , CIcarus* icarus);
-	int FreeVariable( CTask *task, CIcarus* icarus );
-	int Signal( CTask *task , CIcarus* icarus);
-	int Play( CTask *task , CIcarus* icarus);
+	int Rotate(CTask *task, CIcarus* icarus);
+	int Remove(CTask *task , CIcarus* icarus);
+	int Camera(CTask *task, CIcarus* icarus);
+	int Print(CTask *task , CIcarus* icarus);
+	int Sound(CTask *task, CIcarus* icarus);
+	int Move(CTask *task , CIcarus* icarus);
+	int Kill(CTask *task , CIcarus* icarus);
+	int Set(CTask *task, CIcarus* icarus);
+	int Use(CTask *task , CIcarus* icarus);
+	int DeclareVariable(CTask *task , CIcarus* icarus);
+	int FreeVariable(CTask *task, CIcarus* icarus);
+	int Signal(CTask *task , CIcarus* icarus);
+	int Play(CTask *task , CIcarus* icarus);
 
-	int Wait( CTask *task, bool &completed, CIcarus* icarus );
-	int WaitSignal( CTask *task, bool &completed, CIcarus* icarus);
+	int Wait(CTask *task, bool &completed, CIcarus* icarus);
+	int WaitSignal(CTask *task, bool &completed, CIcarus* icarus);
 
-	int	SaveCommand( CBlock *block );
+	int	SaveCommand(CBlock *block);
 
 	// Variables
 

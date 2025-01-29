@@ -114,7 +114,7 @@ struct CreditData_t
 
 	qboolean Running(void)
 	{
-		return (qboolean)( CreditCards.size() || CreditLines.size() );
+		return (qboolean)(CreditCards.size() || CreditLines.size());
 	}
 };
 
@@ -137,7 +137,7 @@ static const char *Capitalize(const char *psTest)
 
 // cope with hyphenated names and initials (awkward gits)...
 //
-static bool CountsAsWhiteSpaceForCaps( unsigned /* avoid euro-char sign-extend assert within isspace()*/char c )
+static bool CountsAsWhiteSpaceForCaps(unsigned /* avoid euro-char sign-extend assert within isspace()*/char c)
 {
 	return !!(isspace(c) || c == '-' || c == '.' || c == '(' || c == ')' || c=='\'');
 }
@@ -194,7 +194,7 @@ static const char *GetSubString(std::string &strResult)
 	Q_strncpyz(sTemp,strResult.c_str(),sizeof(sTemp));
 
 	char *psSemiColon = strchr(sTemp,';');
-	if (  psSemiColon)
+	if ( psSemiColon)
 	{
 		 *psSemiColon = '\0';
 
@@ -223,17 +223,17 @@ static bool SortBySurname(const StringAndSize_t &str1, const StringAndSize_t &st
 
 
 
-void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
+void CG_Credits_Init(const char *psStripReference, vec4_t *pv4Color)
 {
 	// Play the light side end credits music.
-	if ( g_entities[0].client->sess.mission_objectives[0].status != 2 )
+	if (g_entities[0].client->sess.mission_objectives[0].status != 2)
 	{
-		cgi_S_StartBackgroundTrack( "music/endcredits.mp3", NULL, qfalse );
+		cgi_S_StartBackgroundTrack("music/endcredits.mp3", NULL, qfalse);
 	}
 	// Play the dark side end credits music.
 	else
 	{
-		cgi_S_StartBackgroundTrack( "music/vjun3/vjun3_explore.mp3", NULL, qfalse );
+		cgi_S_StartBackgroundTrack("music/vjun3/vjun3_explore.mp3", NULL, qfalse);
 	}
 
 	// could make these into parameters later, but for now...
@@ -245,7 +245,7 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 
 	// first, ask the strlen of the final string...
 	//
-	int iStrLen = cgi_SP_GetStringTextString( psStripReference, NULL, 0 );
+	int iStrLen = cgi_SP_GetStringTextString(psStripReference, NULL, 0);
 	if (!iStrLen)
 	{
 #ifndef FINAL_BUILD
@@ -256,11 +256,11 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 	//
 	// malloc space to hold it...
 	//
-	char *psMallocText = (char *) cgi_Z_Malloc( iStrLen+1, TAG_TEMP_WORKSPACE );
+	char *psMallocText = (char *) cgi_Z_Malloc(iStrLen+1, TAG_TEMP_WORKSPACE);
 	//
 	// now get the string...
 	//
-	iStrLen = cgi_SP_GetStringTextString( psStripReference, psMallocText, iStrLen+1 );
+	iStrLen = cgi_SP_GetStringTextString(psStripReference, psMallocText, iStrLen+1);
 	//ensure we found a match
 	if (!iStrLen)
 	{
@@ -309,7 +309,7 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 				continue;	// unless it's a space at the start of a line, in which case ignore it.
 			}
 
-			if (uiLetter == '\n' || uiLetter == '\0' )
+			if (uiLetter == '\n' || uiLetter == '\0')
 			{
 				// have we got a command word?...
 				//
@@ -326,7 +326,7 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 						else
 						{
 							#ifndef FINAL_BUILD
-							Com_Printf( S_COLOR_YELLOW "CG_Credits_Init(): No current support for cards after scroll!\n" );
+							Com_Printf(S_COLOR_YELLOW "CG_Credits_Init(): No current support for cards after scroll!\n");
 							#endif
 							eMode = eNothing;
 						}
@@ -356,7 +356,7 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 					else
 					{
 						#ifndef FINAL_BUILD
-						Com_Printf( S_COLOR_YELLOW "CG_Credits_Init(): bad keyword \"%s\"!\n", sLine );
+						Com_Printf(S_COLOR_YELLOW "CG_Credits_Init(): bad keyword \"%s\"!\n", sLine);
 						#endif
 						eMode = eNothing;
 					}
@@ -407,7 +407,7 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 									CreditLine.iLine	= iLineNumber++;
 									CreditLine.strText	= sLine;
 
-					CreditData.CreditLines.push_back( CreditLine );
+					CreditData.CreditLines.push_back(CreditLine);
 				}
 				break;
 
@@ -427,7 +427,7 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 						}
 						else
 						{
-							CreditLine.vstrText.push_back( UpperCaseFirstLettersOnly(p) );
+							CreditLine.vstrText.push_back(UpperCaseFirstLettersOnly(p));
 						}
 					}
 
@@ -435,9 +435,9 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 					{
 						// sort entries RHS dotted entries by alpha...
 						//
-						std::sort( CreditLine.vstrText.begin(), CreditLine.vstrText.end(), SortBySurname );
+						std::sort(CreditLine.vstrText.begin(), CreditLine.vstrText.end(), SortBySurname);
 
-						CreditData.CreditLines.push_back( CreditLine );
+						CreditData.CreditLines.push_back(CreditLine);
 						iLineNumber += CreditLine.vstrText.size();
 					}
 				}
@@ -451,7 +451,7 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 									CreditLine.iLine	= iLineNumber++;
 									CreditLine.strText	= Capitalize(sLine);
 
-					CreditData.CreditLines.push_back( CreditLine );
+					CreditData.CreditLines.push_back(CreditLine);
 
 					iLineNumber++;	// trailing blank line
 					break;
@@ -466,11 +466,11 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 					{
 						if (CreditCard.strTitle.IsEmpty())
 						{
-							CreditCard.strTitle = Capitalize( p );
+							CreditCard.strTitle = Capitalize(p);
 						}
 						else
 						{
-							CreditCard.vstrText.push_back( UpperCaseFirstLettersOnly( p ) );
+							CreditCard.vstrText.push_back(UpperCaseFirstLettersOnly(p));
 						}
 					}
 
@@ -478,7 +478,7 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 					{
 						// sort entries by alpha...
 						//
-						std::sort( CreditCard.vstrText.begin(), CreditCard.vstrText.end(), SortBySurname );
+						std::sort(CreditCard.vstrText.begin(), CreditCard.vstrText.end(), SortBySurname);
 
 						CreditData.CreditCards.push_back(CreditCard);
 					}
@@ -494,20 +494,20 @@ void CG_Credits_Init( const char *psStripReference, vec4_t *pv4Color)
 	CreditData.iStartTime = cg.time;
 }
 
-qboolean CG_Credits_Running( void )
+qboolean CG_Credits_Running(void)
 {
 	return CreditData.Running();
 }
 
 // returns qtrue if still drawing...
 //
-qboolean CG_Credits_Draw( void )
+qboolean CG_Credits_Draw(void)
 {
-	if ( CG_Credits_Running() )
+	if (CG_Credits_Running())
 	{
 		const int iFontHeight = (int) (1.5f * (float) cgi_R_Font_HeightPixels(ghFontHandle, gfFontScale));	// taiwanese & japanese need 1.5 fontheight spacing
 
-//		cgi_R_SetColor( *gpv4Color );
+//		cgi_R_SetColor(*gpv4Color);
 
 		// display cards first...
 		//
@@ -582,7 +582,7 @@ qboolean CG_Credits_Draw( void )
 			{
 				// yep, so erase the first entry (which will trigger the next one to be initialised on re-entry)...
 				//
-				CreditData.CreditCards.erase( CreditData.CreditCards.begin() );
+				CreditData.CreditCards.erase(CreditData.CreditCards.begin());
 
 				if (!CreditData.CreditCards.size())
 				{
@@ -616,12 +616,12 @@ qboolean CG_Credits_Draw( void )
 					int iYpos = SCREEN_HEIGHT + (CreditLine.iLine * iFontHeight);
 						iYpos-= (int) (fPixelsPerSecond * fSecondsElapsed);
 
-					int iTextLinesThisItem = Q_max( (int)CreditLine.vstrText.size(), 1);
+					int iTextLinesThisItem = Q_max((int)CreditLine.vstrText.size(), 1);
 					if (iYpos + (iTextLinesThisItem * iFontHeight) < 0)
 					{
 						// scrolled off top of screen, so erase it...
 						//
-						it = CreditData.CreditLines.erase( it );
+						it = CreditData.CreditLines.erase(it);
 						bEraseOccured = true;
 					}
 					else

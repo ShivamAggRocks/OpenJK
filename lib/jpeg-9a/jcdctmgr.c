@@ -91,7 +91,7 @@ forward_DCT (j_compress_ptr cinfo, jpeg_component_info * compptr,
     (*do_dct) (workspace, sample_data, start_col);
 
     /* Quantize/descale the coefficients, and store into coef_blocks[] */
-    { register DCTELEM temp, qval;
+    {register DCTELEM temp, qval;
       register int i;
       register JCOEFPTR output_ptr = coef_blocks[bi];
 
@@ -125,9 +125,9 @@ forward_DCT (j_compress_ptr cinfo, jpeg_component_info * compptr,
 	  DIVIDE_BY(temp, qval);
 	}
 	output_ptr[i] = (JCOEF) temp;
-      }
-    }
-  }
+     }
+   }
+ }
 }
 
 
@@ -154,7 +154,7 @@ forward_DCT_float (j_compress_ptr cinfo, jpeg_component_info * compptr,
     (*do_dct) (workspace, sample_data, start_col);
 
     /* Quantize/descale the coefficients, and store into coef_blocks[] */
-    { register FAST_FLOAT temp;
+    {register FAST_FLOAT temp;
       register int i;
       register JCOEFPTR output_ptr = coef_blocks[bi];
 
@@ -168,9 +168,9 @@ forward_DCT_float (j_compress_ptr cinfo, jpeg_component_info * compptr,
 	 * code should work for either 16-bit or 32-bit ints.
 	 */
 	output_ptr[i] = (JCOEF) ((int) (temp + (FAST_FLOAT) 16384.5) - 16384);
-      }
-    }
-  }
+     }
+   }
+ }
 }
 
 #endif /* DCT_FLOAT_SUPPORTED */
@@ -348,13 +348,13 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
       default:
 	ERREXIT(cinfo, JERR_NOT_COMPILED);
 	break;
-      }
+     }
       break;
     default:
       ERREXIT2(cinfo, JERR_BAD_DCTSIZE,
 	       compptr->DCT_h_scaled_size, compptr->DCT_v_scaled_size);
       break;
-    }
+   }
     qtblno = compptr->quant_tbl_no;
     /* Make sure specified quantization table is present */
     if (qtblno < 0 || qtblno >= NUM_QUANT_TBLS ||
@@ -372,7 +372,7 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
       for (i = 0; i < DCTSIZE2; i++) {
 	dtbl[i] =
 	  ((DCTELEM) qtbl->quantval[i]) << (compptr->component_needed ? 4 : 3);
-      }
+     }
       fdct->pub.forward_DCT[ci] = forward_DCT;
       break;
 #endif
@@ -406,7 +406,7 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
 				  (INT32) aanscales[i]),
 		    compptr->component_needed ? CONST_BITS-4 : CONST_BITS-3);
 	}
-      }
+     }
       fdct->pub.forward_DCT[ci] = forward_DCT;
       break;
 #endif
@@ -436,17 +436,17 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
 		      aanscalefactor[row] * aanscalefactor[col] *
 		      (compptr->component_needed ? 16.0 : 8.0)));
 	    i++;
-	  }
+	 }
 	}
-      }
+     }
       fdct->pub.forward_DCT[ci] = forward_DCT_float;
       break;
 #endif
     default:
       ERREXIT(cinfo, JERR_NOT_COMPILED);
       break;
-    }
-  }
+   }
+ }
 }
 
 
@@ -473,5 +473,5 @@ jinit_forward_dct (j_compress_ptr cinfo)
     compptr->dct_table =
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(divisor_table));
-  }
+ }
 }

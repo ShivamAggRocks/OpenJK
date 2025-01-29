@@ -284,14 +284,14 @@ itemconfig_t *LoadItemConfig(char *filename)
 	{
 		botimport.Print(PRT_ERROR, "max_iteminfo = %d\n", max_iteminfo);
 		max_iteminfo = 256;
-		LibVarSet( "max_iteminfo", "256" );
+		LibVarSet("max_iteminfo", "256");
 	}
 
-	strncpy( path, filename, MAX_PATH );
+	strncpy(path, filename, MAX_PATH);
 	PC_SetBaseFolder(BOTFILESBASEFOLDER);
-	source = LoadSourceFile( path );
-	if( !source ) {
-		botimport.Print( PRT_ERROR, "counldn't load %s\n", path );
+	source = LoadSourceFile(path);
+	if(!source) {
+		botimport.Print(PRT_ERROR, "counldn't load %s\n", path);
 		return NULL;
 	} //end if
 	//initialize item config

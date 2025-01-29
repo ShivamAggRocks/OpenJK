@@ -31,7 +31,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // Cvar callbacks
 //
 
-static void UpdateLegacyFixesConfigstring( legacyFixes_t legacyFix, qboolean enabled ) {
+static void UpdateLegacyFixesConfigstring(legacyFixes_t legacyFix, qboolean enabled) {
 	char sLegacyFixes[32];
 	trap->GetConfigstring(CS_LEGACY_FIXES, sLegacyFixes, sizeof(sLegacyFixes));
 
@@ -66,7 +66,7 @@ typedef struct cvarTable_s {
 	vmCvar_t	*vmCvar;
 	char		*cvarName;
 	char		*defaultString;
-	void		(*update)( void );
+	void		(*update)(void);
 	uint32_t	cvarFlags;
 	qboolean	trackChange; // announce if value changes
 } cvarTable_t;
@@ -80,33 +80,33 @@ static const cvarTable_t gameCvarTable[] = {
 		#include "g_xcvar.h"
 	#undef XCVAR_LIST
 };
-static const size_t gameCvarTableSize = ARRAY_LEN( gameCvarTable );
+static const size_t gameCvarTableSize = ARRAY_LEN(gameCvarTable);
 
-void G_RegisterCvars( void ) {
+void G_RegisterCvars(void) {
 	size_t i = 0;
 	const cvarTable_t *cv = NULL;
 
-	for ( i=0, cv=gameCvarTable; i<gameCvarTableSize; i++, cv++ ) {
-		trap->Cvar_Register( cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags );
-		if ( cv->update )
+	for (i=0, cv=gameCvarTable; i<gameCvarTableSize; i++, cv++) {
+		trap->Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
+		if (cv->update)
 			cv->update();
 	}
 }
 
-void G_UpdateCvars( void ) {
+void G_UpdateCvars(void) {
 	size_t i = 0;
 	const cvarTable_t *cv = NULL;
 
-	for ( i=0, cv=gameCvarTable; i<gameCvarTableSize; i++, cv++ ) {
-		if ( cv->vmCvar ) {
+	for (i=0, cv=gameCvarTable; i<gameCvarTableSize; i++, cv++) {
+		if (cv->vmCvar) {
 			int modCount = cv->vmCvar->modificationCount;
-			trap->Cvar_Update( cv->vmCvar );
-			if ( cv->vmCvar->modificationCount != modCount ) {
-				if ( cv->update )
+			trap->Cvar_Update(cv->vmCvar);
+			if (cv->vmCvar->modificationCount != modCount) {
+				if (cv->update)
 					cv->update();
 
-				if ( cv->trackChange )
-					trap->SendServerCommand( -1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string ) );
+				if (cv->trackChange)
+					trap->SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
 			}
 		}
 	}

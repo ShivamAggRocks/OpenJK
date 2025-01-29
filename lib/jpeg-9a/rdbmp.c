@@ -91,7 +91,7 @@ read_colormap (bmp_source_ptr sinfo, int cmaplen, int mapentrysize)
       sinfo->colormap[2][i] = (JSAMPLE) read_byte(sinfo);
       sinfo->colormap[1][i] = (JSAMPLE) read_byte(sinfo);
       sinfo->colormap[0][i] = (JSAMPLE) read_byte(sinfo);
-    }
+   }
     break;
   case 4:
     /* BGR0 format (occurs in MS Windows files) */
@@ -100,12 +100,12 @@ read_colormap (bmp_source_ptr sinfo, int cmaplen, int mapentrysize)
       sinfo->colormap[1][i] = (JSAMPLE) read_byte(sinfo);
       sinfo->colormap[0][i] = (JSAMPLE) read_byte(sinfo);
       (void) read_byte(sinfo);
-    }
+   }
     break;
   default:
     ERREXIT(sinfo->cinfo, JERR_BMP_BADCMAP);
     break;
-  }
+ }
 }
 
 
@@ -141,7 +141,7 @@ get_8bit_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     *outptr++ = colormap[0][t];	/* can omit GETJSAMPLE() safely */
     *outptr++ = colormap[1][t];
     *outptr++ = colormap[2][t];
-  }
+ }
 
   return 1;
 }
@@ -172,7 +172,7 @@ get_24bit_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     outptr[1] = *inptr++;
     outptr[0] = *inptr++;
     outptr += 3;
-  }
+ }
 
   return 1;
 }
@@ -203,7 +203,7 @@ get_32bit_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     outptr[0] = *inptr++;
     inptr++;			/* skip the 4th byte (Alpha channel) */
     outptr += 3;
-  }
+ }
 
   return 1;
 }
@@ -232,7 +232,7 @@ preload_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
       progress->pub.pass_counter = (long) row;
       progress->pub.pass_limit = (long) cinfo->image_height;
       (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-    }
+   }
     image_ptr = (*cinfo->mem->access_virt_sarray)
       ((j_common_ptr) cinfo, source->whole_image,
        row, (JDIMENSION) 1, TRUE);
@@ -242,8 +242,8 @@ preload_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
       if ((c = getc(infile)) == EOF)
 	ERREXIT(cinfo, JERR_INPUT_EOF);
       *out_ptr++ = (JSAMPLE) c;
-    }
-  }
+   }
+ }
   if (progress != NULL)
     progress->completed_extra_passes++;
 
@@ -260,7 +260,7 @@ preload_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     break;
   default:
     ERREXIT(cinfo, JERR_BMP_BADDEPTH);
-  }
+ }
   source->source_row = cinfo->image_height;
 
   /* And read the first row */
@@ -334,7 +334,7 @@ start_input_bmp (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     default:
       ERREXIT(cinfo, JERR_BMP_BADDEPTH);
       break;
-    }
+   }
     break;
   case 40:
   case 64:
@@ -364,7 +364,7 @@ start_input_bmp (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     default:
       ERREXIT(cinfo, JERR_BMP_BADDEPTH);
       break;
-    }
+   }
     if (biCompression != 0)
       ERREXIT(cinfo, JERR_BMP_COMPRESSED);
 
@@ -373,12 +373,12 @@ start_input_bmp (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
       cinfo->X_density = (UINT16) (biXPelsPerMeter/100); /* 100 cm per meter */
       cinfo->Y_density = (UINT16) (biYPelsPerMeter/100);
       cinfo->density_unit = 2;	/* dots/cm */
-    }
+   }
     break;
   default:
     ERREXIT(cinfo, JERR_BMP_BADHEADER);
     return;
-  }
+ }
 
   if (biWidth <= 0 || biHeight <= 0)
     ERREXIT(cinfo, JERR_BMP_EMPTY);
@@ -402,14 +402,14 @@ start_input_bmp (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     read_colormap(source, (int) biClrUsed, mapentrysize);
     /* account for size of colormap */
     bPad -= biClrUsed * mapentrysize;
-  }
+ }
 
   /* Skip any remaining pad bytes */
   if (bPad < 0)			/* incorrect bfOffBits value? */
     ERREXIT(cinfo, JERR_BMP_BADHEADER);
   while (--bPad >= 0) {
     (void) read_byte(source);
-  }
+ }
 
   /* Compute row width in file, including padding to 4-byte boundary */
   if (source->bits_per_pixel == 24)
@@ -429,7 +429,7 @@ start_input_bmp (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   if (cinfo->progress != NULL) {
     cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
     progress->total_extra_passes++; /* count file input as separate pass */
-  }
+ }
 
   /* Allocate one-row buffer for returned data */
   source->pub.buffer = (*cinfo->mem->alloc_sarray)

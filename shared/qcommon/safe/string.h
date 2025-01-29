@@ -16,28 +16,28 @@ namespace Q
 		EQ = 0,
 		GT = 1
 	};
-	Ordering stricmp( const gsl::cstring_span& lhs, const gsl::cstring_span& rhs ) NOEXCEPT;
+	Ordering stricmp(const gsl::cstring_span& lhs, const gsl::cstring_span& rhs) NOEXCEPT;
 	/// Case-insensitive less comparator for cstring_view; e.g. for case insensitive std::map
 	struct CStringViewILess
 	{
-		bool operator()( const gsl::cstring_span& lhs, const gsl::cstring_span& rhs ) const NOEXCEPT
+		bool operator()(const gsl::cstring_span& lhs, const gsl::cstring_span& rhs) const NOEXCEPT
 		{
-			return stricmp( lhs, rhs ) == Ordering::LT;
+			return stricmp(lhs, rhs) == Ordering::LT;
 		}
 	};
 
-	gsl::cstring_span substr( const gsl::cstring_span& lhs, const std::string::size_type pos = 0, const std::string::size_type count = std::string::npos );
+	gsl::cstring_span substr(const gsl::cstring_span& lhs, const std::string::size_type pos = 0, const std::string::size_type count = std::string::npos);
 
-	int svtoi( const gsl::cstring_span& view );
-	float svtof( const gsl::cstring_span& view );
+	int svtoi(const gsl::cstring_span& view);
+	float svtof(const gsl::cstring_span& view);
 }
 
 // operator<< overloads
 namespace std
 {
-	inline std::ostream& operator<<( std::ostream& stream, Q::Ordering ordering )
+	inline std::ostream& operator<<(std::ostream& stream, Q::Ordering ordering)
 	{
-		switch( ordering )
+		switch(ordering)
 		{
 		case Q::Ordering::EQ:
 			return stream << "EQ";
@@ -46,7 +46,7 @@ namespace std
 		case Q::Ordering::GT:
 			return stream << "GT";
 		default:
-			assert( false );
+			assert(false);
 			return stream;
 		}
 	}

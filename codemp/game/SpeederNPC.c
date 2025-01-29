@@ -27,17 +27,17 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "bg_public.h"
 #include "bg_vehicles.h"
 
-extern float DotToSpot( vec3_t spot, vec3_t from, vec3_t fromAngles );
+extern float DotToSpot(vec3_t spot, vec3_t from, vec3_t fromAngles);
 #ifdef _GAME //SP or gameside MP
 	extern vec3_t playerMins;
 	extern vec3_t playerMaxs;
-	extern void ChangeWeapon( gentity_t *ent, int newWeapon );
-	extern int PM_AnimLength( int index, animNumber_t anim );
+	extern void ChangeWeapon(gentity_t *ent, int newWeapon);
+	extern int PM_AnimLength(int index, animNumber_t anim);
 #endif
 
 extern void BG_SetAnim(playerState_t *ps, animation_t *animations, int setAnimParts,int anim,int setAnimFlags);
 extern int BG_GetTime(void);
-extern qboolean BG_SabersOff( playerState_t *ps );
+extern qboolean BG_SabersOff(playerState_t *ps);
 
 //Alright, actually, most of this file is shared between game and cgame for MP.
 //I would like to keep it this way, so when modifying for SP please keep in
@@ -53,17 +53,17 @@ qboolean VEH_StartStrafeRam(Vehicle_t *pVeh, qboolean Right, int Duration)
 
 #ifdef _GAME //game-only.. for now
 // Like a think or move command, this updates various vehicle properties.
-qboolean Update( Vehicle_t *pVeh, const usercmd_t *pUcmd )
+qboolean Update(Vehicle_t *pVeh, const usercmd_t *pUcmd)
 {
-	if ( !g_vehicleInfo[VEHICLE_BASE].Update( pVeh, pUcmd ) )
+	if (!g_vehicleInfo[VEHICLE_BASE].Update(pVeh, pUcmd))
 	{
 		return qfalse;
 	}
 
 	// See whether this vehicle should be exploding.
-	if ( pVeh->m_iDieTime != 0 )
+	if (pVeh->m_iDieTime != 0)
 	{
-		pVeh->m_pVehicleInfo->DeathUpdate( pVeh );
+		pVeh->m_pVehicleInfo->DeathUpdate(pVeh);
 	}
 
 	// Update move direction.
@@ -79,7 +79,7 @@ qboolean Update( Vehicle_t *pVeh, const usercmd_t *pUcmd )
 //as a gentity, but the MP-compatible access restrictions are based
 //on the bgEntity structure in the MP codebase) -rww
 // ProcessMoveCommands the Vehicle.
-static void ProcessMoveCommands( Vehicle_t *pVeh )
+static void ProcessMoveCommands(Vehicle_t *pVeh)
 {
 	/************************************************************************************/
 	/*	BEGIN	Here is where we move the vehicle (forward or back or whatever). BEGIN	*/
@@ -98,11 +98,11 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 
 	// If we're flying, make us accelerate at 40% (about half) acceleration rate, and restore the pitch
 	// to origin (straight) position (at 5% increments).
-	if ( pVeh->m_ulFlags & VEH_FLYING )
+	if (pVeh->m_ulFlags & VEH_FLYING)
 	{
 		speedInc = pVeh->m_pVehicleInfo->acceleration * pVeh->m_fTimeModifier * 0.4f;
 	}
-	else if ( !parentPS->m_iVehicleNum )
+	else if (!parentPS->m_iVehicleNum)
 	{//drifts to a stop
 		speedInc = 0;
 		//pVeh->m_ucmd.forwardmove = 127;
@@ -122,16 +122,16 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 
 
 
-	if ( (pVeh->m_pPilot /*&& (pilotPS->weapon == WP_NONE || pilotPS->weapon == WP_MELEE )*/ &&
+	if ((pVeh->m_pPilot /*&& (pilotPS->weapon == WP_NONE || pilotPS->weapon == WP_MELEE)*/ &&
 		(pVeh->m_ucmd.buttons & BUTTON_ALT_ATTACK) && pVeh->m_pVehicleInfo->turboSpeed)
 		/*||
 		(parentPS && parentPS->electrifyTime > curTime && pVeh->m_pVehicleInfo->turboSpeed)*/ //make them go!
 		)
 	{
-		if ( (parentPS && parentPS->electrifyTime > curTime) ||
+		if ((parentPS && parentPS->electrifyTime > curTime) ||
 			 (pVeh->m_pPilot->playerState &&
 			  (pVeh->m_pPilot->playerState->weapon == WP_MELEE ||
-			  (pVeh->m_pPilot->playerState->weapon == WP_SABER && BG_SabersOff( pVeh->m_pPilot->playerState ) ))) )
+			  (pVeh->m_pPilot->playerState->weapon == WP_SABER && BG_SabersOff(pVeh->m_pPilot->playerState)))))
 		{
 			if ((curTime - pVeh->m_iTurboTime)>pVeh->m_pVehicleInfo->turboRecharge)
 			{
@@ -145,7 +145,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 						if (pVeh->m_pParentEntity &&
 							pVeh->m_pParentEntity->ghoul2 &&
 							pVeh->m_pParentEntity->playerState)
-						{ //fine, I'll use a tempent for this, but only because it's played only once at the start of a turbo.
+						{//fine, I'll use a tempent for this, but only because it's played only once at the start of a turbo.
 							vec3_t boltOrg, boltDir;
 							mdxaBone_t boltMatrix;
 
@@ -167,7 +167,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 	// Slide Breaking
 	if (pVeh->m_ulFlags&VEH_SLIDEBREAKING)
 	{
-		if (pVeh->m_ucmd.forwardmove>=0 )
+		if (pVeh->m_ucmd.forwardmove>=0)
 		{
 			pVeh->m_ulFlags &= ~VEH_SLIDEBREAKING;
 		}
@@ -183,7 +183,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 	}
 
 
-	if ( curTime < pVeh->m_iTurboTime )
+	if (curTime < pVeh->m_iTurboTime)
 	{
 		speedMax = pVeh->m_pVehicleInfo->turboSpeed;
 		if (parentPS)
@@ -204,37 +204,37 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 	speedIdle = pVeh->m_pVehicleInfo->speedIdle;
 	speedMin = pVeh->m_pVehicleInfo->speedMin;
 
-	if ( parentPS->speed || parentPS->groundEntityNum == ENTITYNUM_NONE  ||
-		 pVeh->m_ucmd.forwardmove || pVeh->m_ucmd.upmove > 0 )
+	if (parentPS->speed || parentPS->groundEntityNum == ENTITYNUM_NONE  ||
+		 pVeh->m_ucmd.forwardmove || pVeh->m_ucmd.upmove > 0)
 	{
-		if ( pVeh->m_ucmd.forwardmove > 0 && speedInc )
+		if (pVeh->m_ucmd.forwardmove > 0 && speedInc)
 		{
 			parentPS->speed += speedInc;
 		}
-		else if ( pVeh->m_ucmd.forwardmove < 0 )
+		else if (pVeh->m_ucmd.forwardmove < 0)
 		{
-			if ( parentPS->speed > speedIdle )
+			if (parentPS->speed > speedIdle)
 			{
 				parentPS->speed -= speedInc;
 			}
-			else if ( parentPS->speed > speedMin )
+			else if (parentPS->speed > speedMin)
 			{
 				parentPS->speed -= speedIdleDec;
 			}
 		}
 		// No input, so coast to stop.
-		else if ( parentPS->speed > 0.0f )
+		else if (parentPS->speed > 0.0f)
 		{
 			parentPS->speed -= speedIdleDec;
-			if ( parentPS->speed < 0.0f )
+			if (parentPS->speed < 0.0f)
 			{
 				parentPS->speed = 0.0f;
 			}
 		}
-		else if ( parentPS->speed < 0.0f )
+		else if (parentPS->speed < 0.0f)
 		{
 			parentPS->speed += speedIdleDec;
-			if ( parentPS->speed > 0.0f )
+			if (parentPS->speed > 0.0f)
 			{
 				parentPS->speed = 0.0f;
 			}
@@ -242,17 +242,17 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 	}
 	else
 	{
-		if ( !pVeh->m_pVehicleInfo->strafePerc || (0 && pVeh->m_pParentEntity->s.number < MAX_CLIENTS) )
+		if (!pVeh->m_pVehicleInfo->strafePerc || (0 && pVeh->m_pParentEntity->s.number < MAX_CLIENTS))
 		{//if in a strafe-capable vehicle, clear strafing unless using alternate control scheme
 			//pVeh->m_ucmd.rightmove = 0;
 		}
 	}
 
-	if ( parentPS->speed > speedMax )
+	if (parentPS->speed > speedMax)
 	{
 		parentPS->speed = speedMax;
 	}
-	else if ( parentPS->speed < speedMin )
+	else if (parentPS->speed < speedMin)
 	{
 		parentPS->speed = speedMin;
 	}
@@ -279,7 +279,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 //and MP. -rww
 // ProcessOrientCommands the Vehicle.
 extern void AnimalProcessOri(Vehicle_t *pVeh);
-void ProcessOrientCommands( Vehicle_t *pVeh )
+void ProcessOrientCommands(Vehicle_t *pVeh)
 {
 	/********************************************************************************/
 	/*	BEGIN	Here is where make sure the vehicle is properly oriented.	BEGIN	*/
@@ -321,7 +321,7 @@ void ProcessOrientCommands( Vehicle_t *pVeh )
 		pVeh->m_vOrientation[YAW] = AngleNormalize180(pVeh->m_vOrientation[YAW] - angDif*(pVeh->m_fTimeModifier*0.2f));
 
 		if (parentPS->electrifyTime > pm->cmd.serverTime)
-		{ //do some crazy stuff
+		{//do some crazy stuff
 			pVeh->m_vOrientation[YAW] += (sin(pm->cmd.serverTime/1000.0f)*3.0f)*pVeh->m_fTimeModifier;
 		}
 	}
@@ -333,10 +333,10 @@ void ProcessOrientCommands( Vehicle_t *pVeh )
 
 #ifdef _GAME
 
-extern int PM_AnimLength( int index, animNumber_t anim );
+extern int PM_AnimLength(int index, animNumber_t anim);
 
 // This function makes sure that the vehicle is properly animated.
-void AnimateVehicle( Vehicle_t *pVeh )
+void AnimateVehicle(Vehicle_t *pVeh)
 {
 }
 
@@ -348,7 +348,7 @@ void AnimateVehicle( Vehicle_t *pVeh )
 //I want to keep this function BG too, because it's fairly generic already, and it
 //would be nice to have proper prediction of animations. -rww
 // This function makes sure that the rider's in this vehicle are properly animated.
-void AnimateRiders( Vehicle_t *pVeh )
+void AnimateRiders(Vehicle_t *pVeh)
 {
 	animNumber_t Anim = BOTH_VS_IDLE;
 	int iFlags = SETANIM_FLAG_NORMAL;
@@ -357,38 +357,38 @@ void AnimateRiders( Vehicle_t *pVeh )
 
 
 	// Boarding animation.
-	if ( pVeh->m_iBoarding != 0 )
+	if (pVeh->m_iBoarding != 0)
 	{
 		// We've just started moarding, set the amount of time it will take to finish moarding.
-		if ( pVeh->m_iBoarding < 0 )
+		if (pVeh->m_iBoarding < 0)
 		{
 			int iAnimLen;
 
 			// Boarding from left...
-			if ( pVeh->m_iBoarding == -1 )
+			if (pVeh->m_iBoarding == -1)
 			{
 				Anim = BOTH_VS_MOUNT_L;
 			}
-			else if ( pVeh->m_iBoarding == -2 )
+			else if (pVeh->m_iBoarding == -2)
 			{
 				Anim = BOTH_VS_MOUNT_R;
 			}
-			else if ( pVeh->m_iBoarding == -3 )
+			else if (pVeh->m_iBoarding == -3)
 			{
 				Anim = BOTH_VS_MOUNTJUMP_L;
 			}
-			else if ( pVeh->m_iBoarding == VEH_MOUNT_THROW_LEFT)
+			else if (pVeh->m_iBoarding == VEH_MOUNT_THROW_LEFT)
 			{
 				Anim = BOTH_VS_MOUNTTHROW_R;
 			}
-			else if ( pVeh->m_iBoarding == VEH_MOUNT_THROW_RIGHT)
+			else if (pVeh->m_iBoarding == VEH_MOUNT_THROW_RIGHT)
 			{
 				Anim = BOTH_VS_MOUNTTHROW_L;
 			}
 
 			// Set the delay time (which happens to be the time it takes for the animation to complete).
 			// NOTE: Here I made it so the delay is actually 40% (0.4f) of the animation time.
-			iAnimLen = BG_AnimLength( pVeh->m_pPilot->localAnimIndex, Anim ) * 0.4f;
+			iAnimLen = BG_AnimLength(pVeh->m_pPilot->localAnimIndex, Anim) * 0.4f;
 			pVeh->m_iBoarding = BG_GetTime() + iAnimLen;
 			// Set the animation, which won't be interrupted until it's completed.
 			// TODO: But what if he's killed? Should the animation remain persistant???
@@ -414,7 +414,7 @@ void AnimateRiders( Vehicle_t *pVeh )
 #endif
 
 	// Going in reverse...
-	if ( pVeh->m_ucmd.forwardmove < 0 && !(pVeh->m_ulFlags & VEH_SLIDEBREAKING))
+	if (pVeh->m_ucmd.forwardmove < 0 && !(pVeh->m_ulFlags & VEH_SLIDEBREAKING))
 	{
 		Anim = BOTH_VS_REV;
 	}
@@ -453,7 +453,7 @@ void AnimateRiders( Vehicle_t *pVeh )
 		}
 		else if (pilotPS->weapon==WP_SABER)
 		{
-			if ( (pVeh->m_ulFlags&VEH_SABERINLEFTHAND) && pilotPS->torsoAnim==BOTH_VS_ATL_TO_R_S)
+			if ((pVeh->m_ulFlags&VEH_SABERINLEFTHAND) && pilotPS->torsoAnim==BOTH_VS_ATL_TO_R_S)
 			{
 				pVeh->m_ulFlags	&= ~VEH_SABERINLEFTHAND;
 			}
@@ -616,10 +616,10 @@ void AnimateRiders( Vehicle_t *pVeh )
 }
 
 #ifndef _GAME
-void AttachRidersGeneric( Vehicle_t *pVeh );
+void AttachRidersGeneric(Vehicle_t *pVeh);
 #endif
 
-void G_SetSpeederVehicleFunctions( vehicleInfo_t *pVehInfo )
+void G_SetSpeederVehicleFunctions(vehicleInfo_t *pVehInfo)
 {
 #ifdef _GAME
 	pVehInfo->AnimateVehicle			=		AnimateVehicle;
@@ -661,7 +661,7 @@ extern void G_AllocateVehicleObject(Vehicle_t **pVeh);
 
 
 // Create/Allocate a new Animal Vehicle (initializing it as well).
-void G_CreateSpeederNPC( Vehicle_t **pVeh, const char *strType )
+void G_CreateSpeederNPC(Vehicle_t **pVeh, const char *strType)
 {
 #ifdef _GAME
 	//these will remain on entities on the client once allocated because the pointer is
@@ -670,10 +670,10 @@ void G_CreateSpeederNPC( Vehicle_t **pVeh, const char *strType )
     G_AllocateVehicleObject(pVeh);
 #else
 	if (!*pVeh)
-	{ //only allocate a new one if we really have to
-		(*pVeh) = (Vehicle_t *) BG_Alloc( sizeof(Vehicle_t) );
+	{//only allocate a new one if we really have to
+		(*pVeh) = (Vehicle_t *) BG_Alloc(sizeof(Vehicle_t));
 	}
 #endif
 	memset(*pVeh, 0, sizeof(Vehicle_t));
-	(*pVeh)->m_pVehicleInfo = &g_vehicleInfo[BG_VehicleGetIndex( strType )];
+	(*pVeh)->m_pVehicleInfo = &g_vehicleInfo[BG_VehicleGetIndex(strType)];
 }

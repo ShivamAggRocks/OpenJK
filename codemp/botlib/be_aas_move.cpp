@@ -1079,7 +1079,7 @@ int AAS_HorizontalVelocityForJump(float zvel, vec3_t start, vec3_t end, float *v
   	//direction from start to end
 	VectorSubtract(end, start, dir);
 	//
-	if ( (t + zvel / phys_gravity) == 0.0f ) {
+	if ((t + zvel / phys_gravity) == 0.0f) {
 		*velocity = phys_maxvelocity;
 		return 0;
 	}

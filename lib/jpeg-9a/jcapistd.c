@@ -90,7 +90,7 @@ jpeg_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
     cinfo->progress->pass_counter = (long) cinfo->next_scanline;
     cinfo->progress->pass_limit = (long) cinfo->image_height;
     (*cinfo->progress->progress_monitor) ((j_common_ptr) cinfo);
-  }
+ }
 
   /* Give master control module another chance if this is first call to
    * jpeg_write_scanlines.  This lets output of the frame/scan headers be
@@ -128,14 +128,14 @@ jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
   if (cinfo->next_scanline >= cinfo->image_height) {
     WARNMS(cinfo, JWRN_TOO_MUCH_DATA);
     return 0;
-  }
+ }
 
   /* Call progress monitor hook if present */
   if (cinfo->progress != NULL) {
     cinfo->progress->pass_counter = (long) cinfo->next_scanline;
     cinfo->progress->pass_limit = (long) cinfo->image_height;
     (*cinfo->progress->progress_monitor) ((j_common_ptr) cinfo);
-  }
+ }
 
   /* Give master control module another chance if this is first call to
    * jpeg_write_raw_data.  This lets output of the frame/scan headers be
@@ -154,7 +154,7 @@ jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
   if (! (*cinfo->coef->compress_data) (cinfo, data)) {
     /* If compressor did not consume the whole row, suspend processing. */
     return 0;
-  }
+ }
 
   /* OK, we processed one iMCU row. */
   cinfo->next_scanline += lines_per_iMCU_row;

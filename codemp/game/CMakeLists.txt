@@ -30,7 +30,7 @@ set(MPGameIncludeDirectories
 if(WIN32)
 	set(MPGameLibraries "winmm")
 endif(WIN32)
-set(MPGameDefines ${MPSharedDefines} "_GAME" )
+set(MPGameDefines ${MPSharedDefines} "_GAME")
 set(MPGameGameFiles
 	"${MPDir}/game/ai_main.c"
 	"${MPDir}/game/ai_util.c"

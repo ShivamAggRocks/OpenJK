@@ -131,7 +131,7 @@ void main()
 		gl_Position = MVP * vec4(var_Position[0].xyz - L, 1.0);
 		EmitVertex();
 		EndPrimitive();
-    }
+   }
 }
 
 /*[Fragment]*/

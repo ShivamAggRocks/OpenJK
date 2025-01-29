@@ -58,7 +58,7 @@ void OBJ_SetPendingObjectives(gentity_t *ent)
 OBJ_SaveMissionObjectives
 ============
 */
-void OBJ_SaveMissionObjectives( gclient_t *client )
+void OBJ_SaveMissionObjectives(gclient_t *client)
 {
 	ojk::SavedGameHelper saved_game(
 		::gi.saved_game);
@@ -80,7 +80,7 @@ void OBJ_SaveObjectiveData(void)
 
 	client = &level.clients[0];
 
-	OBJ_SaveMissionObjectives( client );
+	OBJ_SaveMissionObjectives(client);
 }
 
 /*
@@ -88,7 +88,7 @@ void OBJ_SaveObjectiveData(void)
 OBJ_LoadMissionObjectives
 ============
 */
-void OBJ_LoadMissionObjectives( gclient_t *client )
+void OBJ_LoadMissionObjectives(gclient_t *client)
 {
 	ojk::SavedGameHelper saved_game(
 		::gi.saved_game);
@@ -110,5 +110,5 @@ void OBJ_LoadObjectiveData(void)
 
 	client = &level.clients[0];
 
-	OBJ_LoadMissionObjectives( client );
+	OBJ_LoadMissionObjectives(client);
 }

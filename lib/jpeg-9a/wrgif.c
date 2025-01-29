@@ -87,13 +87,13 @@ flush_packet (gif_dest_ptr dinfo)
 	!= (size_t) dinfo->bytesinpkt)
       ERREXIT(dinfo->cinfo, JERR_FILE_WRITE);
     dinfo->bytesinpkt = 0;
-  }
+ }
 }
 
 
 /* Add a character to current packet; flush to disk if necessary */
 #define CHAR_OUT(dinfo,c)  \
-	{ (dinfo)->packetbuf[++(dinfo)->bytesinpkt] = (char) (c);  \
+	{(dinfo)->packetbuf[++(dinfo)->bytesinpkt] = (char) (c);  \
 	    if ((dinfo)->bytesinpkt >= 255)  \
 	      flush_packet(dinfo);  \
 	}
@@ -113,7 +113,7 @@ output (gif_dest_ptr dinfo, int code)
     CHAR_OUT(dinfo, dinfo->cur_accum & 0xFF);
     dinfo->cur_accum >>= 8;
     dinfo->cur_bits -= 8;
-  }
+ }
 }
 
 
@@ -171,10 +171,10 @@ compress_pixel (gif_dest_ptr dinfo, int c)
    */
   if (dinfo->code_counter < dinfo->maxcode) {
     dinfo->code_counter++;
-  } else {
+ } else {
     output(dinfo, dinfo->ClearCode);
     dinfo->code_counter = dinfo->ClearCode + 2;	/* reset the counter */
-  }
+ }
 }
 
 
@@ -187,7 +187,7 @@ compress_term (gif_dest_ptr dinfo)
   /* Flush the bit-packing buffer */
   if (dinfo->cur_bits > 0) {
     CHAR_OUT(dinfo, dinfo->cur_accum & 0xFF);
-  }
+ }
   /* Flush the packet buffer */
   flush_packet(dinfo);
 }
@@ -269,15 +269,15 @@ emit_header (gif_dest_ptr dinfo, int num_colors, JSAMPARRAY colormap)
 	  /* Grayscale "color map": possible if quantizing grayscale image */
 	  put_3bytes(dinfo, GETJSAMPLE(colormap[0][i]) >> cshift);
 	}
-      } else {
+     } else {
 	/* Create a gray-scale map of num_colors values, range 0..255 */
 	put_3bytes(dinfo, (i * 255 + (num_colors-1)/2) / (num_colors-1));
-      }
-    } else {
+     }
+   } else {
       /* fill out the map to a power of 2 */
       put_3bytes(dinfo, 0);
-    }
-  }
+   }
+ }
   /* Write image separator and Image Descriptor */
   putc(',', dinfo->pub.output_file); /* separator */
   put_word(dinfo, 0);		/* left/top offset */
@@ -326,7 +326,7 @@ put_pixel_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
   ptr = dest->pub.buffer[0];
   for (col = cinfo->output_width; col > 0; col--) {
     compress_pixel(dest, GETJSAMPLE(*ptr++));
-  }
+ }
 }
 
 
@@ -380,7 +380,7 @@ jinit_write_gif (j_decompress_ptr cinfo)
     cinfo->quantize_colors = TRUE;
     if (cinfo->desired_number_of_colors > 256)
       cinfo->desired_number_of_colors = 256;
-  }
+ }
 
   /* Calculate output image dimensions so we can allocate space */
   jpeg_calc_output_dimensions(cinfo);

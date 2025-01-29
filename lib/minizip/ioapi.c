@@ -1,10 +1,10 @@
 /* ioapi.h -- IO base function header for compress/uncompress .zip
-   part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
+   part of the MiniZip project - (http://www.winimage.com/zLibDll/minizip.html)
 
-         Copyright (C) 1998-2010 Gilles Vollant (minizip) ( http://www.winimage.com/zLibDll/minizip.html )
+         Copyright (C) 1998-2010 Gilles Vollant (minizip) (http://www.winimage.com/zLibDll/minizip.html)
 
          Modifications for Zip64 support
-         Copyright (C) 2009-2010 Mathias Svensson ( http://result42.com )
+         Copyright (C) 2009-2010 Mathias Svensson (http://result42.com)
 
          For more info read MiniZip_info.txt
 
@@ -35,7 +35,7 @@ voidpf call_zopen64 (const zlib_filefunc64_32_def* pfilefunc,const void*filename
     else
     {
         return (*(pfilefunc->zopen32_file))(pfilefunc->zfile_func64.opaque,(const char*)filename,mode);
-    }
+   }
 }
 
 long call_zseek64 (const zlib_filefunc64_32_def* pfilefunc,voidpf filestream, ZPOS64_T offset, int origin)
@@ -49,7 +49,7 @@ long call_zseek64 (const zlib_filefunc64_32_def* pfilefunc,voidpf filestream, ZP
             return -1;
         else
             return (*(pfilefunc->zseek32_file))(pfilefunc->zfile_func64.opaque,filestream,offsetTruncated,origin);
-    }
+   }
 }
 
 ZPOS64_T call_ztell64 (const zlib_filefunc64_32_def* pfilefunc,voidpf filestream)
@@ -63,7 +63,7 @@ ZPOS64_T call_ztell64 (const zlib_filefunc64_32_def* pfilefunc,voidpf filestream
             return (ZPOS64_T)-1;
         else
             return tell_uLong;
-    }
+   }
 }
 
 void fill_zlib_filefunc64_32_def_from_filefunc32(zlib_filefunc64_32_def* p_filefunc64_32,const zlib_filefunc_def* p_filefunc32)
@@ -174,7 +174,7 @@ static long ZCALLBACK fseek_file_func (voidpf  opaque, voidpf stream, uLong offs
         fseek_origin = SEEK_SET;
         break;
     default: return -1;
-    }
+   }
     ret = 0;
     if (fseek((FILE *)stream, offset, fseek_origin) != 0)
         ret = -1;
@@ -197,7 +197,7 @@ static long ZCALLBACK fseek64_file_func (voidpf  opaque, voidpf stream, ZPOS64_T
         fseek_origin = SEEK_SET;
         break;
     default: return -1;
-    }
+   }
     ret = 0;
 
     if(FSEEKO_FUNC((FILE *)stream, offset, fseek_origin) != 0)

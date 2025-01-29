@@ -51,19 +51,19 @@ char ZLIB_INTERNAL *gz_strwinerror (error)
             && msgbuf[chars - 2] == '\r' && msgbuf[chars - 1] == '\n') {
             chars -= 2;
             msgbuf[chars] = 0;
-        }
+       }
 
         if (chars > sizeof (buf) - 1) {
             chars = sizeof (buf) - 1;
             msgbuf[chars] = 0;
-        }
+       }
 
         wcstombs(buf, msgbuf, chars + 1);
         LocalFree(msgbuf);
-    }
+   }
     else {
         sprintf(buf, "unknown win32 error (%ld)", error);
-    }
+   }
 
     SetLastError(lasterr);
     return buf;
@@ -76,11 +76,11 @@ local void gz_reset(state)
     gz_statep state;
 {
     state->x.have = 0;              /* no output data available */
-    if (state->mode == GZ_READ) {   /* for reading ... */
+    if (state->mode == GZ_READ) {  /* for reading ... */
         state->eof = 0;             /* not at end of file */
         state->past = 0;            /* have not read past end yet */
         state->how = LOOK;          /* look for gzip header */
-    }
+   }
     state->seek = 0;                /* no seek request pending */
     gz_error(state, Z_OK, NULL);    /* clear error */
     state->x.pos = 0;               /* no uncompressed data yet */
@@ -168,24 +168,24 @@ local gzFile gz_open(path, fd, mode)
                 break;
             default:        /* could consider as an error, but just ignore */
                 ;
-            }
+           }
         mode++;
-    }
+   }
 
     /* must provide an "r", "w", or "a" */
     if (state->mode == GZ_NONE) {
         free(state);
         return NULL;
-    }
+   }
 
     /* can't force transparent read */
     if (state->mode == GZ_READ) {
         if (state->direct) {
             free(state);
             return NULL;
-        }
+       }
         state->direct = 1;      /* for empty file */
-    }
+   }
 
     /* save the path name for error messages */
 #ifdef _WIN32
@@ -193,7 +193,7 @@ local gzFile gz_open(path, fd, mode)
         len = wcstombs(NULL, path, 0);
         if (len == (size_t)-1)
             len = 0;
-    }
+   }
     else
 #endif
         len = strlen((const char *)path);
@@ -201,7 +201,7 @@ local gzFile gz_open(path, fd, mode)
     if (state->path == NULL) {
         free(state);
         return NULL;
-    }
+   }
 #ifdef _WIN32
     if (fd == -2)
         if (len)
@@ -247,7 +247,7 @@ local gzFile gz_open(path, fd, mode)
         free(state->path);
         free(state);
         return NULL;
-    }
+   }
     if (state->mode == GZ_APPEND)
         state->mode = GZ_WRITE;         /* simplify later checks */
 
@@ -255,7 +255,7 @@ local gzFile gz_open(path, fd, mode)
     if (state->mode == GZ_READ) {
         state->start = LSEEK(state->fd, 0, SEEK_CUR);
         if (state->start == -1) state->start = 0;
-    }
+   }
 
     /* initialize stream */
     gz_reset(state);
@@ -404,7 +404,7 @@ z_off64_t ZEXPORT gzseek64(file, offset, whence)
         state->strm.avail_in = 0;
         state->x.pos += offset;
         return state->x.pos;
-    }
+   }
 
     /* calculate skip amount, rewinding if needed for back seek when reading */
     if (offset < 0) {
@@ -415,7 +415,7 @@ z_off64_t ZEXPORT gzseek64(file, offset, whence)
             return -1;
         if (gzrewind(file) == -1)           /* rewind, then skip to offset */
             return -1;
-    }
+   }
 
     /* if reading, skip what's in output buffer (one less gzgetc() check) */
     if (state->mode == GZ_READ) {
@@ -425,13 +425,13 @@ z_off64_t ZEXPORT gzseek64(file, offset, whence)
         state->x.next += n;
         state->x.pos += n;
         offset -= n;
-    }
+   }
 
     /* request skip (if not zero) */
     if (offset) {
         state->seek = 1;
         state->skip = offset;
-    }
+   }
     return state->x.pos + offset;
 }
 
@@ -562,7 +562,7 @@ void ZEXPORT gzclearerr(file)
     if (state->mode == GZ_READ) {
         state->eof = 0;
         state->past = 0;
-    }
+   }
     gz_error(state, Z_OK, NULL);
 }
 
@@ -582,7 +582,7 @@ void ZLIB_INTERNAL gz_error(state, err, msg)
         if (state->err != Z_MEM_ERROR)
             free(state->msg);
         state->msg = NULL;
-    }
+   }
 
     /* if fatal, set state->x.have to 0 so that the gzgetc() macro fails */
     if (err != Z_OK && err != Z_BUF_ERROR)
@@ -602,7 +602,7 @@ void ZLIB_INTERNAL gz_error(state, err, msg)
             NULL) {
         state->err = Z_MEM_ERROR;
         return;
-    }
+   }
 #if !defined(NO_snprintf) && !defined(NO_vsnprintf)
     snprintf(state->msg, strlen(state->path) + strlen(msg) + 3,
              "%s%s%s", state->path, ": ", msg);
@@ -628,7 +628,7 @@ unsigned ZLIB_INTERNAL gz_intmax()
         q = p;
         p <<= 1;
         p++;
-    } while (p > q);
+   } while (p > q);
     return q >> 1;
 }
 #endif

@@ -224,7 +224,7 @@ jpeg_idct_islow (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       quantptr++;
       wsptr++;
       continue;
-    }
+   }
 
     /* Even part: reverse the even part of the forward DCT.
      * The rotator is c(-6).
@@ -296,7 +296,7 @@ jpeg_idct_islow (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     inptr++;			/* advance pointers to next column */
     quantptr++;
     wsptr++;
-  }
+ }
 
   /* Pass 2: process rows from work array, store into output array.
    * Note that we must descale the results by a factor of 8 == 2**3,
@@ -332,7 +332,7 @@ jpeg_idct_islow (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 
       wsptr += DCTSIZE;		/* advance pointer to next row */
       continue;
-    }
+   }
 #endif
 
     /* Even part: reverse the even part of the forward DCT.
@@ -416,7 +416,7 @@ jpeg_idct_islow (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 }
 
 #ifdef IDCT_SCALING_SUPPORTED
@@ -498,7 +498,7 @@ jpeg_idct_7x7 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[7*2] = (int) RIGHT_SHIFT(tmp12 + tmp2, CONST_BITS-PASS1_BITS);
     wsptr[7*4] = (int) RIGHT_SHIFT(tmp12 - tmp2, CONST_BITS-PASS1_BITS);
     wsptr[7*3] = (int) RIGHT_SHIFT(tmp13, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 7 rows from work array, store into output array. */
 
@@ -567,7 +567,7 @@ jpeg_idct_7x7 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 7;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -634,7 +634,7 @@ jpeg_idct_6x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[6*4] = (int) (tmp11 - tmp1);
     wsptr[6*2] = (int) RIGHT_SHIFT(tmp12 + tmp2, CONST_BITS-PASS1_BITS);
     wsptr[6*3] = (int) RIGHT_SHIFT(tmp12 - tmp2, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 6 rows from work array, store into output array. */
 
@@ -688,7 +688,7 @@ jpeg_idct_6x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 6;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -753,7 +753,7 @@ jpeg_idct_5x5 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[5*1] = (int) RIGHT_SHIFT(tmp11 + tmp1, CONST_BITS-PASS1_BITS);
     wsptr[5*3] = (int) RIGHT_SHIFT(tmp11 - tmp1, CONST_BITS-PASS1_BITS);
     wsptr[5*2] = (int) RIGHT_SHIFT(tmp12, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 5 rows from work array, store into output array. */
 
@@ -803,7 +803,7 @@ jpeg_idct_5x5 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 5;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -865,7 +865,7 @@ jpeg_idct_4x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[4*3] = (int) (tmp10 - tmp0);
     wsptr[4*1] = (int) (tmp12 + tmp2);
     wsptr[4*2] = (int) (tmp12 - tmp2);
-  }
+ }
 
   /* Pass 2: process 4 rows from work array, store into output array. */
 
@@ -908,7 +908,7 @@ jpeg_idct_4x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 4;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -962,7 +962,7 @@ jpeg_idct_3x3 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[3*0] = (int) RIGHT_SHIFT(tmp10 + tmp0, CONST_BITS-PASS1_BITS);
     wsptr[3*2] = (int) RIGHT_SHIFT(tmp10 - tmp0, CONST_BITS-PASS1_BITS);
     wsptr[3*1] = (int) RIGHT_SHIFT(tmp2, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 3 rows from work array, store into output array. */
 
@@ -998,7 +998,7 @@ jpeg_idct_3x3 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 3;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -1168,7 +1168,7 @@ jpeg_idct_9x9 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*3] = (int) RIGHT_SHIFT(tmp13 + tmp3, CONST_BITS-PASS1_BITS);
     wsptr[8*5] = (int) RIGHT_SHIFT(tmp13 - tmp3, CONST_BITS-PASS1_BITS);
     wsptr[8*4] = (int) RIGHT_SHIFT(tmp14, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 9 rows from work array, store into output array. */
 
@@ -1250,7 +1250,7 @@ jpeg_idct_9x9 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -1351,7 +1351,7 @@ jpeg_idct_10x10 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*6] = (int) RIGHT_SHIFT(tmp23 - tmp13, CONST_BITS-PASS1_BITS);
     wsptr[8*4] = (int) RIGHT_SHIFT(tmp24 + tmp14, CONST_BITS-PASS1_BITS);
     wsptr[8*5] = (int) RIGHT_SHIFT(tmp24 - tmp14, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 10 rows from work array, store into output array. */
 
@@ -1445,7 +1445,7 @@ jpeg_idct_10x10 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -1544,7 +1544,7 @@ jpeg_idct_11x11 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*4]  = (int) RIGHT_SHIFT(tmp24 + tmp14, CONST_BITS-PASS1_BITS);
     wsptr[8*6]  = (int) RIGHT_SHIFT(tmp24 - tmp14, CONST_BITS-PASS1_BITS);
     wsptr[8*5]  = (int) RIGHT_SHIFT(tmp25, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 11 rows from work array, store into output array. */
 
@@ -1639,7 +1639,7 @@ jpeg_idct_11x11 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -1748,7 +1748,7 @@ jpeg_idct_12x12 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*7]  = (int) RIGHT_SHIFT(tmp24 - tmp14, CONST_BITS-PASS1_BITS);
     wsptr[8*5]  = (int) RIGHT_SHIFT(tmp25 + tmp15, CONST_BITS-PASS1_BITS);
     wsptr[8*6]  = (int) RIGHT_SHIFT(tmp25 - tmp15, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 12 rows from work array, store into output array. */
 
@@ -1855,7 +1855,7 @@ jpeg_idct_12x12 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -1969,7 +1969,7 @@ jpeg_idct_13x13 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*5]  = (int) RIGHT_SHIFT(tmp25 + tmp15, CONST_BITS-PASS1_BITS);
     wsptr[8*7]  = (int) RIGHT_SHIFT(tmp25 - tmp15, CONST_BITS-PASS1_BITS);
     wsptr[8*6]  = (int) RIGHT_SHIFT(tmp26, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 13 rows from work array, store into output array. */
 
@@ -2083,7 +2083,7 @@ jpeg_idct_13x13 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -2196,7 +2196,7 @@ jpeg_idct_14x14 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*8]  = (int) RIGHT_SHIFT(tmp25 - tmp15, CONST_BITS-PASS1_BITS);
     wsptr[8*6]  = (int) RIGHT_SHIFT(tmp26 + tmp16, CONST_BITS-PASS1_BITS);
     wsptr[8*7]  = (int) RIGHT_SHIFT(tmp26 - tmp16, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 14 rows from work array, store into output array. */
 
@@ -2309,7 +2309,7 @@ jpeg_idct_14x14 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -2428,7 +2428,7 @@ jpeg_idct_15x15 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*6]  = (int) RIGHT_SHIFT(tmp26 + tmp16, CONST_BITS-PASS1_BITS);
     wsptr[8*8]  = (int) RIGHT_SHIFT(tmp26 - tmp16, CONST_BITS-PASS1_BITS);
     wsptr[8*7]  = (int) RIGHT_SHIFT(tmp27, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 15 rows from work array, store into output array. */
 
@@ -2551,7 +2551,7 @@ jpeg_idct_15x15 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -2679,7 +2679,7 @@ jpeg_idct_16x16 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*9]  = (int) RIGHT_SHIFT(tmp26 - tmp12, CONST_BITS-PASS1_BITS);
     wsptr[8*7]  = (int) RIGHT_SHIFT(tmp27 + tmp13, CONST_BITS-PASS1_BITS);
     wsptr[8*8]  = (int) RIGHT_SHIFT(tmp27 - tmp13, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 16 rows from work array, store into output array. */
 
@@ -2813,7 +2813,7 @@ jpeg_idct_16x16 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -2880,7 +2880,7 @@ jpeg_idct_16x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       quantptr++;
       wsptr++;
       continue;
-    }
+   }
 
     /* Even part: reverse the even part of the forward DCT.
      * The rotator is c(-6).
@@ -2952,7 +2952,7 @@ jpeg_idct_16x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     inptr++;			/* advance pointers to next column */
     quantptr++;
     wsptr++;
-  }
+ }
 
   /* Pass 2: process 8 rows from work array, store into output array.
    * 16-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/32).
@@ -3088,7 +3088,7 @@ jpeg_idct_16x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -3170,7 +3170,7 @@ jpeg_idct_14x7 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*2] = (int) RIGHT_SHIFT(tmp22 + tmp12, CONST_BITS-PASS1_BITS);
     wsptr[8*4] = (int) RIGHT_SHIFT(tmp22 - tmp12, CONST_BITS-PASS1_BITS);
     wsptr[8*3] = (int) RIGHT_SHIFT(tmp23, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 7 rows from work array, store into output array.
    * 14-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/28).
@@ -3285,7 +3285,7 @@ jpeg_idct_14x7 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -3354,7 +3354,7 @@ jpeg_idct_12x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*4] = (int) (tmp21 - tmp11);
     wsptr[8*2] = (int) RIGHT_SHIFT(tmp22 + tmp12, CONST_BITS-PASS1_BITS);
     wsptr[8*3] = (int) RIGHT_SHIFT(tmp22 - tmp12, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 6 rows from work array, store into output array.
    * 12-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/24).
@@ -3463,7 +3463,7 @@ jpeg_idct_12x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			     & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -3530,7 +3530,7 @@ jpeg_idct_10x5 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*1] = (int) RIGHT_SHIFT(tmp11 + tmp14, CONST_BITS-PASS1_BITS);
     wsptr[8*3] = (int) RIGHT_SHIFT(tmp11 - tmp14, CONST_BITS-PASS1_BITS);
     wsptr[8*2] = (int) RIGHT_SHIFT(tmp12, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 5 rows from work array, store into output array.
    * 10-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/20).
@@ -3626,7 +3626,7 @@ jpeg_idct_10x5 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 8;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -3691,7 +3691,7 @@ jpeg_idct_8x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*3] = (int) (tmp10 - tmp0);
     wsptr[8*1] = (int) (tmp12 + tmp2);
     wsptr[8*2] = (int) (tmp12 - tmp2);
-  }
+ }
 
   /* Pass 2: process rows from work array, store into output array.
    * Note that we must descale the results by a factor of 8 == 2**3,
@@ -3784,7 +3784,7 @@ jpeg_idct_8x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -3840,7 +3840,7 @@ jpeg_idct_6x3 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[6*0] = (int) RIGHT_SHIFT(tmp10 + tmp0, CONST_BITS-PASS1_BITS);
     wsptr[6*2] = (int) RIGHT_SHIFT(tmp10 - tmp0, CONST_BITS-PASS1_BITS);
     wsptr[6*1] = (int) RIGHT_SHIFT(tmp2, CONST_BITS-PASS1_BITS);
-  }
+ }
   
   /* Pass 2: process 3 rows from work array, store into output array.
    * 6-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/12).
@@ -3896,7 +3896,7 @@ jpeg_idct_6x3 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 6;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -3941,7 +3941,7 @@ jpeg_idct_4x2 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 
     wsptr[4*0] = tmp10 + tmp0;
     wsptr[4*1] = tmp10 - tmp0;
-  }
+ }
 
   /* Pass 2: process 2 rows from work array, store into output array.
    * 4-point IDCT kernel,
@@ -3987,7 +3987,7 @@ jpeg_idct_4x2 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 4;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -4158,7 +4158,7 @@ jpeg_idct_8x16 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[8*9]  = (int) RIGHT_SHIFT(tmp26 - tmp12, CONST_BITS-PASS1_BITS);
     wsptr[8*7]  = (int) RIGHT_SHIFT(tmp27 + tmp13, CONST_BITS-PASS1_BITS);
     wsptr[8*8]  = (int) RIGHT_SHIFT(tmp27 - tmp13, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process rows from work array, store into output array.
    * Note that we must descale the results by a factor of 8 == 2**3,
@@ -4251,7 +4251,7 @@ jpeg_idct_8x16 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -4365,7 +4365,7 @@ jpeg_idct_7x14 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[7*8]  = (int) RIGHT_SHIFT(tmp25 - tmp15, CONST_BITS-PASS1_BITS);
     wsptr[7*6]  = (int) RIGHT_SHIFT(tmp26 + tmp16, CONST_BITS-PASS1_BITS);
     wsptr[7*7]  = (int) RIGHT_SHIFT(tmp26 - tmp16, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 14 rows from work array, store into output array.
    * 7-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/14).
@@ -4436,7 +4436,7 @@ jpeg_idct_7x14 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 7;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -4546,7 +4546,7 @@ jpeg_idct_6x12 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[6*7]  = (int) RIGHT_SHIFT(tmp24 - tmp14, CONST_BITS-PASS1_BITS);
     wsptr[6*5]  = (int) RIGHT_SHIFT(tmp25 + tmp15, CONST_BITS-PASS1_BITS);
     wsptr[6*6]  = (int) RIGHT_SHIFT(tmp25 - tmp15, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 12 rows from work array, store into output array.
    * 6-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/12).
@@ -4602,7 +4602,7 @@ jpeg_idct_6x12 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 6;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -4704,7 +4704,7 @@ jpeg_idct_5x10 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[5*6] = (int) RIGHT_SHIFT(tmp23 - tmp13, CONST_BITS-PASS1_BITS);
     wsptr[5*4] = (int) RIGHT_SHIFT(tmp24 + tmp14, CONST_BITS-PASS1_BITS);
     wsptr[5*5] = (int) RIGHT_SHIFT(tmp24 - tmp14, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 10 rows from work array, store into output array.
    * 5-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/10).
@@ -4756,7 +4756,7 @@ jpeg_idct_5x10 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 5;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -4823,7 +4823,7 @@ jpeg_idct_4x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       quantptr++;
       wsptr++;
       continue;
-    }
+   }
 
     /* Even part: reverse the even part of the forward DCT.
      * The rotator is c(-6).
@@ -4895,7 +4895,7 @@ jpeg_idct_4x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     inptr++;			/* advance pointers to next column */
     quantptr++;
     wsptr++;
-  }
+ }
 
   /* Pass 2: process 8 rows from work array, store into output array.
    * 4-point IDCT kernel,
@@ -4941,7 +4941,7 @@ jpeg_idct_4x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 4;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -5009,7 +5009,7 @@ jpeg_idct_3x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[3*4] = (int) (tmp11 - tmp1);
     wsptr[3*2] = (int) RIGHT_SHIFT(tmp12 + tmp2, CONST_BITS-PASS1_BITS);
     wsptr[3*3] = (int) RIGHT_SHIFT(tmp12 - tmp2, CONST_BITS-PASS1_BITS);
-  }
+ }
 
   /* Pass 2: process 6 rows from work array, store into output array.
    * 3-point IDCT kernel, cK represents sqrt(2) * cos(K*pi/6).
@@ -5047,7 +5047,7 @@ jpeg_idct_3x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 3;		/* advance pointer to next row */
-  }
+ }
 }
 
 
@@ -5107,7 +5107,7 @@ jpeg_idct_2x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     wsptr[2*3] = tmp10 - tmp0;
     wsptr[2*1] = tmp12 + tmp2;
     wsptr[2*2] = tmp12 - tmp2;
-  }
+ }
 
   /* Pass 2: process 4 rows from work array, store into output array. */
 
@@ -5132,7 +5132,7 @@ jpeg_idct_2x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 			    & RANGE_MASK];
 
     wsptr += 2;		/* advance pointer to next row */
-  }
+ }
 }
 
 

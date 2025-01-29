@@ -363,12 +363,12 @@ int BotDoChat(bot_state_t *bs, char *section, int always)
 	}
 
 	if (bs->doChat)
-	{ //already have a chat scheduled
+	{//already have a chat scheduled
 		return 0;
 	}
 
 	if (trap->Cvar_VariableIntegerValue("se_language"))
-	{ //no chatting unless English.
+	{//no chatting unless English.
 		return 0;
 	}
 
@@ -656,7 +656,7 @@ void BotUtilizePersonality(bot_state_t *bs)
 	{
 		trap->Print(S_COLOR_RED "Personality file exceeds maximum length\n");
 		B_TempFree(131072); //buf
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 		return;
 	}
 
@@ -665,7 +665,7 @@ void BotUtilizePersonality(bot_state_t *bs)
 	rlen = len;
 
 	while (len < 131072)
-	{ //kill all characters after the file length, since sometimes FS_Read doesn't do that entirely (or so it seems)
+	{//kill all characters after the file length, since sometimes FS_Read doesn't do that entirely (or so it seems)
 		buf[len] = '\0';
 		len++;
 	}
@@ -792,7 +792,7 @@ void BotUtilizePersonality(bot_state_t *bs)
 	i = 0;
 
 	while (i < MAX_CHAT_BUFFER_SIZE)
-	{ //clear out the chat buffer for this bot
+	{//clear out the chat buffer for this bot
 		gBotChatBuffer[bs->client][i] = '\0';
 		i++;
 	}

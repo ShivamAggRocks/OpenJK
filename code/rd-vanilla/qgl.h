@@ -23,23 +23,23 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#if defined( __LINT__ )
+#if defined(__LINT__)
 #	include <GL/gl.h>
-#elif defined( _WIN32 )
+#elif defined(_WIN32)
 #	include <windows.h>
 #	include <GL/gl.h>
 #elif defined(MACOS_X)
 // Prevent OS X headers from including its own glext header
 #	define GL_GLEXT_LEGACY
 #	include <OpenGL/gl.h>
-#elif defined( __linux__ )
+#elif defined(__linux__)
 #	include <GL/gl.h>
 #	include <GL/glx.h>
 // bk001129 - from cvs1.17 (mkv)
 #	if defined(__FX__)
 #		include <GL/fxmesa.h>
 #	endif
-#elif defined( __FreeBSD__ ) || defined(__OpenBSD__) // rb010123
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) // rb010123
 #	include <GL/gl.h>
 #	include <GL/glx.h>
 #	if defined(__FX__)

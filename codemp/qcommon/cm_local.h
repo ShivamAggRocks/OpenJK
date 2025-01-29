@@ -80,10 +80,10 @@ public:
 	int			surfaceFlags;
 	int			contentFlags;
 
-	const char	*GetName(void) const { return(shader); }
-	class CCMShader *GetNext(void) const { return(mNext); }
-	void	SetNext(class CCMShader *next) { mNext = next; }
-	void	Destroy(void) { }
+	const char	*GetName(void) const {return(shader);}
+	class CCMShader *GetNext(void) const {return(mNext);}
+	void	SetNext(class CCMShader *next) {mNext = next;}
+	void	Destroy(void) {}
 };
 
 typedef struct cPatch_s {
@@ -171,7 +171,7 @@ typedef struct sphere_s {
 	vec3_t		offset;
 } sphere_t;
 
-typedef struct traceWork_s { //rwwRMG - modified
+typedef struct traceWork_s {//rwwRMG - modified
 	vec3_t		start;
 	vec3_t		end;
 	vec3_t		size[2];	// size of the box being swept through the model
@@ -206,29 +206,29 @@ typedef struct leafList_s {
 	int		*list;
 	vec3_t	bounds[2];
 	int		lastLeaf;		// for overflows where each leaf can't be stored individually
-	void	(*storeLeafs)( struct leafList_s *ll, int nodenum );
+	void	(*storeLeafs)(struct leafList_s *ll, int nodenum);
 } leafList_t;
 
-void CM_StoreLeafs( leafList_t *ll, int nodenum );
-void CM_StoreBrushes( leafList_t *ll, int nodenum );
+void CM_StoreLeafs(leafList_t *ll, int nodenum);
+void CM_StoreBrushes(leafList_t *ll, int nodenum);
 
-void CM_BoxLeafnums_r( leafList_t *ll, int nodenum );
+void CM_BoxLeafnums_r(leafList_t *ll, int nodenum);
 
-cmodel_t	*CM_ClipHandleToModel( clipHandle_t handle, clipMap_t **clipMap = 0 );
+cmodel_t	*CM_ClipHandleToModel(clipHandle_t handle, clipMap_t **clipMap = 0);
 
 // cm_patch.c
 
-struct patchCollide_s	*CM_GeneratePatchCollide( int width, int height, vec3_t *points );
-void CM_TraceThroughPatchCollide( traceWork_t *tw, trace_t &trace, const struct patchCollide_s *pc );
-qboolean CM_PositionTestInPatchCollide( traceWork_t *tw, const struct patchCollide_s *pc );
-void CM_ClearLevelPatches( void );
+struct patchCollide_s	*CM_GeneratePatchCollide(int width, int height, vec3_t *points);
+void CM_TraceThroughPatchCollide(traceWork_t *tw, trace_t &trace, const struct patchCollide_s *pc);
+qboolean CM_PositionTestInPatchCollide(traceWork_t *tw, const struct patchCollide_s *pc);
+void CM_ClearLevelPatches(void);
 
 // cm_shader.cpp
-void CM_SetupShaderProperties( void );
+void CM_SetupShaderProperties(void);
 void CM_ShutdownShaderProperties(void);
-CCMShader *CM_GetShaderInfo( const char *name );
-CCMShader *CM_GetShaderInfo( int shaderNum );
-void		CM_GetModelFormalName ( const char* model, const char* skin, char* name, int size );
+CCMShader *CM_GetShaderInfo(const char *name);
+CCMShader *CM_GetShaderInfo(int shaderNum);
+void		CM_GetModelFormalName (const char* model, const char* skin, char* name, int size);
 
 // cm_load.cpp
-void CM_GetWorldBounds ( vec3_t mins, vec3_t maxs );
+void CM_GetWorldBounds (vec3_t mins, vec3_t maxs);

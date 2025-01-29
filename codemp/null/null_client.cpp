@@ -25,63 +25,63 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 cvar_t *cl_shownet;
 
-void CL_Shutdown( void ) {
+void CL_Shutdown(void) {
 }
 
-void CL_Init( void ) {
-	cl_shownet = Cvar_Get ("cl_shownet", "0", CVAR_TEMP );
+void CL_Init(void) {
+	cl_shownet = Cvar_Get ("cl_shownet", "0", CVAR_TEMP);
 }
 
-void CL_MouseEvent( int dx, int dy, int time ) {
+void CL_MouseEvent(int dx, int dy, int time) {
 }
 
-void Key_WriteBindings( fileHandle_t f ) {
+void Key_WriteBindings(fileHandle_t f) {
 }
 
-void CL_Frame ( int msec ) {
+void CL_Frame (int msec) {
 }
 
-void CL_PacketEvent( const netadr_t *from, msg_t *msg ) {
+void CL_PacketEvent(const netadr_t *from, msg_t *msg) {
 }
 
-void CL_CharEvent( int key ) {
+void CL_CharEvent(int key) {
 }
 
-void CL_Disconnect( qboolean showMainMenu ) {
+void CL_Disconnect(qboolean showMainMenu) {
 }
 
-void CL_MapLoading( void ) {
+void CL_MapLoading(void) {
 }
 
-qboolean CL_GameCommand( void ) {
+qboolean CL_GameCommand(void) {
 	return qfalse;
 }
 
 void CL_KeyEvent (int key, qboolean down, unsigned time) {
 }
 
-qboolean UI_GameCommand( void ) {
+qboolean UI_GameCommand(void) {
 	return qfalse;
 }
 
-void CL_ForwardCommandToServer( const char *string ) {
+void CL_ForwardCommandToServer(const char *string) {
 }
 
-void CL_ConsolePrint( const char *txt ) {
+void CL_ConsolePrint(const char *txt) {
 }
 
-void CL_JoystickEvent( int axis, int value, int time ) {
+void CL_JoystickEvent(int axis, int value, int time) {
 }
 
-void CL_InitKeyCommands( void ) {
+void CL_InitKeyCommands(void) {
 }
 
-void CL_FlushMemory( void ) {
+void CL_FlushMemory(void) {
 }
 
-void CL_StartHunkUsers( void ) {
+void CL_StartHunkUsers(void) {
 }
 
-qboolean CL_ConnectedToRemoteServer( void ) {
+qboolean CL_ConnectedToRemoteServer(void) {
 	return qfalse;
 }

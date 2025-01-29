@@ -108,8 +108,8 @@ expand_right_edge (JSAMPARRAY image_data, int num_rows,
       pixval = ptr[-1];		/* don't need GETJSAMPLE() here */
       for (count = numcols; count > 0; count--)
 	*ptr++ = pixval;
-    }
-  }
+   }
+ }
 }
 
 
@@ -135,7 +135,7 @@ sep_downsample (j_compress_ptr cinfo,
     out_ptr = output_buf[ci] +
 	      (out_row_group_index * downsample->rowgroup_height[ci]);
     (*downsample->methods[ci]) (cinfo, compptr, in_ptr, out_ptr);
-  }
+ }
 }
 
 
@@ -180,12 +180,12 @@ int_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
 	for (h = 0; h < h_expand; h++) {
 	  outvalue += (INT32) GETJSAMPLE(*inptr++);
 	}
-      }
+     }
       *outptr++ = (JSAMPLE) ((outvalue + numpix2) / numpix);
-    }
+   }
     inrow += v_expand;
     outrow++;
-  }
+ }
 }
 
 
@@ -246,8 +246,8 @@ h2v1_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
 			      + bias) >> 1);
       bias ^= 1;		/* 0=>1, 1=>0 */
       inptr += 2;
-    }
-  }
+   }
+ }
 }
 
 
@@ -286,10 +286,10 @@ h2v2_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
 			      + bias) >> 2);
       bias ^= 3;		/* 1=>2, 2=>1 */
       inptr0 += 2; inptr1 += 2;
-    }
+   }
     inrow += 2;
     outrow++;
-  }
+ }
 }
 
 
@@ -375,7 +375,7 @@ h2v2_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
       /* round, descale and output it */
       *outptr++ = (JSAMPLE) ((membersum + 32768) >> 16);
       inptr0 += 2; inptr1 += 2; above_ptr += 2; below_ptr += 2;
-    }
+   }
 
     /* Special case for last column */
     membersum = GETJSAMPLE(*inptr0) + GETJSAMPLE(inptr0[1]) +
@@ -392,7 +392,7 @@ h2v2_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
 
     inrow += 2;
     outrow++;
-  }
+ }
 }
 
 
@@ -455,7 +455,7 @@ fullsize_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info *compptr,
       membersum = membersum * memberscale + neighsum * neighscale;
       *outptr++ = (JSAMPLE) ((membersum + 32768) >> 16);
       lastcolsum = colsum; colsum = nextcolsum;
-    }
+   }
 
     /* Special case for last column */
     membersum = GETJSAMPLE(*inptr);
@@ -463,7 +463,7 @@ fullsize_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info *compptr,
     membersum = membersum * memberscale + neighsum * neighscale;
     *outptr = (JSAMPLE) ((membersum + 32768) >> 16);
 
-  }
+ }
 }
 
 #endif /* INPUT_SMOOTHING_SUPPORTED */
@@ -512,31 +512,31 @@ jinit_downsampler (j_compress_ptr cinfo)
       if (cinfo->smoothing_factor) {
 	downsample->methods[ci] = fullsize_smooth_downsample;
 	downsample->pub.need_context_rows = TRUE;
-      } else
+     } else
 #endif
 	downsample->methods[ci] = fullsize_downsample;
-    } else if (h_in_group == h_out_group * 2 &&
+   } else if (h_in_group == h_out_group * 2 &&
 	       v_in_group == v_out_group) {
       smoothok = FALSE;
       downsample->methods[ci] = h2v1_downsample;
-    } else if (h_in_group == h_out_group * 2 &&
+   } else if (h_in_group == h_out_group * 2 &&
 	       v_in_group == v_out_group * 2) {
 #ifdef INPUT_SMOOTHING_SUPPORTED
       if (cinfo->smoothing_factor) {
 	downsample->methods[ci] = h2v2_smooth_downsample;
 	downsample->pub.need_context_rows = TRUE;
-      } else
+     } else
 #endif
 	downsample->methods[ci] = h2v2_downsample;
-    } else if ((h_in_group % h_out_group) == 0 &&
+   } else if ((h_in_group % h_out_group) == 0 &&
 	       (v_in_group % v_out_group) == 0) {
       smoothok = FALSE;
       downsample->methods[ci] = int_downsample;
       downsample->h_expand[ci] = (UINT8) (h_in_group / h_out_group);
       downsample->v_expand[ci] = (UINT8) (v_in_group / v_out_group);
-    } else
+   } else
       ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
-  }
+ }
 
 #ifdef INPUT_SMOOTHING_SUPPORTED
   if (cinfo->smoothing_factor && !smoothok)

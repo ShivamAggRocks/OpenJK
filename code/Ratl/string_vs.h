@@ -248,7 +248,7 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////
 	void			operator+=(const string_vs &o)
 	{
-		if ( (str::len(mData)+o.length())<CAPACITY )		// Only If It Is Safe
+		if ((str::len(mData)+o.length())<CAPACITY)		// Only If It Is Safe
 		{
 			str::cat(mData, o.c_str());
 		}
@@ -263,7 +263,7 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////
 	void			operator+=(const char *s)
 	{
-		if ( (str::len(mData)+str::len(s))<CAPACITY )		// Only If It Is Safe
+		if ((str::len(mData)+str::len(s))<CAPACITY)		// Only If It Is Safe
 		{
 			str::cat(mData, s);
 		}
@@ -289,7 +289,7 @@ public:
 	// for (string_vs<CAPACITY>::tokenizer it=MyString.begin(" ,\t\n"); it!=MyString.end(); it++)
 	// {
 	//    const char* token = *it;
-	// }
+	//}
 	//
 	//
 	// NOTE: This class is built upon the c library function strtok() which uses a

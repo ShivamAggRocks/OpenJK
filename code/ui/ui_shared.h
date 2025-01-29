@@ -168,24 +168,24 @@ struct itemDef_s;
 
 typedef struct {
 
-	void		(*addRefEntityToScene) (const refEntity_t *re );
+	void		(*addRefEntityToScene) (const refEntity_t *re);
 	void		(*clearScene) ();
 	void		(*drawHandlePic) (float x, float y, float w, float h, qhandle_t asset);
-	void		(*drawRect) ( float x, float y, float w, float h, float size, const vec4_t color);
+	void		(*drawRect) (float x, float y, float w, float h, float size, const vec4_t color);
 	void		(*drawSides) (float x, float y, float w, float h, float size);
-	void		(*drawText) (float x, float y, float scale, vec4_t color, const char *text, int iMaxPixelWidth, int style, int iFontIndex );
+	void		(*drawText) (float x, float y, float scale, vec4_t color, const char *text, int iMaxPixelWidth, int style, int iFontIndex);
 	void		(*drawTextWithCursor)(float x, float y, float scale, vec4_t color, const char *text, int cursorPos, char cursor, int iMaxPixelWidth, int style, int iFontIndex);
 	void		(*drawTopBottom) (float x, float y, float w, float h, float size);
-	void		(*executeText)(int exec_when, const char *text );
+	void		(*executeText)(int exec_when, const char *text);
 	int			(*feederCount)(float feederID);
 	void		(*feederSelection)(float feederID, int index, struct itemDef_s *item);
-	void		(*fillRect) ( float x, float y, float w, float h, const vec4_t color);
-	void		(*getBindingBuf)( int keynum, char *buf, int buflen );
+	void		(*fillRect) (float x, float y, float w, float h, const vec4_t color);
+	void		(*getBindingBuf)(int keynum, char *buf, int buflen);
 	void		(*getCVarString)(const char *cvar, char *buffer, int bufsize);
 	float		(*getCVarValue)(const char *cvar);
 	qboolean	(*getOverstrikeMode)();
 	float		(*getValue) (int ownerDraw);
-	void		(*keynumToStringBuf)( int keynum, char *buf, int buflen );
+	void		(*keynumToStringBuf)(int keynum, char *buf, int buflen);
 	void		(*modelBounds) (qhandle_t model, vec3_t min, vec3_t max);
 	qboolean	(*ownerDrawHandleKey)(int ownerDraw, int flags, float *special, int key);
 	void		(*ownerDrawItem) (float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle, int iFontIndex);
@@ -197,26 +197,26 @@ typedef struct {
 	qhandle_t	(*registerModel) (const char *p);
 	qhandle_t	(*registerShaderNoMip) (const char *p);
 	sfxHandle_t (*registerSound)(const char *name, qboolean compressed);
-	void		(*renderScene) ( const refdef_t *fd );
+	void		(*renderScene) (const refdef_t *fd);
 	qboolean	(*runScript)(const char **p);
 	qboolean	(*deferScript)(const char **p);
-	void		(*setBinding)( int keynum, const char *binding );
+	void		(*setBinding)(int keynum, const char *binding);
 	void		(*setColor) (const vec4_t v);
 	void		(*setCVar)(const char *cvar, const char *value);
 	void		(*setOverstrikeMode)(qboolean b);
-	void		(*startLocalSound)( sfxHandle_t sfx, int channelNum );
+	void		(*startLocalSound)(sfxHandle_t sfx, int channelNum);
 	void		(*stopCinematic)(int handle);
 	int			(*textHeight) (const char *text, float scale, int iFontIndex);
 	int			(*textWidth) (const char *text, float scale, int iFontIndex);
 	qhandle_t	(*feederItemImage) (float feederID, int index);
 	const char *(*feederItemText) (float feederID, int index, int column, qhandle_t *handle);
 
-	qhandle_t	(*registerSkin)( const char *name );
+	qhandle_t	(*registerSkin)(const char *name);
 
 	//rww - ghoul2 stuff. Add whatever you need here, remember to set it in _UI_Init or it will crash when you try to use it.
-	qboolean	(*g2_SetSkin)(CGhoul2Info *ghlInfo, qhandle_t customSkin, qhandle_t renderSkin );
+	qboolean	(*g2_SetSkin)(CGhoul2Info *ghlInfo, qhandle_t customSkin, qhandle_t renderSkin);
 	qboolean	(*g2_SetBoneAnim)(CGhoul2Info *ghlInfo, const char *boneName, const int startFrame, const int endFrame,
-					  const int flags, const float animSpeed, const int currentTime, const float setFrame, const int blendTime );
+					  const int flags, const float animSpeed, const int currentTime, const float setFrame, const int blendTime);
 	qboolean	(*g2_RemoveGhoul2Model)(CGhoul2Info_v &ghlInfo, const int modelIndex);
 	int			(*g2_InitGhoul2Model)(CGhoul2Info_v &ghoul2, const char *fileName, int, qhandle_t customSkin, qhandle_t customShader, int modelFlags, int lodBias);
 	void		(*g2_CleanGhoul2Models)(CGhoul2Info_v &ghoul2);
@@ -249,7 +249,7 @@ typedef struct {
 
 } displayContextDef_t;
 
-void UI_InitMemory( void );
+void UI_InitMemory(void);
 
 
 #define MAX_COLOR_RANGES	10
@@ -261,13 +261,13 @@ void UI_InitMemory( void );
 #define WINDOW_MOUSEOVER		0x00000001	// mouse is over it, non exclusive
 #define WINDOW_HASFOCUS			0x00000002	// has cursor focus, exclusive
 #define WINDOW_VISIBLE			0x00000004	// is visible
-#define WINDOW_INACTIVE			0x00000008	// is visible but grey ( non-active )
+#define WINDOW_INACTIVE			0x00000008	// is visible but grey (non-active)
 #define WINDOW_DECORATION		0x00000010	// for decoration only, no mouse, keyboard, etc..
 #define WINDOW_FADINGOUT		0x00000020	// fading out, non-active
 #define WINDOW_FADINGIN			0x00000040	// fading in
 #define WINDOW_MOUSEOVERTEXT	0x00000080	// mouse is over it, non exclusive
 #define WINDOW_INTRANSITION		0x00000100	// window is in transition
-#define WINDOW_FORECOLORSET		0x00000200	// forecolor was explicitly set ( used to color alpha images or not )
+#define WINDOW_FORECOLORSET		0x00000200	// forecolor was explicitly set (used to color alpha images or not)
 #define WINDOW_HORIZONTAL		0x00000400	// for list boxes and sliders, vertical is default this is set of horizontal
 #define WINDOW_LB_LEFTARROW		0x00000800	// mouse is over left/up arrow
 #define WINDOW_LB_RIGHTARROW	0x00001000	// mouse is over right/down arrow
@@ -281,7 +281,7 @@ void UI_InitMemory( void );
 #define WINDOW_FORCED			0x00100000	// forced open
 #define WINDOW_POPUP			0x00200000	// popup
 #define WINDOW_BACKCOLORSET		0x00400000	// backcolor was explicitly set
-#define WINDOW_TIMEDVISIBLE		0x00800000	// visibility timing ( NOT implemented )
+#define WINDOW_TIMEDVISIBLE		0x00800000	// visibility timing (NOT implemented)
 #define WINDOW_PLAYERCOLOR		0x01000000	// hack the forecolor to match ui_char_color_*
 #define WINDOW_SCRIPTWAITING	0x02000000	// delayed script waiting to run
 //JLF MPMOVED
@@ -358,16 +358,16 @@ typedef struct modelDef_s {
 
 typedef struct itemDef_s {
 	Window		window;						// common positional, border, style, layout info
-	UIRectangle	textRect;					// rectangle the text ( if any ) consumes
+	UIRectangle	textRect;					// rectangle the text (if any) consumes
 	int			type;						// text, button, radiobutton, checkbox, textfield, listbox, combo
 	int			alignment;					// left center right
-	int			textalignment;				// ( optional ) alignment for text within rect based on text width
-	float		textalignx;					// ( optional ) text alignment x coord
-	float		textaligny;					// ( optional ) text alignment y coord
-	float		text2alignx;				// ( optional ) text2 alignment x coord
-	float		text2aligny;				// ( optional ) text2 alignment y coord
+	int			textalignment;				// (optional) alignment for text within rect based on text width
+	float		textalignx;					// (optional) text alignment x coord
+	float		textaligny;					// (optional) text alignment y coord
+	float		text2alignx;				// (optional) text2 alignment x coord
+	float		text2aligny;				// (optional) text2 alignment y coord
 	float		textscale;					// scale percentage from 72pts
-	int			textStyle;					// ( optional ) style, normal and shadowed are it for now
+	int			textStyle;					// (optional) style, normal and shadowed are it for now
 	char		*text;						// display text
 	char		*text2;						// display text2
 	const char		*descText;				//	Description text
@@ -436,7 +436,7 @@ typedef struct {
 	vec4_t		descColor;					// description text color for items
 	int			descAlignment;				// Description of alignment
 	float		descScale;					// Description scale
-	int			descTextStyle;					// ( optional ) style, normal and shadowed are it for now
+	int			descTextStyle;					// (optional) style, normal and shadowed are it for now
 
 
 } menuDef_t;
@@ -466,9 +466,9 @@ typedef struct
 
 menuDef_t	*Menu_GetFocused(void);
 
-void		Controls_GetConfig( void );
-void		Controls_SetConfig( void );
-void		Controls_SetDefaults( void );
+void		Controls_GetConfig(void);
+void		Controls_SetConfig(void);
+void		Controls_SetDefaults(void);
 qboolean	Display_KeyBindPending(void);
 qboolean	Display_MouseMove(void *p, int x, int y);
 int			Display_VisibleMenuCount(void);

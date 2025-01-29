@@ -60,17 +60,17 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 	int i;
 	const CVec3 &xmn=from.GetMin();
 	const CVec3 &xmx=from.GetMax();
-	for ( i = 0; i < 8; i++ )
+	for (i = 0; i < 8; i++)
 	{
-		if ( i & 1 )
+		if (i & 1)
 			bb[0] = xmn[0];
 		else
 			bb[0] = xmx[0];
-		if ( i & 2 )
+		if (i & 2)
 			bb[1] = xmn[1];
 		else
 			bb[1] = xmx[1];
-		if ( i & 4 )
+		if (i & 4)
 			bb[2] = xmn[2];
 		else
 			bb[2] = xmx[2];

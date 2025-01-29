@@ -52,9 +52,9 @@ private:
 
 public:
 
-	CGPProperty( gsl::cstring_span initKey, gsl::cstring_span initValue = {} );
+	CGPProperty(gsl::cstring_span initKey, gsl::cstring_span initValue = {});
 
-	const gsl::cstring_span& GetName() const { return mKey; }
+	const gsl::cstring_span& GetName() const {return mKey;}
 	bool IsList() const NOEXCEPT
 	{
 		return mValues.size() > 1;
@@ -68,7 +68,7 @@ public:
 	{
 		return mValues;
 	}
-	void AddValue( gsl::cstring_span newValue );
+	void AddValue(gsl::cstring_span newValue);
 };
 
 
@@ -81,34 +81,34 @@ public:
 	using SubGroups = GP2::Vector< CGPGroup >;
 private:
 	Properties mProperties;
-	gsl::cstring_span mName = CSTRING_VIEW( "Top Level" );
+	gsl::cstring_span mName = CSTRING_VIEW("Top Level");
 	SubGroups mSubGroups;
 public:
 	CGPGroup() = default;
-	CGPGroup( const gsl::cstring_span& initName );
+	CGPGroup(const gsl::cstring_span& initName);
 	// non-copyable; but just for performance reasons, since it would incur a deep copy.
-	CGPGroup( const CGPGroup& ) = delete;
-	CGPGroup& operator=( const CGPGroup& ) = delete;
+	CGPGroup(const CGPGroup&) = delete;
+	CGPGroup& operator=(const CGPGroup&) = delete;
 	// movable
-#if defined( _MSC_VER ) && _MSC_VER < 1900
+#if defined(_MSC_VER) && _MSC_VER < 1900
 	// alas no default move constructors on VS2013.
 	// TODO DELETEME once we drop VS2013 (because fuck that).
-	CGPGroup( CGPGroup&& rhs )
-		: mProperties( std::move( rhs.mProperties ) )
-		, mName( std::move( rhs.mName ) )
-		, mSubGroups( std::move( rhs.mSubGroups ) )
+	CGPGroup(CGPGroup&& rhs)
+		: mProperties(std::move(rhs.mProperties))
+		, mName(std::move(rhs.mName))
+		, mSubGroups(std::move(rhs.mSubGroups))
 	{
 	}
-	CGPGroup& operator=( CGPGroup&& rhs )
+	CGPGroup& operator=(CGPGroup&& rhs)
 	{
-		mProperties = std::move( rhs.mProperties );
-		mName = std::move( rhs.mName );
-		mSubGroups = std::move( rhs.mSubGroups );
+		mProperties = std::move(rhs.mProperties);
+		mName = std::move(rhs.mName);
+		mSubGroups = std::move(rhs.mSubGroups);
 		return *this;
 	}
 #else
-	CGPGroup( CGPGroup&& ) = default;
-	CGPGroup& operator=( CGPGroup&& ) = default;
+	CGPGroup(CGPGroup&&) = default;
+	CGPGroup& operator=(CGPGroup&&) = default;
 #endif
 
 	const Properties& GetProperties() const NOEXCEPT
@@ -119,22 +119,22 @@ public:
 	{
 		return mSubGroups;
 	}
-	const CGPGroup* FindSubGroup( const gsl::cstring_span& name ) const NOEXCEPT
+	const CGPGroup* FindSubGroup(const gsl::cstring_span& name) const NOEXCEPT
 	{
-		for( auto& sub : GetSubGroups() )
+		for(auto& sub : GetSubGroups())
 		{
-			if( Q::stricmp( name, sub.GetName() ) == Q::Ordering::EQ )
+			if(Q::stricmp(name, sub.GetName()) == Q::Ordering::EQ)
 			{
 				return &sub;
 			}
 		}
 		return nullptr;
 	}
-	const CGPProperty* FindProperty( const gsl::cstring_span& name ) const NOEXCEPT
+	const CGPProperty* FindProperty(const gsl::cstring_span& name) const NOEXCEPT
 	{
-		for( auto& prop : GetProperties() )
+		for(auto& prop : GetProperties())
 		{
-			if( Q::stricmp( name, prop.GetName() ) == Q::Ordering::EQ )
+			if(Q::stricmp(name, prop.GetName()) == Q::Ordering::EQ)
 			{
 				return &prop;
 			}
@@ -151,13 +151,13 @@ public:
 		mProperties.clear();
 		mSubGroups.clear();
 	}
-	bool Parse( gsl::cstring_span& data, const bool topLevel = true );
+	bool Parse(gsl::cstring_span& data, const bool topLevel = true);
 };
 
 /**
 Generic Text Parser.
 
-Used to parse effect files and the dynamic music system files. Parses blocks of the form `name { \n ... \n }`; blocks can contain other blocks or properties of the form `key value`. Value can also be a list; in that case the format is `key [\n value1 \n value2\n]`. Mind the separating newlines, values are actually newline-delimited.
+Used to parse effect files and the dynamic music system files. Parses blocks of the form `name {\n ... \n}`; blocks can contain other blocks or properties of the form `key value`. Value can also be a list; in that case the format is `key [\n value1 \n value2\n]`. Mind the separating newlines, values are actually newline-delimited.
 */
 class CGenericParser2
 {
@@ -172,7 +172,7 @@ public:
 		return mTopLevel;
 	}
 
-	bool Parse( gsl::czstring filename );
+	bool Parse(gsl::czstring filename);
 	void Clear() NOEXCEPT;
 	bool ValidFile() const NOEXCEPT
 	{

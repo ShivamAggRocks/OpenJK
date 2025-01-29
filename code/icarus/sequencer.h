@@ -72,89 +72,89 @@ protected:
 	~CSequencer();
 
 public:
-	int GetID() { return m_id;};
+	int GetID() {return m_id;};
 
-	int Init( int ownerID, CTaskManager *taskManager);
-	static CSequencer *Create ( void );
-	void Free( CIcarus* icarus );
+	int Init(int ownerID, CTaskManager *taskManager);
+	static CSequencer *Create (void);
+	void Free(CIcarus* icarus);
 
-	int Run( char *buffer, long size, CIcarus* icarus);
-	int Callback( CTaskManager *taskManager, CBlock *block, int returnCode, CIcarus* icarus );
+	int Run(char *buffer, long size, CIcarus* icarus);
+	int Callback(CTaskManager *taskManager, CBlock *block, int returnCode, CIcarus* icarus);
 
-	void SetOwnerID( int owner )	{	m_ownerID = owner;}
+	void SetOwnerID(int owner)	{	m_ownerID = owner;}
 
-	int	GetOwnerID( void )						const	{	return m_ownerID;	}
+	int	GetOwnerID(void)						const	{	return m_ownerID;	}
 
-	CTaskManager *GetTaskManager( void )		const	{	return m_taskManager;	}
+	CTaskManager *GetTaskManager(void)		const	{	return m_taskManager;	}
 
-	void SetTaskManager( CTaskManager *tm)	{	if ( tm )	m_taskManager = tm;	}
+	void SetTaskManager(CTaskManager *tm)	{	if (tm)	m_taskManager = tm;	}
 
 	int Save();
-	int Load( CIcarus* icarus, IGameInterface* game );
+	int Load(CIcarus* icarus, IGameInterface* game);
 
 	// Overloaded new operator.
-	inline void *operator new( size_t size )
+	inline void *operator new(size_t size)
 	{	// Allocate the memory.
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 
 	// Overloaded delete operator.
-	inline void operator delete( void *pRawData )
+	inline void operator delete(void *pRawData)
 	{	// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
 // moved to public on 2/12/2 to allow calling during shutdown
-	int Recall( CIcarus* icarus );
+	int Recall(CIcarus* icarus);
 protected:
 
-	int EvaluateConditional( CBlock *block, CIcarus* icarus );
+	int EvaluateConditional(CBlock *block, CIcarus* icarus);
 
-	int Route( CSequence *sequence, bstream_t *bstream , CIcarus* icarus);
-	int Flush( CSequence *owner, CIcarus* icarus );
-	void Interrupt( void );
+	int Route(CSequence *sequence, bstream_t *bstream , CIcarus* icarus);
+	int Flush(CSequence *owner, CIcarus* icarus);
+	void Interrupt(void);
 
-	bstream_t *AddStream( void );
-	void DeleteStream( bstream_t *bstream );
+	bstream_t *AddStream(void);
+	void DeleteStream(bstream_t *bstream);
 
-	int AddAffect( bstream_t *bstream, int retain, int *id, CIcarus* icarus );
+	int AddAffect(bstream_t *bstream, int retain, int *id, CIcarus* icarus);
 
-	CSequence *AddSequence( CIcarus* icarus );
-	CSequence *AddSequence( CSequence *parent, CSequence *returnSeq, int flags, CIcarus* icarus );
+	CSequence *AddSequence(CIcarus* icarus);
+	CSequence *AddSequence(CSequence *parent, CSequence *returnSeq, int flags, CIcarus* icarus);
 
-	CSequence *GetSequence( int id );
+	CSequence *GetSequence(int id);
 
 	//NOTENOTE: This only removes references to the sequence, IT DOES NOT FREE THE ALLOCATED MEMORY!
-	int RemoveSequence( CSequence *sequence, CIcarus* icarus);
-	int DestroySequence( CSequence *sequence, CIcarus* icarus);
+	int RemoveSequence(CSequence *sequence, CIcarus* icarus);
+	int DestroySequence(CSequence *sequence, CIcarus* icarus);
 
-	int PushCommand( CBlock *command, int flag );
-	CBlock *PopCommand( int flag );
+	int PushCommand(CBlock *command, int flag);
+	CBlock *PopCommand(int flag);
 
-	inline CSequence *ReturnSequence( CSequence *sequence );
+	inline CSequence *ReturnSequence(CSequence *sequence);
 
-	void CheckRun( CBlock ** , CIcarus* icarus);
-	void CheckLoop( CBlock ** , CIcarus* icarus);
-	void CheckAffect( CBlock ** , CIcarus* icarus);
-	void CheckIf( CBlock ** , CIcarus* icarus);
-	void CheckDo( CBlock ** , CIcarus* icarus);
-	void CheckFlush( CBlock ** , CIcarus* icarus);
+	void CheckRun(CBlock ** , CIcarus* icarus);
+	void CheckLoop(CBlock ** , CIcarus* icarus);
+	void CheckAffect(CBlock ** , CIcarus* icarus);
+	void CheckIf(CBlock ** , CIcarus* icarus);
+	void CheckDo(CBlock ** , CIcarus* icarus);
+	void CheckFlush(CBlock ** , CIcarus* icarus);
 
-	void Prep( CBlock ** , CIcarus* icarus);
+	void Prep(CBlock ** , CIcarus* icarus);
 
-	int Prime( CTaskManager *taskManager, CBlock *command,  CIcarus* icarus);
+	int Prime(CTaskManager *taskManager, CBlock *command,  CIcarus* icarus);
 
-	int ParseRun( CBlock *block , CIcarus* icarus);
-	int ParseLoop( CBlock *block, bstream_t *bstream , CIcarus* icarus);
-	int ParseAffect( CBlock *block, bstream_t *bstream, CIcarus* icarus );
-	int ParseIf( CBlock *block, bstream_t *bstream, CIcarus* icarus );
-	int ParseElse( CBlock *block, bstream_t *bstream, CIcarus* icarus );
-	int ParseTask( CBlock *block, bstream_t *bstream , CIcarus* icarus);
+	int ParseRun(CBlock *block , CIcarus* icarus);
+	int ParseLoop(CBlock *block, bstream_t *bstream , CIcarus* icarus);
+	int ParseAffect(CBlock *block, bstream_t *bstream, CIcarus* icarus);
+	int ParseIf(CBlock *block, bstream_t *bstream, CIcarus* icarus);
+	int ParseElse(CBlock *block, bstream_t *bstream, CIcarus* icarus);
+	int ParseTask(CBlock *block, bstream_t *bstream , CIcarus* icarus);
 
-	int Affect( int id, int type , CIcarus* icarus);
+	int Affect(int id, int type , CIcarus* icarus);
 
-	void AddTaskSequence( CSequence *sequence, CTaskGroup *group );
-	CSequence *GetTaskSequence( CTaskGroup *group );
+	void AddTaskSequence(CSequence *sequence, CTaskGroup *group);
+	CSequence *GetTaskSequence(CTaskGroup *group);
 
 	//Member variables
 

@@ -7,7 +7,7 @@
 namespace
 {
 
-void NormalizePath( char *out, const char *path, size_t outSize )
+void NormalizePath(char *out, const char *path, size_t outSize)
 {
 	assert(outSize == MAX_QPATH);
 	Q_strncpyz(out, path, outSize);
@@ -29,10 +29,10 @@ CachedFile::CachedFile()
 {
 }
 
-CModelCacheManager::FileCache::iterator CModelCacheManager::FindFile( const char *path )
+CModelCacheManager::FileCache::iterator CModelCacheManager::FindFile(const char *path)
 {
 	return std::find_if(
-		std::begin(files), std::end(files), [path]( const CachedFile& file )
+		std::begin(files), std::end(files), [path](const CachedFile& file)
 		{
 			return strcmp(path, file.path) == 0;
 		});
@@ -61,13 +61,13 @@ static const byte FakeGLAFile[] =
 	0x00, 0x80, 0x00, 0x80, 0x00, 0x80
 };
 
-qboolean CModelCacheManager::LoadFile( const char *pFileName, void **ppFileBuffer, qboolean *pbAlreadyCached )
+qboolean CModelCacheManager::LoadFile(const char *pFileName, void **ppFileBuffer, qboolean *pbAlreadyCached)
 {
 	char path[MAX_QPATH];
 	NormalizePath(path, pFileName, sizeof(path));
 
 	auto cacheEntry = FindFile(path);
-	if ( cacheEntry != std::end(files) )
+	if (cacheEntry != std::end(files))
 	{
 		*ppFileBuffer = cacheEntry->pDiskImage;
 		*pbAlreadyCached = qtrue;
@@ -90,27 +90,27 @@ qboolean CModelCacheManager::LoadFile( const char *pFileName, void **ppFileBuffe
 	}
 
 	int len = ri.FS_ReadFile(path, ppFileBuffer);
-	if ( len == -1 || *ppFileBuffer == NULL )
+	if (len == -1 || *ppFileBuffer == NULL)
 	{
 		return qfalse;
 	}
 
-	ri.Printf( PRINT_DEVELOPER, "C_LoadFile(): Loaded %s from disk\n", pFileName );
+	ri.Printf(PRINT_DEVELOPER, "C_LoadFile(): Loaded %s from disk\n", pFileName);
 
 	return qtrue;
 }
 
 
-void* CModelCacheManager::Allocate( int iSize, void *pvDiskBuffer, const char *psModelFileName, qboolean *bAlreadyFound, memtag_t eTag )
+void* CModelCacheManager::Allocate(int iSize, void *pvDiskBuffer, const char *psModelFileName, qboolean *bAlreadyFound, memtag_t eTag)
 {
 	int		iChecksum;
 	char	sModelName[MAX_QPATH];
 
 	/* Standard NULL checking. */
-	if( !psModelFileName || !psModelFileName[0] )
+	if(!psModelFileName || !psModelFileName[0])
 		return NULL;
 
-	if( !bAlreadyFound )
+	if(!bAlreadyFound)
 		return NULL;
 
 	NormalizePath(sModelName, psModelFileName, sizeof(sModelName));
@@ -121,8 +121,8 @@ void* CModelCacheManager::Allocate( int iSize, void *pvDiskBuffer, const char *p
 	{
 		/* Create this image. */
 
-		if( pvDiskBuffer )
-			Z_MorphMallocTag( pvDiskBuffer, eTag );
+		if(pvDiskBuffer)
+			Z_MorphMallocTag(pvDiskBuffer, eTag);
 		else
 			pvDiskBuffer = Z_Malloc(iSize, eTag, qfalse);
 
@@ -132,7 +132,7 @@ void* CModelCacheManager::Allocate( int iSize, void *pvDiskBuffer, const char *p
 		pFile->iAllocSize = iSize;
 		Q_strncpyz(pFile->path, sModelName, sizeof(pFile->path));
 
-		if( ri.FS_FileIsInPAK( sModelName, &iChecksum ) )
+		if(ri.FS_FileIsInPAK(sModelName, &iChecksum))
 			pFile->iPAKChecksum = iChecksum;  /* Otherwise, it will be -1. */
 
 		*bAlreadyFound = qfalse;
@@ -155,9 +155,9 @@ void* CModelCacheManager::Allocate( int iSize, void *pvDiskBuffer, const char *p
 /*
  * Clears out the cache (done on renderer shutdown I suppose)
  */
-void CModelCacheManager::DeleteAll( void )
+void CModelCacheManager::DeleteAll(void)
 {
-	for ( auto& file : files )
+	for (auto& file : files)
 	{
 		Z_Free(file.pDiskImage);
 	}
@@ -170,22 +170,22 @@ void CModelCacheManager::DeleteAll( void )
  * Scans the cache for assets which don't match the checksum, and dumps
  * those that don't match.
  */
-void CModelCacheManager::DumpNonPure( void )
+void CModelCacheManager::DumpNonPure(void)
 {
-	ri.Printf( PRINT_DEVELOPER,  "CCacheManager::DumpNonPure():\n");
+	ri.Printf(PRINT_DEVELOPER,  "CCacheManager::DumpNonPure():\n");
 
-	for ( auto it = files.begin(); it != files.end(); /* empty */ )
+	for (auto it = files.begin(); it != files.end(); /* empty */)
 	{
 		int iChecksum;
-		int iInPak = ri.FS_FileIsInPAK( it->path, &iChecksum );
+		int iInPak = ri.FS_FileIsInPAK(it->path, &iChecksum);
 
-		if( iInPak == -1 || iChecksum != it->iPAKChecksum )
+		if(iInPak == -1 || iChecksum != it->iPAKChecksum)
 		{
 			/* Erase the file because it doesn't match the checksum */
-			ri.Printf( PRINT_DEVELOPER, "Dumping none pure model \"%s\"", it->path );
+			ri.Printf(PRINT_DEVELOPER, "Dumping none pure model \"%s\"", it->path);
 
-			if( it->pDiskImage )
-				Z_Free( it->pDiskImage );
+			if(it->pDiskImage)
+				Z_Free(it->pDiskImage);
 
 			it = files.erase(it);
 		}
@@ -195,31 +195,31 @@ void CModelCacheManager::DumpNonPure( void )
 		}
 	}
 
-	ri.Printf( PRINT_DEVELOPER, "CCacheManager::DumpNonPure(): Ok\n");
+	ri.Printf(PRINT_DEVELOPER, "CCacheManager::DumpNonPure(): Ok\n");
 }
 
-CModelCacheManager::AssetCache::iterator CModelCacheManager::FindAsset( const char *path )
+CModelCacheManager::AssetCache::iterator CModelCacheManager::FindAsset(const char *path)
 {
 	return std::find_if(
-		std::begin(assets), std::end(assets), [path]( const Asset& asset )
+		std::begin(assets), std::end(assets), [path](const Asset& asset)
 		{
 			return strcmp(path, asset.path) == 0;
 		});
 }
 
-qhandle_t CModelCacheManager::GetModelHandle( const char *fileName )
+qhandle_t CModelCacheManager::GetModelHandle(const char *fileName)
 {
 	char path[MAX_QPATH];
 	NormalizePath(path, fileName, sizeof(path));
 
 	const auto it = FindAsset(path);
-	if( it == std::end(assets) )
+	if(it == std::end(assets))
 		return -1; // asset not found
 
 	return it->handle;
 }
 
-void CModelCacheManager::InsertModelHandle( const char *fileName, qhandle_t handle )
+void CModelCacheManager::InsertModelHandle(const char *fileName, qhandle_t handle)
 {
 	char path[MAX_QPATH];
 	NormalizePath(path, fileName, sizeof(path));
@@ -230,27 +230,27 @@ void CModelCacheManager::InsertModelHandle( const char *fileName, qhandle_t hand
 	assets.emplace_back(asset);
 }
 
-qboolean CModelCacheManager::LevelLoadEnd( qboolean deleteUnusedByLevel )
+qboolean CModelCacheManager::LevelLoadEnd(qboolean deleteUnusedByLevel)
 {
 	qboolean bAtLeastOneModelFreed	= qfalse;
 
-	ri.Printf( PRINT_DEVELOPER, S_COLOR_GREEN "CModelCacheManager::LevelLoadEnd():\n");
+	ri.Printf(PRINT_DEVELOPER, S_COLOR_GREEN "CModelCacheManager::LevelLoadEnd():\n");
 
-	for ( auto it = files.begin(); it != files.end(); /* empty */ )
+	for (auto it = files.begin(); it != files.end(); /* empty */)
 	{
 		bool bDeleteThis = false;
 
-		if( deleteUnusedByLevel )
+		if(deleteUnusedByLevel)
 			bDeleteThis = (it->iLevelLastUsedOn != tr.currentLevel);
 		else
 			bDeleteThis = (it->iLevelLastUsedOn < tr.currentLevel);
 
-		if( bDeleteThis )
+		if(bDeleteThis)
 		{
-			ri.Printf( PRINT_DEVELOPER, S_COLOR_GREEN "Dumping \"%s\"", it->path);
-			if( it->pDiskImage )
+			ri.Printf(PRINT_DEVELOPER, S_COLOR_GREEN "Dumping \"%s\"", it->path);
+			if(it->pDiskImage)
 			{
-				Z_Free( it->pDiskImage );
+				Z_Free(it->pDiskImage);
 				bAtLeastOneModelFreed = qtrue;	// FIXME: is this correct? shouldn't it be in the next lower scope?
 			}
 
@@ -262,7 +262,7 @@ qboolean CModelCacheManager::LevelLoadEnd( qboolean deleteUnusedByLevel )
 		}
 	}
 
-	ri.Printf( PRINT_DEVELOPER, S_COLOR_GREEN "CModelCacheManager::LevelLoadEnd(): Ok\n");
+	ri.Printf(PRINT_DEVELOPER, S_COLOR_GREEN "CModelCacheManager::LevelLoadEnd(): Ok\n");
 
 	return bAtLeastOneModelFreed;
 }
@@ -271,7 +271,7 @@ qboolean CModelCacheManager::LevelLoadEnd( qboolean deleteUnusedByLevel )
  * Wrappers for the above funcs so they export properly.
  */
 
-qboolean C_Models_LevelLoadEnd( qboolean deleteUnusedByLevel )
+qboolean C_Models_LevelLoadEnd(qboolean deleteUnusedByLevel)
 {
 	return CModelCache->LevelLoadEnd(deleteUnusedByLevel);
 }
@@ -285,18 +285,18 @@ qboolean C_Images_LevelLoadEnd()
  * Shader storage and retrieval, unique to the model caching
  */
 
-void CModelCacheManager::StoreShaderRequest( const char *psModelFileName, const char *psShaderName, int *piShaderIndexPoke )
+void CModelCacheManager::StoreShaderRequest(const char *psModelFileName, const char *psShaderName, int *piShaderIndexPoke)
 {
 	char sModelName[MAX_QPATH];
 	NormalizePath(sModelName, psModelFileName, sizeof(sModelName));
 
 	auto file = FindFile(sModelName);
-	if ( file == files.end() )
+	if (file == files.end())
 	{
 		return;
 	}
 
-	if( file->pDiskImage == NULL )
+	if(file->pDiskImage == NULL)
 	{
 		/* Shouldn't even happen. */
 		assert(0);
@@ -309,7 +309,7 @@ void CModelCacheManager::StoreShaderRequest( const char *psModelFileName, const 
 	file->shaderCache.push_back(ShaderCacheEntry(iNameOffset, iPokeOffset));
 }
 
-void CModelCacheManager::AllocateShaders( const char *psFileName )
+void CModelCacheManager::AllocateShaders(const char *psFileName)
 {
 	// if we already had this model entry, then re-register all the shaders it wanted...
 
@@ -317,25 +317,25 @@ void CModelCacheManager::AllocateShaders( const char *psFileName )
 	NormalizePath(sModelName, psFileName, sizeof(sModelName));
 
 	auto file = FindFile(sModelName);
-	if ( file == files.end() )
+	if (file == files.end())
 	{
 		return;
 	}
 
-	if( file->pDiskImage == NULL )
+	if(file->pDiskImage == NULL)
 	{
 		/* Shouldn't even happen. */
 		assert(0);
 		return;
 	}
 
-	for( const ShaderCacheEntry& shader : file->shaderCache )
+	for(const ShaderCacheEntry& shader : file->shaderCache)
 	{
 		char *psShaderName		=		 ((char*)file->pDiskImage + shader.nameOffset);
 		int  *piShaderPokePtr	= (int *)((char*)file->pDiskImage + shader.pokeOffset);
 
 		shader_t *sh = R_FindShader(psShaderName, lightmapsNone, stylesDefault, qtrue);
-		if ( sh->defaultShader )
+		if (sh->defaultShader)
 			*piShaderPokePtr = 0;
 		else
 			*piShaderPokePtr = sh->index;

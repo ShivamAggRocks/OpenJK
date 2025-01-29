@@ -38,14 +38,14 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ===================================================================================================
 */
 
-CBlockMember::CBlockMember( void )
+CBlockMember::CBlockMember(void)
 {
 	m_id = -1;
 	m_size = -1;
 	m_data = NULL;
 }
 
-CBlockMember::~CBlockMember( void )
+CBlockMember::~CBlockMember(void)
 {
 	Free();
 }
@@ -56,11 +56,11 @@ Free
 -------------------------
 */
 
-void CBlockMember::Free( void )
+void CBlockMember::Free(void)
 {
-	if ( m_data != NULL )
+	if (m_data != NULL)
 	{
-		ICARUS_Free ( m_data );
+		ICARUS_Free (m_data);
 		m_data = NULL;
 
 		m_id = m_size = -1;
@@ -73,7 +73,7 @@ GetInfo
 -------------------------
 */
 
-void CBlockMember::GetInfo( int *id, int *size, void **data )
+void CBlockMember::GetInfo(int *id, int *size, void **data)
 {
 	*id = m_id;
 	*size = m_size;
@@ -86,23 +86,23 @@ SetData overloads
 -------------------------
 */
 
-void CBlockMember::SetData( const char *data )
+void CBlockMember::SetData(const char *data)
 {
-	WriteDataPointer( data, strlen(data)+1 );
+	WriteDataPointer(data, strlen(data)+1);
 }
 
-void CBlockMember::SetData( vector_t data )
+void CBlockMember::SetData(vector_t data)
 {
-	WriteDataPointer( data, 3 );
+	WriteDataPointer(data, 3);
 }
 
-void CBlockMember::SetData( void *data, int size )
+void CBlockMember::SetData(void *data, int size)
 {
-	if ( m_data )
-		ICARUS_Free( m_data );
+	if (m_data)
+		ICARUS_Free(m_data);
 
-	m_data = ICARUS_Malloc( size );
-	memcpy( m_data, data, size );
+	m_data = ICARUS_Malloc(size);
+	memcpy(m_data, data, size);
 	m_size = size;
 }
 
@@ -114,25 +114,25 @@ ReadMember
 -------------------------
 */
 
-int CBlockMember::ReadMember( char **stream, int *streamPos )
+int CBlockMember::ReadMember(char **stream, int *streamPos)
 {
 	m_id = LittleLong(*(int *) (*stream + *((int *)streamPos)));
-	*streamPos += sizeof( int );
+	*streamPos += sizeof(int);
 
-	if ( m_id == ID_RANDOM )
+	if (m_id == ID_RANDOM)
 	{//special case, need to initialize this member's data to Q3_INFINITE so we can randomize the number only the first time random is checked when inside a wait
-		m_size = sizeof( float );
-		*streamPos += sizeof( int );
-		m_data = ICARUS_Malloc( m_size );
+		m_size = sizeof(float);
+		*streamPos += sizeof(int);
+		m_data = ICARUS_Malloc(m_size);
 		float infinite = Q3_INFINITE;
-		memcpy( m_data, &infinite, m_size );
+		memcpy(m_data, &infinite, m_size);
 	}
 	else
 	{
 		m_size = LittleLong(*(int *) (*stream + *streamPos));
-		*streamPos += sizeof( int );
-		m_data = ICARUS_Malloc( m_size );
-		memcpy( m_data, (*stream + *streamPos), m_size );
+		*streamPos += sizeof(int);
+		m_data = ICARUS_Malloc(m_size);
+		memcpy(m_data, (*stream + *streamPos), m_size);
 #ifdef Q3_BIG_ENDIAN
 		// only TK_INT, TK_VECTOR and TK_FLOAT has to be swapped, but just in case
 		if (m_size == 4 && m_id != TK_STRING && m_id != TK_IDENTIFIER && m_id != TK_CHAR)
@@ -150,11 +150,11 @@ WriteMember
 -------------------------
 */
 
-int CBlockMember::WriteMember( FILE *m_fileHandle )
+int CBlockMember::WriteMember(FILE *m_fileHandle)
 {
-	fwrite( &m_id, sizeof(m_id), 1, m_fileHandle );
-	fwrite( &m_size, sizeof(m_size), 1, m_fileHandle );
-	fwrite( m_data, m_size, 1, m_fileHandle );
+	fwrite(&m_id, sizeof(m_id), 1, m_fileHandle);
+	fwrite(&m_size, sizeof(m_size), 1, m_fileHandle);
+	fwrite(m_data, m_size, 1, m_fileHandle);
 
 	return true;
 }
@@ -165,16 +165,16 @@ Duplicate
 -------------------------
 */
 
-CBlockMember *CBlockMember::Duplicate( void )
+CBlockMember *CBlockMember::Duplicate(void)
 {
 	CBlockMember	*newblock = new CBlockMember;
 
-	if ( newblock == NULL )
+	if (newblock == NULL)
 		return NULL;
 
-	newblock->SetData( m_data, m_size );
-	newblock->SetSize( m_size );
-	newblock->SetID( m_id );
+	newblock->SetData(m_data, m_size);
+	newblock->SetSize(m_size);
+	newblock->SetID(m_id);
 
 	return newblock;
 }
@@ -187,13 +187,13 @@ CBlockMember *CBlockMember::Duplicate( void )
 ===================================================================================================
 */
 
-CBlock::CBlock( void )
+CBlock::CBlock(void)
 {
 	m_flags			= 0;
 	m_id			= 0;
 }
 
-CBlock::~CBlock( void )
+CBlock::~CBlock(void)
 {
 	Free();
 }
@@ -204,7 +204,7 @@ Init
 -------------------------
 */
 
-int CBlock::Init( void )
+int CBlock::Init(void)
 {
 	m_flags			= 0;
 	m_id			= 0;
@@ -218,7 +218,7 @@ Create
 -------------------------
 */
 
-int CBlock::Create( int block_id )
+int CBlock::Create(int block_id)
 {
 	Init();
 
@@ -233,14 +233,14 @@ Free
 -------------------------
 */
 
-int CBlock::Free( void )
+int CBlock::Free(void)
 {
 	int	numMembers = GetNumMembers();
 	CBlockMember	*bMember;
 
-	while ( numMembers-- )
+	while (numMembers--)
 	{
-		bMember = GetMember( numMembers );
+		bMember = GetMember(numMembers);
 
 		if (!bMember)
 			return false;
@@ -261,67 +261,67 @@ Write
 -------------------------
 */
 
-int CBlock::Write( int member_id, const char *member_data )
+int CBlock::Write(int member_id, const char *member_data)
 {
 	CBlockMember *bMember = new CBlockMember;
 
-	bMember->SetID( member_id );
+	bMember->SetID(member_id);
 
-	bMember->SetData( member_data );
-	bMember->SetSize( strlen(member_data) + 1 );
+	bMember->SetData(member_data);
+	bMember->SetSize(strlen(member_data) + 1);
 
-	AddMember( bMember );
+	AddMember(bMember);
 
 	return true;
 }
 
-int CBlock::Write( int member_id, vector_t member_data )
+int CBlock::Write(int member_id, vector_t member_data)
 {
 	CBlockMember *bMember;
 
 	bMember = new CBlockMember;
 
-	bMember->SetID( member_id );
-	bMember->SetData( member_data );
-	bMember->SetSize( sizeof(vector_t) );
+	bMember->SetID(member_id);
+	bMember->SetData(member_data);
+	bMember->SetSize(sizeof(vector_t));
 
-	AddMember( bMember );
+	AddMember(bMember);
 
 	return true;
 }
 
-int CBlock::Write( int member_id, float member_data )
+int CBlock::Write(int member_id, float member_data)
 {
 	CBlockMember *bMember = new CBlockMember;
 
-	bMember->SetID( member_id );
-	bMember->WriteData( member_data );
-	bMember->SetSize( sizeof(member_data) );
+	bMember->SetID(member_id);
+	bMember->WriteData(member_data);
+	bMember->SetSize(sizeof(member_data));
 
-	AddMember( bMember );
+	AddMember(bMember);
 
 	return true;
 }
 
-int CBlock::Write( int member_id, int member_data )
+int CBlock::Write(int member_id, int member_data)
 {
 	CBlockMember *bMember = new CBlockMember;
 
-	bMember->SetID( member_id );
-	bMember->WriteData( member_data );
-	bMember->SetSize( sizeof(member_data) );
+	bMember->SetID(member_id);
+	bMember->WriteData(member_data);
+	bMember->SetSize(sizeof(member_data));
 
-	AddMember( bMember );
+	AddMember(bMember);
 
 	return true;
 }
 
 
-int CBlock::Write( CBlockMember *bMember )
+int CBlock::Write(CBlockMember *bMember)
 {
-// findme: this is wrong:	bMember->SetSize( sizeof(bMember->GetData()) );
+// findme: this is wrong:	bMember->SetSize(sizeof(bMember->GetData()));
 
-	AddMember( bMember );
+	AddMember(bMember);
 
 	return true;
 }
@@ -334,9 +334,9 @@ AddMember
 -------------------------
 */
 
-int	CBlock::AddMember( CBlockMember *member )
+int	CBlock::AddMember(CBlockMember *member)
 {
-	m_members.insert( m_members.end(), member );
+	m_members.insert(m_members.end(), member);
 	return true;
 }
 
@@ -346,9 +346,9 @@ GetMember
 -------------------------
 */
 
-CBlockMember *CBlock::GetMember( int memberNum )
+CBlockMember *CBlock::GetMember(int memberNum)
 {
-	if ( memberNum > GetNumMembers()-1 )
+	if (memberNum > GetNumMembers()-1)
 	{
 		return NULL;
 	}
@@ -361,13 +361,13 @@ GetMemberData
 -------------------------
 */
 
-void *CBlock::GetMemberData( int memberNum )
+void *CBlock::GetMemberData(int memberNum)
 {
-	if ( memberNum >= GetNumMembers() )
+	if (memberNum >= GetNumMembers())
 	{
 		return NULL;
 	}
-	return (void *) ((GetMember( memberNum ))->GetData());
+	return (void *) ((GetMember(memberNum))->GetData());
 }
 
 /*
@@ -376,22 +376,22 @@ Duplicate
 -------------------------
 */
 
-CBlock *CBlock::Duplicate( void )
+CBlock *CBlock::Duplicate(void)
 {
 	blockMember_v::iterator	mi;
 	CBlock					*newblock;
 
 	newblock = new CBlock;
 
-	if ( newblock == NULL )
+	if (newblock == NULL)
 		return NULL;
 
-	newblock->Create( m_id );
+	newblock->Create(m_id);
 
 	//Duplicate entire block and return the cc
-	for ( mi = m_members.begin(); mi != m_members.end(); ++mi )
+	for (mi = m_members.begin(); mi != m_members.end(); ++mi)
 	{
-		newblock->AddMember( (*mi)->Duplicate() );
+		newblock->AddMember((*mi)->Duplicate());
 	}
 
 	return newblock;
@@ -405,13 +405,13 @@ CBlock *CBlock::Duplicate( void )
 ===================================================================================================
 */
 
-CBlockStream::CBlockStream( void )
+CBlockStream::CBlockStream(void)
 {
 	m_stream = NULL;
 	m_streamPos = 0;
 }
 
-CBlockStream::~CBlockStream( void )
+CBlockStream::~CBlockStream(void)
 {
 }
 
@@ -421,12 +421,12 @@ GetChar
 -------------------------
 */
 
-char CBlockStream::GetChar( void )
+char CBlockStream::GetChar(void)
 {
 	char data;
 
 	data = *(char*) (m_stream + m_streamPos);
-	m_streamPos += sizeof( data );
+	m_streamPos += sizeof(data);
 
 	return data;
 }
@@ -437,12 +437,12 @@ GetUnsignedInteger
 -------------------------
 */
 
-unsigned CBlockStream::GetUnsignedInteger( void )
+unsigned CBlockStream::GetUnsignedInteger(void)
 {
 	unsigned data;
 
 	data = *(unsigned *) (m_stream + m_streamPos);
-	m_streamPos += sizeof( data );
+	m_streamPos += sizeof(data);
 
 	return data;
 }
@@ -453,12 +453,12 @@ GetInteger
 -------------------------
 */
 
-int	CBlockStream::GetInteger( void )
+int	CBlockStream::GetInteger(void)
 {
 	int data;
 
 	data = *(int *) (m_stream + m_streamPos);
-	m_streamPos += sizeof( data );
+	m_streamPos += sizeof(data);
 
 	return data;
 }
@@ -469,12 +469,12 @@ GetLong
 -------------------------
 */
 
-long CBlockStream::GetLong( void )
+long CBlockStream::GetLong(void)
 {
 	long data;
 
 	data = *(int *) (m_stream + m_streamPos);
-	m_streamPos += sizeof( data );
+	m_streamPos += sizeof(data);
 
 	return data;
 }
@@ -485,12 +485,12 @@ GetFloat
 -------------------------
 */
 
-float CBlockStream::GetFloat( void )
+float CBlockStream::GetFloat(void)
 {
 	float data;
 
 	data = *(float *) (m_stream + m_streamPos);
-	m_streamPos += sizeof( data );
+	m_streamPos += sizeof(data);
 
 	return data;
 }
@@ -501,7 +501,7 @@ Free
 -------------------------
 */
 
-int CBlockStream::Free( void )
+int CBlockStream::Free(void)
 {
 	//NOTENOTE: It is assumed that the user will free the passed memory block (m_stream) immediately after the run call
 	//			That's why this doesn't free the memory, it only clears its internal pointer
@@ -518,22 +518,22 @@ Create
 -------------------------
 */
 
-int CBlockStream::Create( char *filename )
+int CBlockStream::Create(char *filename)
 {
 	char	*id_header = IBI_HEADER_ID;
 	float	version = IBI_VERSION;
 
 	//Strip the extension and add the BLOCK_EXT extension
-	COM_StripExtension( filename, m_fileName, sizeof(m_fileName) );
-	COM_DefaultExtension( m_fileName, sizeof(m_fileName), IBI_EXT );
+	COM_StripExtension(filename, m_fileName, sizeof(m_fileName));
+	COM_DefaultExtension(m_fileName, sizeof(m_fileName), IBI_EXT);
 
-	if ( (m_fileHandle = fopen(m_fileName, "wb")) == NULL )
+	if ((m_fileHandle = fopen(m_fileName, "wb")) == NULL)
 	{
 		return false;
 	}
 
-	fwrite( id_header, IBI_HEADER_ID_LENGTH, 1, m_fileHandle );
-	fwrite( &version, sizeof(version), 1, m_fileHandle );
+	fwrite(id_header, IBI_HEADER_ID_LENGTH, 1, m_fileHandle);
+	fwrite(&version, sizeof(version), 1, m_fileHandle);
 
 	return true;
 }
@@ -544,7 +544,7 @@ Init
 -------------------------
 */
 
-int CBlockStream::Init( void )
+int CBlockStream::Init(void)
 {
 	m_fileHandle = NULL;
 	memset(m_fileName, 0, sizeof(m_fileName));
@@ -563,21 +563,21 @@ WriteBlock
 -------------------------
 */
 
-int CBlockStream::WriteBlock( CBlock *block )
+int CBlockStream::WriteBlock(CBlock *block)
 {
 	CBlockMember	*bMember;
 	int				id = block->GetBlockID();
 	int				numMembers = block->GetNumMembers();
 	unsigned char	flags = block->GetFlags();
 
-	fwrite ( &id, sizeof(id), 1, m_fileHandle );
-	fwrite ( &numMembers, sizeof(numMembers), 1, m_fileHandle );
-	fwrite ( &flags, sizeof( flags ), 1, m_fileHandle );
+	fwrite (&id, sizeof(id), 1, m_fileHandle);
+	fwrite (&numMembers, sizeof(numMembers), 1, m_fileHandle);
+	fwrite (&flags, sizeof(flags), 1, m_fileHandle);
 
-	for ( int i = 0; i < numMembers; i++ )
+	for (int i = 0; i < numMembers; i++)
 	{
-		bMember = block->GetMember( i );
-		bMember->WriteMember( m_fileHandle );
+		bMember = block->GetMember(i);
+		bMember->WriteMember(m_fileHandle);
 	}
 
 	block->Free();
@@ -591,9 +591,9 @@ BlockAvailable
 -------------------------
 */
 
-int CBlockStream::BlockAvailable( void )
+int CBlockStream::BlockAvailable(void)
 {
-	if ( m_streamPos >= m_fileSize )
+	if (m_streamPos >= m_fileSize)
 		return false;
 
 	return true;
@@ -605,7 +605,7 @@ ReadBlock
 -------------------------
 */
 
-int CBlockStream::ReadBlock( CBlock *get )
+int CBlockStream::ReadBlock(CBlock *get)
 {
 	CBlockMember	*bMember;
 	int				b_id, numMembers;
@@ -621,16 +621,16 @@ int CBlockStream::ReadBlock( CBlock *get )
 	if (numMembers < 0)
 		return false;
 
-	get->Create( b_id );
-	get->SetFlags( flags );
+	get->Create(b_id);
+	get->SetFlags(flags);
 
 	// Stream blocks are generally temporary as they
 	// are just used in an initial parsing phase...
-	while ( numMembers-- > 0)
+	while (numMembers-- > 0)
 	{
 		bMember = new CBlockMember;
-		bMember->ReadMember( &m_stream, &m_streamPos );
-		get->AddMember( bMember );
+		bMember->ReadMember(&m_stream, &m_streamPos);
+		get->AddMember(bMember);
 	}
 
 	return true;
@@ -642,7 +642,7 @@ Open
 -------------------------
 */
 
-int CBlockStream::Open( char *buffer, long size )
+int CBlockStream::Open(char *buffer, long size)
 {
 	char	id_header[IBI_HEADER_ID_LENGTH];
 	float	version;
@@ -653,7 +653,7 @@ int CBlockStream::Open( char *buffer, long size )
 
 	m_stream = buffer;
 
-	for ( size_t i = 0; i < sizeof( id_header ); i++ )
+	for (size_t i = 0; i < sizeof(id_header); i++)
 	{
 		id_header[i] = GetChar();
 	}
@@ -662,14 +662,14 @@ int CBlockStream::Open( char *buffer, long size )
 	version = LittleFloat(version);
 
 	//Check for valid header
-	if ( strcmp( id_header, IBI_HEADER_ID ) )
+	if (strcmp(id_header, IBI_HEADER_ID))
 	{
 		Free();
 		return false;
 	}
 
 	//Check for valid version
-	if ( version != IBI_VERSION )
+	if (version != IBI_VERSION)
 	{
 		Free();
 		return false;

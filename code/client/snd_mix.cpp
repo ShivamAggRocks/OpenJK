@@ -104,7 +104,7 @@ void S_TransferPaintBuffer(int endtime)
 	pbuf = (unsigned long *)dma.buffer;
 
 
-	if ( s_testsound->integer ) {
+	if (s_testsound->integer) {
 		int		i;
 		int		count;
 
@@ -168,7 +168,7 @@ CHANNEL MIXING
 
 ===============================================================================
 */
-static void S_PaintChannelFrom16( channel_t *ch, const sfx_t *sfx, int count, int sampleOffset, int bufferOffset )
+static void S_PaintChannelFrom16(channel_t *ch, const sfx_t *sfx, int count, int sampleOffset, int bufferOffset)
 {
 	portable_samplepair_t	*pSamplesDest;
 	int iData;
@@ -179,17 +179,17 @@ static void S_PaintChannelFrom16( channel_t *ch, const sfx_t *sfx, int count, in
 
 	pSamplesDest	= &paintbuffer[ bufferOffset ];
 
-	for ( int i=0 ; i<count ; i++ )
+	for (int i=0 ; i<count ; i++)
 	{
 		iData = sfx->pSoundData[ sampleOffset++ ];
 
-		pSamplesDest[i].left  += (iData * iLeftVol )>>8;
+		pSamplesDest[i].left  += (iData * iLeftVol)>>8;
 		pSamplesDest[i].right += (iData * iRightVol)>>8;
 	}
 }
 
 
-void S_PaintChannelFromMP3( channel_t *ch, const sfx_t *sc, int count, int sampleOffset, int bufferOffset )
+void S_PaintChannelFromMP3(channel_t *ch, const sfx_t *sc, int count, int sampleOffset, int bufferOffset)
 {
 	int data;
 	int leftvol, rightvol;
@@ -198,7 +198,7 @@ void S_PaintChannelFromMP3( channel_t *ch, const sfx_t *sc, int count, int sampl
 	portable_samplepair_t	*samp;
 	static short tempMP3Buffer[PAINTBUFFER_SIZE];
 
-	MP3Stream_GetSamples( ch, sampleOffset, count, tempMP3Buffer, qfalse );	// qfalse = not stereo
+	MP3Stream_GetSamples(ch, sampleOffset, count, tempMP3Buffer, qfalse);	// qfalse = not stereo
 
 	leftvol = ch->leftvol*snd_vol;
 	rightvol = ch->rightvol*snd_vol;
@@ -207,7 +207,7 @@ void S_PaintChannelFromMP3( channel_t *ch, const sfx_t *sc, int count, int sampl
 	samp = &paintbuffer[ bufferOffset ];
 
 
-	while ( count & 3 ) {
+	while (count & 3) {
 		data = *sfx;
 		samp->left += (data * leftvol)>>8;
 		samp->right += (data * rightvol)>>8;
@@ -217,7 +217,7 @@ void S_PaintChannelFromMP3( channel_t *ch, const sfx_t *sc, int count, int sampl
 		count--;
 	}
 
-	for ( i=0 ; i<count ; i += 4 ) {
+	for (i=0 ; i<count ; i += 4) {
 		data = sfx[i];
 		samp[i].left += (data * leftvol)>>8;
 		samp[i].right += (data * rightvol)>>8;
@@ -262,7 +262,7 @@ void ChannelPaint(channel_t *ch, sfx_t *sc, int count, int sampleOffset, int buf
 
 
 
-void S_PaintChannels( int endtime ) {
+void S_PaintChannels(int endtime) {
 	int 	i;
 	int 	end;
 	channel_t *ch;
@@ -275,17 +275,17 @@ void S_PaintChannels( int endtime ) {
 	voice_vol  = (s_volumeVoice->value*256.0f);
 
 //Com_Printf ("%i to %i\n", s_paintedtime, endtime);
-	while ( s_paintedtime < endtime ) {
+	while (s_paintedtime < endtime) {
 		// if paintbuffer is smaller than DMA buffer
 		// we may need to fill it multiple times
 		end = endtime;
-		if ( endtime - s_paintedtime > PAINTBUFFER_SIZE ) {
+		if (endtime - s_paintedtime > PAINTBUFFER_SIZE) {
 			end = s_paintedtime + PAINTBUFFER_SIZE;
 		}
 
 		// clear the paint buffer to either music or zeros
-		if ( s_rawend < s_paintedtime ) {
-			if ( s_rawend ) {
+		if (s_rawend < s_paintedtime) {
+			if (s_rawend) {
 				//Com_DPrintf ("background sound underrun\n");
 			}
 			memset(paintbuffer, 0, (end - s_paintedtime) * sizeof(portable_samplepair_t));
@@ -296,7 +296,7 @@ void S_PaintChannels( int endtime ) {
 
 			stop = (end < s_rawend) ? end : s_rawend;
 
-			for ( i = s_paintedtime ; i < stop ; i++ ) {
+			for (i = s_paintedtime ; i < stop ; i++) {
 				s = i&(MAX_RAW_SAMPLES-1);
 				paintbuffer[i-s_paintedtime] = s_rawsamples[s];
 			}
@@ -304,7 +304,7 @@ void S_PaintChannels( int endtime ) {
 //			Com_Printf ("partial stream\n");
 //		else
 //			Com_Printf ("full stream\n");
-			for ( ; i < end ; i++ ) {
+			for (; i < end ; i++) {
 				paintbuffer[i-s_paintedtime].left =
 				paintbuffer[i-s_paintedtime].right = 0;
 			}
@@ -312,12 +312,12 @@ void S_PaintChannels( int endtime ) {
 
 		// paint in the channels.
 		ch = s_channels;
-		for ( i = 0; i < MAX_CHANNELS ; i++, ch++ ) {
-			if ( !ch->thesfx || (ch->leftvol<0.25 && ch->rightvol<0.25 )) {
+		for (i = 0; i < MAX_CHANNELS ; i++, ch++) {
+			if (!ch->thesfx || (ch->leftvol<0.25 && ch->rightvol<0.25)) {
 				continue;
 			}
 
-			if ( ch->entchannel == CHAN_VOICE || ch->entchannel == CHAN_VOICE_ATTEN || ch->entchannel == CHAN_VOICE_GLOBAL )
+			if (ch->entchannel == CHAN_VOICE || ch->entchannel == CHAN_VOICE_ATTEN || ch->entchannel == CHAN_VOICE_GLOBAL)
 				snd_vol = voice_vol;
 			else
 				snd_vol = normal_vol;
@@ -338,21 +338,21 @@ void S_PaintChannels( int endtime ) {
 				}
 
 				count = end - ltime;
-				if ( sampleOffset + count > sc->iSoundLengthInSamples ) {
+				if (sampleOffset + count > sc->iSoundLengthInSamples) {
 					count = sc->iSoundLengthInSamples - sampleOffset;
 				}
 
-				if ( count > 0 ) {
+				if (count > 0) {
 					ChannelPaint(ch, sc, count, sampleOffset, ltime - s_paintedtime);
 					ltime += count;
 				}
-			} while ( ltime < end && ch->loopSound );
+			} while (ltime < end && ch->loopSound);
 		}
 /* temprem
 		// paint in the looped channels.
 		ch = loop_channels;
-		for ( i = 0; i < numLoopChannels ; i++, ch++ ) {
-			if ( !ch->thesfx || (!ch->leftvol && !ch->rightvol )) {
+		for (i = 0; i < numLoopChannels ; i++, ch++) {
+			if (!ch->thesfx || (!ch->leftvol && !ch->rightvol)) {
 				continue;
 			}
 
@@ -371,22 +371,22 @@ void S_PaintChannels( int endtime ) {
 					sampleOffset = (ltime % sc->soundLength);
 
 					count = end - ltime;
-					if ( sampleOffset + count > sc->soundLength ) {
+					if (sampleOffset + count > sc->soundLength) {
 						count = sc->soundLength - sampleOffset;
 					}
 
-					if ( count > 0 )
+					if (count > 0)
 					{
 						ChannelPaint(ch, sc, count, sampleOffset, ltime - s_paintedtime);
 						ltime += count;
 					}
 
-				} while ( ltime < end);
+				} while (ltime < end);
 			}
 		}
 */
 		// transfer out according to DMA format
-		S_TransferPaintBuffer( end );
+		S_TransferPaintBuffer(end);
 		s_paintedtime = end;
 	}
 }

@@ -30,7 +30,7 @@ public:
 	virtual ~IHeapAllocator() {}
 
 	virtual void ResetHeap() = 0;
-	virtual char *MiniHeapAlloc ( int size ) = 0;
+	virtual char *MiniHeapAlloc (int size) = 0;
 };
 
 class CMiniHeap : public IHeapAllocator

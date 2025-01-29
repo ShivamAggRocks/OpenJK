@@ -343,15 +343,15 @@ int BotMindTricked(int botClient, int enemyClient)
 int BotGetWeaponRange(bot_state_t *bs);
 int PassLovedOneCheck(bot_state_t *bs, gentity_t *ent);
 
-void ExitLevel( void );
+void ExitLevel(void);
 
-void QDECL BotAI_Print(int type, char *fmt, ...) { return; }
+void QDECL BotAI_Print(int type, char *fmt, ...) {return;}
 
-qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower );
+qboolean WP_ForcePowerUsable(gentity_t *self, forcePowers_t forcePower);
 
 int IsTeamplay(void)
 {
-	if ( level.gametype < GT_TEAM )
+	if (level.gametype < GT_TEAM)
 	{
 		return 0;
 	}
@@ -364,18 +364,18 @@ int IsTeamplay(void)
 BotAI_GetClientState
 ==================
 */
-int BotAI_GetClientState( int clientNum, playerState_t *state ) {
+int BotAI_GetClientState(int clientNum, playerState_t *state) {
 	gentity_t	*ent;
 
 	ent = &g_entities[clientNum];
-	if ( !ent->inuse ) {
+	if (!ent->inuse) {
 		return qfalse;
 	}
-	if ( !ent->client ) {
+	if (!ent->client) {
 		return qfalse;
 	}
 
-	memcpy( state, &ent->client->ps, sizeof(playerState_t) );
+	memcpy(state, &ent->client->ps, sizeof(playerState_t));
 	return qtrue;
 }
 
@@ -384,15 +384,15 @@ int BotAI_GetClientState( int clientNum, playerState_t *state ) {
 BotAI_GetEntityState
 ==================
 */
-int BotAI_GetEntityState( int entityNum, entityState_t *state ) {
+int BotAI_GetEntityState(int entityNum, entityState_t *state) {
 	gentity_t	*ent;
 
 	ent = &g_entities[entityNum];
-	memset( state, 0, sizeof(entityState_t) );
+	memset(state, 0, sizeof(entityState_t));
 	if (!ent->inuse) return qfalse;
 	if (!ent->r.linked) return qfalse;
 	if (ent->r.svFlags & SVF_NOCLIENT) return qfalse;
-	memcpy( state, &ent->s, sizeof(entityState_t) );
+	memcpy(state, &ent->s, sizeof(entityState_t));
 	return qtrue;
 }
 
@@ -401,16 +401,16 @@ int BotAI_GetEntityState( int entityNum, entityState_t *state ) {
 BotAI_GetSnapshotEntity
 ==================
 */
-int BotAI_GetSnapshotEntity( int clientNum, int sequence, entityState_t *state ) {
+int BotAI_GetSnapshotEntity(int clientNum, int sequence, entityState_t *state) {
 	int		entNum;
 
-	entNum = trap->BotGetSnapshotEntity( clientNum, sequence );
-	if ( entNum == -1 ) {
+	entNum = trap->BotGetSnapshotEntity(clientNum, sequence);
+	if (entNum == -1) {
 		memset(state, 0, sizeof(entityState_t));
 		return -1;
 	}
 
-	BotAI_GetEntityState( entNum, state );
+	BotAI_GetEntityState(entNum, state);
 
 	return sequence + 1;
 }
@@ -577,7 +577,7 @@ void BotInputToUserCommand(bot_input_t *bi, usercmd_t *ucmd, int delta_angles[3]
 	if (bi->actionflags & ACTION_FORCEPOWER) ucmd->buttons |= BUTTON_FORCEPOWER;
 
 	if (useTime < level.time && Q_irand(1, 10) < 5)
-	{ //for now just hit use randomly in case there's something useable around
+	{//for now just hit use randomly in case there's something useable around
 		ucmd->buttons |= BUTTON_USE;
 	}
 #if 0
@@ -702,11 +702,11 @@ void BotAIRegularUpdate(void) {
 RemoveColorEscapeSequences
 ==============
 */
-void RemoveColorEscapeSequences( char *text ) {
+void RemoveColorEscapeSequences(char *text) {
 	int i, l;
 
 	l = 0;
-	for ( i = 0; text[i]; i++ ) {
+	for (i = 0; text[i]; i++) {
 		if (Q_IsColorStringExt(&text[i])) {
 			i++;
 			continue;
@@ -742,26 +742,26 @@ int BotAI(int client, float thinktime) {
 	}
 
 	//retrieve the current client state
-	BotAI_GetClientState( client, &bs->cur_ps );
+	BotAI_GetClientState(client, &bs->cur_ps);
 
 	//retrieve any waiting server commands
-	while( trap->BotGetServerCommand(client, buf, sizeof(buf)) ) {
+	while(trap->BotGetServerCommand(client, buf, sizeof(buf))) {
 		//have buf point to the command and args to the command arguments
-		args = strchr( buf, ' ');
+		args = strchr(buf, ' ');
 		if (!args) continue;
 		*args++ = '\0';
 
 		//remove color espace sequences from the arguments
-		RemoveColorEscapeSequences( args );
+		RemoveColorEscapeSequences(args);
 
 		if (!Q_stricmp(buf, "cp "))
-			{ /*CenterPrintf*/ }
+			{/*CenterPrintf*/}
 		else if (!Q_stricmp(buf, "cs"))
-			{ /*ConfigStringModified*/ }
+			{/*ConfigStringModified*/}
 		else if (!Q_stricmp(buf, "scores"))
-			{ /*FIXME: parse scores?*/ }
+			{/*FIXME: parse scores?*/}
 		else if (!Q_stricmp(buf, "clientLevelShot"))
-			{ /*ignore*/ }
+			{/*ignore*/}
 	}
 	//add the delta angles to the bot's current view angles
 	for (j = 0; j < 3; j++) {
@@ -811,8 +811,8 @@ void BotScheduleBotThink(void) {
 
 	botnum = 0;
 
-	for( i = 0; i < MAX_CLIENTS; i++ ) {
-		if( !botstates[i] || !botstates[i]->inuse ) {
+	for(i = 0; i < MAX_CLIENTS; i++) {
+		if(!botstates[i] || !botstates[i]->inuse) {
 			continue;
 		}
 		//initialize the bot think residual time
@@ -907,7 +907,7 @@ int BotAISetupClient(int client, struct bot_settings_s *settings, qboolean resta
 	BotScheduleBotThink();
 
 	if (PlayersInGame())
-	{ //don't talk to yourself
+	{//don't talk to yourself
 		BotDoChat(bs, "GeneralGreetings", 0);
 	}
 
@@ -994,12 +994,12 @@ void BotResetState(bot_state_t *bs) {
 BotAILoadMap
 ==============
 */
-int BotAILoadMap( int restart ) {
+int BotAILoadMap(int restart) {
 	int			i;
 
 	for (i = 0; i < MAX_CLIENTS; i++) {
 		if (botstates[i] && botstates[i]->inuse) {
-			BotResetState( botstates[i] );
+			BotResetState(botstates[i]);
 			botstates[i]->setupcount = 4;
 		}
 	}
@@ -1014,7 +1014,7 @@ int OrgVisible(vec3_t org1, vec3_t org2, int ignore)
 {
 	trace_t tr;
 
-	trap->Trace(&tr, org1, NULL, NULL, org2, ignore, MASK_SOLID, qfalse, 0, 0 );
+	trap->Trace(&tr, org1, NULL, NULL, org2, ignore, MASK_SOLID, qfalse, 0, 0);
 
 	if (tr.fraction == 1)
 	{
@@ -1114,7 +1114,7 @@ int CheckForFunc(vec3_t org, int ignore)
 }
 
 //perform pvs check based on rmg or not
-qboolean BotPVSCheck( const vec3_t p1, const vec3_t p2 )
+qboolean BotPVSCheck(const vec3_t p1, const vec3_t p2)
 {
 	if (RMG.integer && bot_pvstype.integer)
 	{
@@ -1188,7 +1188,7 @@ int GetNearestVisibleWP(vec3_t org, int ignore)
 int PassWayCheck(bot_state_t *bs, int windex)
 {
 	if (!gWPArray[windex] || !gWPArray[windex]->inuse)
-	{ //bad point index
+	{//bad point index
 		return 0;
 	}
 
@@ -1196,24 +1196,24 @@ int PassWayCheck(bot_state_t *bs, int windex)
 	{
 		if ((gWPArray[windex]->flags & WPFLAG_RED_FLAG) ||
 			(gWPArray[windex]->flags & WPFLAG_BLUE_FLAG))
-		{ //red or blue flag, we'd like to get here
+		{//red or blue flag, we'd like to get here
 			return 1;
 		}
 	}
 
 	if (bs->wpDirection && (gWPArray[windex]->flags & WPFLAG_ONEWAY_FWD))
-	{ //we're not travelling in a direction on the trail that will allow us to pass this point
+	{//we're not travelling in a direction on the trail that will allow us to pass this point
 		return 0;
 	}
 	else if (!bs->wpDirection && (gWPArray[windex]->flags & WPFLAG_ONEWAY_BACK))
-	{ //we're not travelling in a direction on the trail that will allow us to pass this point
+	{//we're not travelling in a direction on the trail that will allow us to pass this point
 		return 0;
 	}
 
 	if (bs->wpCurrent && gWPArray[windex]->forceJumpTo &&
 		gWPArray[windex]->origin[2] > (bs->wpCurrent->origin[2]+64) &&
 		bs->cur_ps.fd.forcePowerLevel[FP_LEVITATION] < gWPArray[windex]->forceJumpTo)
-	{ //waypoint requires force jump level greater than our current one to pass
+	{//waypoint requires force jump level greater than our current one to pass
 		return 0;
 	}
 
@@ -1243,7 +1243,7 @@ float TotalTrailDistance(int start, int end, bot_state_t *bs)
 	while (beginat < endat)
 	{
 		if (beginat >= gWPNum || !gWPArray[beginat] || !gWPArray[beginat]->inuse)
-		{ //invalid waypoint index
+		{//invalid waypoint index
 			return -1;
 		}
 
@@ -1251,7 +1251,7 @@ float TotalTrailDistance(int start, int end, bot_state_t *bs)
 		{
 			if ((end > start && gWPArray[beginat]->flags & WPFLAG_ONEWAY_BACK) ||
 				(start > end && gWPArray[beginat]->flags & WPFLAG_ONEWAY_FWD))
-			{ //a one-way point, this means this path cannot be travelled to the final point
+			{//a one-way point, this means this path cannot be travelled to the final point
 				return -1;
 			}
 		}
@@ -1334,11 +1334,11 @@ void CheckForShorterRoutes(bot_state_t *bs, int newwpindex)
 	bestlen = TotalTrailDistance(newwpindex, bs->wpDestination->index, bs);
 
 	while (i < gWPArray[newwpindex]->neighbornum)
-	{ //now go through the neighbors and check the distance to the desired point from each neighbor
+	{//now go through the neighbors and check the distance to the desired point from each neighbor
 		checklen = TotalTrailDistance(gWPArray[newwpindex]->neighbors[i].num, bs->wpDestination->index, bs);
 
 		if (checklen < bestlen-64 || bestlen == -1)
-		{ //this path covers less distance, let's take it instead
+		{//this path covers less distance, let's take it instead
 			if (bs->cur_ps.fd.forcePowerLevel[FP_LEVITATION] >= gWPArray[newwpindex]->neighbors[i].forceJumpTo)
 			{
 				bestlen = checklen;
@@ -1359,12 +1359,12 @@ void CheckForShorterRoutes(bot_state_t *bs, int newwpindex)
 	}
 
 	if (bestindex != newwpindex && bestindex != -1)
-	{ //we found a path we want to switch to, let's do it
+	{//we found a path we want to switch to, let's do it
 		bs->wpCurrent = gWPArray[bestindex];
 		bs->wpSwitchTime = level.time + 3000;
 
 		if (fj)
-		{ //do we have to force jump to get to this neighbor?
+		{//do we have to force jump to get to this neighbor?
 #ifndef FORCEJUMP_INSTANTMETHOD
 			bs->forceJumpChargeTime = level.time + 1000;
 			bs->beStill = level.time + 1000;
@@ -1389,22 +1389,22 @@ void WPConstantRoutine(bot_state_t *bs)
 	}
 
 	if (bs->wpCurrent->flags & WPFLAG_DUCK)
-	{ //duck while travelling to this point
+	{//duck while travelling to this point
 		bs->duckTime = level.time + 100;
 	}
 
 #ifndef FORCEJUMP_INSTANTMETHOD
 	if (bs->wpCurrent->flags & WPFLAG_JUMP)
-	{ //jump while travelling to this point
+	{//jump while travelling to this point
 		float heightDif = (bs->wpCurrent->origin[2] - bs->origin[2]+16);
 
 		if (bs->origin[2]+16 >= bs->wpCurrent->origin[2])
-		{ //don't need to jump, we're already higher than this point
+		{//don't need to jump, we're already higher than this point
 			heightDif = 0;
 		}
 
 		if (heightDif > 40 && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_LEVITATION)) && (bs->cur_ps.fd.forceJumpCharge < (forceJumpStrength[bs->cur_ps.fd.forcePowerLevel[FP_LEVITATION]]-100) || bs->cur_ps.groundEntityNum == ENTITYNUM_NONE))
-		{ //alright, let's jump
+		{//alright, let's jump
 			bs->forceJumpChargeTime = level.time + 1000;
 			if (bs->cur_ps.groundEntityNum != ENTITYNUM_NONE && bs->jumpPrep < (level.time-300))
 			{
@@ -1419,7 +1419,7 @@ void WPConstantRoutine(bot_state_t *bs)
 			}
 		}
 		else if (heightDif > 64 && !(bs->cur_ps.fd.forcePowersKnown & (1 << FP_LEVITATION)))
-		{ //this point needs force jump to reach and we don't have it
+		{//this point needs force jump to reach and we don't have it
 			//Kill the current point and turn around
 			bs->wpCurrent = NULL;
 			if (bs->wpDirection)
@@ -1485,19 +1485,19 @@ void WPTouchRoutine(bot_state_t *bs)
 	bs->wpTravelTime = level.time + 10000;
 
 	if (bs->wpCurrent->flags & WPFLAG_NOMOVEFUNC)
-	{ //don't try to use any nearby map objects for a little while
+	{//don't try to use any nearby map objects for a little while
 		bs->noUseTime = level.time + 4000;
 	}
 
 #ifdef FORCEJUMP_INSTANTMETHOD
 	if ((bs->wpCurrent->flags & WPFLAG_JUMP) && bs->wpCurrent->forceJumpTo)
-	{ //jump if we're flagged to but not if this indicates a force jump point. Force jumping is
+	{//jump if we're flagged to but not if this indicates a force jump point. Force jumping is
 	  //handled elsewhere.
 		bs->jumpTime = level.time + 100;
 	}
 #else
 	if ((bs->wpCurrent->flags & WPFLAG_JUMP) && !bs->wpCurrent->forceJumpTo)
-	{ //jump if we're flagged to but not if this indicates a force jump point. Force jumping is
+	{//jump if we're flagged to but not if this indicates a force jump point. Force jumping is
 	  //handled elsewhere.
 		bs->jumpTime = level.time + 100;
 	}
@@ -1505,7 +1505,7 @@ void WPTouchRoutine(bot_state_t *bs)
 
 	if (bs->isCamper && bot_camp.integer && (BotIsAChickenWuss(bs) || BotCTFGuardDuty(bs) || bs->isCamper == 2) && ((bs->wpCurrent->flags & WPFLAG_SNIPEORCAMP) || (bs->wpCurrent->flags & WPFLAG_SNIPEORCAMPSTAND)) &&
 		bs->cur_ps.weapon != WP_SABER && bs->cur_ps.weapon != WP_MELEE && bs->cur_ps.weapon != WP_STUN_BATON)
-	{ //if we're a camper and a chicken then camp
+	{//if we're a camper and a chicken then camp
 		if (bs->wpDirection)
 		{
 			lastNum = bs->wpCurrent->index+1;
@@ -1534,7 +1534,7 @@ void WPTouchRoutine(bot_state_t *bs)
 	}
 	else if ((bs->cur_ps.weapon == WP_SABER || bs->cur_ps.weapon == WP_STUN_BATON || bs->cur_ps.weapon == WP_MELEE) &&
 		bs->isCamping > level.time)
-	{ //don't snipe/camp with a melee weapon, that would be silly
+	{//don't snipe/camp with a melee weapon, that would be silly
 		bs->isCamping = 0;
 		bs->wpCampingTo = NULL;
 		bs->wpCamping = NULL;
@@ -1547,7 +1547,7 @@ void WPTouchRoutine(bot_state_t *bs)
 			bs->wpDestination = NULL;
 
 			if (bs->runningLikeASissy)
-			{ //this obviously means we're scared and running, so we'll want to keep our navigational priorities less delayed
+			{//this obviously means we're scared and running, so we'll want to keep our navigational priorities less delayed
 				bs->destinationGrabTime = level.time + 500;
 			}
 			else
@@ -1587,7 +1587,7 @@ int BotTrace_Strafe(bot_state_t *bs, vec3_t traceto)
 	trace_t tr;
 
 	if (bs->cur_ps.groundEntityNum == ENTITYNUM_NONE)
-	{ //don't do this in the air, it can be.. dangerous.
+	{//don't do this in the air, it can be.. dangerous.
 		return 0;
 	}
 
@@ -1597,7 +1597,7 @@ int BotTrace_Strafe(bot_state_t *bs, vec3_t traceto)
 
 	if (AngleDifference(bs->viewangles[YAW], dirAng[YAW]) > 60 ||
 		AngleDifference(bs->viewangles[YAW], dirAng[YAW]) < -60)
-	{ //If we aren't facing the direction we're going here, then we've got enough excuse to be too stupid to strafe around anyway
+	{//If we aren't facing the direction we're going here, then we've got enough excuse to be too stupid to strafe around anyway
 		return 0;
 	}
 
@@ -1777,28 +1777,28 @@ int BotTrace_Duck(bot_state_t *bs, vec3_t traceto)
 int PassStandardEnemyChecks(bot_state_t *bs, gentity_t *en)
 {
 	if (!bs || !en)
-	{ //shouldn't happen
+	{//shouldn't happen
 		return 0;
 	}
 
 	if (!en->client)
-	{ //not a client, don't care about him
+	{//not a client, don't care about him
 		return 0;
 	}
 
 	if (en->health < 1)
-	{ //he's already dead
+	{//he's already dead
 		return 0;
 	}
 
 	if (!en->takedamage)
-	{ //a client that can't take damage?
+	{//a client that can't take damage?
 		return 0;
 	}
 
 	if (bs->doingFallback &&
 		(gLevelFlags & LEVELFLAG_IGNOREINFALLBACK))
-	{ //we screwed up in our nav routines somewhere and we've reverted to a fallback state to
+	{//we screwed up in our nav routines somewhere and we've reverted to a fallback state to
 		//try to get back on the trail. If the level specifies to ignore enemies in this state,
 		//then ignore them.
 		return 0;
@@ -1807,34 +1807,34 @@ int PassStandardEnemyChecks(bot_state_t *bs, gentity_t *en)
 	if (en->client->ps.pm_type == PM_INTERMISSION ||
 		en->client->ps.pm_type == PM_SPECTATOR ||
 		en->client->sess.sessionTeam == TEAM_SPECTATOR)
-	{ //don't attack spectators
+	{//don't attack spectators
 		return 0;
 	}
 
 	if (!en->client->pers.connected)
-	{ //a "zombie" client?
+	{//a "zombie" client?
 		return 0;
 	}
 
 	if (!en->s.solid)
-	{ //shouldn't happen
+	{//shouldn't happen
 		return 0;
 	}
 
 	if (bs->client == en->s.number)
-	{ //don't attack yourself
+	{//don't attack yourself
 		return 0;
 	}
 
 	if (OnSameTeam(&g_entities[bs->client], en))
-	{ //don't attack teammates
+	{//don't attack teammates
 		return 0;
 	}
 
 	if (BotMindTricked(bs->client, en->s.number))
 	{
 		if (bs->currentEnemy && bs->currentEnemy->s.number == en->s.number)
-		{ //if mindtricked by this enemy, then be less "aware" of them, even though
+		{//if mindtricked by this enemy, then be less "aware" of them, even though
 			//we know they're there.
 			vec3_t vs;
 			float vLen = 0;
@@ -1850,22 +1850,22 @@ int PassStandardEnemyChecks(bot_state_t *bs, gentity_t *en)
 	}
 
 	if (en->client->ps.duelInProgress && en->client->ps.duelIndex != bs->client)
-	{ //don't attack duelists unless you're dueling them
+	{//don't attack duelists unless you're dueling them
 		return 0;
 	}
 
 	if (bs->cur_ps.duelInProgress && en->s.number != bs->cur_ps.duelIndex)
-	{ //ditto, the other way around
+	{//ditto, the other way around
 		return 0;
 	}
 
 	if (level.gametype == GT_JEDIMASTER && !en->client->ps.isJediMaster && !bs->cur_ps.isJediMaster)
-	{ //rules for attacking non-JM in JM mode
+	{//rules for attacking non-JM in JM mode
 		vec3_t vs;
 		float vLen = 0;
 
 		if (!g_friendlyFire.integer)
-		{ //can't harm non-JM in JM mode if FF is off
+		{//can't harm non-JM in JM mode if FF is off
 			return 0;
 		}
 
@@ -1894,19 +1894,19 @@ void BotDamageNotification(gclient_t *bot, gentity_t *attacker)
 	}
 
 	if (bot->ps.clientNum >= MAX_CLIENTS)
-	{ //an NPC.. do nothing for them.
+	{//an NPC.. do nothing for them.
 		return;
 	}
 
 	if (attacker->s.number >= MAX_CLIENTS)
-	{ //if attacker is an npc also don't care I suppose.
+	{//if attacker is an npc also don't care I suppose.
 		return;
 	}
 
 	bs_a = botstates[attacker->s.number];
 
 	if (bs_a)
-	{ //if the client attacking us is a bot as well
+	{//if the client attacking us is a bot as well
 		bs_a->lastAttacked = &g_entities[bot->ps.clientNum];
 		i = 0;
 
@@ -1948,17 +1948,17 @@ void BotDamageNotification(gclient_t *bot, gentity_t *attacker)
 	bs->lastHurt = attacker;
 
 	if (bs->currentEnemy)
-	{ //we don't care about the guy attacking us if we have an enemy already
+	{//we don't care about the guy attacking us if we have an enemy already
 		return;
 	}
 
 	if (!PassStandardEnemyChecks(bs, attacker))
-	{ //the person that hurt us is not a valid enemy
+	{//the person that hurt us is not a valid enemy
 		return;
 	}
 
 	if (PassLovedOneCheck(bs, attacker))
-	{ //the person that hurt us is the one we love!
+	{//the person that hurt us is the one we love!
 		bs->currentEnemy = attacker;
 		bs->enemySeenTime = level.time + ENEMY_FORGET_MS;
 	}
@@ -1976,24 +1976,24 @@ int BotCanHear(bot_state_t *bs, gentity_t *en, float endist)
 	}
 
 	if (en && en->client && en->client->ps.otherSoundTime > level.time)
-	{ //they made a noise in recent time
+	{//they made a noise in recent time
 		minlen = en->client->ps.otherSoundLen;
 		goto checkStep;
 	}
 
 	if (en && en->client && en->client->ps.footstepTime > level.time)
-	{ //they made a footstep
+	{//they made a footstep
 		minlen = 256;
 		goto checkStep;
 	}
 
 	if (gBotEventTracker[en->s.number].eventTime < level.time)
-	{ //no recent events to check
+	{//no recent events to check
 		return 0;
 	}
 
 	switch(gBotEventTracker[en->s.number].events[gBotEventTracker[en->s.number].eventSequence & (MAX_PS_EVENTS-1)])
-	{ //did the last event contain a sound?
+	{//did the last event contain a sound?
 	case EV_GLOBAL_SOUND:
 		minlen = 256;
 		break;
@@ -2021,12 +2021,12 @@ int BotCanHear(bot_state_t *bs, gentity_t *en, float endist)
 	}
 checkStep:
 	if (BotMindTricked(bs->client, en->s.number))
-	{ //if mindtricked by this person, cut down on the minlen so they can't "hear" as well
+	{//if mindtricked by this person, cut down on the minlen so they can't "hear" as well
 		minlen /= 4;
 	}
 
 	if (endist <= minlen)
-	{ //we heard it
+	{//we heard it
 		return 1;
 	}
 
@@ -2043,7 +2043,7 @@ void UpdateEventTracker(void)
 	while (i < MAX_CLIENTS)
 	{
 		if (gBotEventTracker[i].eventSequence != level.clients[i].ps.eventSequence)
-		{ //updated event
+		{//updated event
 			gBotEventTracker[i].eventSequence = level.clients[i].ps.eventSequence;
 			gBotEventTracker[i].events[0] = level.clients[i].ps.events[0];
 			gBotEventTracker[i].events[1] = level.clients[i].ps.events[1];
@@ -2110,14 +2110,14 @@ int PassLovedOneCheck(bot_state_t *bs, gentity_t *ent)
 	}
 
 	if (level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL)
-	{ //There is no love in 1-on-1
+	{//There is no love in 1-on-1
 		return 1;
 	}
 
 	i = 0;
 
 	if (!botstates[ent->s.number])
-	{ //not a bot
+	{//not a bot
 		return 1;
 	}
 
@@ -2133,11 +2133,11 @@ int PassLovedOneCheck(bot_state_t *bs, gentity_t *ent)
 		if (strcmp(level.clients[loved->client].pers.netname, bs->loved[i].name) == 0)
 		{
 			if (!IsTeamplay() && bs->loved[i].level < 2)
-			{ //if FFA and level of love is not greater than 1, just don't care
+			{//if FFA and level of love is not greater than 1, just don't care
 				return 1;
 			}
 			else if (IsTeamplay() && !OnSameTeam(&g_entities[bs->client], &g_entities[loved->client]) && bs->loved[i].level < 2)
-			{ //is teamplay, but not on same team and level < 2
+			{//is teamplay, but not on same team and level < 2
 				return 1;
 			}
 			else
@@ -2170,20 +2170,20 @@ int ScanForEnemies(bot_state_t *bs)
 	bestindex = -1;
 
 	if (bs->currentEnemy)
-	{ //only switch to a new enemy if he's significantly closer
+	{//only switch to a new enemy if he's significantly closer
 		hasEnemyDist = bs->frame_Enemy_Len;
 	}
 
 	if (bs->currentEnemy && bs->currentEnemy->client &&
 		bs->currentEnemy->client->ps.isJediMaster)
-	{ //The Jedi Master must die.
+	{//The Jedi Master must die.
 		return -1;
 	}
 
 	if (level.gametype == GT_JEDIMASTER)
 	{
 		if (G_ThereIsAMaster() && !bs->cur_ps.isJediMaster)
-		{ //if friendly fire is on in jedi master we can attack people that bug us
+		{//if friendly fire is on in jedi master we can attack people that bug us
 			if (!g_friendlyFire.integer)
 			{
 				noAttackNonJM = qtrue;
@@ -2204,7 +2204,7 @@ int ScanForEnemies(bot_state_t *bs)
 			vectoangles(a, a);
 
 			if (g_entities[i].client->ps.isJediMaster)
-			{ //make us think the Jedi Master is close so we'll attack him above all
+			{//make us think the Jedi Master is close so we'll attack him above all
 				distcheck = 1;
 			}
 
@@ -2215,7 +2215,7 @@ int ScanForEnemies(bot_state_t *bs)
 					if (distcheck < 256 || (level.time - g_entities[i].client->dangerTime) < 100)
 					{
 						if (!hasEnemyDist || distcheck < (hasEnemyDist - 128))
-						{ //if we have an enemy, only switch to closer if he is 128+ closer to avoid flipping out
+						{//if we have an enemy, only switch to closer if he is 128+ closer to avoid flipping out
 							if (!noAttackNonJM || g_entities[i].client->ps.isJediMaster)
 							{
 								closest = distcheck;
@@ -2227,7 +2227,7 @@ int ScanForEnemies(bot_state_t *bs)
 				else
 				{
 					if (!hasEnemyDist || distcheck < (hasEnemyDist - 128))
-					{ //if we have an enemy, only switch to closer if he is 128+ closer to avoid flipping out
+					{//if we have an enemy, only switch to closer if he is 128+ closer to avoid flipping out
 						if (!noAttackNonJM || g_entities[i].client->ps.isJediMaster)
 						{
 							closest = distcheck;
@@ -2244,7 +2244,7 @@ int ScanForEnemies(bot_state_t *bs)
 }
 
 int WaitingForNow(bot_state_t *bs, vec3_t goalpos)
-{ //checks if the bot is doing something along the lines of waiting for an elevator to raise up
+{//checks if the bot is doing something along the lines of waiting for an elevator to raise up
 	vec3_t xybot, xywp, a;
 
 	if (!bs->wpCurrent)
@@ -2327,23 +2327,23 @@ int BotIsAChickenWuss(bot_state_t *bs)
 	int bWRange;
 
 	if (gLevelFlags & LEVELFLAG_IMUSTNTRUNAWAY)
-	{ //The level says we mustn't run away!
+	{//The level says we mustn't run away!
 		return 0;
 	}
 
 	if (level.gametype == GT_SINGLE_PLAYER)
-	{ //"coop" (not really)
+	{//"coop" (not really)
 		return 0;
 	}
 
 	if (level.gametype == GT_JEDIMASTER && !bs->cur_ps.isJediMaster)
-	{ //Then you may know no fear.
+	{//Then you may know no fear.
 		//Well, unless he's strong.
 		if (bs->currentEnemy && bs->currentEnemy->client &&
 			bs->currentEnemy->client->ps.isJediMaster &&
 			bs->currentEnemy->health > 40 &&
 			bs->cur_ps.weapon < WP_ROCKET_LAUNCHER)
-		{ //explosive weapons are most effective against the Jedi Master
+		{//explosive weapons are most effective against the Jedi Master
 			goto jmPass;
 		}
 		return 0;
@@ -2353,7 +2353,7 @@ int BotIsAChickenWuss(bot_state_t *bs)
 	{
 		if (bs->currentEnemy->client->ps.powerups[PW_REDFLAG] ||
 			bs->currentEnemy->client->ps.powerups[PW_BLUEFLAG])
-		{ //don't be afraid of flag carriers, they must die!
+		{//don't be afraid of flag carriers, they must die!
 			return 0;
 		}
 	}
@@ -2365,19 +2365,19 @@ jmPass:
 	}
 
 	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_RAGE))
-	{ //don't run while raging
+	{//don't run while raging
 		return 0;
 	}
 
 	if (level.gametype == GT_JEDIMASTER && !bs->cur_ps.isJediMaster)
-	{ //be frightened of the jedi master? I guess in this case.
+	{//be frightened of the jedi master? I guess in this case.
 		return 1;
 	}
 
 	bs->chickenWussCalculationTime = level.time + MAX_CHICKENWUSS_TIME;
 
 	if (g_entities[bs->client].health < BOT_RUN_HEALTH)
-	{ //we're low on health, let's get away
+	{//we're low on health, let's get away
 		return 1;
 	}
 
@@ -2386,25 +2386,25 @@ jmPass:
 	if (bWRange == BWEAPONRANGE_MELEE || bWRange == BWEAPONRANGE_SABER)
 	{
 		if (bWRange != BWEAPONRANGE_SABER || !bs->saberSpecialist)
-		{ //run away if we're using melee, or if we're using a saber and not a "saber specialist"
+		{//run away if we're using melee, or if we're using a saber and not a "saber specialist"
 			return 1;
 		}
 	}
 
 	if (bs->cur_ps.weapon == WP_BRYAR_PISTOL)
-	{ //the bryar is a weak weapon, so just try to find a new one if it's what you're having to use
+	{//the bryar is a weak weapon, so just try to find a new one if it's what you're having to use
 		return 1;
 	}
 
 	if (bs->currentEnemy && bs->currentEnemy->client &&
 		bs->currentEnemy->client->ps.weapon == WP_SABER &&
 		bs->frame_Enemy_Len < 512 && bs->cur_ps.weapon != WP_SABER)
-	{ //if close to an enemy with a saber and not using a saber, then try to back off
+	{//if close to an enemy with a saber and not using a saber, then try to back off
 		return 1;
 	}
 
 	if ((level.time-bs->cur_ps.electrifyTime) < 16000)
-	{ //lightning is dangerous.
+	{//lightning is dangerous.
 		return 1;
 	}
 
@@ -2432,7 +2432,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 	{
 		ent = &g_entities[i];
 
-		if ( (ent &&
+		if ((ent &&
 			!ent->client &&
 			ent->inuse &&
 			ent->damage &&
@@ -2444,8 +2444,8 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 			ent->inuse &&
 			ent->health > 0 &&
 			ent->genericValue3 != bs->client &&
-			g_entities[ent->genericValue3].client && !OnSameTeam(&g_entities[bs->client], &g_entities[ent->genericValue3])) )
-		{ //try to escape from anything with a non-0 s.weapon and non-0 damage. This hopefully only means dangerous projectiles.
+			g_entities[ent->genericValue3].client && !OnSameTeam(&g_entities[bs->client], &g_entities[ent->genericValue3])))
+		{//try to escape from anything with a non-0 s.weapon and non-0 damage. This hopefully only means dangerous projectiles.
 		  //Or a sentry gun if bolt_Head == 1000. This is a terrible hack, yes.
 			VectorSubtract(bs->origin, ent->r.currentOrigin, hold);
 			glen = VectorLength(hold);
@@ -2456,7 +2456,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 				factor = 0.5;
 
 				if (ent->s.weapon && glen <= 256 && bs->settings.skill > 2)
-				{ //it's a projectile so push it away
+				{//it's a projectile so push it away
 					bs->doForcePush = level.time + 700;
 					//trap->Print("PUSH PROJECTILE\n");
 				}
@@ -2469,32 +2469,32 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 			if (ent->s.weapon == WP_ROCKET_LAUNCHER &&
 				(ent->r.ownerNum == bs->client ||
 				(ent->r.ownerNum > 0 && ent->r.ownerNum < MAX_CLIENTS &&
-				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))) )
-			{ //don't be afraid of your own rockets or your teammates' rockets
+				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))))
+			{//don't be afraid of your own rockets or your teammates' rockets
 				factor = 0;
 			}
 
 			if (ent->s.weapon == WP_DET_PACK &&
 				(ent->r.ownerNum == bs->client ||
 				(ent->r.ownerNum > 0 && ent->r.ownerNum < MAX_CLIENTS &&
-				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))) )
-			{ //don't be afraid of your own detpacks or your teammates' detpacks
+				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))))
+			{//don't be afraid of your own detpacks or your teammates' detpacks
 				factor = 0;
 			}
 
 			if (ent->s.weapon == WP_TRIP_MINE &&
 				(ent->r.ownerNum == bs->client ||
 				(ent->r.ownerNum > 0 && ent->r.ownerNum < MAX_CLIENTS &&
-				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))) )
-			{ //don't be afraid of your own trip mines or your teammates' trip mines
+				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))))
+			{//don't be afraid of your own trip mines or your teammates' trip mines
 				factor = 0;
 			}
 
 			if (ent->s.weapon == WP_THERMAL &&
 				(ent->r.ownerNum == bs->client ||
 				(ent->r.ownerNum > 0 && ent->r.ownerNum < MAX_CLIENTS &&
-				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))) )
-			{ //don't be afraid of your own thermals or your teammates' thermals
+				g_entities[ent->r.ownerNum].client && OnSameTeam(&g_entities[bs->client], &g_entities[ent->r.ownerNum]))))
+			{//don't be afraid of your own thermals or your teammates' thermals
 				factor = 0;
 			}
 
@@ -2512,7 +2512,7 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 		}
 
 		if (ent && !ent->client && ent->inuse && ent->damage && ent->s.weapon && ent->r.ownerNum < MAX_CLIENTS && ent->r.ownerNum >= 0)
-		{ //if we're in danger of a projectile belonging to someone and don't have an enemy, set the enemy to them
+		{//if we're in danger of a projectile belonging to someone and don't have an enemy, set the enemy to them
 			gentity_t *projOwner = &g_entities[ent->r.ownerNum];
 
 			if (projOwner && projOwner->inuse && projOwner->client)
@@ -2785,7 +2785,7 @@ int BotGetFlagHome(bot_state_t *bs)
 }
 
 void GetNewFlagPoint(wpobject_t *wp, gentity_t *flagEnt, int team)
-{ //get the nearest possible waypoint to the flag since it's not in its original position
+{//get the nearest possible waypoint to the flag since it's not in its original position
 	int i = 0;
 	vec3_t a, mins, maxs;
 	float bestdist;
@@ -2810,7 +2810,7 @@ void GetNewFlagPoint(wpobject_t *wp, gentity_t *flagEnt, int team)
 		trap->Trace(&tr, wp->origin, mins, maxs, flagEnt->s.pos.trBase, flagEnt->s.number, MASK_SOLID, qfalse, 0, 0);
 
 		if (tr.fraction == 1)
-		{ //this point is good
+		{//this point is good
 			return;
 		}
 	}
@@ -2877,7 +2877,7 @@ int CTFTakesPriority(bot_state_t *bs)
 
 	if (bs->cur_ps.weapon == WP_BRYAR_PISTOL &&
 		(level.time - bs->lastDeadTime) < BOT_MAX_WEAPON_GATHER_TIME)
-	{ //get the nearest weapon laying around base before heading off for battle
+	{//get the nearest weapon laying around base before heading off for battle
 		idleWP = GetBestIdleGoal(bs);
 
 		if (idleWP != -1 && gWPArray[idleWP] && gWPArray[idleWP]->inuse)
@@ -2994,7 +2994,7 @@ int CTFTakesPriority(bot_state_t *bs)
 				}
 			}
 			else
-			{ //assume real players to be attackers in our logic
+			{//assume real players to be attackers in our logic
 				numAttackers++;
 			}
 		}
@@ -3045,7 +3045,7 @@ int CTFTakesPriority(bot_state_t *bs)
 			goto success;
 		}
 		else
-		{ //can't find anyone on another team being a carrier, so ignore this priority
+		{//can't find anyone on another team being a carrier, so ignore this priority
 			bs->ctfState = 0;
 		}
 	}
@@ -3057,7 +3057,7 @@ int CTFTakesPriority(bot_state_t *bs)
 			goto success;
 		}
 		else
-		{ //can't find anyone on our team being a carrier, so ignore this priority
+		{//can't find anyone on our team being a carrier, so ignore this priority
 			bs->ctfState = 0;
 		}
 	}
@@ -3074,7 +3074,7 @@ int CTFTakesPriority(bot_state_t *bs)
 
 success:
 	if (dosw)
-	{ //allow ctf code to run, but if after a particular item then keep going after it
+	{//allow ctf code to run, but if after a particular item then keep going after it
 		bs->wpDestination = dest_sw;
 	}
 
@@ -3118,16 +3118,16 @@ int Siege_TargetClosestObjective(bot_state_t *bs, int flag)
 	maxs[1] = 1;
 	maxs[2] = 1;
 
-	if ( bs->wpDestination && (bs->wpDestination->flags & flag) && bs->wpDestination->associated_entity != ENTITYNUM_NONE &&
-		 g_entities[bs->wpDestination->associated_entity].inuse && g_entities[bs->wpDestination->associated_entity].use )
+	if (bs->wpDestination && (bs->wpDestination->flags & flag) && bs->wpDestination->associated_entity != ENTITYNUM_NONE &&
+		 g_entities[bs->wpDestination->associated_entity].inuse && g_entities[bs->wpDestination->associated_entity].use)
 	{
 		goto hasPoint;
 	}
 
 	while (i < gWPNum)
 	{
-		if ( gWPArray[i] && gWPArray[i]->inuse && (gWPArray[i]->flags & flag) && gWPArray[i]->associated_entity != ENTITYNUM_NONE &&
-			 g_entities[gWPArray[i]->associated_entity].inuse && g_entities[gWPArray[i]->associated_entity].use )
+		if (gWPArray[i] && gWPArray[i]->inuse && (gWPArray[i]->flags & flag) && gWPArray[i]->associated_entity != ENTITYNUM_NONE &&
+			 g_entities[gWPArray[i]->associated_entity].inuse && g_entities[gWPArray[i]->associated_entity].use)
 		{
 			VectorSubtract(gWPArray[i]->origin, bs->origin, a);
 			testdistance = VectorLength(a);
@@ -3179,7 +3179,7 @@ hasPoint:
 		bs->touchGoal = goalent;
 	}
 	else
-	{ //don't know how to handle this goal object!
+	{//don't know how to handle this goal object!
 		bs->shootGoal = NULL;
 		bs->touchGoal = NULL;
 	}
@@ -3200,7 +3200,7 @@ hasPoint:
 }
 
 void Siege_DefendFromAttackers(bot_state_t *bs)
-{ //this may be a little cheap, but the best way to find our defending point is probably
+{//this may be a little cheap, but the best way to find our defending point is probably
   //to just find the nearest person on the opposing team since they'll most likely
   //be on offense in this situation
 	int wpClose = -1;
@@ -3328,7 +3328,7 @@ int SiegeTakesPriority(bot_state_t *bs)
 
 	if (bs->cur_ps.weapon == WP_BRYAR_PISTOL &&
 		(level.time - bs->lastDeadTime) < BOT_MAX_WEAPON_GATHER_TIME)
-	{ //get the nearest weapon laying around base before heading off for battle
+	{//get the nearest weapon laying around base before heading off for battle
 		idleWP = GetBestIdleGoal(bs);
 
 		if (idleWP != -1 && gWPArray[idleWP] && gWPArray[idleWP]->inuse)
@@ -3372,7 +3372,7 @@ int SiegeTakesPriority(bot_state_t *bs)
 		teammates = Siege_CountTeammates(bs);
 
 		if (defenders > teammates/3 && teammates > 1)
-		{ //devote around 1/4 of our team to completing our own side goals even if we're a defender.
+		{//devote around 1/4 of our team to completing our own side goals even if we're a defender.
 		  //If we have no side goals we will realize that later on and join the defenders
 			bs->siegeState = SIEGESTATE_ATTACKER;
 		}
@@ -3386,7 +3386,7 @@ int SiegeTakesPriority(bot_state_t *bs)
 	if (bs->siegeState == SIEGESTATE_ATTACKER)
 	{
 		if (!Siege_TargetClosestObjective(bs, flagForAttackableObjective))
-		{ //looks like we have no goals other than to keep the other team from completing objectives
+		{//looks like we have no goals other than to keep the other team from completing objectives
 			Siege_DefendFromAttackers(bs);
 			if (bs->shootGoal)
 			{
@@ -3435,7 +3435,7 @@ int SiegeTakesPriority(bot_state_t *bs)
 		}
 	}
 	else
-	{ //get busy!
+	{//get busy!
 		Siege_TargetClosestObjective(bs, flagForAttackableObjective);
 		if (bs->shootGoal)
 		{
@@ -3460,7 +3460,7 @@ int SiegeTakesPriority(bot_state_t *bs)
 	}
 
 	if (dosw)
-	{ //allow siege objective code to run, but if after a particular item then keep going after it
+	{//allow siege objective code to run, but if after a particular item then keep going after it
 		bs->wpDestination = dest_sw;
 	}
 
@@ -3550,7 +3550,7 @@ int BotHasAssociated(bot_state_t *bs, wpobject_t *wp)
 	gentity_t *as;
 
 	if (wp->associated_entity == ENTITYNUM_NONE)
-	{ //make it think this is an item we have so we don't go after nothing
+	{//make it think this is an item we have so we don't go after nothing
 		return 1;
 	}
 
@@ -3635,7 +3635,7 @@ int GetBestIdleGoal(bot_state_t *bs)
 	}
 
 	if (bs->randomNav)
-	{ //stop looking for items and/or camping on them
+	{//stop looking for items and/or camping on them
 		return -1;
 	}
 
@@ -3725,7 +3725,7 @@ void GetIdealDestination(bot_state_t *bs)
 		return;
 	}
 	else if (!badthing && bs->wpStoreDest)
-	{ //after we finish running away, switch back to our original destination
+	{//after we finish running away, switch back to our original destination
 		bs->wpDestination = bs->wpStoreDest;
 		bs->wpStoreDest = NULL;
 	}
@@ -3833,7 +3833,7 @@ void GetIdealDestination(bot_state_t *bs)
 
 	if (bs->revengeEnemy && bs->revengeEnemy->health > 0 &&
 		bs->revengeEnemy->client && bs->revengeEnemy->client->pers.connected == CON_CONNECTED)
-	{ //if we hate someone, always try to get to them
+	{//if we hate someone, always try to get to them
 		if (bs->wpDestSwitchTime < level.time)
 		{
 			if (bs->revengeEnemy->client)
@@ -3896,7 +3896,7 @@ void GetIdealDestination(bot_state_t *bs)
 			cWPIndex = bs->wpCurrent->index;
 
 			if (bs->frame_Enemy_Len > 400)
-			{ //good distance away, start running toward a good place for an item or powerup or whatever
+			{//good distance away, start running toward a good place for an item or powerup or whatever
 				idleWP = GetBestIdleGoal(bs);
 
 				if (idleWP != -1 && gWPArray[idleWP] && gWPArray[idleWP]->inuse)
@@ -3931,7 +3931,7 @@ void GetIdealDestination(bot_state_t *bs)
 				bs->wpDestination = gWPArray[tempInt];
 
 				if (level.gametype == GT_SINGLE_PLAYER)
-				{ //be more aggressive
+				{//be more aggressive
 					bs->wpDestSwitchTime = level.time + Q_irand(300, 1000);
 				}
 				else
@@ -4029,7 +4029,7 @@ void CommanderBotCTFAI(bot_state_t *bs)
 				}
 			}
 			else
-			{ //assume real players to be attackers in our logic
+			{//assume real players to be attackers in our logic
 				numAttackers++;
 			}
 		}
@@ -4057,7 +4057,7 @@ void CommanderBotCTFAI(bot_state_t *bs)
 	i = 0;
 
 	if (enemyHasOurFlag && !weHaveEnemyFlag)
-	{ //start off with an attacker instead of a retriever if we don't have the enemy flag yet so that they can't capture it first.
+	{//start off with an attacker instead of a retriever if we don't have the enemy flag yet so that they can't capture it first.
 	  //after that we focus on getting our flag back.
 		attackRetrievePriority = 1;
 	}
@@ -4067,7 +4067,7 @@ void CommanderBotCTFAI(bot_state_t *bs)
 		if (squad[i] && squad[i]->client && botstates[squad[i]->s.number])
 		{
 			if (botstates[squad[i]->s.number]->ctfState != CTFSTATE_GETFLAGHOME)
-			{ //never tell a bot to stop trying to bring the flag to the base
+			{//never tell a bot to stop trying to bring the flag to the base
 				if (defendAttackPriority)
 				{
 					if (weHaveEnemyFlag)
@@ -4112,7 +4112,7 @@ void CommanderBotCTFAI(bot_state_t *bs)
 				}
 			}
 			else if ((numOnMyTeam < 2 || !numAttackers) && enemyHasOurFlag)
-			{ //I'm the only one on my team who will attack and the enemy has my flag, I have to go after him
+			{//I'm the only one on my team who will attack and the enemy has my flag, I have to go after him
 				botstates[squad[i]->s.number]->ctfState = CTFSTATE_RETRIEVAL;
 			}
 		}
@@ -4146,7 +4146,7 @@ void CommanderBotSiegeAI(bot_state_t *bs)
 				squadmates++;
 			}
 			else if (bst && !bst->isSquadLeader && bst->state_Forced)
-			{ //count them as commanded
+			{//count them as commanded
 				commanded++;
 			}
 		}
@@ -4196,7 +4196,7 @@ void BotDoTeamplayAI(bot_state_t *bs)
 	}
 
 	if (bs->teamplayState == TEAMPLAYSTATE_REGROUP)
-	{ //force to find a new leader
+	{//force to find a new leader
 		bs->squadLeader = NULL;
 		bs->isSquadLeader = 0;
 	}
@@ -4225,7 +4225,7 @@ void CommanderBotTeamplayAI(bot_state_t *bs)
 			bst = botstates[ent->s.number];
 
 			if (foundsquadleader && bst && bst->isSquadLeader)
-			{ //never more than one squad leader
+			{//never more than one squad leader
 				bst->isSquadLeader = 0;
 			}
 
@@ -4266,21 +4266,21 @@ void CommanderBotTeamplayAI(bot_state_t *bs)
 		bst = botstates[squad[i]->s.number];
 
 		if (bst && !bst->state_Forced)
-		{ //only order if this guy is not being ordered directly by the real player team leader
+		{//only order if this guy is not being ordered directly by the real player team leader
 			if (teammate_indanger >= 0 && !teammate_helped)
-			{ //send someone out to help whoever needs help most at the moment
+			{//send someone out to help whoever needs help most at the moment
 				bst->teamplayState = TEAMPLAYSTATE_ASSISTING;
 				bst->squadLeader = &g_entities[teammate_indanger];
 				teammate_helped = 1;
 			}
 			else if ((teammate_indanger == -1 || teammate_helped) && bst->teamplayState == TEAMPLAYSTATE_ASSISTING)
-			{ //no teammates need help badly, but this guy is trying to help them anyway, so stop
+			{//no teammates need help badly, but this guy is trying to help them anyway, so stop
 				bst->teamplayState = TEAMPLAYSTATE_FOLLOWING;
 				bst->squadLeader = &g_entities[bs->client];
 			}
 
 			if (bs->squadRegroupInterval < level.time && Q_irand(1, 10) < 5)
-			{ //every so often tell the squad to regroup for the sake of variation
+			{//every so often tell the squad to regroup for the sake of variation
 				if (bst->teamplayState == TEAMPLAYSTATE_FOLLOWING)
 				{
 					bst->teamplayState = TEAMPLAYSTATE_REGROUP;
@@ -4501,7 +4501,7 @@ void SaberCombatHandling(bot_state_t *bs)
 		}
 
 		if (bs->frame_Enemy_Len > 128)
-		{ //be ready to attack
+		{//be ready to attack
 			bs->saberDefending = 0;
 			bs->saberDefendDecideTime = level.time + Q_irand(1000, 2000);
 		}
@@ -4577,7 +4577,7 @@ void SaberCombatHandling(bot_state_t *bs)
 					trap->Trace(&tr, bs->goalPosition, NULL, NULL, groundcheck, bs->client, MASK_SOLID, qfalse, 0, 0);
 
 					if (tr.fraction == 1.0f)
-					{ //don't back off of a ledge
+					{//don't back off of a ledge
 						VectorCopy(usethisvec, bs->goalPosition);
 						break;
 					}
@@ -4617,7 +4617,7 @@ void SaberCombatHandling(bot_state_t *bs)
 //so, by how much?
 float BotWeaponCanLead(bot_state_t *bs)
 {
-	switch ( bs->cur_ps.weapon )
+	switch (bs->cur_ps.weapon)
 	{
 	case WP_BRYAR_PISTOL:
 		return 0.5f;
@@ -4762,7 +4762,7 @@ void BotAimOffsetGoalAngles(bot_state_t *bs)
 	accVal = bs->skills.accuracy/bs->settings.skill;
 
 	if (bs->currentEnemy && BotMindTricked(bs->client, bs->currentEnemy->s.number))
-	{ //having to judge where they are by hearing them, so we should be quite inaccurate here
+	{//having to judge where they are by hearing them, so we should be quite inaccurate here
 		accVal *= 7;
 
 		if (accVal < 30)
@@ -4773,12 +4773,12 @@ void BotAimOffsetGoalAngles(bot_state_t *bs)
 
 	if (bs->revengeEnemy && bs->revengeHateLevel &&
 		bs->currentEnemy == bs->revengeEnemy)
-	{ //bot becomes more skilled as anger level raises
+	{//bot becomes more skilled as anger level raises
 		accVal = accVal/bs->revengeHateLevel;
 	}
 
 	if (bs->currentEnemy && bs->frame_Enemy_Vis)
-	{ //assume our goal is aiming at the enemy, seeing as he's visible and all
+	{//assume our goal is aiming at the enemy, seeing as he's visible and all
 		if (!bs->currentEnemy->s.pos.trDelta[0] &&
 			!bs->currentEnemy->s.pos.trDelta[1] &&
 			!bs->currentEnemy->s.pos.trDelta[2])
@@ -4861,13 +4861,13 @@ int ShouldSecondaryFire(bot_state_t *bs)
 		}
 
 		if (heldTime > 5000)
-		{ //just give up and release it if we can't manage a lock in 5 seconds
+		{//just give up and release it if we can't manage a lock in 5 seconds
 			return 2;
 		}
 
 		if (rTime > 0)
 		{
-			dif = ( level.time - rTime ) / ( 1200.0f / 16.0f );
+			dif = (level.time - rTime) / (1200.0f / 16.0f);
 
 			if (dif >= 10)
 			{
@@ -4957,12 +4957,12 @@ int CombatBotAI(bot_state_t *bs, float thinktime)
 	else
 	{
 		if (bs->cur_ps.weapon == WP_THERMAL || bs->cur_ps.weapon == WP_ROCKET_LAUNCHER)
-		{ //be careful with the hurty weapons
+		{//be careful with the hurty weapons
 			fovcheck = 40;
 
 			if (bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT &&
 				bs->cur_ps.weapon == WP_ROCKET_LAUNCHER)
-			{ //if we're charging the weapon up then we can hold fire down within a normal fov
+			{//if we're charging the weapon up then we can hold fire down within a normal fov
 				fovcheck = 60;
 			}
 		}
@@ -5047,7 +5047,7 @@ int CombatBotAI(bot_state_t *bs, float thinktime)
 				}
 
 				if (secFire == 2)
-				{ //released a charge
+				{//released a charge
 					return 1;
 				}
 			}
@@ -5105,7 +5105,7 @@ int BotFallbackNavigation(bot_state_t *bs)
 }
 
 int BotTryAnotherWeapon(bot_state_t *bs)
-{ //out of ammo, resort to the first weapon we come across that has ammo
+{//out of ammo, resort to the first weapon we come across that has ammo
 	int i;
 
 	i = 1;
@@ -5126,7 +5126,7 @@ int BotTryAnotherWeapon(bot_state_t *bs)
 	}
 
 	if (bs->cur_ps.weapon != 1 && bs->virtualWeapon != 1)
-	{ //should always have this.. shouldn't we?
+	{//should always have this.. shouldn't we?
 		bs->virtualWeapon = 1;
 		BotSelectWeapon(bs->client, 1);
 		//bs->cur_ps.weapon = 1;
@@ -5170,7 +5170,7 @@ int BotSelectIdealWeapon(bot_state_t *bs)
 			(bs->cur_ps.stats[STAT_WEAPONS] & (1 << i)))
 		{
 			if (i == WP_THERMAL)
-			{ //special case..
+			{//special case..
 				if (bs->currentEnemy && bs->frame_Enemy_Len < 700)
 				{
 					bestweight = bs->botWeaponWeights[i];
@@ -5187,18 +5187,18 @@ int BotSelectIdealWeapon(bot_state_t *bs)
 		i++;
 	}
 
-	if ( bs->currentEnemy && bs->frame_Enemy_Len < 300 &&
+	if (bs->currentEnemy && bs->frame_Enemy_Len < 300 &&
 		(bestweapon == WP_BRYAR_PISTOL || bestweapon == WP_BLASTER || bestweapon == WP_BOWCASTER) &&
-		(bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER)) )
+		(bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER)))
 	{
 		bestweapon = WP_SABER;
 		bestweight = 1;
 	}
 
-	if ( bs->currentEnemy && bs->frame_Enemy_Len > 300 &&
+	if (bs->currentEnemy && bs->frame_Enemy_Len > 300 &&
 		bs->currentEnemy->client && bs->currentEnemy->client->ps.weapon != WP_SABER &&
-		(bestweapon == WP_SABER) )
-	{ //if the enemy is far away, and we have our saber selected, see if we have any good distance weapons instead
+		(bestweapon == WP_SABER))
+	{//if the enemy is far away, and we have our saber selected, see if we have any good distance weapons instead
 		if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 		{
 			bestweapon = WP_DISRUPTOR;
@@ -5249,7 +5249,7 @@ int BotSelectIdealWeapon(bot_state_t *bs)
 
 //check/select the chosen weapon
 int BotSelectChoiceWeapon(bot_state_t *bs, int weapon, int doselection)
-{ //if !doselection then bot will only check if he has the specified weapon and return 1 (yes) or 0 (no)
+{//if !doselection then bot will only check if he has the specified weapon and return 1 (yes) or 0 (no)
 	int i;
 	int hasit = 0;
 
@@ -5307,7 +5307,7 @@ int GetLoveLevel(bot_state_t *bs, bot_state_t *love)
 	const char *lname = NULL;
 
 	if (level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL)
-	{ //There is no love in 1-on-1
+	{//There is no love in 1-on-1
 		return 0;
 	}
 
@@ -5356,7 +5356,7 @@ void BotLovedOneDied(bot_state_t *bs, bot_state_t *loved, int lovelevel)
 	}
 
 	if (level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL)
-	{ //There is no love in 1-on-1
+	{//There is no love in 1-on-1
 		return;
 	}
 
@@ -5368,7 +5368,7 @@ void BotLovedOneDied(bot_state_t *bs, bot_state_t *loved, int lovelevel)
 		}
 	}
 	else if (OnSameTeam(&g_entities[bs->client], loved->lastHurt))
-	{ //don't hate teammates no matter what
+	{//don't hate teammates no matter what
 		return;
 	}
 
@@ -5378,7 +5378,7 @@ void BotLovedOneDied(bot_state_t *bs, bot_state_t *loved, int lovelevel)
 	}
 
 	if (bs->client == loved->lastHurt->s.number)
-	{ //oops!
+	{//oops!
 		return;
 	}
 
@@ -5388,7 +5388,7 @@ void BotLovedOneDied(bot_state_t *bs, bot_state_t *loved, int lovelevel)
 	}
 
 	if (!PassLovedOneCheck(bs, loved->lastHurt))
-	{ //a loved one killed a loved one.. you cannot hate them
+	{//a loved one killed a loved one.. you cannot hate them
 		bs->chatObject = loved->lastHurt;
 		bs->chatAltObject = &g_entities[loved->client];
 		BotDoChat(bs, "LovedOneKilledLovedOne", 0);
@@ -5412,7 +5412,7 @@ void BotLovedOneDied(bot_state_t *bs, bot_state_t *loved, int lovelevel)
 		}
 	}
 	else if (bs->revengeHateLevel < bs->loved_death_thresh-1)
-	{ //only switch hatred if we don't hate the existing revenge-enemy too much
+	{//only switch hatred if we don't hate the existing revenge-enemy too much
 		//CHAT: BelovedKilled section
 		bs->chatObject = &g_entities[loved->client];
 		bs->chatAltObject = loved->lastHurt;
@@ -5423,7 +5423,7 @@ void BotLovedOneDied(bot_state_t *bs, bot_state_t *loved, int lovelevel)
 }
 
 void BotDeathNotify(bot_state_t *bs)
-{ //in case someone has an emotional attachment to us, we'll notify them
+{//in case someone has an emotional attachment to us, we'll notify them
 	int i = 0;
 	int ltest = 0;
 
@@ -5492,7 +5492,7 @@ void StrafeTracing(bot_state_t *bs)
 	trap->Trace(&tr, rorg, NULL, NULL, drorg, bs->client, MASK_SOLID, qfalse, 0, 0);
 
 	if (tr.fraction == 1)
-	{ //this may be a dangerous ledge, so don't strafe over it just in case
+	{//this may be a dangerous ledge, so don't strafe over it just in case
 		bs->meleeStrafeDisable = level.time + Q_irand(500, 1500);
 	}
 }
@@ -5618,7 +5618,7 @@ gentity_t *CheckForFriendInLOF(bot_state_t *bs)
 }
 
 void BotScanForLeader(bot_state_t *bs)
-{ //bots will only automatically obtain a leader if it's another bot using this method.
+{//bots will only automatically obtain a leader if it's another bot using this method.
 	int i = 0;
 	gentity_t *ent;
 
@@ -5639,7 +5639,7 @@ void BotScanForLeader(bot_state_t *bs)
 				break;
 			}
 			if (GetLoveLevel(bs, botstates[i]) > 1 && !IsTeamplay())
-			{ //ignore love status regarding squad leaders if we're in teamplay
+			{//ignore love status regarding squad leaders if we're in teamplay
 				bs->squadLeader = ent;
 				break;
 			}
@@ -5670,7 +5670,7 @@ void BotReplyGreetings(bot_state_t *bs)
 		}
 
 		if (numhello > 3)
-		{ //don't let more than 4 bots say hello at once
+		{//don't let more than 4 bots say hello at once
 			return;
 		}
 
@@ -5766,7 +5766,7 @@ void BotCheckDetPacks(bot_state_t *bs)
 	float enLen;
 	float myLen;
 
-	while ( (dp = G_Find( dp, FOFS(classname), "detpack") ) != NULL )
+	while ((dp = G_Find(dp, FOFS(classname), "detpack")) != NULL)
 	{
 		if (dp && dp->parent && dp->parent->s.number == bs->client)
 		{
@@ -5781,12 +5781,12 @@ void BotCheckDetPacks(bot_state_t *bs)
 	}
 
 	if (!bs->currentEnemy || !bs->currentEnemy->client || !bs->frame_Enemy_Vis)
-	{ //require the enemy to be visilbe just to be fair..
+	{//require the enemy to be visilbe just to be fair..
 
 		//unless..
 		if (bs->currentEnemy && bs->currentEnemy->client &&
 			(level.time - bs->plantContinue) < 5000)
-		{ //it's a fresh plant (within 5 seconds) so we should be able to guess
+		{//it's a fresh plant (within 5 seconds) so we should be able to guess
 			goto stillmadeit;
 		}
 		return;
@@ -5806,7 +5806,7 @@ stillmadeit:
 	}
 
 	if (enLen < BOT_PLANT_BLOW_DISTANCE && OrgVisible(bs->currentEnemy->client->ps.origin, myDet->s.pos.trBase, bs->currentEnemy->s.number))
-	{ //we could just call the "blow all my detpacks" function here, but I guess that's cheating.
+	{//we could just call the "blow all my detpacks" function here, but I guess that's cheating.
 		bs->plantKillEmAll = level.time + 500;
 	}
 }
@@ -5849,7 +5849,7 @@ int BotUseInventoryItem(bot_state_t *bs)
 	if (bs->cur_ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SHIELD))
 	{
 		if (bs->currentEnemy && bs->frame_Enemy_Vis && bs->runningToEscapeThreat)
-		{ //this will (hopefully) result in the bot placing the shield down while facing
+		{//this will (hopefully) result in the bot placing the shield down while facing
 		  //the enemy and running away
 			bs->cur_ps.stats[STAT_HOLDABLE_ITEM] = BG_GetItemIndexByTag(HI_SHIELD, IT_HOLDABLE);
 			goto wantuseitem;
@@ -5922,7 +5922,7 @@ void Bot_SetForcedMovement(int bot, int forward, int right, int up)
 	bs = botstates[bot];
 
 	if (!bs)
-	{ //not a bot
+	{//not a bot
 		return;
 	}
 
@@ -6007,11 +6007,11 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 
 #ifndef FINAL_BUILD
 	if (bot_getinthecarrr.integer)
-	{ //stupid vehicle debug, I tire of having to connect another client to test passengers.
+	{//stupid vehicle debug, I tire of having to connect another client to test passengers.
 		gentity_t *botEnt = &g_entities[bs->client];
 
 		if (botEnt->inuse && botEnt->client && botEnt->client->ps.m_iVehicleNum)
-		{ //in a vehicle, so...
+		{//in a vehicle, so...
 			bs->noUseTime = level.time + 5000;
 
 			if (bot_getinthecarrr.integer != 2)
@@ -6019,13 +6019,13 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 				trap->EA_MoveForward(bs->client);
 
 				if (bot_getinthecarrr.integer == 3)
-				{ //use alt fire
+				{//use alt fire
 					trap->EA_Alt_Attack(bs->client);
 				}
 			}
 		}
 		else
-		{ //find one, get in
+		{//find one, get in
 			int i = 0;
 			gentity_t *vehicle = NULL;
 			//find the nearest, manned vehicle
@@ -6036,13 +6036,13 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 				if (vehicle->inuse && vehicle->client && vehicle->s.eType == ET_NPC &&
 					vehicle->s.NPC_class == CLASS_VEHICLE && vehicle->m_pVehicle &&
 					(vehicle->client->ps.m_iVehicleNum || bot_getinthecarrr.integer == 2))
-				{ //ok, this is a vehicle, and it has a pilot/passengers
+				{//ok, this is a vehicle, and it has a pilot/passengers
 					break;
 				}
 				i++;
 			}
 			if (i != MAX_GENTITIES && vehicle)
-			{ //broke before end so we must've found something
+			{//broke before end so we must've found something
 				vec3_t v;
 
 				VectorSubtract(vehicle->client->ps.origin, bs->origin, v);
@@ -6070,12 +6070,12 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		bs->wpDirection = 0;
 
 		if (bot_forgimmick.integer == 2)
-		{ //for debugging saber stuff, this is handy
+		{//for debugging saber stuff, this is handy
 			trap->EA_Attack(bs->client);
 		}
 
 		if (bot_forgimmick.integer == 3)
-		{ //for testing cpu usage moving around rmg terrain without AI
+		{//for testing cpu usage moving around rmg terrain without AI
 			vec3_t mdir;
 
 			VectorSubtract(bs->origin, vec3_origin, mdir);
@@ -6085,7 +6085,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		}
 
 		if (bot_forgimmick.integer == 4)
-		{ //constantly move toward client 0
+		{//constantly move toward client 0
 			if (g_entities[0].client && g_entities[0].inuse)
 			{
 				vec3_t mdir;
@@ -6126,7 +6126,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 	}
 
 	if (!bs->lastDeadTime)
-	{ //just spawned in?
+	{//just spawned in?
 		bs->lastDeadTime = level.time;
 	}
 
@@ -6147,7 +6147,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 			else if (!PassLovedOneCheck(bs, bs->lastHurt) &&
 				botstates[bs->lastHurt->s.number] &&
 				PassLovedOneCheck(botstates[bs->lastHurt->s.number], &g_entities[bs->client]))
-			{ //killed by a bot that I love, but that does not love me
+			{//killed by a bot that I love, but that does not love me
 				bs->chatObject = bs->lastHurt;
 				bs->chatAltObject = NULL;
 				BotDoChat(bs, "KilledOnPurposeByLove", 0);
@@ -6234,10 +6234,10 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 			forceHostile = 1;
 		}
 		else if (bs->cur_ps.fd.forceSide == FORCE_DARKSIDE)
-		{ //try dark side powers
+		{//try dark side powers
 		  //in order of priority top to bottom
 			if ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_GRIP)) && (bs->cur_ps.fd.forcePowersActive & (1 << FP_GRIP)) && InFieldOfVision(bs->viewangles, 50, a_fo))
-			{ //already gripping someone, so hold it
+			{//already gripping someone, so hold it
 				level.clients[bs->client].ps.fd.forcePowerSelected = FP_GRIP;
 				useTheForce = 1;
 				forceHostile = 1;
@@ -6268,17 +6268,17 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 			}
 		}
 		else if (bs->cur_ps.fd.forceSide == FORCE_LIGHTSIDE)
-		{ //try light side powers
+		{//try light side powers
 			if ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_ABSORB)) && bs->cur_ps.fd.forceGripCripple &&
 				 level.clients[bs->client].ps.fd.forcePower > forcePowerNeeded[level.clients[bs->client].ps.fd.forcePowerLevel[FP_ABSORB]][FP_ABSORB])
-			{ //absorb to get out
+			{//absorb to get out
 				level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
 				useTheForce = 1;
 				forceHostile = 0;
 			}
 			else if ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_ABSORB)) && bs->cur_ps.electrifyTime >= level.time &&
 				 level.clients[bs->client].ps.fd.forcePower > forcePowerNeeded[level.clients[bs->client].ps.fd.forcePowerLevel[FP_ABSORB]][FP_ABSORB])
-			{ //absorb lightning
+			{//absorb lightning
 				level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
 				useTheForce = 1;
 				forceHostile = 0;
@@ -6304,7 +6304,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		}
 
 		if (!useTheForce)
-		{ //try neutral powers
+		{//try neutral powers
 			if ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_PUSH)) && bs->cur_ps.fd.forceGripBeingGripped > level.time && level.clients[bs->client].ps.fd.forcePower > forcePowerNeeded[level.clients[bs->client].ps.fd.forcePowerLevel[FP_PUSH]][FP_PUSH] && InFieldOfVision(bs->viewangles, 50, a_fo))
 			{
 				level.clients[bs->client].ps.fd.forcePowerSelected = FP_PUSH;
@@ -6333,7 +6333,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 	}
 
 	if (!useTheForce)
-	{ //try powers that we don't care if we have an enemy for
+	{//try powers that we don't care if we have an enemy for
 		if ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_HEAL)) && g_entities[bs->client].health < 50 && level.clients[bs->client].ps.fd.forcePower > forcePowerNeeded[level.clients[bs->client].ps.fd.forcePowerLevel[FP_HEAL]][FP_HEAL] && bs->cur_ps.fd.forcePowerLevel[FP_HEAL] > FORCE_LEVEL_1)
 		{
 			level.clients[bs->client].ps.fd.forcePowerSelected = FP_HEAL;
@@ -6341,7 +6341,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 			forceHostile = 0;
 		}
 		else if ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_HEAL)) && g_entities[bs->client].health < 50 && level.clients[bs->client].ps.fd.forcePower > forcePowerNeeded[level.clients[bs->client].ps.fd.forcePowerLevel[FP_HEAL]][FP_HEAL] && !bs->currentEnemy && bs->isCamping > level.time)
-		{ //only meditate and heal if we're camping
+		{//only meditate and heal if we're camping
 			level.clients[bs->client].ps.fd.forcePowerSelected = FP_HEAL;
 			useTheForce = 1;
 			forceHostile = 0;
@@ -6404,7 +6404,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		if (selResult)
 		{
 			if (selResult == 2)
-			{ //newly selected
+			{//newly selected
 				return;
 			}
 		}
@@ -6504,7 +6504,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 			VectorSubtract(bs->currentEnemy->client->ps.origin, bs->eye, e_ang_vec);
 
 			if (InFieldOfVision(bs->viewangles, 100, e_ang_vec))
-			{ //Our enemy has his saber holstered and has challenged us to a duel, so challenge him back
+			{//Our enemy has his saber holstered and has challenged us to a duel, so challenge him back
 				if (!bs->cur_ps.saberHolstered)
 				{
 					Cmd_ToggleSaber_f(&g_entities[bs->client]);
@@ -6559,12 +6559,12 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 	}
 
 	if (!bs->squadLeader && bs->squadCannotLead < level.time)
-	{ //if still no leader after scanning, then become a squad leader
+	{//if still no leader after scanning, then become a squad leader
 		bs->isSquadLeader = 1;
 	}
 
 	if (bs->isSquadLeader && bs->squadLeader)
-	{ //we don't follow anyone if we are a leader
+	{//we don't follow anyone if we are a leader
 		bs->squadLeader = NULL;
 	}
 
@@ -6572,7 +6572,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 	if (bs->wpCurrent)
 	{
 		if (RMG.integer)
-		{ //this is somewhat hacky, but in RMG we don't really care about vertical placement because points are scattered across only the terrain.
+		{//this is somewhat hacky, but in RMG we don't really care about vertical placement because points are scattered across only the terrain.
 			vec3_t vecB, vecC;
 
 			vecB[0] = bs->origin[0];
@@ -6666,7 +6666,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		WPConstantRoutine(bs);
 
 		if (!bs->wpCurrent)
-		{ //WPConstantRoutine has the ability to nullify the waypoint if it fails certain checks, so..
+		{//WPConstantRoutine has the ability to nullify the waypoint if it fails certain checks, so..
 			return;
 		}
 
@@ -6806,7 +6806,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 	else //We can't find a waypoint, going to need a fallback routine.
 	{
 		/*if (level.gametype == GT_DUEL)*/
-		{ //helps them get out of messy situations
+		{//helps them get out of messy situations
 			/*if ((level.time - bs->forceJumpChargeTime) > 3500)
 			{
 				bs->forceJumpChargeTime = level.time + 2000;
@@ -6821,7 +6821,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 	}
 
 	if (RMG.integer)
-	{ //for RMG if the bot sticks around an area too long, jump around randomly some to spread to a new area (horrible hacky method)
+	{//for RMG if the bot sticks around an area too long, jump around randomly some to spread to a new area (horrible hacky method)
 		vec3_t vSubDif;
 
 		VectorSubtract(bs->origin, bs->lastSignificantAreaChange, vSubDif);
@@ -6920,11 +6920,11 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 			CombatBotAI(bs, thinktime);
 		}
 		else if (bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT)
-		{ //keep charging in case we see him again before we lose track of him
+		{//keep charging in case we see him again before we lose track of him
 			bs->doAltAttack = 1;
 		}
 		else if (bs->cur_ps.weaponstate == WEAPON_CHARGING)
-		{ //keep charging in case we see him again before we lose track of him
+		{//keep charging in case we see him again before we lose track of him
 			bs->doAttack = 1;
 		}
 
@@ -7004,7 +7004,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 			vectoangles(a_fo, a_fo);
 
 			if (bs->saberPowerTime < level.time)
-			{ //Don't just use strong attacks constantly, switch around a bit
+			{//Don't just use strong attacks constantly, switch around a bit
 				if (Q_irand(1, 10) <= 5)
 				{
 					bs->saberPower = qtrue;
@@ -7017,15 +7017,15 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 				bs->saberPowerTime = level.time + Q_irand(3000, 15000);
 			}
 
-			if ( g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_STAFF
-				&& g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_DUAL )
+			if (g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_STAFF
+				&& g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_DUAL)
 			{
 				if (bs->currentEnemy->health > 75
 					&& g_entities[bs->client].client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE] > 2)
 				{
 					if (g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_STRONG
 						&& bs->saberPower)
-					{ //if we are up against someone with a lot of health and we have a strong attack available, then h4q them
+					{//if we are up against someone with a lot of health and we have a strong attack available, then h4q them
 						Cmd_SaberAttackCycle_f(&g_entities[bs->client]);
 					}
 				}
@@ -7033,14 +7033,14 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 					&& g_entities[bs->client].client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE] > 1)
 				{
 					if (g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_MEDIUM)
-					{ //they're down on health a little, use level 2 if we can
+					{//they're down on health a little, use level 2 if we can
 						Cmd_SaberAttackCycle_f(&g_entities[bs->client]);
 					}
 				}
 				else
 				{
 					if (g_entities[bs->client].client->ps.fd.saberAnimLevel != SS_FAST)
-					{ //they've gone below 40 health, go at them with quick attacks
+					{//they've gone below 40 health, go at them with quick attacks
 						Cmd_SaberAttackCycle_f(&g_entities[bs->client]);
 					}
 				}
@@ -7144,7 +7144,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		dif[2] = (bs->shootGoal->r.absmax[2]+bs->shootGoal->r.absmin[2])/2;
 
 		if (!bs->currentEnemy || bs->frame_Enemy_Len > 256)
-		{ //if someone is close then don't stop shooting them for this
+		{//if someone is close then don't stop shooting them for this
 			VectorSubtract(dif, bs->eye, a);
 			vectoangles(a, a);
 			VectorCopy(a, bs->goalAngles);
@@ -7158,7 +7158,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 	}
 
 	if (bs->cur_ps.hasDetPackPlanted)
-	{ //check if our enemy gets near it and detonate if he does
+	{//check if our enemy gets near it and detonate if he does
 		BotCheckDetPacks(bs);
 	}
 	else if (bs->currentEnemy && bs->lastVisibleEnemyIndex == bs->currentEnemy->s.number && !bs->frame_Enemy_Vis && bs->plantTime < level.time &&
@@ -7189,7 +7189,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 				if (BotSurfaceNear(bs))
 				{
 					if (!mineSelect)
-					{ //if no mines use detpacks, otherwise use mines
+					{//if no mines use detpacks, otherwise use mines
 						mineSelect = WP_DET_PACK;
 					}
 					else
@@ -7200,7 +7200,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 					detSelect = BotSelectChoiceWeapon(bs, mineSelect, 1);
 
 					if (detSelect && detSelect != 2)
-					{ //We have it and it is now our weapon
+					{//We have it and it is now our weapon
 						bs->plantDecided = level.time + 1000;
 						bs->forceWeaponSelect = mineSelect;
 						return;
@@ -7346,11 +7346,11 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		trap->EA_Crouch(bs->client);
 	}
 
-	if ( bs->dangerousObject && bs->dangerousObject->inuse && bs->dangerousObject->health > 0 &&
+	if (bs->dangerousObject && bs->dangerousObject->inuse && bs->dangerousObject->health > 0 &&
 		bs->dangerousObject->takedamage && (!bs->frame_Enemy_Vis || !bs->currentEnemy) &&
 		(BotGetWeaponRange(bs) == BWEAPONRANGE_MID || BotGetWeaponRange(bs) == BWEAPONRANGE_LONG) &&
 		bs->cur_ps.weapon != WP_DET_PACK && bs->cur_ps.weapon != WP_TRIP_MINE &&
-		!bs->shootGoal )
+		!bs->shootGoal)
 	{
 		float danLen;
 
@@ -7403,7 +7403,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 			}
 
 			if (!useTheForce && friendInLOF->client)
-			{ //we have a friend here and are not currently using force powers, see if we can help them out
+			{//we have a friend here and are not currently using force powers, see if we can help them out
 				if (friendInLOF->health <= 50 && level.clients[bs->client].ps.fd.forcePower > forcePowerNeeded[level.clients[bs->client].ps.fd.forcePowerLevel[FP_TEAM_HEAL]][FP_TEAM_HEAL])
 				{
 					level.clients[bs->client].ps.fd.forcePowerSelected = FP_TEAM_HEAL;
@@ -7420,7 +7420,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 		}
 	}
 	else if (level.gametype >= GT_TEAM)
-	{ //still check for anyone to help..
+	{//still check for anyone to help..
 		friendInLOF = CheckForFriendInLOF(bs);
 
 		if (!useTheForce && friendInLOF)
@@ -7442,13 +7442,13 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 
 	if (bs->doAttack && bs->cur_ps.weapon == WP_DET_PACK &&
 		bs->cur_ps.hasDetPackPlanted)
-	{ //maybe a bit hackish, but bots only want to plant one of these at any given time to avoid complications
+	{//maybe a bit hackish, but bots only want to plant one of these at any given time to avoid complications
 		bs->doAttack = 0;
 	}
 
 	if (bs->doAttack && bs->cur_ps.weapon == WP_SABER &&
 		bs->saberDefending && bs->currentEnemy && bs->currentEnemy->client &&
-		BotWeaponBlockable(bs->currentEnemy->client->ps.weapon) )
+		BotWeaponBlockable(bs->currentEnemy->client->ps.weapon))
 	{
 		bs->doAttack = 0;
 	}
@@ -7474,7 +7474,7 @@ void StandardBotAI(bot_state_t *bs, float thinktime)
 	if (bs->cur_ps.weapon == WP_SABER &&
 		bs->cur_ps.saberInFlight &&
 		!bs->cur_ps.saberEntityNum)
-	{ //saber knocked away, keep trying to get it back
+	{//saber knocked away, keep trying to get it back
 		bs->doAttack = 1;
 		bs->doAltAttack = 0;
 	}
@@ -7569,14 +7569,14 @@ int BotAIStartFrame(int time) {
 	else thinktime = BOT_THINK_TIME;
 
 	// execute scheduled bot AI
-	for( i = 0; i < MAX_CLIENTS; i++ ) {
-		if( !botstates[i] || !botstates[i]->inuse ) {
+	for(i = 0; i < MAX_CLIENTS; i++) {
+		if(!botstates[i] || !botstates[i]->inuse) {
 			continue;
 		}
 		//
 		botstates[i]->botthink_residual += elapsed_time;
 		//
-		if ( botstates[i]->botthink_residual >= thinktime ) {
+		if (botstates[i]->botthink_residual >= thinktime) {
 			botstates[i]->botthink_residual -= thinktime;
 
 			if (g_entities[i].client->pers.connected == CON_CONNECTED) {
@@ -7586,11 +7586,11 @@ int BotAIStartFrame(int time) {
 	}
 
 	// execute bot user commands every frame
-	for( i = 0; i < MAX_CLIENTS; i++ ) {
-		if( !botstates[i] || !botstates[i]->inuse ) {
+	for(i = 0; i < MAX_CLIENTS; i++) {
+		if(!botstates[i] || !botstates[i]->inuse) {
 			continue;
 		}
-		if( g_entities[i].client->pers.connected != CON_CONNECTED ) {
+		if(g_entities[i].client->pers.connected != CON_CONNECTED) {
 			continue;
 		}
 
@@ -7606,7 +7606,7 @@ int BotAIStartFrame(int time) {
 BotAISetup
 ==============
 */
-int BotAISetup( int restart ) {
+int BotAISetup(int restart) {
 	//rww - new bot cvars..
 	trap->Cvar_Register(&bot_forcepowers, "bot_forcepowers", "1", CVAR_CHEAT);
 	trap->Cvar_Register(&bot_forgimmick, "bot_forgimmick", "0", CVAR_CHEAT);
@@ -7639,7 +7639,7 @@ int BotAISetup( int restart ) {
 	}
 
 	//initialize the bot states
-	memset( botstates, 0, sizeof(botstates) );
+	memset(botstates, 0, sizeof(botstates));
 
 	if (!trap->BotLibSetup())
 	{
@@ -7654,12 +7654,12 @@ int BotAISetup( int restart ) {
 BotAIShutdown
 ==============
 */
-int BotAIShutdown( int restart ) {
+int BotAIShutdown(int restart) {
 
 	int i;
 
 	//if the game is restarted for a tournament
-	if ( restart ) {
+	if (restart) {
 		//shutdown all the bots in the botlib
 		for (i = 0; i < MAX_CLIENTS; i++) {
 			if (botstates[i] && botstates[i]->inuse) {

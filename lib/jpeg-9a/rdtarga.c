@@ -111,7 +111,7 @@ read_colormap (tga_source_ptr sinfo, int cmaplen, int mapentrysize)
     sinfo->colormap[2][i] = (JSAMPLE) read_byte(sinfo);
     sinfo->colormap[1][i] = (JSAMPLE) read_byte(sinfo);
     sinfo->colormap[0][i] = (JSAMPLE) read_byte(sinfo);
-  }
+ }
 }
 
 
@@ -128,7 +128,7 @@ read_non_rle_pixel (tga_source_ptr sinfo)
 
   for (i = 0; i < sinfo->pixel_size; i++) {
     sinfo->tga_pixel[i] = (U_CHAR) getc(infile);
-  }
+ }
 }
 
 
@@ -143,23 +143,23 @@ read_rle_pixel (tga_source_ptr sinfo)
   if (sinfo->dup_pixel_count > 0) {
     sinfo->dup_pixel_count--;
     return;
-  }
+ }
 
   /* Time to read RLE block header? */
-  if (--sinfo->block_count < 0) { /* decrement pixels remaining in block */
+  if (--sinfo->block_count < 0) {/* decrement pixels remaining in block */
     i = read_byte(sinfo);
     if (i & 0x80) {		/* Start of duplicate-pixel block? */
       sinfo->dup_pixel_count = i & 0x7F; /* number of dups after this one */
       sinfo->block_count = 0;	/* then read new block header */
-    } else {
+   } else {
       sinfo->block_count = i & 0x7F; /* number of pixels after this one */
-    }
-  }
+   }
+ }
 
   /* Read next pixel */
   for (i = 0; i < sinfo->pixel_size; i++) {
     sinfo->tga_pixel[i] = (U_CHAR) getc(infile);
-  }
+ }
 }
 
 
@@ -182,7 +182,7 @@ get_8bit_gray_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   for (col = cinfo->image_width; col > 0; col--) {
     (*source->read_pixel) (source); /* Load next pixel into tga_pixel */
     *ptr++ = (JSAMPLE) UCH(source->tga_pixel[0]);
-  }
+ }
   return 1;
 }
 
@@ -203,7 +203,7 @@ get_8bit_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     *ptr++ = colormap[0][t];
     *ptr++ = colormap[1][t];
     *ptr++ = colormap[2][t];
-  }
+ }
   return 1;
 }
 
@@ -231,7 +231,7 @@ get_16bit_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     t >>= 5;
     ptr[0] = (JSAMPLE) c5to8bits[t & 0x1F];
     ptr += 3;
-  }
+ }
   return 1;
 }
 
@@ -249,7 +249,7 @@ get_24bit_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     *ptr++ = (JSAMPLE) UCH(source->tga_pixel[2]); /* change BGR to RGB order */
     *ptr++ = (JSAMPLE) UCH(source->tga_pixel[1]);
     *ptr++ = (JSAMPLE) UCH(source->tga_pixel[0]);
-  }
+ }
   return 1;
 }
 
@@ -309,11 +309,11 @@ preload_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
       progress->pub.pass_counter = (long) row;
       progress->pub.pass_limit = (long) cinfo->image_height;
       (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-    }
+   }
     source->pub.buffer = (*cinfo->mem->access_virt_sarray)
       ((j_common_ptr) cinfo, source->whole_image, row, (JDIMENSION) 1, TRUE);
     (*source->get_pixel_rows) (cinfo, sinfo);
-  }
+ }
   if (progress != NULL)
     progress->completed_extra_passes++;
 
@@ -371,10 +371,10 @@ start_input_tga (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     source->read_pixel = read_rle_pixel;
     source->block_count = source->dup_pixel_count = 0;
     subtype -= 8;
-  } else {
+ } else {
     /* Non-RLE file */
     source->read_pixel = read_non_rle_pixel;
-  }
+ }
 
   /* Now should have subtype 1, 2, or 3 */
   components = 3;		/* until proven different */
@@ -402,7 +402,7 @@ start_input_tga (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     default:
       ERREXIT(cinfo, JERR_TGA_BADPARMS);
       break;
-    }
+   }
     TRACEMS2(cinfo, 1, JTRC_TGA, width, height);
     break;
   case 3:			/* Grayscale image */
@@ -417,7 +417,7 @@ start_input_tga (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   default:
     ERREXIT(cinfo, JERR_TGA_BADPARMS);
     break;
-  }
+ }
 
   if (is_bottom_up) {
     /* Create a virtual array to buffer the upside-down image. */
@@ -427,11 +427,11 @@ start_input_tga (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     if (cinfo->progress != NULL) {
       cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
       progress->total_extra_passes++; /* count file input as separate pass */
-    }
+   }
     /* source->pub.buffer will point to the virtual array. */
     source->pub.buffer_height = 1; /* in case anyone looks at it */
     source->pub.get_pixel_rows = preload_image;
-  } else {
+ } else {
     /* Don't need a virtual array, but do need a one-row input buffer. */
     source->whole_image = NULL;
     source->pub.buffer = (*cinfo->mem->alloc_sarray)
@@ -439,7 +439,7 @@ start_input_tga (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
        (JDIMENSION) width * components, (JDIMENSION) 1);
     source->pub.buffer_height = 1;
     source->pub.get_pixel_rows = source->get_pixel_rows;
-  }
+ }
   
   while (idlen--)		/* Throw away ID field */
     (void) read_byte(source);
@@ -452,11 +452,11 @@ start_input_tga (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
       ((j_common_ptr) cinfo, JPOOL_IMAGE, (JDIMENSION) maplen, (JDIMENSION) 3);
     /* and read it from the file */
     read_colormap(source, (int) maplen, UCH(targaheader[7]));
-  } else {
+ } else {
     if (cmaptype)		/* but you promised a cmap! */
       ERREXIT(cinfo, JERR_TGA_BADPARMS);
     source->colormap = NULL;
-  }
+ }
 
   cinfo->input_components = components;
   cinfo->data_precision = 8;

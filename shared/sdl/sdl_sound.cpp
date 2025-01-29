@@ -90,19 +90,19 @@ static struct
 	const char	*stringFormat;
 } formatToStringTable[ ] =
 {
-	{ AUDIO_U8,     "AUDIO_U8" },
-	{ AUDIO_S8,     "AUDIO_S8" },
-	{ AUDIO_U16LSB, "AUDIO_U16LSB" },
-	{ AUDIO_S16LSB, "AUDIO_S16LSB" },
-	{ AUDIO_U16MSB, "AUDIO_U16MSB" },
-	{ AUDIO_S16MSB, "AUDIO_S16MSB" },
-	{ AUDIO_S32LSB, "AUDIO_S32LSB" },
-	{ AUDIO_S32MSB, "AUDIO_S32MSB" },
-	{ AUDIO_F32LSB, "AUDIO_F32LSB" },
-	{ AUDIO_F32MSB, "AUDIO_F32MSB" }
+	{AUDIO_U8,     "AUDIO_U8"},
+	{AUDIO_S8,     "AUDIO_S8"},
+	{AUDIO_U16LSB, "AUDIO_U16LSB"},
+	{AUDIO_S16LSB, "AUDIO_S16LSB"},
+	{AUDIO_U16MSB, "AUDIO_U16MSB"},
+	{AUDIO_S16MSB, "AUDIO_S16MSB"},
+	{AUDIO_S32LSB, "AUDIO_S32LSB"},
+	{AUDIO_S32MSB, "AUDIO_S32MSB"},
+	{AUDIO_F32LSB, "AUDIO_F32LSB"},
+	{AUDIO_F32MSB, "AUDIO_F32MSB"}
 };
 
-static const size_t formatToStringTableSize = ARRAY_LEN( formatToStringTable );
+static const size_t formatToStringTableSize = ARRAY_LEN(formatToStringTable);
 
 /*
 ===============
@@ -113,23 +113,23 @@ static void SNDDMA_PrintAudiospec(const char *str, const SDL_AudioSpec *spec)
 {
 	const char	*fmt = NULL;
 
-	Com_Printf( "%s:\n", str );
+	Com_Printf("%s:\n", str);
 
-	for( size_t i = 0; i < formatToStringTableSize; i++ ) {
-		if( spec->format == formatToStringTable[ i ].enumFormat ) {
+	for(size_t i = 0; i < formatToStringTableSize; i++) {
+		if(spec->format == formatToStringTable[ i ].enumFormat) {
 			fmt = formatToStringTable[ i ].stringFormat;
 		}
 	}
 
-	if( fmt ) {
-		Com_Printf( "  Format:   %s\n", fmt );
+	if(fmt) {
+		Com_Printf("  Format:   %s\n", fmt);
 	} else {
-		Com_Printf( "  Format:   " S_COLOR_RED "UNKNOWN (%d)\n", (int)spec->format);
+		Com_Printf("  Format:   " S_COLOR_RED "UNKNOWN (%d)\n", (int)spec->format);
 	}
 
-	Com_Printf( "  Freq:     %d\n", (int) spec->freq );
-	Com_Printf( "  Samples:  %d\n", (int) spec->samples );
-	Com_Printf( "  Channels: %d\n", (int) spec->channels );
+	Com_Printf("  Freq:     %d\n", (int) spec->freq);
+	Com_Printf("  Samples:  %d\n", (int) spec->samples);
+	Com_Printf("  Channels: %d\n", (int) spec->channels);
 }
 
 static int SNDDMA_ExpandSampleFrequencyKHzToHz(int khz)
@@ -164,20 +164,20 @@ qboolean SNDDMA_Init(int sampleFrequencyInKHz)
 		s_sdlMixSamps = Cvar_Get("s_sdlMixSamps", "0", CVAR_ARCHIVE_ND);
 	}
 
-	Com_Printf( "SDL_Init( SDL_INIT_AUDIO )... " );
+	Com_Printf("SDL_Init(SDL_INIT_AUDIO)... ");
 
 	if (!SDL_WasInit(SDL_INIT_AUDIO))
 	{
 		if (SDL_Init(SDL_INIT_AUDIO) == -1)
 		{
-			Com_Printf( "FAILED (%s)\n", SDL_GetError( ) );
+			Com_Printf("FAILED (%s)\n", SDL_GetError());
 			return qfalse;
 		}
 	}
 
-	Com_Printf( "OK\n" );
+	Com_Printf("OK\n");
 
-	Com_Printf( "SDL audio driver is \"%s\".\n", SDL_GetCurrentAudioDriver( ) );
+	Com_Printf("SDL audio driver is \"%s\".\n", SDL_GetCurrentAudioDriver());
 
 	memset(&desired, '\0', sizeof (desired));
 	memset(&obtained, '\0', sizeof (obtained));
@@ -209,8 +209,8 @@ qboolean SNDDMA_Init(int sampleFrequencyInKHz)
 	desired.channels = (int) s_sdlChannels->value;
 	desired.callback = SNDDMA_AudioCallback;
 
-	dev = SDL_OpenAudioDevice( NULL, 0, &desired, &obtained, 0 );
-	if ( !dev )
+	dev = SDL_OpenAudioDevice(NULL, 0, &desired, &obtained, 0);
+	if (!dev)
 	{
 		Com_Printf("SDL_OpenAudioDevice() failed: %s\n", SDL_GetError());
 		SDL_QuitSubSystem(SDL_INIT_AUDIO);
@@ -311,19 +311,19 @@ extern int s_UseOpenAL;
 #endif
 
 // (De)activates sound playback
-void SNDDMA_Activate( qboolean activate )
+void SNDDMA_Activate(qboolean activate)
 {
 #ifdef USE_OPENAL
-	if ( s_UseOpenAL )
+	if (s_UseOpenAL)
 	{
-		S_AL_MuteAllSounds( (qboolean)!activate );
+		S_AL_MuteAllSounds((qboolean)!activate);
 	}
 #endif
 
-	if ( activate )
+	if (activate)
 	{
 		S_ClearSoundBuffer();
 	}
 
-	SDL_PauseAudioDevice( dev, !activate );
+	SDL_PauseAudioDevice(dev, !activate);
 }

@@ -46,7 +46,7 @@ int			delayedShutDown = 0;
 typedef	std::map< sstring_t, unsigned char  >	namePrecache_m;
 namePrecache_m	*as_preCacheMap = NULL;
 
-char *G_AddSpawnVarToken( const char *string );
+char *G_AddSpawnVarToken(const char *string);
 
 void AddSpawnField(char *field, char *value)
 {
@@ -56,19 +56,19 @@ void AddSpawnField(char *field, char *value)
 	{
 		if (Q_stricmp(spawnVars[i][0], field) == 0)
 		{
-			spawnVars[ i ][1] = G_AddSpawnVarToken( value );
+			spawnVars[ i ][1] = G_AddSpawnVarToken(value);
 			return;
 		}
 	}
 
-	spawnVars[ numSpawnVars ][0] = G_AddSpawnVarToken( field );
-	spawnVars[ numSpawnVars ][1] = G_AddSpawnVarToken( value );
+	spawnVars[ numSpawnVars ][0] = G_AddSpawnVarToken(field);
+	spawnVars[ numSpawnVars ][1] = G_AddSpawnVarToken(value);
 	numSpawnVars++;
 }
 
-qboolean	G_SpawnField( unsigned int uiField, char **ppKey, char **ppValue )
+qboolean	G_SpawnField(unsigned int uiField, char **ppKey, char **ppValue)
 {
-	if ( (int)uiField >= numSpawnVars )
+	if ((int)uiField >= numSpawnVars)
 		return qfalse;
 
 	(*ppKey) = spawnVars[uiField][0];
@@ -77,16 +77,16 @@ qboolean	G_SpawnField( unsigned int uiField, char **ppKey, char **ppValue )
 	return qtrue;
 }
 
-qboolean	G_SpawnString( const char *key, const char *defaultString, char **out ) {
+qboolean	G_SpawnString(const char *key, const char *defaultString, char **out) {
 	int		i;
 
-	if ( !spawning ) {
+	if (!spawning) {
 		*out = (char *)defaultString;
-//		G_Error( "G_SpawnString() called while not spawning" );
+//		G_Error("G_SpawnString() called while not spawning");
 	}
 
-	for ( i = 0 ; i < numSpawnVars ; i++ ) {
-		if ( !Q_stricmp( key, spawnVars[i][0] ) ) {
+	for (i = 0 ; i < numSpawnVars ; i++) {
+		if (!Q_stricmp(key, spawnVars[i][0])) {
 			*out = spawnVars[i][1];
 			return qtrue;
 		}
@@ -96,51 +96,51 @@ qboolean	G_SpawnString( const char *key, const char *defaultString, char **out )
 	return qfalse;
 }
 
-qboolean	G_SpawnFloat( const char *key, const char *defaultString, float *out ) {
+qboolean	G_SpawnFloat(const char *key, const char *defaultString, float *out) {
 	char		*s;
 	qboolean	present;
 
-	present = G_SpawnString( key, defaultString, &s );
-	*out = atof( s );
+	present = G_SpawnString(key, defaultString, &s);
+	*out = atof(s);
 	return present;
 }
 
-qboolean	G_SpawnInt( const char *key, const char *defaultString, int *out ) {
+qboolean	G_SpawnInt(const char *key, const char *defaultString, int *out) {
 	char		*s;
 	qboolean	present;
 
-	present = G_SpawnString( key, defaultString, &s );
-	*out = atoi( s );
+	present = G_SpawnString(key, defaultString, &s);
+	*out = atoi(s);
 	return present;
 }
 
-qboolean	G_SpawnVector( const char *key, const char *defaultString, float *out ) {
+qboolean	G_SpawnVector(const char *key, const char *defaultString, float *out) {
 	char		*s;
 	qboolean	present;
 
-	present = G_SpawnString( key, defaultString, &s );
-	sscanf( s, "%f %f %f", &out[0], &out[1], &out[2] );
+	present = G_SpawnString(key, defaultString, &s);
+	sscanf(s, "%f %f %f", &out[0], &out[1], &out[2]);
 	return present;
 }
 
-qboolean	G_SpawnVector4( const char *key, const char *defaultString, float *out ) {
+qboolean	G_SpawnVector4(const char *key, const char *defaultString, float *out) {
 	char		*s;
 	qboolean	present;
 
-	present = G_SpawnString( key, defaultString, &s );
-	sscanf( s, "%f %f %f %f", &out[0], &out[1], &out[2], &out[3] );
+	present = G_SpawnString(key, defaultString, &s);
+	sscanf(s, "%f %f %f %f", &out[0], &out[1], &out[2], &out[3]);
 	return present;
 }
 
-qboolean	G_SpawnFlag( const char *key, int flag, int *out )
+qboolean	G_SpawnFlag(const char *key, int flag, int *out)
 {
 	//find that key
-	for ( int i = 0 ; i < numSpawnVars ; i++ )
+	for (int i = 0 ; i < numSpawnVars ; i++)
 	{
-		if ( !strcmp( key, spawnVars[i][0] ) )
+		if (!strcmp(key, spawnVars[i][0]))
 		{
 			//found the key
-			if ( atoi( spawnVars[i][1] ) != 0 )
+			if (atoi(spawnVars[i][1]) != 0)
 			{//if it's non-zero, and in the flag
 				*out |= flag;
 			}
@@ -155,14 +155,14 @@ qboolean	G_SpawnFlag( const char *key, int flag, int *out )
 	return qfalse;
 }
 
-qboolean G_SpawnAngleHack( const char *key, const char *defaultString, float *out )
+qboolean G_SpawnAngleHack(const char *key, const char *defaultString, float *out)
 {
 	char		*s;
 	qboolean	present;
 	float		temp = 0;
 
-	present = G_SpawnString( key, defaultString, &s );
-	sscanf( s, "%f", &temp );
+	present = G_SpawnString(key, defaultString, &s);
+	sscanf(s, "%f", &temp);
 
 	out[0] = 0;
 	out[1] = temp;
@@ -175,7 +175,7 @@ stringID_table_t flagTable [] =
 {
 	//"noTED", EF_NO_TED,
 	//stringID_table_t Must end with a null entry
-	{ "", 0 }
+	{"", 0}
 };
 
 //
@@ -389,17 +389,17 @@ void SP_func_static (gentity_t *ent);
 void SP_func_rotating (gentity_t *ent);
 void SP_func_bobbing (gentity_t *ent);
 void SP_func_breakable (gentity_t *self);
-void SP_func_glass( gentity_t *self );
-void SP_func_pendulum( gentity_t *ent );
+void SP_func_glass(gentity_t *self);
+void SP_func_pendulum(gentity_t *ent);
 void SP_func_button (gentity_t *ent);
 void SP_func_door (gentity_t *ent);
 void SP_func_train (gentity_t *ent);
 void SP_func_timer (gentity_t *self);
 void SP_func_wall (gentity_t *ent);
-void SP_func_usable( gentity_t *self );
-void SP_rail_mover( gentity_t *self );
-void SP_rail_track( gentity_t *self );
-void SP_rail_lane( gentity_t *self );
+void SP_func_usable(gentity_t *self);
+void SP_rail_mover(gentity_t *self);
+void SP_rail_track(gentity_t *self);
+void SP_rail_lane(gentity_t *self);
 
 
 
@@ -411,8 +411,8 @@ void SP_trigger_teleport (gentity_t *ent);
 void SP_trigger_hurt (gentity_t *ent);
 void SP_trigger_bidirectional (gentity_t *ent);
 void SP_trigger_entdist (gentity_t *self);
-void SP_trigger_location( gentity_t *ent );
-void SP_trigger_visible( gentity_t *self );
+void SP_trigger_location(gentity_t *ent);
+void SP_trigger_visible(gentity_t *self);
 void SP_trigger_space(gentity_t *self);
 void SP_trigger_shipboundary(gentity_t *self);
 
@@ -422,8 +422,8 @@ void SP_target_speaker (gentity_t *ent);
 void SP_target_print (gentity_t *ent);
 void SP_target_laser (gentity_t *self);
 void SP_target_character (gentity_t *ent);
-void SP_target_score( gentity_t *ent );
-void SP_target_teleporter( gentity_t *ent );
+void SP_target_score(gentity_t *ent);
+void SP_target_teleporter(gentity_t *ent);
 void SP_target_relay (gentity_t *ent);
 void SP_target_kill (gentity_t *ent);
 void SP_target_position (gentity_t *ent);
@@ -435,13 +435,13 @@ void SP_target_scriptrunner (gentity_t *self);
 void SP_target_interest (gentity_t *self);
 void SP_target_activate (gentity_t *self);
 void SP_target_deactivate (gentity_t *self);
-void SP_target_gravity_change( gentity_t *self );
-void SP_target_friction_change( gentity_t *self );
-void SP_target_level_change( gentity_t *self );
-void SP_target_change_parm( gentity_t *self );
-void SP_target_play_music( gentity_t *self );
-void SP_target_autosave( gentity_t *self );
-void SP_target_secret( gentity_t *self );
+void SP_target_gravity_change(gentity_t *self);
+void SP_target_friction_change(gentity_t *self);
+void SP_target_level_change(gentity_t *self);
+void SP_target_change_parm(gentity_t *self);
+void SP_target_play_music(gentity_t *self);
+void SP_target_autosave(gentity_t *self);
+void SP_target_secret(gentity_t *self);
 
 void SP_light (gentity_t *self);
 void SP_info_null (gentity_t *self);
@@ -455,28 +455,28 @@ void SP_misc_model_static(gentity_t *ent);
 void SP_misc_turret (gentity_t *base);
 void SP_misc_ns_turret (gentity_t *base);
 void SP_laser_arm (gentity_t *base);
-void SP_misc_ion_cannon( gentity_t *ent );
-void SP_misc_maglock( gentity_t *ent );
-void SP_misc_panel_turret( gentity_t *ent );
-void SP_misc_model_welder( gentity_t *ent );
-void SP_misc_model_jabba_cam( gentity_t *ent );
+void SP_misc_ion_cannon(gentity_t *ent);
+void SP_misc_maglock(gentity_t *ent);
+void SP_misc_panel_turret(gentity_t *ent);
+void SP_misc_model_welder(gentity_t *ent);
+void SP_misc_model_jabba_cam(gentity_t *ent);
 
-void SP_misc_model_shield_power_converter( gentity_t *ent );
-void SP_misc_model_ammo_power_converter( gentity_t *ent );
-void SP_misc_model_bomb_planted( gentity_t *ent );
-void SP_misc_model_beacon( gentity_t *ent );
+void SP_misc_model_shield_power_converter(gentity_t *ent);
+void SP_misc_model_ammo_power_converter(gentity_t *ent);
+void SP_misc_model_bomb_planted(gentity_t *ent);
+void SP_misc_model_beacon(gentity_t *ent);
 
-void SP_misc_shield_floor_unit( gentity_t *ent );
-void SP_misc_ammo_floor_unit( gentity_t *ent );
+void SP_misc_shield_floor_unit(gentity_t *ent);
+void SP_misc_ammo_floor_unit(gentity_t *ent);
 
-void SP_misc_model_gun_rack( gentity_t *ent );
-void SP_misc_model_ammo_rack( gentity_t *ent );
-void SP_misc_model_cargo_small( gentity_t *ent );
+void SP_misc_model_gun_rack(gentity_t *ent);
+void SP_misc_model_ammo_rack(gentity_t *ent);
+void SP_misc_model_cargo_small(gentity_t *ent);
 
-void SP_misc_exploding_crate( gentity_t *ent );
-void SP_misc_gas_tank( gentity_t *ent );
-void SP_misc_crystal_crate( gentity_t *ent );
-void SP_misc_atst_drivable( gentity_t *ent );
+void SP_misc_exploding_crate(gentity_t *ent);
+void SP_misc_gas_tank(gentity_t *ent);
+void SP_misc_crystal_crate(gentity_t *ent);
+void SP_misc_atst_drivable(gentity_t *ent);
 
 void SP_misc_model_breakable(gentity_t *ent);//stays as an ent
 void SP_misc_model_ghoul(gentity_t *ent);//stays as an ent
@@ -491,132 +491,132 @@ void SP_misc_camera_focus (gentity_t *self);
 void SP_misc_camera_track (gentity_t *self);
 void SP_misc_dlight (gentity_t *ent);
 void SP_misc_security_panel (gentity_t *ent);
-void SP_misc_camera( gentity_t *ent );
-void SP_misc_spotlight( gentity_t *ent );
+void SP_misc_camera(gentity_t *ent);
+void SP_misc_spotlight(gentity_t *ent);
 
-void SP_shooter_rocket( gentity_t *ent );
-void SP_shooter_plasma( gentity_t *ent );
-void SP_shooter_grenade( gentity_t *ent );
-void SP_misc_replicator_item( gentity_t *ent );
-void SP_misc_trip_mine( gentity_t *self );
-void SP_PAS( gentity_t *ent );
-void SP_misc_weapon_shooter( gentity_t *self );
-void SP_misc_weather_zone( gentity_t *ent );
+void SP_shooter_rocket(gentity_t *ent);
+void SP_shooter_plasma(gentity_t *ent);
+void SP_shooter_grenade(gentity_t *ent);
+void SP_misc_replicator_item(gentity_t *ent);
+void SP_misc_trip_mine(gentity_t *self);
+void SP_PAS(gentity_t *ent);
+void SP_misc_weapon_shooter(gentity_t *self);
+void SP_misc_weather_zone(gentity_t *ent);
 
-void SP_misc_cubemap( gentity_t *ent );
+void SP_misc_cubemap(gentity_t *ent);
 
 //New spawn functions
-void SP_reference_tag ( gentity_t *ent );
+void SP_reference_tag (gentity_t *ent);
 
-void SP_NPC_spawner( gentity_t *self );
+void SP_NPC_spawner(gentity_t *self);
 
-void SP_NPC_Vehicle( gentity_t *self );
-void SP_NPC_Player( gentity_t *self );
-void SP_NPC_Kyle( gentity_t *self );
-void SP_NPC_Lando( gentity_t *self );
-void SP_NPC_Jan( gentity_t *self );
-void SP_NPC_Luke( gentity_t *self );
-void SP_NPC_MonMothma( gentity_t *self );
-void SP_NPC_Rosh_Penin( gentity_t *self );
-void SP_NPC_Tavion( gentity_t *self );
-void SP_NPC_Tavion_New( gentity_t *self );
-void SP_NPC_Alora( gentity_t *self );
-void SP_NPC_Reelo( gentity_t *self );
-void SP_NPC_Galak( gentity_t *self );
-void SP_NPC_Desann( gentity_t *self );
-void SP_NPC_Rax( gentity_t *self );
-void SP_NPC_BobaFett( gentity_t *self );
-void SP_NPC_Ragnos( gentity_t *self );
-void SP_NPC_Lannik_Racto( gentity_t *self );
-void SP_NPC_Kothos( gentity_t *self );
-void SP_NPC_Chewbacca( gentity_t *self );
-void SP_NPC_Bartender( gentity_t *self );
-void SP_NPC_MorganKatarn( gentity_t *self );
-void SP_NPC_Jedi( gentity_t *self );
-void SP_NPC_Prisoner( gentity_t *self );
-void SP_NPC_Merchant( gentity_t *self );
-void SP_NPC_Rebel( gentity_t *self );
-void SP_NPC_Human_Merc( gentity_t *self );
-void SP_NPC_Stormtrooper( gentity_t *self );
-void SP_NPC_StormtrooperOfficer( gentity_t *self );
-void SP_NPC_Tie_Pilot( gentity_t *self );
-void SP_NPC_Snowtrooper( gentity_t *self );
-void SP_NPC_RocketTrooper( gentity_t *self);
-void SP_NPC_HazardTrooper( gentity_t *self);
-void SP_NPC_Ugnaught( gentity_t *self );
-void SP_NPC_Jawa( gentity_t *self );
-void SP_NPC_Gran( gentity_t *self );
-void SP_NPC_Rodian( gentity_t *self );
-void SP_NPC_Weequay( gentity_t *self );
-void SP_NPC_Trandoshan( gentity_t *self );
-void SP_NPC_Tusken( gentity_t *self );
-void SP_NPC_Noghri( gentity_t *self );
-void SP_NPC_SwampTrooper( gentity_t *self );
-void SP_NPC_Imperial( gentity_t *self );
-void SP_NPC_ImpWorker( gentity_t *self );
-void SP_NPC_BespinCop( gentity_t *self );
-void SP_NPC_Reborn( gentity_t *self );
-void SP_NPC_Reborn_New( gentity_t *self);
-void SP_NPC_Cultist( gentity_t *self );
-void SP_NPC_Cultist_Saber( gentity_t *self );
-void SP_NPC_Cultist_Saber_Powers( gentity_t *self );
-void SP_NPC_Cultist_Destroyer( gentity_t *self );
-void SP_NPC_Cultist_Commando( gentity_t *self );
-void SP_NPC_ShadowTrooper( gentity_t *self );
-void SP_NPC_Saboteur( gentity_t *self );
-void SP_NPC_Monster_Murjj( gentity_t *self );
-void SP_NPC_Monster_Swamp( gentity_t *self );
-void SP_NPC_Monster_Howler( gentity_t *self );
-void SP_NPC_Monster_Rancor( gentity_t *self );
-void SP_NPC_Monster_Mutant_Rancor( gentity_t *self );
-void SP_NPC_Monster_Wampa( gentity_t *self );
-void SP_NPC_Monster_Claw( gentity_t *self );
-void SP_NPC_Monster_Glider( gentity_t *self );
-void SP_NPC_Monster_Flier2( gentity_t *self );
-void SP_NPC_Monster_Lizard( gentity_t *self );
-void SP_NPC_Monster_Fish( gentity_t *self );
-void SP_NPC_Monster_Sand_Creature( gentity_t *self );
-void SP_NPC_MineMonster( gentity_t *self );
-void SP_NPC_Droid_Interrogator( gentity_t *self );
-void SP_NPC_Droid_Probe( gentity_t *self );
-void SP_NPC_Droid_Mark1( gentity_t *self );
-void SP_NPC_Droid_Mark2( gentity_t *self );
-void SP_NPC_Droid_ATST( gentity_t *self );
-void SP_NPC_Droid_Seeker( gentity_t *self );
-void SP_NPC_Droid_Remote( gentity_t *self );
-void SP_NPC_Droid_Sentry( gentity_t *self );
-void SP_NPC_Droid_Gonk( gentity_t *self );
-void SP_NPC_Droid_Mouse( gentity_t *self );
-void SP_NPC_Droid_R2D2( gentity_t *self );
-void SP_NPC_Droid_R5D2( gentity_t *self );
-void SP_NPC_Droid_Protocol( gentity_t *self );
-void SP_NPC_Droid_Assassin( gentity_t *self);
-void SP_NPC_Droid_Saber( gentity_t *self);
+void SP_NPC_Vehicle(gentity_t *self);
+void SP_NPC_Player(gentity_t *self);
+void SP_NPC_Kyle(gentity_t *self);
+void SP_NPC_Lando(gentity_t *self);
+void SP_NPC_Jan(gentity_t *self);
+void SP_NPC_Luke(gentity_t *self);
+void SP_NPC_MonMothma(gentity_t *self);
+void SP_NPC_Rosh_Penin(gentity_t *self);
+void SP_NPC_Tavion(gentity_t *self);
+void SP_NPC_Tavion_New(gentity_t *self);
+void SP_NPC_Alora(gentity_t *self);
+void SP_NPC_Reelo(gentity_t *self);
+void SP_NPC_Galak(gentity_t *self);
+void SP_NPC_Desann(gentity_t *self);
+void SP_NPC_Rax(gentity_t *self);
+void SP_NPC_BobaFett(gentity_t *self);
+void SP_NPC_Ragnos(gentity_t *self);
+void SP_NPC_Lannik_Racto(gentity_t *self);
+void SP_NPC_Kothos(gentity_t *self);
+void SP_NPC_Chewbacca(gentity_t *self);
+void SP_NPC_Bartender(gentity_t *self);
+void SP_NPC_MorganKatarn(gentity_t *self);
+void SP_NPC_Jedi(gentity_t *self);
+void SP_NPC_Prisoner(gentity_t *self);
+void SP_NPC_Merchant(gentity_t *self);
+void SP_NPC_Rebel(gentity_t *self);
+void SP_NPC_Human_Merc(gentity_t *self);
+void SP_NPC_Stormtrooper(gentity_t *self);
+void SP_NPC_StormtrooperOfficer(gentity_t *self);
+void SP_NPC_Tie_Pilot(gentity_t *self);
+void SP_NPC_Snowtrooper(gentity_t *self);
+void SP_NPC_RocketTrooper(gentity_t *self);
+void SP_NPC_HazardTrooper(gentity_t *self);
+void SP_NPC_Ugnaught(gentity_t *self);
+void SP_NPC_Jawa(gentity_t *self);
+void SP_NPC_Gran(gentity_t *self);
+void SP_NPC_Rodian(gentity_t *self);
+void SP_NPC_Weequay(gentity_t *self);
+void SP_NPC_Trandoshan(gentity_t *self);
+void SP_NPC_Tusken(gentity_t *self);
+void SP_NPC_Noghri(gentity_t *self);
+void SP_NPC_SwampTrooper(gentity_t *self);
+void SP_NPC_Imperial(gentity_t *self);
+void SP_NPC_ImpWorker(gentity_t *self);
+void SP_NPC_BespinCop(gentity_t *self);
+void SP_NPC_Reborn(gentity_t *self);
+void SP_NPC_Reborn_New(gentity_t *self);
+void SP_NPC_Cultist(gentity_t *self);
+void SP_NPC_Cultist_Saber(gentity_t *self);
+void SP_NPC_Cultist_Saber_Powers(gentity_t *self);
+void SP_NPC_Cultist_Destroyer(gentity_t *self);
+void SP_NPC_Cultist_Commando(gentity_t *self);
+void SP_NPC_ShadowTrooper(gentity_t *self);
+void SP_NPC_Saboteur(gentity_t *self);
+void SP_NPC_Monster_Murjj(gentity_t *self);
+void SP_NPC_Monster_Swamp(gentity_t *self);
+void SP_NPC_Monster_Howler(gentity_t *self);
+void SP_NPC_Monster_Rancor(gentity_t *self);
+void SP_NPC_Monster_Mutant_Rancor(gentity_t *self);
+void SP_NPC_Monster_Wampa(gentity_t *self);
+void SP_NPC_Monster_Claw(gentity_t *self);
+void SP_NPC_Monster_Glider(gentity_t *self);
+void SP_NPC_Monster_Flier2(gentity_t *self);
+void SP_NPC_Monster_Lizard(gentity_t *self);
+void SP_NPC_Monster_Fish(gentity_t *self);
+void SP_NPC_Monster_Sand_Creature(gentity_t *self);
+void SP_NPC_MineMonster(gentity_t *self);
+void SP_NPC_Droid_Interrogator(gentity_t *self);
+void SP_NPC_Droid_Probe(gentity_t *self);
+void SP_NPC_Droid_Mark1(gentity_t *self);
+void SP_NPC_Droid_Mark2(gentity_t *self);
+void SP_NPC_Droid_ATST(gentity_t *self);
+void SP_NPC_Droid_Seeker(gentity_t *self);
+void SP_NPC_Droid_Remote(gentity_t *self);
+void SP_NPC_Droid_Sentry(gentity_t *self);
+void SP_NPC_Droid_Gonk(gentity_t *self);
+void SP_NPC_Droid_Mouse(gentity_t *self);
+void SP_NPC_Droid_R2D2(gentity_t *self);
+void SP_NPC_Droid_R5D2(gentity_t *self);
+void SP_NPC_Droid_Protocol(gentity_t *self);
+void SP_NPC_Droid_Assassin(gentity_t *self);
+void SP_NPC_Droid_Saber(gentity_t *self);
 
 void SP_waypoint (gentity_t *ent);
 void SP_waypoint_small (gentity_t *ent);
 void SP_waypoint_navgoal (gentity_t *ent);
 
-void SP_fx_runner( gentity_t *ent );
-void SP_fx_explosion_trail( gentity_t *ent );
-void SP_fx_target_beam( gentity_t *ent );
-void SP_fx_cloudlayer( gentity_t *ent );
+void SP_fx_runner(gentity_t *ent);
+void SP_fx_explosion_trail(gentity_t *ent);
+void SP_fx_target_beam(gentity_t *ent);
+void SP_fx_cloudlayer(gentity_t *ent);
 
-void SP_CreateSnow( gentity_t *ent );
-void SP_CreateRain( gentity_t *ent );
-void SP_CreateWind( gentity_t *ent );
-void SP_CreateWindZone( gentity_t *ent );
+void SP_CreateSnow(gentity_t *ent);
+void SP_CreateRain(gentity_t *ent);
+void SP_CreateWind(gentity_t *ent);
+void SP_CreateWindZone(gentity_t *ent);
 // Added 10/20/02 by Aurelio Reis
-void SP_CreatePuffSystem( gentity_t *ent );
+void SP_CreatePuffSystem(gentity_t *ent);
 
-void SP_object_cargo_barrel1( gentity_t *ent );
+void SP_object_cargo_barrel1(gentity_t *ent);
 
 void SP_point_combat (gentity_t *self);
 
-void SP_emplaced_eweb( gentity_t *self );
-void SP_emplaced_gun( gentity_t *self );
+void SP_emplaced_eweb(gentity_t *self);
+void SP_emplaced_gun(gentity_t *self);
 
-void SP_misc_turbobattery( gentity_t *base );
+void SP_misc_turbobattery(gentity_t *base);
 
 
 spawn_t	spawns[] = {
@@ -746,95 +746,95 @@ spawn_t	spawns[] = {
 	//new NPC ents
 	{"NPC_spawner", SP_NPC_spawner},
 
-	{"NPC_Vehicle", SP_NPC_Vehicle },
-	{"NPC_Player", SP_NPC_Player },
-	{"NPC_Kyle", SP_NPC_Kyle },
-	{"NPC_Lando", SP_NPC_Lando },
-	{"NPC_Jan", SP_NPC_Jan },
-	{"NPC_Luke", SP_NPC_Luke },
-	{"NPC_MonMothma", SP_NPC_MonMothma },
-	{"NPC_Rosh_Penin", SP_NPC_Rosh_Penin },
-	{"NPC_Tavion", SP_NPC_Tavion },
-	{"NPC_Tavion_New", SP_NPC_Tavion_New },
-	{"NPC_Alora", SP_NPC_Alora },
-	{"NPC_Reelo", SP_NPC_Reelo },
-	{"NPC_Galak", SP_NPC_Galak },
-	{"NPC_Desann", SP_NPC_Desann },
-	{"NPC_Rax", SP_NPC_Rax },
-	{"NPC_BobaFett", SP_NPC_BobaFett },
-	{"NPC_Ragnos", SP_NPC_Ragnos },
-	{"NPC_Lannik_Racto", SP_NPC_Lannik_Racto },
-	{"NPC_Kothos", SP_NPC_Kothos },
-	{"NPC_Chewbacca", SP_NPC_Chewbacca },
-	{"NPC_Bartender", SP_NPC_Bartender },
-	{"NPC_MorganKatarn", SP_NPC_MorganKatarn },
-	{"NPC_Jedi", SP_NPC_Jedi },
-	{"NPC_Prisoner", SP_NPC_Prisoner },
-	{"NPC_Merchant", SP_NPC_Merchant },
-	{"NPC_Rebel", SP_NPC_Rebel },
-	{"NPC_Human_Merc", SP_NPC_Human_Merc },
-	{"NPC_Stormtrooper", SP_NPC_Stormtrooper },
-	{"NPC_StormtrooperOfficer", SP_NPC_StormtrooperOfficer },
-	{"NPC_Tie_Pilot", SP_NPC_Tie_Pilot },
-	{"NPC_Snowtrooper", SP_NPC_Snowtrooper },
-	{"NPC_RocketTrooper", SP_NPC_RocketTrooper },
-	{"NPC_HazardTrooper", SP_NPC_HazardTrooper },
+	{"NPC_Vehicle", SP_NPC_Vehicle},
+	{"NPC_Player", SP_NPC_Player},
+	{"NPC_Kyle", SP_NPC_Kyle},
+	{"NPC_Lando", SP_NPC_Lando},
+	{"NPC_Jan", SP_NPC_Jan},
+	{"NPC_Luke", SP_NPC_Luke},
+	{"NPC_MonMothma", SP_NPC_MonMothma},
+	{"NPC_Rosh_Penin", SP_NPC_Rosh_Penin},
+	{"NPC_Tavion", SP_NPC_Tavion},
+	{"NPC_Tavion_New", SP_NPC_Tavion_New},
+	{"NPC_Alora", SP_NPC_Alora},
+	{"NPC_Reelo", SP_NPC_Reelo},
+	{"NPC_Galak", SP_NPC_Galak},
+	{"NPC_Desann", SP_NPC_Desann},
+	{"NPC_Rax", SP_NPC_Rax},
+	{"NPC_BobaFett", SP_NPC_BobaFett},
+	{"NPC_Ragnos", SP_NPC_Ragnos},
+	{"NPC_Lannik_Racto", SP_NPC_Lannik_Racto},
+	{"NPC_Kothos", SP_NPC_Kothos},
+	{"NPC_Chewbacca", SP_NPC_Chewbacca},
+	{"NPC_Bartender", SP_NPC_Bartender},
+	{"NPC_MorganKatarn", SP_NPC_MorganKatarn},
+	{"NPC_Jedi", SP_NPC_Jedi},
+	{"NPC_Prisoner", SP_NPC_Prisoner},
+	{"NPC_Merchant", SP_NPC_Merchant},
+	{"NPC_Rebel", SP_NPC_Rebel},
+	{"NPC_Human_Merc", SP_NPC_Human_Merc},
+	{"NPC_Stormtrooper", SP_NPC_Stormtrooper},
+	{"NPC_StormtrooperOfficer", SP_NPC_StormtrooperOfficer},
+	{"NPC_Tie_Pilot", SP_NPC_Tie_Pilot},
+	{"NPC_Snowtrooper", SP_NPC_Snowtrooper},
+	{"NPC_RocketTrooper", SP_NPC_RocketTrooper},
+	{"NPC_HazardTrooper", SP_NPC_HazardTrooper},
 
-	{"NPC_Ugnaught", SP_NPC_Ugnaught },
-	{"NPC_Jawa", SP_NPC_Jawa },
-	{"NPC_Gran", SP_NPC_Gran },
-	{"NPC_Rodian", SP_NPC_Rodian },
-	{"NPC_Weequay", SP_NPC_Weequay },
-	{"NPC_Trandoshan", SP_NPC_Trandoshan },
-	{"NPC_Tusken", SP_NPC_Tusken },
-	{"NPC_Noghri", SP_NPC_Noghri },
-	{"NPC_SwampTrooper", SP_NPC_SwampTrooper },
-	{"NPC_Imperial", SP_NPC_Imperial },
-	{"NPC_ImpWorker", SP_NPC_ImpWorker },
-	{"NPC_BespinCop", SP_NPC_BespinCop },
-	{"NPC_Reborn", SP_NPC_Reborn },
-	{"NPC_Reborn_New", SP_NPC_Reborn_New },
-	{"NPC_Cultist", SP_NPC_Cultist },
-	{"NPC_Cultist_Saber", SP_NPC_Cultist_Saber },
-	{"NPC_Cultist_Saber_Powers", SP_NPC_Cultist_Saber_Powers },
-	{"NPC_Cultist_Destroyer", SP_NPC_Cultist_Destroyer },
-	{"NPC_Cultist_Commando", SP_NPC_Cultist_Commando },
-	{"NPC_ShadowTrooper", SP_NPC_ShadowTrooper },
-	{"NPC_Saboteur", SP_NPC_Saboteur },
-	{"NPC_Monster_Murjj", SP_NPC_Monster_Murjj },
-	{"NPC_Monster_Swamp", SP_NPC_Monster_Swamp },
-	{"NPC_Monster_Howler", SP_NPC_Monster_Howler },
-	{"NPC_Monster_Rancor", SP_NPC_Monster_Rancor },
-	{"NPC_Monster_Mutant_Rancor", SP_NPC_Monster_Mutant_Rancor },
-	{"NPC_Monster_Wampa", SP_NPC_Monster_Wampa },
-	{"NPC_MineMonster",	SP_NPC_MineMonster },
-	{"NPC_Monster_Claw", SP_NPC_Monster_Claw },
-	{"NPC_Monster_Glider", SP_NPC_Monster_Glider },
-	{"NPC_Monster_Flier2", SP_NPC_Monster_Flier2 },
-	{"NPC_Monster_Lizard", SP_NPC_Monster_Lizard },
-	{"NPC_Monster_Fish", SP_NPC_Monster_Fish },
-	{"NPC_Monster_Sand_Creature", SP_NPC_Monster_Sand_Creature },
-	{"NPC_Droid_Interrogator", SP_NPC_Droid_Interrogator },
-	{"NPC_Droid_Probe", SP_NPC_Droid_Probe },
-	{"NPC_Droid_Mark1", SP_NPC_Droid_Mark1 },
-	{"NPC_Droid_Mark2", SP_NPC_Droid_Mark2 },
-	{"NPC_Droid_ATST", SP_NPC_Droid_ATST },
-	{"NPC_Droid_Seeker", SP_NPC_Droid_Seeker },
-	{"NPC_Droid_Remote", SP_NPC_Droid_Remote },
-	{"NPC_Droid_Sentry", SP_NPC_Droid_Sentry },
-	{"NPC_Droid_Gonk", SP_NPC_Droid_Gonk },
-	{"NPC_Droid_Mouse", SP_NPC_Droid_Mouse },
-	{"NPC_Droid_R2D2", SP_NPC_Droid_R2D2 },
-	{"NPC_Droid_R5D2", SP_NPC_Droid_R5D2 },
-	{"NPC_Droid_Protocol", SP_NPC_Droid_Protocol },
-	{"NPC_Droid_Assassin", SP_NPC_Droid_Assassin },
-	{"NPC_Droid_Saber", SP_NPC_Droid_Saber },
+	{"NPC_Ugnaught", SP_NPC_Ugnaught},
+	{"NPC_Jawa", SP_NPC_Jawa},
+	{"NPC_Gran", SP_NPC_Gran},
+	{"NPC_Rodian", SP_NPC_Rodian},
+	{"NPC_Weequay", SP_NPC_Weequay},
+	{"NPC_Trandoshan", SP_NPC_Trandoshan},
+	{"NPC_Tusken", SP_NPC_Tusken},
+	{"NPC_Noghri", SP_NPC_Noghri},
+	{"NPC_SwampTrooper", SP_NPC_SwampTrooper},
+	{"NPC_Imperial", SP_NPC_Imperial},
+	{"NPC_ImpWorker", SP_NPC_ImpWorker},
+	{"NPC_BespinCop", SP_NPC_BespinCop},
+	{"NPC_Reborn", SP_NPC_Reborn},
+	{"NPC_Reborn_New", SP_NPC_Reborn_New},
+	{"NPC_Cultist", SP_NPC_Cultist},
+	{"NPC_Cultist_Saber", SP_NPC_Cultist_Saber},
+	{"NPC_Cultist_Saber_Powers", SP_NPC_Cultist_Saber_Powers},
+	{"NPC_Cultist_Destroyer", SP_NPC_Cultist_Destroyer},
+	{"NPC_Cultist_Commando", SP_NPC_Cultist_Commando},
+	{"NPC_ShadowTrooper", SP_NPC_ShadowTrooper},
+	{"NPC_Saboteur", SP_NPC_Saboteur},
+	{"NPC_Monster_Murjj", SP_NPC_Monster_Murjj},
+	{"NPC_Monster_Swamp", SP_NPC_Monster_Swamp},
+	{"NPC_Monster_Howler", SP_NPC_Monster_Howler},
+	{"NPC_Monster_Rancor", SP_NPC_Monster_Rancor},
+	{"NPC_Monster_Mutant_Rancor", SP_NPC_Monster_Mutant_Rancor},
+	{"NPC_Monster_Wampa", SP_NPC_Monster_Wampa},
+	{"NPC_MineMonster",	SP_NPC_MineMonster},
+	{"NPC_Monster_Claw", SP_NPC_Monster_Claw},
+	{"NPC_Monster_Glider", SP_NPC_Monster_Glider},
+	{"NPC_Monster_Flier2", SP_NPC_Monster_Flier2},
+	{"NPC_Monster_Lizard", SP_NPC_Monster_Lizard},
+	{"NPC_Monster_Fish", SP_NPC_Monster_Fish},
+	{"NPC_Monster_Sand_Creature", SP_NPC_Monster_Sand_Creature},
+	{"NPC_Droid_Interrogator", SP_NPC_Droid_Interrogator},
+	{"NPC_Droid_Probe", SP_NPC_Droid_Probe},
+	{"NPC_Droid_Mark1", SP_NPC_Droid_Mark1},
+	{"NPC_Droid_Mark2", SP_NPC_Droid_Mark2},
+	{"NPC_Droid_ATST", SP_NPC_Droid_ATST},
+	{"NPC_Droid_Seeker", SP_NPC_Droid_Seeker},
+	{"NPC_Droid_Remote", SP_NPC_Droid_Remote},
+	{"NPC_Droid_Sentry", SP_NPC_Droid_Sentry},
+	{"NPC_Droid_Gonk", SP_NPC_Droid_Gonk},
+	{"NPC_Droid_Mouse", SP_NPC_Droid_Mouse},
+	{"NPC_Droid_R2D2", SP_NPC_Droid_R2D2},
+	{"NPC_Droid_R5D2", SP_NPC_Droid_R5D2},
+	{"NPC_Droid_Protocol", SP_NPC_Droid_Protocol},
+	{"NPC_Droid_Assassin", SP_NPC_Droid_Assassin},
+	{"NPC_Droid_Saber", SP_NPC_Droid_Saber},
 
 	//rwwFIXMEFIXME: Faked for testing NPCs (another other things) in RMG with sof2 assets
-	{"NPC_Colombian_Soldier", SP_NPC_Reborn },
-	{"NPC_Colombian_Rebel", SP_NPC_Reborn },
-	{"NPC_Colombian_EmplacedGunner", SP_NPC_ShadowTrooper },
-	{"NPC_Manuel_Vergara_RMG", SP_NPC_Desann },
+	{"NPC_Colombian_Soldier", SP_NPC_Reborn},
+	{"NPC_Colombian_Rebel", SP_NPC_Reborn},
+	{"NPC_Colombian_EmplacedGunner", SP_NPC_ShadowTrooper},
+	{"NPC_Manuel_Vergara_RMG", SP_NPC_Desann},
 //	{"info_NPCnav", SP_waypoint},
 
 	{"waypoint", SP_waypoint},
@@ -868,34 +868,34 @@ Finds the spawn function for the entity and calls it,
 returning qfalse if not found
 ===============
 */
-qboolean G_CallSpawn( gentity_t *ent ) {
+qboolean G_CallSpawn(gentity_t *ent) {
 	spawn_t	*s;
 	gitem_t	*item;
 
-	if ( !ent->classname ) {
+	if (!ent->classname) {
 		gi.Printf (S_COLOR_RED"G_CallSpawn: NULL classname\n");
 		return qfalse;
 	}
 
 	// check item spawn functions
-	for ( item=bg_itemlist+1 ; item->classname ; item++ ) {
-		if ( !strcmp(item->classname, ent->classname) ) {
+	for (item=bg_itemlist+1 ; item->classname ; item++) {
+		if (!strcmp(item->classname, ent->classname)) {
 			// found it
-			G_SpawnItem( ent, item );
+			G_SpawnItem(ent, item);
 			return qtrue;
 		}
 	}
 
 	// check normal spawn functions
-	for ( s=spawns ; s->name ; s++ ) {
-		if ( !strcmp(s->name, ent->classname) ) {
+	for (s=spawns ; s->name ; s++) {
+		if (!strcmp(s->name, ent->classname)) {
 			// found it
 			s->spawn(ent);
 			return qtrue;
 		}
 	}
 	char* str;
-	G_SpawnString( "origin", "?", &str );
+	G_SpawnString("origin", "?", &str);
 	gi.Printf (S_COLOR_RED"ERROR: %s is not a spawn function @(%s)\n", ent->classname, str);
 	delayedShutDown = level.time + 100;
 	return qfalse;
@@ -909,7 +909,7 @@ Builds a copy of the string, translating \n to real linefeeds
 so message texts can be multi-line
 =============
 */
-char *G_NewString( const char *string ) {
+char *G_NewString(const char *string) {
 	char	*newb, *new_p;
 	int		i,l;
 
@@ -921,12 +921,12 @@ char *G_NewString( const char *string ) {
 
 	l = strlen(string) + 1;
 
-	newb = (char *) G_Alloc( l );
+	newb = (char *) G_Alloc(l);
 
 	new_p = newb;
 
 	// turn \n into a real linefeed
-	for ( i=0 ; i< l ; i++ ) {
+	for (i=0 ; i< l ; i++) {
 		if (string[i] == '\\' && i < l-1) {
 			i++;
 			if (string[i] == 'n') {
@@ -954,19 +954,19 @@ in a gentity
 ===============
 */
 void Q3_SetParm (int entID, int parmNum, const char *parmValue);
-void G_ParseField( const char *key, const char *value, gentity_t *ent ) {
+void G_ParseField(const char *key, const char *value, gentity_t *ent) {
 	field_t	*f;
 	byte	*b;
 	float	v;
 	vec3_t	vec;
 	vec4_t	vec4;
 
-	for ( f=fields ; f->name ; f++ ) {
-		if ( !Q_stricmp(f->name, key) ) {
+	for (f=fields ; f->name ; f++) {
+		if (!Q_stricmp(f->name, key)) {
 			// found it
 			b = (byte *)ent;
 
-			switch( f->type ) {
+			switch(f->type) {
 			case F_LSTRING:
 				*(char **)(b+f->ofs) = G_NewString (value);
 				break;
@@ -1027,15 +1027,15 @@ void G_ParseField( const char *key, const char *value, gentity_t *ent ) {
 			case F_PARM14:
 			case F_PARM15:
 			case F_PARM16:
-				Q3_SetParm( ent->s.number, (f->type - F_PARM1), (char *) value );
+				Q3_SetParm(ent->s.number, (f->type - F_PARM1), (char *) value);
 				break;
 			case F_FLAG:
 				{//try to find the proper flag for that key:
-					int flag = GetIDForString ( flagTable, key );
+					int flag = GetIDForString (flagTable, key);
 
-					if ( flag > 0 )
+					if (flag > 0)
 					{
-						G_SpawnFlag( key, flag, (int *)(b+f->ofs) );
+						G_SpawnFlag(key, flag, (int *)(b+f->ofs));
 					}
 					else
 					{
@@ -1056,18 +1056,18 @@ void G_ParseField( const char *key, const char *value, gentity_t *ent ) {
 	//didn't find it?
 	if (key[0]!='_')
 	{
-		gi.Printf ( S_COLOR_YELLOW"WARNING: G_ParseField: no such field: %s\n", key );
+		gi.Printf (S_COLOR_YELLOW"WARNING: G_ParseField: no such field: %s\n", key);
 	}
 #endif
 }
 
-static qboolean SpawnForCurrentDifficultySetting( gentity_t *ent )
+static qboolean SpawnForCurrentDifficultySetting(gentity_t *ent)
 {
 extern cvar_t	*com_buildScript;
 	if (com_buildScript->integer) {	//always spawn when building a pak file
 		return qtrue;
 	}
-	if ( ent->spawnflags & ( 1 << (8 + g_spskill->integer )) )	{// easy -256	medium -512		hard -1024
+	if (ent->spawnflags & (1 << (8 + g_spskill->integer)))	{// easy -256	medium -512		hard -1024
 		return qfalse;
 	} else {
 		return qtrue;
@@ -1083,62 +1083,62 @@ level.spawnVars[], then call the class specfic spawn function
 ===================
 */
 
-void G_SpawnGEntityFromSpawnVars( void ) {
+void G_SpawnGEntityFromSpawnVars(void) {
 	int			i;
 	gentity_t	*ent;
 
 	// get the next free entity
 	ent = G_Spawn();
 
-	for ( i = 0 ; i < numSpawnVars ; i++ ) {
-		G_ParseField( spawnVars[i][0], spawnVars[i][1], ent );
+	for (i = 0 ; i < numSpawnVars ; i++) {
+		G_ParseField(spawnVars[i][0], spawnVars[i][1], ent);
 	}
 
-	G_SpawnInt( "notsingle", "0", &i );
-	if ( i || !SpawnForCurrentDifficultySetting( ent ) ) {
-		G_FreeEntity( ent );
+	G_SpawnInt("notsingle", "0", &i);
+	if (i || !SpawnForCurrentDifficultySetting(ent)) {
+		G_FreeEntity(ent);
 		return;
 	}
 
 	// move editor origin to pos
-	VectorCopy( ent->s.origin, ent->s.pos.trBase );
-	VectorCopy( ent->s.origin, ent->currentOrigin );
+	VectorCopy(ent->s.origin, ent->s.pos.trBase);
+	VectorCopy(ent->s.origin, ent->currentOrigin);
 
 	// if we didn't get a classname, don't bother spawning anything
-	if ( !G_CallSpawn( ent ) ) {
-		G_FreeEntity( ent );
+	if (!G_CallSpawn(ent)) {
+		G_FreeEntity(ent);
 		return;
 	}
 
 	//Tag on the ICARUS scripting information only to valid recipients
-	if ( Quake3Game()->ValidEntity( ent ) )
+	if (Quake3Game()->ValidEntity(ent))
 	{
-		Quake3Game()->InitEntity( ent ); //ICARUS_InitEnt( ent );
+		Quake3Game()->InitEntity(ent); //ICARUS_InitEnt(ent);
 
-		if ( ent->classname && ent->classname[0] )
+		if (ent->classname && ent->classname[0])
 		{
-			if ( Q_strncmp( "NPC_", ent->classname, 4 ) != 0 )
+			if (Q_strncmp("NPC_", ent->classname, 4) != 0)
 			{//Not an NPC_spawner
-				G_ActivateBehavior( ent, BSET_SPAWN );
+				G_ActivateBehavior(ent, BSET_SPAWN);
 			}
 		}
 	}
 }
 
-void G_SpawnSubBSPGEntityFromSpawnVars( vec3_t posOffset, vec3_t angOffset ) {
+void G_SpawnSubBSPGEntityFromSpawnVars(vec3_t posOffset, vec3_t angOffset) {
 	int			i;
 	gentity_t	*ent;
 
 	// get the next free entity
 	ent = G_Spawn();
 
-	for ( i = 0 ; i < numSpawnVars ; i++ ) {
-		G_ParseField( spawnVars[i][0], spawnVars[i][1], ent );
+	for (i = 0 ; i < numSpawnVars ; i++) {
+		G_ParseField(spawnVars[i][0], spawnVars[i][1], ent);
 	}
 
-	G_SpawnInt( "notsingle", "0", &i );
-	if ( i || !SpawnForCurrentDifficultySetting( ent ) ) {
-		G_FreeEntity( ent );
+	G_SpawnInt("notsingle", "0", &i);
+	if (i || !SpawnForCurrentDifficultySetting(ent)) {
+		G_FreeEntity(ent);
 		return;
 	}
 
@@ -1149,26 +1149,26 @@ void G_SpawnSubBSPGEntityFromSpawnVars( vec3_t posOffset, vec3_t angOffset ) {
 	VectorCopy(ent->s.angles, ent->currentAngles);
 
 	// move editor origin to pos
-	VectorCopy( ent->s.origin, ent->s.pos.trBase );
-	VectorCopy( ent->s.origin, ent->currentOrigin );
+	VectorCopy(ent->s.origin, ent->s.pos.trBase);
+	VectorCopy(ent->s.origin, ent->currentOrigin);
 
 	// if we didn't get a classname, don't bother spawning anything
-	if ( !G_CallSpawn( ent ) ) {
-		G_FreeEntity( ent );
+	if (!G_CallSpawn(ent)) {
+		G_FreeEntity(ent);
 		return;
 	}
 
 	//Tag on the ICARUS scripting information only to valid recipients
-	if ( Quake3Game()->ValidEntity( ent ) )
+	if (Quake3Game()->ValidEntity(ent))
 	{
 
-		Quake3Game()->InitEntity( ent ); // ICARUS_InitEnt( ent );
+		Quake3Game()->InitEntity(ent); // ICARUS_InitEnt(ent);
 
-		if ( ent->classname && ent->classname[0] )
+		if (ent->classname && ent->classname[0])
 		{
-			if ( Q_strncmp( "NPC_", ent->classname, 4 ) != 0 )
+			if (Q_strncmp("NPC_", ent->classname, 4) != 0)
 			{//Not an NPC_spawner
-				G_ActivateBehavior( ent, BSET_SPAWN );
+				G_ActivateBehavior(ent, BSET_SPAWN);
 			}
 		}
 	}
@@ -1180,17 +1180,17 @@ void G_SpawnSubBSPGEntityFromSpawnVars( vec3_t posOffset, vec3_t angOffset ) {
 G_AddSpawnVarToken
 ====================
 */
-char *G_AddSpawnVarToken( const char *string ) {
+char *G_AddSpawnVarToken(const char *string) {
 	int		l;
 	char	*dest;
 
-	l = strlen( string );
-	if ( numSpawnVarChars + l + 1 > MAX_SPAWN_VARS_CHARS ) {
-		G_Error( "G_AddSpawnVarToken: MAX_SPAWN_VARS" );
+	l = strlen(string);
+	if (numSpawnVarChars + l + 1 > MAX_SPAWN_VARS_CHARS) {
+		G_Error("G_AddSpawnVarToken: MAX_SPAWN_VARS");
 	}
 
 	dest = spawnVarChars + numSpawnVarChars;
-	memcpy( dest, string, l+1 );
+	memcpy(dest, string, l+1);
 
 	numSpawnVarChars += l + 1;
 
@@ -1207,7 +1207,7 @@ level's entity strings into level.spawnVars[]
 This does not actually spawn an entity.
 ====================
 */
-qboolean G_ParseSpawnVars( const char **data ) {
+qboolean G_ParseSpawnVars(const char **data) {
 	char		keyname[MAX_STRING_CHARS];
 	const char	*com_token;
 
@@ -1216,48 +1216,48 @@ qboolean G_ParseSpawnVars( const char **data ) {
 
 	// parse the opening brace
 	COM_BeginParseSession();
-	com_token = COM_Parse( data );
-	if ( !*data ) {
+	com_token = COM_Parse(data);
+	if (!*data) {
 		// end of spawn string
 		COM_EndParseSession();
 		return qfalse;
 	}
-	if ( com_token[0] != '{' ) {
+	if (com_token[0] != '{') {
 		COM_EndParseSession();
-		G_Error( "G_ParseSpawnVars: found %s when expecting {",com_token );
+		G_Error("G_ParseSpawnVars: found %s when expecting {",com_token);
 	}
 
 	// go through all the key / value pairs
-	while ( 1 ) {
+	while (1) {
 		// parse key
-		com_token = COM_Parse( data );
-		if ( !*data ) {
+		com_token = COM_Parse(data);
+		if (!*data) {
 			COM_EndParseSession();
-			G_Error( "G_ParseSpawnVars: EOF without closing brace" );
+			G_Error("G_ParseSpawnVars: EOF without closing brace");
 		}
 
-		if ( com_token[0] == '}' ) {
+		if (com_token[0] == '}') {
 			break;
 		}
 
-		Q_strncpyz( keyname, com_token, sizeof(keyname) );
+		Q_strncpyz(keyname, com_token, sizeof(keyname));
 
 		// parse value
-		com_token = COM_Parse( data );
-		if ( !*data ) {
+		com_token = COM_Parse(data);
+		if (!*data) {
 			COM_EndParseSession();
-			G_Error( "G_ParseSpawnVars: EOF without closing brace" );
+			G_Error("G_ParseSpawnVars: EOF without closing brace");
 		}
-		if ( com_token[0] == '}' ) {
+		if (com_token[0] == '}') {
 			COM_EndParseSession();
-			G_Error( "G_ParseSpawnVars: closing brace without data" );
+			G_Error("G_ParseSpawnVars: closing brace without data");
 		}
-		if ( numSpawnVars == MAX_SPAWN_VARS ) {
+		if (numSpawnVars == MAX_SPAWN_VARS) {
 			COM_EndParseSession();
-			G_Error( "G_ParseSpawnVars: MAX_SPAWN_VARS" );
+			G_Error("G_ParseSpawnVars: MAX_SPAWN_VARS");
 		}
-		spawnVars[ numSpawnVars ][0] = G_AddSpawnVarToken( keyname );
-		spawnVars[ numSpawnVars ][1] = G_AddSpawnVarToken( com_token );
+		spawnVars[ numSpawnVars ][0] = G_AddSpawnVarToken(keyname);
+		spawnVars[ numSpawnVars ][1] = G_AddSpawnVarToken(com_token);
 		numSpawnVars++;
 	}
 
@@ -1450,53 +1450,53 @@ Game Options
 "ls_Xr"	override lightstyle X with this pattern for Red.
 "ls_Xg"	green (valid patterns are "a-z")
 "ls_Xb"	blue (a is OFF, z is ON)
-"breath"		Whether the entity's have breath puffs or not (0 = No, 1 = All, 2 = Just cold breath, 3 = Just under water bubbles ).
+"breath"		Whether the entity's have breath puffs or not (0 = No, 1 = All, 2 = Just cold breath, 3 = Just under water bubbles).
 "clearstats" default 1, if 0 loading this map will not clear the stats for player
 "tier_storyinfo" sets 'tier_storyinfo' cvar
 */
-void SP_worldspawn( void ) {
+void SP_worldspawn(void) {
 	char	*s;
 	int		i;
 
 	g_entities[ENTITYNUM_WORLD].max_health = 0;
 
-	for ( i = 0 ; i < numSpawnVars ; i++ )
+	for (i = 0 ; i < numSpawnVars ; i++)
 	{
-		if ( Q_stricmp( "spawnscript", spawnVars[i][0] ) == 0 )
+		if (Q_stricmp("spawnscript", spawnVars[i][0]) == 0)
 		{//ONly let them set spawnscript, we don't want them setting an angle or something on the world.
-			G_ParseField( spawnVars[i][0], spawnVars[i][1], &g_entities[ENTITYNUM_WORLD] );
+			G_ParseField(spawnVars[i][0], spawnVars[i][1], &g_entities[ENTITYNUM_WORLD]);
 		}
-		if ( Q_stricmp( "region", spawnVars[i][0] ) == 0 )
+		if (Q_stricmp("region", spawnVars[i][0]) == 0)
 		{
 			g_entities[ENTITYNUM_WORLD].s.radius = atoi(spawnVars[i][1]);
 		}
-		if ( Q_stricmp( "distancecull", spawnVars[i][0] ) == 0 )
+		if (Q_stricmp("distancecull", spawnVars[i][0]) == 0)
 		{
 			g_entities[ENTITYNUM_WORLD].max_health = (int)((float)(atoi(spawnVars[i][1])) * 0.7f);
 		}
 	}
 
-	G_SpawnString( "classname", "", &s );
-	if ( Q_stricmp( s, "worldspawn" ) ) {
-		G_Error( "SP_worldspawn: The first entity isn't 'worldspawn'" );
+	G_SpawnString("classname", "", &s);
+	if (Q_stricmp(s, "worldspawn")) {
+		G_Error("SP_worldspawn: The first entity isn't 'worldspawn'");
 	}
 
 	// make some data visible to connecting client
-	G_SpawnString( "music", "", &s );
-	gi.SetConfigstring( CS_MUSIC, s );
+	G_SpawnString("music", "", &s);
+	gi.SetConfigstring(CS_MUSIC, s);
 
-	G_SpawnString( "message", "", &s );
-	gi.SetConfigstring( CS_MESSAGE, s );				// map specific message
+	G_SpawnString("message", "", &s);
+	gi.SetConfigstring(CS_MESSAGE, s);				// map specific message
 
-	G_SpawnString( "gravity", "800", &s );
+	G_SpawnString("gravity", "800", &s);
 	extern SavedGameJustLoaded_e g_eSavedGameJustLoaded;
 	if (g_eSavedGameJustLoaded != eFULL)
 	{
-		gi.cvar_set( "g_gravity", s );
+		gi.cvar_set("g_gravity", s);
 	}
 
-	G_SpawnString( "soundSet", "default", &s );
-	gi.SetConfigstring( CS_AMBIENT_SET, s );
+	G_SpawnString("soundSet", "default", &s);
+	gi.SetConfigstring(CS_AMBIENT_SET, s);
 
 	//Lightstyles
 	gi.SetConfigstring(CS_LIGHT_STYLES+(LS_STYLES_START*3)+0, defaultStyles[0][0]);
@@ -1508,7 +1508,7 @@ void SP_worldspawn( void ) {
 		char	temp[32];
 		int		lengthRed, lengthBlue, lengthGreen;
 		Com_sprintf(temp, sizeof(temp), "ls_%dr", i);
-		G_SpawnString( temp, defaultStyles[i][0], &s );
+		G_SpawnString(temp, defaultStyles[i][0], &s);
 		lengthRed = strlen(s);
 		gi.SetConfigstring(CS_LIGHT_STYLES+((i+LS_STYLES_START)*3)+0, s);
 
@@ -1529,15 +1529,15 @@ void SP_worldspawn( void ) {
 		}
 	}
 
-	G_SpawnString( "breath", "0", &s );
-	gi.cvar_set( "cg_drawBreath", s );
+	G_SpawnString("breath", "0", &s);
+	gi.cvar_set("cg_drawBreath", s);
 
-	G_SpawnString( "clearstats", "1", &s );
-	gi.cvar_set( "g_clearstats", s );
+	G_SpawnString("clearstats", "1", &s);
+	gi.cvar_set("g_clearstats", s);
 
-	if (G_SpawnString( "tier_storyinfo", "", &s ))
+	if (G_SpawnString("tier_storyinfo", "", &s))
 	{
-		gi.cvar_set( "tier_storyinfo", s );
+		gi.cvar_set("tier_storyinfo", s);
 	}
 
 	g_entities[ENTITYNUM_WORLD].s.number = ENTITYNUM_WORLD;
@@ -1550,7 +1550,7 @@ G_ParsePrecaches
 -------------------------
 */
 
-void G_ParsePrecaches( void )
+void G_ParsePrecaches(void)
 {
 	gentity_t	*ent = NULL;
 
@@ -1561,11 +1561,11 @@ void G_ParsePrecaches( void )
 
 	as_preCacheMap->clear();
 
-	for ( int i = 0; i < globals.num_entities; i++ )
+	for (int i = 0; i < globals.num_entities; i++)
 	{
 		ent = &g_entities[i];
 
-		if VALIDSTRING( ent->soundSet )
+		if VALIDSTRING(ent->soundSet)
 		{
 			(*as_preCacheMap)[ (char *) ent->soundSet ] = 1;
 		}
@@ -1592,7 +1592,7 @@ extern int num_waypoints;
 extern void	RG_RouteGen(void);
 extern qboolean NPCsPrecached;
 
-qboolean SP_bsp_worldspawn ( void )
+qboolean SP_bsp_worldspawn (void)
 {
 	return qtrue;
 }
@@ -1611,24 +1611,24 @@ void G_SubBSPSpawnEntitiesFromString(const char *entityString, vec3_t posOffset,
 	// the worldspawn is not an actual entity, but it still
 	// has a "spawn" function to perform any global setup
 	// needed by a level (setting configstrings or cvars, etc)
-	if ( !G_ParseSpawnVars( &entities ) ) {
-		G_Error( "SpawnEntities: no entities" );
+	if (!G_ParseSpawnVars(&entities)) {
+		G_Error("SpawnEntities: no entities");
 	}
 
 	// Skip this guy if its worldspawn fails
-	if ( !SP_bsp_worldspawn() )
+	if (!SP_bsp_worldspawn())
 	{
 		return;
 	}
 
 	// parse ents
-	while( G_ParseSpawnVars(&entities) )
+	while(G_ParseSpawnVars(&entities))
 	{
 		G_SpawnSubBSPGEntityFromSpawnVars(posOffset, angOffset);
 	}
 }
 
-void G_SpawnEntitiesFromString( const char *entityString ) {
+void G_SpawnEntitiesFromString(const char *entityString) {
 	const char		*entities;
 
 	entities = entityString;
@@ -1641,14 +1641,14 @@ void G_SpawnEntitiesFromString( const char *entityString ) {
 	// the worldspawn is not an actual entity, but it still
 	// has a "spawn" function to perform any global setup
 	// needed by a level (setting configstrings or cvars, etc)
-	if ( !G_ParseSpawnVars( &entities ) ) {
-		G_Error( "SpawnEntities: no entities" );
+	if (!G_ParseSpawnVars(&entities)) {
+		G_Error("SpawnEntities: no entities");
 	}
 
 	SP_worldspawn();
 
 	// parse ents
-	while( G_ParseSpawnVars( &entities ) )
+	while(G_ParseSpawnVars(&entities))
 	{
 		G_SpawnGEntityFromSpawnVars();
 	}
@@ -1657,20 +1657,20 @@ void G_SpawnEntitiesFromString( const char *entityString ) {
 	G_ParsePrecaches();
 
 
-	if( g_entities[ENTITYNUM_WORLD].behaviorSet[BSET_SPAWN] && g_entities[ENTITYNUM_WORLD].behaviorSet[BSET_SPAWN][0] )
+	if(g_entities[ENTITYNUM_WORLD].behaviorSet[BSET_SPAWN] && g_entities[ENTITYNUM_WORLD].behaviorSet[BSET_SPAWN][0])
 	{//World has a spawn script, but we don't want the world in ICARUS and running scripts,
 		//so make a scriptrunner and start it going.
 		gentity_t *script_runner = G_Spawn();
-		if ( script_runner )
+		if (script_runner)
 		{
 			script_runner->behaviorSet[BSET_USE] = g_entities[ENTITYNUM_WORLD].behaviorSet[BSET_SPAWN];
 			script_runner->count = 1;
 			script_runner->e_ThinkFunc = thinkF_scriptrunner_run;
 			script_runner->nextthink = level.time + 100;
 
-			if ( Quake3Game()->ValidEntity( script_runner ) )
+			if (Quake3Game()->ValidEntity(script_runner))
 			{
-				Quake3Game()->InitEntity( script_runner ); //ICARUS_InitEnt( script_runner );
+				Quake3Game()->InitEntity(script_runner); //ICARUS_InitEnt(script_runner);
 			}
 		}
 	}
@@ -1681,10 +1681,10 @@ void G_SpawnEntitiesFromString( const char *entityString ) {
 
 	spawning = qfalse;			// any future calls to G_Spawn*() will be errors
 
-	if ( g_delayedShutdown->integer && delayedShutDown )
+	if (g_delayedShutdown->integer && delayedShutDown)
 	{
 		assert(0);
-		G_Error( "Errors loading map, check the console for them." );
+		G_Error("Errors loading map, check the console for them.");
 	}
 }
 

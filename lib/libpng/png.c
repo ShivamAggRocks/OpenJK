@@ -82,7 +82,7 @@ png_zalloc,(voidpf png_ptr, uInt items, uInt size),PNG_ALLOCATED)
       png_warning (png_voidcast(png_structrp, png_ptr),
          "Potential overflow in png_zalloc()");
       return NULL;
-   }
+  }
 
    num_bytes *= items;
    return png_malloc_warn(png_voidcast(png_structrp, png_ptr), num_bytes);
@@ -120,13 +120,13 @@ png_calculate_crc(png_structrp png_ptr, png_const_bytep ptr, png_size_t length)
       if ((png_ptr->flags & PNG_FLAG_CRC_ANCILLARY_MASK) ==
           (PNG_FLAG_CRC_ANCILLARY_USE | PNG_FLAG_CRC_ANCILLARY_NOWARN))
          need_crc = 0;
-   }
+  }
 
    else /* critical */
    {
       if ((png_ptr->flags & PNG_FLAG_CRC_CRITICAL_IGNORE) != 0)
          need_crc = 0;
-   }
+  }
 
    /* 'uLong' is defined in zlib.h as unsigned long; this means that on some
     * systems it is a 64 bit value.  crc32, however, returns 32 bits so the
@@ -151,12 +151,12 @@ png_calculate_crc(png_structrp png_ptr, png_const_bytep ptr, png_size_t length)
           */
          ptr += safe_length;
          length -= safe_length;
-      }
+     }
       while (length > 0);
 
       /* And the following is always safe because the crc is only 32 bits. */
       png_ptr->crc = (png_uint_32)crc;
-   }
+  }
 }
 
 /* Check a user supplied version number, called from both read and write
@@ -182,9 +182,9 @@ png_user_version_check(png_structrp png_ptr, png_const_charp user_png_ver)
             png_ptr->flags |= PNG_FLAG_LIBRARY_MISMATCH;
          if (user_png_ver[i] == '.')
             found_dots++;
-      } while (found_dots < 2 && user_png_ver[i] != 0 &&
+     } while (found_dots < 2 && user_png_ver[i] != 0 &&
             PNG_LIBPNG_VER_STRING[i] != 0);
-   }
+  }
 
    else
       png_ptr->flags |= PNG_FLAG_LIBRARY_MISMATCH;
@@ -210,7 +210,7 @@ png_user_version_check(png_structrp png_ptr, png_const_charp user_png_ver)
 #endif
 
       return 0;
-   }
+  }
 
    /* Success return. */
    return 1;
@@ -312,9 +312,9 @@ png_create_png_struct,(png_const_charp user_png_ver, png_voidp error_ptr,
 
                /* This is the successful return point */
                return png_ptr;
-            }
-         }
-      }
+           }
+        }
+     }
 
    /* A longjmp because of a bug in the application storage allocator or a
     * simple failure to allocate the png_struct.
@@ -381,7 +381,7 @@ png_destroy_info_struct(png_const_structrp png_ptr, png_infopp info_ptr_ptr)
       png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
       memset(info_ptr, 0, (sizeof *info_ptr));
       png_free(png_ptr, info_ptr);
-   }
+  }
 }
 
 /* Initialize the info structure.  This is now an internal function (0.89)
@@ -412,7 +412,7 @@ png_info_init_3,(png_infopp ptr_ptr, png_size_t png_info_struct_size),
       info_ptr = png_voidcast(png_inforp, png_malloc_base(NULL,
          (sizeof *info_ptr)));
       *ptr_ptr = info_ptr;
-   }
+  }
 
    /* Set everything to 0 */
    memset(info_ptr, 0, (sizeof *info_ptr));
@@ -456,7 +456,7 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
       {
          png_free(png_ptr, info_ptr->text[num].key);
          info_ptr->text[num].key = NULL;
-      }
+     }
 
       else
       {
@@ -468,8 +468,8 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
          png_free(png_ptr, info_ptr->text);
          info_ptr->text = NULL;
          info_ptr->num_text = 0;
-      }
-   }
+     }
+  }
 #endif
 
 #ifdef PNG_tRNS_SUPPORTED
@@ -479,7 +479,7 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
       png_free(png_ptr, info_ptr->trans_alpha);
       info_ptr->trans_alpha = NULL;
       info_ptr->valid &= ~PNG_INFO_tRNS;
-   }
+  }
 #endif
 
 #ifdef PNG_sCAL_SUPPORTED
@@ -491,7 +491,7 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
       info_ptr->scal_s_width = NULL;
       info_ptr->scal_s_height = NULL;
       info_ptr->valid &= ~PNG_INFO_sCAL;
-   }
+  }
 #endif
 
 #ifdef PNG_pCAL_SUPPORTED
@@ -512,9 +512,9 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
 
             png_free(png_ptr, info_ptr->pcal_params);
             info_ptr->pcal_params = NULL;
-         }
+        }
       info_ptr->valid &= ~PNG_INFO_pCAL;
-   }
+  }
 #endif
 
 #ifdef PNG_iCCP_SUPPORTED
@@ -526,7 +526,7 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
       info_ptr->iccp_name = NULL;
       info_ptr->iccp_profile = NULL;
       info_ptr->valid &= ~PNG_INFO_iCCP;
-   }
+  }
 #endif
 
 #ifdef PNG_sPLT_SUPPORTED
@@ -540,7 +540,7 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
          png_free(png_ptr, info_ptr->splt_palettes[num].entries);
          info_ptr->splt_palettes[num].name = NULL;
          info_ptr->splt_palettes[num].entries = NULL;
-      }
+     }
 
       else
       {
@@ -552,15 +552,15 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
             {
                png_free(png_ptr, info_ptr->splt_palettes[i].name);
                png_free(png_ptr, info_ptr->splt_palettes[i].entries);
-            }
+           }
 
             png_free(png_ptr, info_ptr->splt_palettes);
             info_ptr->splt_palettes = NULL;
             info_ptr->splt_palettes_num = 0;
-         }
+        }
          info_ptr->valid &= ~PNG_INFO_sPLT;
-      }
-   }
+     }
+  }
 #endif
 
 #ifdef PNG_STORE_UNKNOWN_CHUNKS_SUPPORTED
@@ -571,7 +571,7 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
       {
           png_free(png_ptr, info_ptr->unknown_chunks[num].data);
           info_ptr->unknown_chunks[num].data = NULL;
-      }
+     }
 
       else
       {
@@ -585,9 +585,9 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
             png_free(png_ptr, info_ptr->unknown_chunks);
             info_ptr->unknown_chunks = NULL;
             info_ptr->unknown_chunks_num = 0;
-         }
-      }
-   }
+        }
+     }
+  }
 #endif
 
 #ifdef PNG_hIST_SUPPORTED
@@ -597,7 +597,7 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
       png_free(png_ptr, info_ptr->hist);
       info_ptr->hist = NULL;
       info_ptr->valid &= ~PNG_INFO_hIST;
-   }
+  }
 #endif
 
    /* Free any PLTE entry that was internally allocated */
@@ -607,7 +607,7 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
       info_ptr->palette = NULL;
       info_ptr->valid &= ~PNG_INFO_PLTE;
       info_ptr->num_palette = 0;
-   }
+  }
 
 #ifdef PNG_INFO_IMAGE_SUPPORTED
    /* Free any image bits attached to the info structure */
@@ -621,9 +621,9 @@ png_free_data(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 mask,
 
          png_free(png_ptr, info_ptr->row_pointers);
          info_ptr->row_pointers = NULL;
-      }
+     }
       info_ptr->valid &= ~PNG_INFO_IDAT;
-   }
+  }
 #endif
 
    if (num != -1)
@@ -729,7 +729,7 @@ png_convert_to_rfc1123_buffer(char out[29], png_const_timep ptime)
 #     undef APPEND
 #     undef APPEND_NUMBER
 #     undef APPEND_STRING
-   }
+  }
 
    return 1;
 }
@@ -751,7 +751,7 @@ png_convert_to_rfc1123(png_structrp png_ptr, png_const_timep ptime)
 
       else
          return png_ptr->time_buffer;
-   }
+  }
 
    return NULL;
 }
@@ -868,14 +868,14 @@ png_build_grayscale_palette(int bit_depth, png_colorp palette)
          num_palette = 0;
          color_inc = 0;
          break;
-   }
+  }
 
    for (i = 0, v = 0; i < num_palette; i++, v += color_inc)
    {
       palette[i].red = (png_byte)v;
       palette[i].green = (png_byte)v;
       palette[i].blue = (png_byte)v;
-   }
+  }
 }
 #endif
 
@@ -902,7 +902,7 @@ png_handle_as_unknown(png_const_structrp png_ptr, png_const_bytep chunk_name)
 
       if (memcmp(chunk_name, p, 4) == 0)
          return p[4];
-   }
+  }
    while (p > p_end);
 
    /* This means that known chunks should be processed and unknown chunks should
@@ -1017,7 +1017,7 @@ png_zstream_error(png_structrp png_ptr, int ret)
           */
          png_ptr->zstream.msg = PNGZ_MSG_CAST("unexpected zlib return");
          break;
-   }
+  }
 }
 
 /* png_convert_size: a PNGAPI but no longer in png.h, so deleted
@@ -1057,15 +1057,15 @@ png_colorspace_check_gamma(png_const_structrp png_ptr,
             PNG_CHUNK_ERROR);
          /* Do not overwrite an sRGB value */
          return from == 2;
-      }
+     }
 
       else /* sRGB tag not involved */
       {
          png_chunk_report(png_ptr, "gamma value does not match libpng estimate",
             PNG_CHUNK_WARNING);
          return from == 1;
-      }
-   }
+     }
+  }
 
    return 1;
 }
@@ -1110,7 +1110,7 @@ png_colorspace_set_gamma(png_const_structrp png_ptr,
          colorspace->gamma = gAMA;
          colorspace->flags |=
             (PNG_COLORSPACE_HAVE_GAMMA | PNG_COLORSPACE_FROM_gAMA);
-      }
+     }
 
       /* At present if the check_gamma test fails the gamma of the colorspace is
        * not updated however the colorspace is not invalidated.  This
@@ -1118,7 +1118,7 @@ png_colorspace_set_gamma(png_const_structrp png_ptr,
        * chunk or profile.  An error message has already been output.
        */
       return;
-   }
+  }
 
    /* Error exit - errmsg has been set. */
    colorspace->flags |= PNG_COLORSPACE_INVALID;
@@ -1140,7 +1140,7 @@ png_colorspace_sync_info(png_const_structrp png_ptr, png_inforp info_ptr)
 #     else
          PNG_UNUSED(png_ptr)
 #     endif
-   }
+  }
 
    else
    {
@@ -1167,7 +1167,7 @@ png_colorspace_sync_info(png_const_structrp png_ptr, png_inforp info_ptr)
 
       else
          info_ptr->valid &= ~PNG_INFO_gAMA;
-   }
+  }
 }
 
 #ifdef PNG_READ_SUPPORTED
@@ -1382,14 +1382,14 @@ png_XYZ_from_xy(png_XYZ *XYZ, const png_xy *xy)
     * Hence:
     *
     *    red-scale =
-    *          ( (green-x - blue-x) * (white-y - blue-y) -
-    *            (green-y - blue-y) * (white-x - blue-x) ) / white-y
+    *          ((green-x - blue-x) * (white-y - blue-y) -
+    *            (green-y - blue-y) * (white-x - blue-x)) / white-y
     * -------------------------------------------------------------------------
     *  (green-x - blue-x)*(red-y - blue-y)-(green-y - blue-y)*(red-x - blue-x)
     *
     *    green-scale =
-    *          ( (red-y - blue-y) * (white-x - blue-x) -
-    *            (red-x - blue-x) * (white-y - blue-y) ) / white-y
+    *          ((red-y - blue-y) * (white-x - blue-x) -
+    *            (red-x - blue-x) * (white-y - blue-y)) / white-y
     * -------------------------------------------------------------------------
     *  (green-x - blue-x)*(red-y - blue-y)-(green-y - blue-y)*(red-x - blue-x)
     *
@@ -1542,7 +1542,7 @@ png_XYZ_normalize(png_XYZ *XYZ)
          return 1;
       if (png_muldiv(&XYZ->blue_Z, XYZ->blue_Z, PNG_FP_1, Y) == 0)
          return 1;
-   }
+  }
 
    return 0;
 }
@@ -1651,12 +1651,12 @@ png_colorspace_set_xy_and_XYZ(png_const_structrp png_ptr,
          colorspace->flags |= PNG_COLORSPACE_INVALID;
          png_benign_error(png_ptr, "inconsistent chromaticities");
          return 0; /* failed */
-      }
+     }
 
       /* Only overwrite with preferred values */
       if (preferred == 0)
          return 1; /* ok, but no change */
-   }
+  }
 
    colorspace->end_points_xy = *xy;
    colorspace->end_points_XYZ = *XYZ;
@@ -1708,7 +1708,7 @@ png_colorspace_set_chromaticities(png_const_structrp png_ptr,
          colorspace->flags |= PNG_COLORSPACE_INVALID;
          png_error(png_ptr, "internal error checking chromaticities");
          break;
-   }
+  }
 
    return 0; /* failed */
 }
@@ -1736,7 +1736,7 @@ png_colorspace_set_endpoints(png_const_structrp png_ptr,
          colorspace->flags |= PNG_COLORSPACE_INVALID;
          png_error(png_ptr, "internal error checking chromaticities");
          break;
-   }
+  }
 
    return 0; /* failed */
 }
@@ -1760,7 +1760,7 @@ png_icc_tag_name(char *name, png_uint_32 tag)
    name[1] = png_icc_tag_char(tag >> 24);
    name[2] = png_icc_tag_char(tag >> 16);
    name[3] = png_icc_tag_char(tag >>  8);
-   name[4] = png_icc_tag_char(tag      );
+   name[4] = png_icc_tag_char(tag     );
    name[5] = '\'';
 }
 
@@ -1800,7 +1800,7 @@ png_icc_profile_error(png_const_structrp png_ptr, png_colorspacerp colorspace,
       pos += 6; /* total +8; less than the else clause */
       message[pos++] = ':';
       message[pos++] = ' ';
-   }
+  }
 #  ifdef PNG_WARNINGS_SUPPORTED
    else
       {
@@ -1810,7 +1810,7 @@ png_icc_profile_error(png_const_structrp png_ptr, png_colorspacerp colorspace,
             png_format_number(number, number+(sizeof number),
                PNG_NUMBER_FORMAT_x, value));
          pos = png_safecat(message, (sizeof message), pos, "h: "); /*+2 = 116*/
-      }
+     }
 #  endif
    /* The 'reason' is an arbitrary message, allow +79 maximum 195 */
    pos = png_safecat(message, (sizeof message), pos, reason);
@@ -1851,7 +1851,7 @@ png_colorspace_set_sRGB(png_const_structrp png_ptr, png_colorspacerp colorspace,
       /* red   */ 41239, 21264,  1933,
       /* green */ 35758, 71517, 11919,
       /* blue  */ 18048,  7219, 95053
-   };
+  };
 
    /* Do nothing if the colorspace is already invalidated. */
    if ((colorspace->flags & PNG_COLORSPACE_INVALID) != 0)
@@ -1879,7 +1879,7 @@ png_colorspace_set_sRGB(png_const_structrp png_ptr, png_colorspacerp colorspace,
    {
       png_benign_error(png_ptr, "duplicate sRGB information ignored");
       return 0;
-   }
+  }
 
    /* If the standard sRGB cHRM chunk does not match the one from the PNG file
     * warn but overwrite the value with the correct one.
@@ -1925,7 +1925,7 @@ png_colorspace_set_sRGB(png_const_structrp png_ptr, png_colorspacerp colorspace,
  *    (63189.8112, 65536, 54060.6464)
  */
 static const png_byte D50_nCIEXYZ[12] =
-   { 0x00, 0x00, 0xf6, 0xd6, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0xd3, 0x2d };
+   {0x00, 0x00, 0xf6, 0xd6, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0xd3, 0x2d};
 
 int /* PRIVATE */
 png_icc_check_length(png_const_structrp png_ptr, png_colorspacerp colorspace,
@@ -2047,7 +2047,7 @@ png_icc_check_header(png_const_structrp png_ptr, png_colorspacerp colorspace,
       default:
          return png_icc_profile_error(png_ptr, colorspace, name, temp,
             "invalid ICC profile color space");
-   }
+  }
 
    /* It is up to the application to check that the profile class matches the
     * application requirements; the spec provides no guidance, but it's pretty
@@ -2101,7 +2101,7 @@ png_icc_check_header(png_const_structrp png_ptr, png_colorspacerp colorspace,
          (void)png_icc_profile_error(png_ptr, NULL, name, temp,
             "unrecognized ICC profile class");
          break;
-   }
+  }
 
    /* For any profile other than a device link one the PCS must be encoded
     * either in XYZ or Lab.
@@ -2116,7 +2116,7 @@ png_icc_check_header(png_const_structrp png_ptr, png_colorspacerp colorspace,
       default:
          return png_icc_profile_error(png_ptr, colorspace, name, temp,
             "unexpected ICC PCS encoding");
-   }
+  }
 
    return 1;
 }
@@ -2153,7 +2153,7 @@ png_icc_check_tag_table(png_const_structrp png_ptr, png_colorspacerp colorspace,
           */
          (void)png_icc_profile_error(png_ptr, NULL, name, tag_id,
             "ICC profile tag start not a multiple of 4");
-      }
+     }
 
       /* This is a hard error; potentially it can cause read outside the
        * profile.
@@ -2161,7 +2161,7 @@ png_icc_check_tag_table(png_const_structrp png_ptr, png_colorspacerp colorspace,
       if (tag_start > profile_length || tag_length > profile_length - tag_start)
          return png_icc_profile_error(png_ptr, colorspace, name, tag_id,
             "ICC profile tag outside profile");
-   }
+  }
 
    return 1; /* success, maybe with warnings */
 }
@@ -2176,9 +2176,9 @@ static const struct
    png_byte    is_broken;
    png_uint_16 intent;
 
-#  define PNG_MD5(a,b,c,d) { a, b, c, d }, (a!=0)||(b!=0)||(c!=0)||(d!=0)
+#  define PNG_MD5(a,b,c,d) {a, b, c, d}, (a!=0)||(b!=0)||(c!=0)||(d!=0)
 #  define PNG_ICC_CHECKSUM(adler, crc, md5, intent, broke, date, length, fname)\
-      { adler, crc, length, md5, broke, intent },
+      {adler, crc, length, md5, broke, intent},
 
 } png_sRGB_checks[] =
 {
@@ -2276,7 +2276,7 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,
          {
             length = png_get_uint_32(profile);
             intent = png_get_uint_32(profile+64);
-         }
+        }
 
          /* Length *and* intent must match */
          if (length == png_sRGB_checks[i].length &&
@@ -2287,7 +2287,7 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,
             {
                adler = adler32(0, NULL, 0);
                adler = adler32(adler, profile, length);
-            }
+           }
 
             if (adler == png_sRGB_checks[i].adler)
             {
@@ -2300,7 +2300,7 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,
                   {
                      crc = crc32(0, NULL, 0);
                      crc = crc32(crc, profile, length);
-                  }
+                 }
 
                   /* So this check must pass for the 'return' below to happen.
                    */
@@ -2316,7 +2316,7 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,
                       */
                      png_chunk_report(png_ptr, "known incorrect sRGB profile",
                         PNG_CHUNK_ERROR);
-                  }
+                 }
 
                   /* Warn that this being done; this isn't even an error since
                    * the profile is perfectly valid, but it would be nice if
@@ -2327,11 +2327,11 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,
                      png_chunk_report(png_ptr, "out-of-date sRGB profile with"
                         " no signature",
                         PNG_CHUNK_WARNING);
-                  }
+                 }
 
                   return 1+png_sRGB_checks[i].is_broken;
-               }
-            }
+              }
+           }
 
 # if PNG_sRGB_PROFILE_CHECKS > 0
          /* The signature matched, but the profile had been changed in some
@@ -2343,9 +2343,9 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,
              PNG_CHUNK_WARNING);
          break;
 # endif
-         }
-      }
-   }
+        }
+     }
+  }
 
    return 0; /* no match */
 }
@@ -2386,7 +2386,7 @@ png_colorspace_set_ICC(png_const_structrp png_ptr, png_colorspacerp colorspace,
          png_icc_set_sRGB(png_ptr, colorspace, profile, 0);
 #     endif
       return 1;
-   }
+  }
 
    /* Failure case */
    return 0;
@@ -2435,7 +2435,7 @@ png_colorspace_set_rgb_coefficients(png_structrp png_ptr)
                r += add;
             else
                b += add;
-         }
+        }
 
          /* Check for an internal error. */
          if (r+g+b != 32768)
@@ -2446,8 +2446,8 @@ png_colorspace_set_rgb_coefficients(png_structrp png_ptr)
          {
             png_ptr->rgb_to_gray_red_coeff   = (png_uint_16)r;
             png_ptr->rgb_to_gray_green_coeff = (png_uint_16)g;
-         }
-      }
+        }
+     }
 
       /* This is a png_error at present even though it could be ignored -
        * it should never happen, but it is important that if it does, the
@@ -2455,7 +2455,7 @@ png_colorspace_set_rgb_coefficients(png_structrp png_ptr)
        */
       else
          png_error(png_ptr, "internal error handling cHRM->XYZ");
-   }
+  }
 }
 #endif
 
@@ -2485,12 +2485,12 @@ png_check_IHDR(png_const_structrp png_ptr,
    {
       png_warning(png_ptr, "Image width is zero in IHDR");
       error = 1;
-   }
+  }
    else if (width > PNG_UINT_31_MAX)
    {
       png_warning(png_ptr, "Invalid image width in IHDR");
       error = 1;
-   }
+  }
 
    else if (png_gt(width,
                    (PNG_SIZE_MAX >> 3) /* 8-byte RGBA pixels */
@@ -2512,7 +2512,7 @@ png_check_IHDR(png_const_structrp png_ptr,
        */
       png_warning(png_ptr, "Image width is too large for this architecture");
       error = 1;
-   }
+  }
    else
    {
 #     ifdef PNG_SET_USER_LIMITS_SUPPORTED
@@ -2523,19 +2523,19 @@ png_check_IHDR(png_const_structrp png_ptr,
       {
          png_warning(png_ptr, "Image width exceeds user limit in IHDR");
          error = 1;
-      }
-   }
+     }
+  }
 
    if (height == 0)
    {
       png_warning(png_ptr, "Image height is zero in IHDR");
       error = 1;
-   }
+  }
    else if (height > PNG_UINT_31_MAX)
    {
       png_warning(png_ptr, "Invalid image height in IHDR");
       error = 1;
-   }
+  }
    else
    {
 #     ifdef PNG_SET_USER_LIMITS_SUPPORTED
@@ -2546,8 +2546,8 @@ png_check_IHDR(png_const_structrp png_ptr,
       {
          png_warning(png_ptr, "Image height exceeds user limit in IHDR");
          error = 1;
-      }
-   }
+     }
+  }
 
    /* Check other values */
    if (bit_depth != 1 && bit_depth != 2 && bit_depth != 4 &&
@@ -2555,14 +2555,14 @@ png_check_IHDR(png_const_structrp png_ptr,
    {
       png_warning(png_ptr, "Invalid bit depth in IHDR");
       error = 1;
-   }
+  }
 
    if (color_type < 0 || color_type == 1 ||
        color_type == 5 || color_type > 6)
    {
       png_warning(png_ptr, "Invalid color type in IHDR");
       error = 1;
-   }
+  }
 
    if (((color_type == PNG_COLOR_TYPE_PALETTE) && bit_depth > 8) ||
        ((color_type == PNG_COLOR_TYPE_RGB ||
@@ -2571,19 +2571,19 @@ png_check_IHDR(png_const_structrp png_ptr,
    {
       png_warning(png_ptr, "Invalid color type/bit depth combination in IHDR");
       error = 1;
-   }
+  }
 
    if (interlace_type >= PNG_INTERLACE_LAST)
    {
       png_warning(png_ptr, "Unknown interlace method in IHDR");
       error = 1;
-   }
+  }
 
    if (compression_type != PNG_COMPRESSION_TYPE_BASE)
    {
       png_warning(png_ptr, "Unknown compression method in IHDR");
       error = 1;
-   }
+  }
 
 #  ifdef PNG_MNG_FEATURES_SUPPORTED
    /* Accept filter_method 64 (intrapixel differencing) only if
@@ -2609,21 +2609,21 @@ png_check_IHDR(png_const_structrp png_ptr,
       {
          png_warning(png_ptr, "Unknown filter method in IHDR");
          error = 1;
-      }
+     }
 
       if ((png_ptr->mode & PNG_HAVE_PNG_SIGNATURE) != 0)
       {
          png_warning(png_ptr, "Invalid filter method in IHDR");
          error = 1;
-      }
-   }
+     }
+  }
 
 #  else
    if (filter_type != PNG_FILTER_TYPE_BASE)
    {
       png_warning(png_ptr, "Unknown filter method in IHDR");
       error = 1;
-   }
+  }
 #  endif
 
    if (error == 1)
@@ -2662,7 +2662,7 @@ png_check_fp_number(png_const_charp string, png_size_t size, int *statep,
       case 69:
       case 101: type = PNG_FP_SAW_E;                      break;
       default:  goto PNG_FP_End;
-      }
+     }
 
       /* Now deal with this type according to the current
        * state, the type is arranged to not overlap the
@@ -2748,11 +2748,11 @@ png_check_fp_number(png_const_charp string, png_size_t size, int *statep,
          goto PNG_FP_End; */
 
       default: goto PNG_FP_End; /* I.e. break 2 */
-      }
+     }
 
       /* The character seems ok, continue. */
       ++i;
-   }
+  }
 
 PNG_FP_End:
    /* Here at the end, update the state and return the correct
@@ -2798,7 +2798,7 @@ png_pow10(int power)
    {
       if (power < DBL_MIN_10_EXP) return 0;
       recip = 1, power = -power;
-   }
+  }
 
    if (power > 0)
    {
@@ -2809,11 +2809,11 @@ png_pow10(int power)
          if (power & 1) d *= mult;
          mult *= mult;
          power >>= 1;
-      }
+     }
       while (power > 0);
 
       if (recip != 0) d = 1/d;
-   }
+  }
    /* else power is 0 and d is 1 */
 
    return d;
@@ -2846,7 +2846,7 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
          fp = -fp;
          *ascii++ = 45; /* '-'  PLUS 1 TOTAL 1 */
          --size;
-      }
+     }
 
       if (fp >= DBL_MIN && fp <= DBL_MAX)
       {
@@ -2879,7 +2879,7 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
 
             else
                break;
-         }
+        }
 
          /* Normalize fp and correct exp_b10, after this fp is in the
           * range [.1,1) and exp_b10 is both the exponent and the digit
@@ -2908,7 +2908,7 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
             {
                czero = -exp_b10; /* PLUS 2 digits: TOTAL 3 */
                exp_b10 = 0;      /* Dot added below before first output. */
-            }
+           }
             else
                czero = 0;    /* No zeros to add */
 
@@ -2942,7 +2942,7 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                      {
                         --czero, d = 1;
                         if (cdigits == 0) --clead;
-                     }
+                    }
                      else
                      {
                         while (cdigits > 0 && d > 9)
@@ -2960,11 +2960,11 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                                * previous digit.
                                */
                               exp_b10 = 1;
-                           }
+                          }
 
                            --cdigits;
                            d = ch - 47;  /* I.e. 1+(ch-48) */
-                        }
+                       }
 
                         /* Did we reach the beginning? If so adjust the
                          * exponent but take into account the leading
@@ -2986,23 +2986,23 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                               /* Else lost a leading zero, so 'exp_b10' is
                                * still ok at (-1)
                                */
-                           }
+                          }
                            else
                               ++exp_b10;
 
                            /* In all cases we output a '1' */
                            d = 1;
-                        }
-                     }
-                  }
+                       }
+                    }
+                 }
                   fp = 0; /* Guarantees termination below. */
-               }
+              }
 
                if (d == 0)
                {
                   ++czero;
                   if (cdigits == 0) ++clead;
-               }
+              }
                else
                {
                   /* Included embedded zeros in the digit count. */
@@ -3020,9 +3020,9 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                         if (exp_b10 == 0) *ascii++ = 46, --size;
                         /* PLUS 1: TOTAL 4 */
                         --exp_b10;
-                     }
+                    }
                      *ascii++ = 48, --czero;
-                  }
+                 }
 
                   if (exp_b10 != (-1))
                   {
@@ -3030,10 +3030,10 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                         *ascii++ = 46, --size; /* counted above */
 
                      --exp_b10;
-                  }
+                 }
                   *ascii++ = (char)(48 + (int)d), ++cdigits;
-               }
-            }
+              }
+           }
             while (cdigits+czero-clead < (int)precision && fp > DBL_MIN);
 
             /* The total output count (max) is now 4+precision */
@@ -3062,7 +3062,7 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                 * 5+precision - see check at the start.
                 */
                return;
-            }
+           }
 
             /* Here if an exponent is required, adjust size for
              * the digits we output but did not count.  The total
@@ -3085,7 +3085,7 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                {
                   *ascii++ = 45, --size; /* '-': PLUS 1 TOTAL 3+precision */
                   uexp_b10 = -exp_b10;
-               }
+              }
 
                else
                   uexp_b10 = exp_b10;
@@ -3096,8 +3096,8 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                {
                   exponent[cdigits++] = (char)(48 + uexp_b10 % 10);
                   uexp_b10 /= 10;
-               }
-            }
+              }
+           }
 
             /* Need another size check here for the exponent digits, so
              * this need not be considered above.
@@ -3109,15 +3109,15 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
                *ascii = 0;
 
                return;
-            }
-         }
-      }
+           }
+        }
+     }
       else if (!(fp >= DBL_MIN))
       {
          *ascii++ = 48; /* '0' */
          *ascii = 0;
          return;
-      }
+     }
       else
       {
          *ascii++ = 105; /* 'i' */
@@ -3125,8 +3125,8 @@ png_ascii_from_fp(png_const_structrp png_ptr, png_charp ascii, png_size_t size,
          *ascii++ = 102; /* 'f' */
          *ascii = 0;
          return;
-      }
-   }
+     }
+  }
 
    /* Here on buffer too small. */
    png_error(png_ptr, "ASCII conversion buffer too small");
@@ -3171,7 +3171,7 @@ png_ascii_from_fixed(png_const_structrp png_ptr, png_charp ascii,
             if (first == 16 && num > 0)
                first = ndigits;
             num = tmp;
-         }
+        }
 
          if (ndigits > 0)
          {
@@ -3191,16 +3191,16 @@ png_ascii_from_fixed(png_const_structrp png_ptr, png_charp ascii,
                while (ndigits < i) *ascii++ = 48, --i;
                while (ndigits >= first) *ascii++ = digits[--ndigits];
                /* Don't output the trailing zeros! */
-            }
-         }
+           }
+        }
          else
             *ascii++ = 48;
 
          /* And null terminate the string: */
          *ascii = 0;
          return;
-      }
-   }
+     }
+  }
 
    /* Here on buffer too small. */
    png_error(png_ptr, "ASCII conversion buffer too small");
@@ -3250,7 +3250,7 @@ png_muldiv(png_fixed_point_p res, png_fixed_point a, png_int_32 times,
       {
          *res = 0;
          return 1;
-      }
+     }
       else
       {
 #ifdef PNG_FLOATING_ARITHMETIC_SUPPORTED
@@ -3264,7 +3264,7 @@ png_muldiv(png_fixed_point_p res, png_fixed_point a, png_int_32 times,
          {
             *res = (png_fixed_point)r;
             return 1;
-         }
+        }
 #else
          int negative = 0;
          png_uint_32 A, T, D;
@@ -3325,12 +3325,12 @@ png_muldiv(png_fixed_point_p res, png_fixed_point a, png_int_32 times,
                {
                   if (s00 < d00) --s32; /* carry */
                   s32 -= d32, s00 -= d00, result += 1<<bitshift;
-               }
+              }
 
                else
                   if (s32 == d32 && s00 >= d00)
                      s32 = 0, s00 -= d00, result += 1<<bitshift;
-            }
+           }
 
             /* Handle the rounding. */
             if (s00 >= (D >> 1))
@@ -3345,11 +3345,11 @@ png_muldiv(png_fixed_point_p res, png_fixed_point a, png_int_32 times,
             {
                *res = result;
                return 1;
-            }
-         }
+           }
+        }
 #endif
-      }
-   }
+     }
+  }
 
    return 0;
 }
@@ -3657,7 +3657,7 @@ png_32bit_exp[16] =
 
 /* Adjustment table; provided to explain the numbers in the code below. */
 #if 0
-for (i=11;i>=0;--i){ print i, " ", (1 - e(-(2^i)/65536*l(2))) * 2^(32-i), "\n"}
+for (i=11;i>=0;--i){print i, " ", (1 - e(-(2^i)/65536*l(2))) * 2^(32-i), "\n"}
    11 44937.64284865548751208448
    10 45180.98734845585101160448
     9 45303.31936980687359311872
@@ -3710,7 +3710,7 @@ png_exp(png_fixed_point x)
       /* Handle the upper bits of x. */
       e >>= x >> 16;
       return e;
-   }
+  }
 
    /* Check for overflow */
    if (x <= 0)
@@ -3790,7 +3790,7 @@ png_gamma_8bit_correct(unsigned int value, png_fixed_point gamma_val)
          /* Overflow. */
          value = 0;
 #     endif
-   }
+  }
 
    return (png_byte)value;
 }
@@ -3820,7 +3820,7 @@ png_gamma_16bit_correct(unsigned int value, png_fixed_point gamma_val)
          /* Overflow. */
          value = 0;
 #     endif
-   }
+  }
 
    return (png_uint_16)value;
 }
@@ -3910,8 +3910,8 @@ png_build_16bit_table(png_structrp png_ptr, png_uint_16pp *ptable,
 
                sub_table[j] = png_gamma_16bit_correct(ig, gamma_val);
 #           endif
-         }
-      }
+        }
+     }
       else
       {
          /* We must still build a table, but do it the fast way. */
@@ -3925,9 +3925,9 @@ png_build_16bit_table(png_structrp png_ptr, png_uint_16pp *ptable,
                ig = (ig * 65535U + max_by_2)/max;
 
             sub_table[j] = (png_uint_16)ig;
-         }
-      }
-   }
+        }
+     }
+  }
 }
 
 /* NOTE: this function expects the *inverse* of the overall gamma transformation
@@ -3985,15 +3985,15 @@ png_build_16to8_table(png_structrp png_ptr, png_uint_16pp *ptable,
       {
          table[last & (0xffU >> shift)][last >> (8U - shift)] = out;
          last++;
-      }
-   }
+     }
+  }
 
    /* And fill in the final entries. */
    while (last < (num << 8))
    {
       table[last & (0xff >> shift)][last >> (8U - shift)] = 65535U;
       last++;
-   }
+  }
 }
 #endif /* 16BIT */
 
@@ -4034,10 +4034,10 @@ png_destroy_gamma_table(png_structrp png_ptr)
       for (i = 0; i < istop; i++)
       {
          png_free(png_ptr, png_ptr->gamma_16_table[i]);
-      }
+     }
    png_free(png_ptr, png_ptr->gamma_16_table);
    png_ptr->gamma_16_table = NULL;
-   }
+  }
 #endif /* 16BIT */
 
 #if defined(PNG_READ_BACKGROUND_SUPPORTED) || \
@@ -4056,10 +4056,10 @@ png_destroy_gamma_table(png_structrp png_ptr)
       for (i = 0; i < istop; i++)
       {
          png_free(png_ptr, png_ptr->gamma_16_from_1[i]);
-      }
+     }
    png_free(png_ptr, png_ptr->gamma_16_from_1);
    png_ptr->gamma_16_from_1 = NULL;
-   }
+  }
    if (png_ptr->gamma_16_to_1 != NULL)
    {
       int i;
@@ -4067,10 +4067,10 @@ png_destroy_gamma_table(png_structrp png_ptr)
       for (i = 0; i < istop; i++)
       {
          png_free(png_ptr, png_ptr->gamma_16_to_1[i]);
-      }
+     }
    png_free(png_ptr, png_ptr->gamma_16_to_1);
    png_ptr->gamma_16_to_1 = NULL;
-   }
+  }
 #endif /* 16BIT */
 #endif /* READ_BACKGROUND || READ_ALPHA_MODE || RGB_TO_GRAY */
 }
@@ -4095,7 +4095,7 @@ png_build_gamma_table(png_structrp png_ptr, int bit_depth)
   {
     png_warning(png_ptr, "gamma table being rebuilt");
     png_destroy_gamma_table(png_ptr);
-  }
+ }
 
   if (bit_depth <= 8)
   {
@@ -4114,9 +4114,9 @@ png_build_gamma_table(png_structrp png_ptr, int bit_depth)
         png_build_8bit_table(png_ptr, &png_ptr->gamma_from_1,
             png_ptr->screen_gamma > 0 ?  png_reciprocal(png_ptr->screen_gamma) :
             png_ptr->colorspace.gamma/* Probably doing rgb_to_gray */);
-     }
+    }
 #endif /* READ_BACKGROUND || READ_ALPHA_MODE || RGB_TO_GRAY */
-  }
+ }
 #ifdef PNG_16BIT_SUPPORTED
   else
   {
@@ -4131,7 +4131,7 @@ png_build_gamma_table(png_structrp png_ptr, int bit_depth)
 
         if (png_ptr->sig_bit.blue > sig_bit)
            sig_bit = png_ptr->sig_bit.blue;
-     }
+    }
      else
         sig_bit = png_ptr->sig_bit.gray;
 
@@ -4167,7 +4167,7 @@ png_build_gamma_table(png_structrp png_ptr, int bit_depth)
          */
         if (shift < (16U - PNG_MAX_GAMMA_8))
            shift = (16U - PNG_MAX_GAMMA_8);
-     }
+    }
 
      if (shift > 8U)
         shift = 8U; /* Guarantees at least one table! */
@@ -4204,9 +4204,9 @@ png_build_gamma_table(png_structrp png_ptr, int bit_depth)
         png_build_16bit_table(png_ptr, &png_ptr->gamma_16_from_1, shift,
             png_ptr->screen_gamma > 0 ? png_reciprocal(png_ptr->screen_gamma) :
             png_ptr->colorspace.gamma/* Probably doing rgb_to_gray */);
-     }
+    }
 #endif /* READ_BACKGROUND || READ_ALPHA_MODE || RGB_TO_GRAY */
-  }
+ }
 #endif /* 16BIT */
 }
 #endif /* READ_GAMMA */
@@ -4226,7 +4226,7 @@ png_set_option(png_structrp png_ptr, int option, int onoff)
       png_ptr->options = (png_byte)((current & ~mask) | setting);
 
       return (current & mask) >> option;
-   }
+  }
 
    return PNG_OPTION_INVALID;
 }
@@ -4428,8 +4428,8 @@ png_image_free_function(png_voidp argument)
          {
             cp->png_ptr->io_ptr = NULL;
             (void)fclose(fp);
-         }
-      }
+        }
+     }
 #  endif
 
    /* Copy the control structure so that the original, allocated, version can be
@@ -4449,7 +4449,7 @@ png_image_free_function(png_voidp argument)
 #     else
          png_error(c.png_ptr, "simplified write not supported");
 #     endif
-   }
+  }
    else
    {
 #     ifdef PNG_SIMPLIFIED_READ_SUPPORTED
@@ -4457,7 +4457,7 @@ png_image_free_function(png_voidp argument)
 #     else
          png_error(c.png_ptr, "simplified read not supported");
 #     endif
-   }
+  }
 
    /* Success. */
    return 1;
@@ -4476,7 +4476,7 @@ png_image_free(png_imagep image)
       /* Ignore errors here: */
       (void)png_safe_execute(image, png_image_free_function, image);
       image->opaque = NULL;
-   }
+  }
 }
 
 int /* PRIVATE */

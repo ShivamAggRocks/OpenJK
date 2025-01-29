@@ -243,7 +243,7 @@ PFNGLGETQUERYOBJECTUI64VPROC qglGetQueryObjectui64v;
 
 static qboolean GLimp_HaveExtension(const char *ext)
 {
-	const char *ptr = Q_stristr( glConfigExt.originalExtensionString, ext );
+	const char *ptr = Q_stristr(glConfigExt.originalExtensionString, ext);
 	if (ptr == NULL)
 		return qfalse;
 	ptr += strlen(ext);
@@ -251,12 +251,12 @@ static qboolean GLimp_HaveExtension(const char *ext)
 }
 
 template<typename GLFuncType>
-static qboolean GetGLFunction ( GLFuncType& glFunction, const char *glFunctionString, qboolean errorOnFailure )
+static qboolean GetGLFunction (GLFuncType& glFunction, const char *glFunctionString, qboolean errorOnFailure)
 {
 	glFunction = (GLFuncType)GL_GetProcAddress (glFunctionString);
-	if ( glFunction == NULL )
+	if (glFunction == NULL)
 	{
-		if ( errorOnFailure )
+		if (errorOnFailure)
 		{
 			Com_Error (ERR_FATAL, "ERROR: OpenGL function '%s' could not be found.\n", glFunctionString);
 		}
@@ -275,7 +275,7 @@ static void QCALL GLimp_OnError(GLenum source, GLenum type, GLuint id, GLenum se
 	const char *typeText = "";
 	const char *sourceText = "";
 
-	switch ( source )
+	switch (source)
 	{
 		case GL_DEBUG_SOURCE_API_ARB: sourceText = "API"; break;
 		case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB: sourceText = "WS"; break;
@@ -285,14 +285,14 @@ static void QCALL GLimp_OnError(GLenum source, GLenum type, GLuint id, GLenum se
 		case GL_DEBUG_SOURCE_OTHER_ARB: sourceText = "Oth"; break;
 	}
 
-	switch ( severity )
+	switch (severity)
 	{
 		case GL_DEBUG_SEVERITY_HIGH_ARB: severityText = "High"; break;
 		case GL_DEBUG_SEVERITY_MEDIUM_ARB: severityText = "Medium"; break;
 		case GL_DEBUG_SEVERITY_LOW_ARB: severityText = "Low"; break;
 	}
 
-	switch ( type )
+	switch (type)
 	{
 		case GL_DEBUG_TYPE_ERROR_ARB: typeText = "Error"; break;
 		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB: typeText = "Deprecated"; break;
@@ -302,7 +302,7 @@ static void QCALL GLimp_OnError(GLenum source, GLenum type, GLuint id, GLenum se
 		case GL_DEBUG_TYPE_OTHER_ARB: typeText = "Other"; break;
 	}
 
-	Com_Printf( S_COLOR_YELLOW "OpenGL -> [%s][%s][%s] %s\n", sourceText, severityText, typeText, message );
+	Com_Printf(S_COLOR_YELLOW "OpenGL -> [%s][%s][%s] %s\n", sourceText, severityText, typeText, message);
 }
 
 void GLimp_InitCoreFunctions()
@@ -465,7 +465,7 @@ void GLimp_InitCoreFunctions()
 	// GLSL
 	{
 		char version[256];
-		Q_strncpyz( version, (const char *) qglGetString (GL_SHADING_LANGUAGE_VERSION), sizeof( version ) );
+		Q_strncpyz(version, (const char *) qglGetString (GL_SHADING_LANGUAGE_VERSION), sizeof(version));
 		sscanf(version, "%d.%d", &glRefConfig.glslMajorVersion, &glRefConfig.glslMinorVersion);
 
 		ri.Printf(PRINT_ALL, "...using GLSL version %s\n", version);
@@ -521,51 +521,51 @@ void GLimp_InitCoreFunctions()
 
 }
 
-void GLW_InitTextureCompression( void );
+void GLW_InitTextureCompression(void);
 void GLimp_InitExtensions()
 {
 	const char *extension;
-	const char* result[3] = { "...ignoring %s\n", "...using %s\n", "...%s not found\n" };
+	const char* result[3] = {"...ignoring %s\n", "...using %s\n", "...%s not found\n"};
 
-	Com_Printf ("Initializing OpenGL extensions\n" );
+	Com_Printf ("Initializing OpenGL extensions\n");
 
 	// Select our tc scheme
 	GLW_InitTextureCompression();
 
 	// GL_EXT_texture_filter_anisotropic
 	glConfig.maxTextureFilterAnisotropy = 0;
-	if ( GLimp_HaveExtension( "EXT_texture_filter_anisotropic" ) )
+	if (GLimp_HaveExtension("EXT_texture_filter_anisotropic"))
 	{
-		qglGetFloatv( GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &glConfig.maxTextureFilterAnisotropy );
-		Com_Printf ("...GL_EXT_texture_filter_anisotropic available\n" );
+		qglGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &glConfig.maxTextureFilterAnisotropy);
+		Com_Printf ("...GL_EXT_texture_filter_anisotropic available\n");
 
-		if ( r_ext_texture_filter_anisotropic->integer > 1 )
+		if (r_ext_texture_filter_anisotropic->integer > 1)
 		{
-			Com_Printf ("...using GL_EXT_texture_filter_anisotropic\n" );
+			Com_Printf ("...using GL_EXT_texture_filter_anisotropic\n");
 		}
 		else
 		{
-			Com_Printf ("...ignoring GL_EXT_texture_filter_anisotropic\n" );
+			Com_Printf ("...ignoring GL_EXT_texture_filter_anisotropic\n");
 		}
-		ri.Cvar_SetValue( "r_ext_texture_filter_anisotropic_avail", glConfig.maxTextureFilterAnisotropy );
-		if ( r_ext_texture_filter_anisotropic->value > glConfig.maxTextureFilterAnisotropy )
+		ri.Cvar_SetValue("r_ext_texture_filter_anisotropic_avail", glConfig.maxTextureFilterAnisotropy);
+		if (r_ext_texture_filter_anisotropic->value > glConfig.maxTextureFilterAnisotropy)
 		{
-			ri.Cvar_SetValue( "r_ext_texture_filter_anisotropic_avail", glConfig.maxTextureFilterAnisotropy );
+			ri.Cvar_SetValue("r_ext_texture_filter_anisotropic_avail", glConfig.maxTextureFilterAnisotropy);
 		}
 	}
 	else
 	{
-		Com_Printf ("...GL_EXT_texture_filter_anisotropic not found\n" );
-		ri.Cvar_Set( "r_ext_texture_filter_anisotropic_avail", "0" );
+		Com_Printf ("...GL_EXT_texture_filter_anisotropic not found\n");
+		ri.Cvar_Set("r_ext_texture_filter_anisotropic_avail", "0");
 	}
 
 	// Memory info
 	glRefConfig.memInfo = MI_NONE;
-	if( GLimp_HaveExtension( "GL_NVX_gpu_memory_info" ) )
+	if(GLimp_HaveExtension("GL_NVX_gpu_memory_info"))
 	{
 		glRefConfig.memInfo = MI_NVX;
 	}
-	else if( GLimp_HaveExtension( "GL_ATI_meminfo" ) )
+	else if(GLimp_HaveExtension("GL_ATI_meminfo"))
 	{
 		glRefConfig.memInfo = MI_ATI;
 	}
@@ -603,7 +603,7 @@ void GLimp_InitExtensions()
 	// GL_ARB_texture_storage
 	extension = "GL_ARB_texture_storage";
 	glRefConfig.immutableTextures = qfalse;
-	if( GLimp_HaveExtension( extension ) )
+	if(GLimp_HaveExtension(extension))
 	{
 		qboolean loaded = qtrue;
 
@@ -623,11 +623,11 @@ void GLimp_InitExtensions()
 	// GL_ARB_buffer_storage
 	extension = "GL_ARB_buffer_storage";
 	glRefConfig.immutableBuffers = qfalse;
-	if( GLimp_HaveExtension( extension ) )
+	if(GLimp_HaveExtension(extension))
 	{
 		qboolean loaded = qtrue;
 
-		if ( r_arb_buffer_storage->integer )
+		if (r_arb_buffer_storage->integer)
 		{
 			loaded = (qboolean)(loaded && GetGLFunction (qglBufferStorage, "glBufferStorage", qfalse));
 		}
@@ -646,11 +646,11 @@ void GLimp_InitExtensions()
 
 	// GL_ARB_debug_output
 	extension = "GL_ARB_debug_output";
-	if ( GLimp_HaveExtension( extension ) )
+	if (GLimp_HaveExtension(extension))
 	{
 		qboolean loaded = qtrue;
 
-		if ( r_debugContext->integer )
+		if (r_debugContext->integer)
 		{
 			loaded = (qboolean)(loaded && GetGLFunction (qglDebugMessageControlARB, "glDebugMessageControlARB", qfalse));
 			loaded = (qboolean)(loaded && GetGLFunction (qglDebugMessageInsertARB, "glDebugMessageInsertARB", qfalse));
@@ -668,7 +668,7 @@ void GLimp_InitExtensions()
 
 	// GL_ARB_timer_query
 	extension = "GL_ARB_timer_query";
-	if ( GLimp_HaveExtension( extension ) )
+	if (GLimp_HaveExtension(extension))
 	{
 		qboolean loaded = qtrue;
 
@@ -684,9 +684,9 @@ void GLimp_InitExtensions()
 	// use float lightmaps?
 	glRefConfig.floatLightmap = (qboolean)(r_floatLightmap->integer && r_hdr->integer);
 
-	if ( glRefConfig.debugContext )
+	if (glRefConfig.debugContext)
 	{
-		qglEnable( GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB );
+		qglEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 		qglDebugMessageCallbackARB(GLimp_OnError, NULL);
 	}
 }

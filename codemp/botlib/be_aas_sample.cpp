@@ -80,7 +80,7 @@ void AAS_PresenceTypeBoundingBox(int presencetype, vec3_t mins, vec3_t maxs)
 	int index;
 	//bounding box size for each presence type
 	vec3_t boxmins[3] = {{0, 0, 0}, {-15, -15, -24}, {-15, -15, -24}};
-	vec3_t boxmaxs[3] = {{0, 0, 0}, { 15,  15,  32}, { 15,  15,   8}};
+	vec3_t boxmaxs[3] = {{0, 0, 0}, {15,  15,  32}, {15,  15,   8}};
 
 	if (presencetype == PRESENCE_NORMAL) index = 1;
 	else if (presencetype == PRESENCE_CROUCH) index = 2;
@@ -268,14 +268,14 @@ int AAS_PointAreaNum(vec3_t point)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-int AAS_PointReachabilityAreaIndex( vec3_t origin )
+int AAS_PointReachabilityAreaIndex(vec3_t origin)
 {
 	int areanum, cluster, i, index;
 
 	if (!aasworld.initialized)
 		return 0;
 
-	if ( !origin )
+	if (!origin)
 	{
 		index = 0;
 		for (i = 0; i < aasworld.numclusters; i++)
@@ -285,8 +285,8 @@ int AAS_PointReachabilityAreaIndex( vec3_t origin )
 		return index;
 	} //end if
 
-	areanum = AAS_PointAreaNum( origin );
-	if ( !areanum || !AAS_AreaReachability(areanum) )
+	areanum = AAS_PointAreaNum(origin);
+	if (!areanum || !AAS_AreaReachability(areanum))
 		return 0;
 	cluster = aasworld.areasettings[areanum].cluster;
 	areanum = aasworld.areasettings[areanum].clusterareanum;
@@ -673,7 +673,7 @@ aas_trace_t AAS_TraceClientBBox(vec3_t start, vec3_t end, int presencetype,
 		{
 			tmpplanenum = tstack_p->planenum;
 			// bk010221 - new location of divide by zero (see above)
-			if ( front == back ) front -= 0.001f; // bk0101022 - hack/FPE
+			if (front == back) front -= 0.001f; // bk0101022 - hack/FPE
                 	//calculate the hitpoint with the node (split point of the line)
 			//put the crosspoint TRACEPLANE_EPSILON pixels on the near side
 			if (front < 0) frac = (front + TRACEPLANE_EPSILON)/(front-back);
@@ -1164,15 +1164,15 @@ int AAS_BoxOnPlaneSide2(vec3_t absmins, vec3_t absmaxs, aas_plane_t *p)
 //===========================================================================
 //int AAS_BoxOnPlaneSide(vec3_t absmins, vec3_t absmaxs, aas_plane_t *p)
 #define AAS_BoxOnPlaneSide(absmins, absmaxs, p) (\
-	( (p)->type < 3) ?\
+	((p)->type < 3) ?\
 	(\
-		( (p)->dist <= (absmins)[(p)->type]) ?\
+		((p)->dist <= (absmins)[(p)->type]) ?\
 		(\
 			1\
 		)\
 		:\
 		(\
-			( (p)->dist >= (absmaxs)[(p)->type]) ?\
+			((p)->dist >= (absmaxs)[(p)->type]) ?\
 			(\
 				2\
 			)\
@@ -1364,7 +1364,7 @@ int AAS_BBoxAreas(vec3_t absmins, vec3_t absmaxs, int *areas, int maxareas)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-int AAS_AreaInfo( int areanum, aas_areainfo_t *info )
+int AAS_AreaInfo(int areanum, aas_areainfo_t *info)
 {
 	aas_areasettings_t *settings;
 	if (!info)

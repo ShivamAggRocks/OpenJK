@@ -121,7 +121,7 @@ private:
 		{
 			mUsedByClient = mUsedByServer = qfalse;
 		}
-		CROFF( const char *file, int id );
+		CROFF(const char *file, int id);
 		~CROFF();
 
 	}; // class CROFF
@@ -148,21 +148,21 @@ private:
 	}; // struct SROFFEntity
 
 
-	qboolean	IsROFF( byte *file );				// Makes sure the file is a valid roff file
-	qboolean	InitROFF( byte *file, CROFF *obj );	// Handles stashing raw roff data into the roff object
-	qboolean	InitROFF2( byte *file, CROFF *obj );	// Handles stashing raw roff data into the roff object
+	qboolean	IsROFF(byte *file);				// Makes sure the file is a valid roff file
+	qboolean	InitROFF(byte *file, CROFF *obj);	// Handles stashing raw roff data into the roff object
+	qboolean	InitROFF2(byte *file, CROFF *obj);	// Handles stashing raw roff data into the roff object
 	void	FixBadAngles(CROFF *obj);
-	int		NewID() { return ++mID; }			// Increment before return so we can use zero as failed return val
-	qboolean	ApplyROFF( SROFFEntity *roff_ent,
-					CROFFSystem::CROFF *roff );	// True = success; False = roff complete
+	int		NewID() {return ++mID;}			// Increment before return so we can use zero as failed return val
+	qboolean	ApplyROFF(SROFFEntity *roff_ent,
+					CROFFSystem::CROFF *roff);	// True = success; False = roff complete
 
 	void	ProcessNote(SROFFEntity *roff_ent, char *note);
 
-	void	SetLerp( trajectory_t *tr,
+	void	SetLerp(trajectory_t *tr,
 					trType_t, vec3_t origin,
-					vec3_t delta, int time, int rate );
+					vec3_t delta, int time, int rate);
 
-	qboolean	ClearLerp( SROFFEntity *roff_ent );				// Clears out the angular and position lerp fields
+	qboolean	ClearLerp(SROFFEntity *roff_ent);				// Clears out the angular and position lerp fields
 
 public:
 //------
@@ -173,17 +173,17 @@ public:
 
 	qboolean		Restart();						// Free up all system resources and reset the ID counter
 
-	int			Cache( const char *file, qboolean isClient );			// roffs should be precached at the start of each level
-	int			GetID( const char *file );			// find the roff id by filename
-	qboolean		Unload( int id );				// when a roff is done, it can be removed to free up resources
+	int			Cache(const char *file, qboolean isClient);			// roffs should be precached at the start of each level
+	int			GetID(const char *file);			// find the roff id by filename
+	qboolean		Unload(int id);				// when a roff is done, it can be removed to free up resources
 	qboolean	Clean(qboolean isClient);					// should be called when level is done, frees all roff resources
 	void		List(void);						// dumps a list of all cached roff files to the console
-	qboolean		List( int id );					// dumps the contents of the specified roff to the console
+	qboolean		List(int id);					// dumps the contents of the specified roff to the console
 
-	qboolean	Play( int entID, int roffID, qboolean doTranslation, qboolean isClient);	// TODO: implement signal on playback completion.
+	qboolean	Play(int entID, int roffID, qboolean doTranslation, qboolean isClient);	// TODO: implement signal on playback completion.
 	void		ListEnts();						// List the entities that are currently roffing
-	qboolean	PurgeEnt( int entID, qboolean isClient );			// Purge the specified entity from the entity list by id
-	qboolean		PurgeEnt( char *file );			// Purge the specified entity from the entity list by name
+	qboolean	PurgeEnt(int entID, qboolean isClient);			// Purge the specified entity from the entity list by id
+	qboolean		PurgeEnt(char *file);			// Purge the specified entity from the entity list by name
 	void		UpdateEntities(qboolean isClient);			// applys roff data to roffing entities.
 
 }; // class CROFFSystem

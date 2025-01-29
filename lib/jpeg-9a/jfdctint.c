@@ -243,7 +243,7 @@ jpeg_fdct_islow (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[7] = (DCTELEM) RIGHT_SHIFT(tmp3, CONST_BITS-PASS1_BITS);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -321,7 +321,7 @@ jpeg_fdct_islow (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[DCTSIZE*7] = (DCTELEM) RIGHT_SHIFT(tmp3, CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 #ifdef DCT_SCALING_SUPPORTED
@@ -401,7 +401,7 @@ jpeg_fdct_7x7 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[5] = (DCTELEM) DESCALE(tmp2, CONST_BITS-PASS1_BITS);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -459,7 +459,7 @@ jpeg_fdct_7x7 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[DCTSIZE*5] = (DCTELEM) DESCALE(tmp2, CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -523,7 +523,7 @@ jpeg_fdct_6x6 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[5] = (DCTELEM) (tmp10 + ((tmp2 - tmp1) << PASS1_BITS));
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -573,7 +573,7 @@ jpeg_fdct_6x6 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -639,7 +639,7 @@ jpeg_fdct_5x5 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS-PASS1_BITS-1);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -684,7 +684,7 @@ jpeg_fdct_5x5 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -743,7 +743,7 @@ jpeg_fdct_4x4 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 		  CONST_BITS-PASS1_BITS-2);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -779,7 +779,7 @@ jpeg_fdct_4x4 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 		  CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -832,7 +832,7 @@ jpeg_fdct_3x3 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS-PASS1_BITS-2);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -865,7 +865,7 @@ jpeg_fdct_3x3 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -1013,9 +1013,9 @@ jpeg_fdct_9x9 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 9)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We leave the results scaled up by an overall factor of 8.
@@ -1079,7 +1079,7 @@ jpeg_fdct_9x9 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -1171,9 +1171,9 @@ jpeg_fdct_10x10 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 10)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We leave the results scaled up by an overall factor of 8.
@@ -1243,7 +1243,7 @@ jpeg_fdct_10x10 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -1346,9 +1346,9 @@ jpeg_fdct_11x11 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 11)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We leave the results scaled up by an overall factor of 8.
@@ -1427,7 +1427,7 @@ jpeg_fdct_11x11 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -1518,9 +1518,9 @@ jpeg_fdct_12x12 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 12)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We leave the results scaled up by an overall factor of 8.
@@ -1593,7 +1593,7 @@ jpeg_fdct_12x12 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -1703,9 +1703,9 @@ jpeg_fdct_13x13 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 13)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We leave the results scaled up by an overall factor of 8.
@@ -1793,7 +1793,7 @@ jpeg_fdct_13x13 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -1901,9 +1901,9 @@ jpeg_fdct_14x14 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 14)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We leave the results scaled up by an overall factor of 8.
@@ -1994,7 +1994,7 @@ jpeg_fdct_14x14 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -2094,9 +2094,9 @@ jpeg_fdct_15x15 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 15)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We leave the results scaled up by an overall factor of 8.
@@ -2174,7 +2174,7 @@ jpeg_fdct_15x15 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -2289,9 +2289,9 @@ jpeg_fdct_16x16 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == DCTSIZE * 2)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -2382,7 +2382,7 @@ jpeg_fdct_16x16 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -2493,7 +2493,7 @@ jpeg_fdct_16x8 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[7] = (DCTELEM) DESCALE(tmp13, CONST_BITS-PASS1_BITS);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -2565,7 +2565,7 @@ jpeg_fdct_16x8 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[DCTSIZE*7] = (DCTELEM) DESCALE(tmp3, CONST_BITS+PASS1_BITS+1);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -2672,7 +2672,7 @@ jpeg_fdct_14x7 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS-PASS1_BITS);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -2730,7 +2730,7 @@ jpeg_fdct_14x7 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[DCTSIZE*5] = (DCTELEM) DESCALE(tmp2, CONST_BITS+PASS1_BITS+1);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -2820,7 +2820,7 @@ jpeg_fdct_12x6 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[7] = (DCTELEM) DESCALE(tmp13, CONST_BITS-PASS1_BITS);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -2870,7 +2870,7 @@ jpeg_fdct_12x6 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS+PASS1_BITS+1);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -2958,7 +2958,7 @@ jpeg_fdct_10x5 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[7] = (DCTELEM) DESCALE(tmp12 - tmp13, CONST_BITS-PASS1_BITS);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -3003,7 +3003,7 @@ jpeg_fdct_10x5 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -3107,7 +3107,7 @@ jpeg_fdct_8x4 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[7] = (DCTELEM) RIGHT_SHIFT(tmp3, CONST_BITS-PASS1_BITS-1);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -3144,7 +3144,7 @@ jpeg_fdct_8x4 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 		  CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -3212,7 +3212,7 @@ jpeg_fdct_6x3 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[5] = (DCTELEM) (tmp10 + ((tmp2 - tmp1) << (PASS1_BITS+1)));
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -3245,7 +3245,7 @@ jpeg_fdct_6x3 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -3307,7 +3307,7 @@ jpeg_fdct_4x2 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 		  CONST_BITS-PASS1_BITS-3);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -3329,7 +3329,7 @@ jpeg_fdct_4x2 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[DCTSIZE*1] = (DCTELEM) RIGHT_SHIFT(tmp0 - tmp1, PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -3465,9 +3465,9 @@ jpeg_fdct_8x16 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == DCTSIZE * 2)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -3558,7 +3558,7 @@ jpeg_fdct_8x16 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -3646,9 +3646,9 @@ jpeg_fdct_7x14 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 14)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -3740,7 +3740,7 @@ jpeg_fdct_7x14 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -3814,9 +3814,9 @@ jpeg_fdct_6x12 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 12)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -3890,7 +3890,7 @@ jpeg_fdct_6x12 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -3964,9 +3964,9 @@ jpeg_fdct_5x10 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
       if (ctr == 10)
 	break;			/* Done. */
       dataptr += DCTSIZE;	/* advance pointer to next row */
-    } else
+   } else
       dataptr = workspace;	/* switch pointer to extended workspace */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -4037,7 +4037,7 @@ jpeg_fdct_5x10 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 
     dataptr++;			/* advance pointer to next column */
     wsptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -4100,7 +4100,7 @@ jpeg_fdct_4x8 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 		  CONST_BITS-PASS1_BITS-1);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -4178,7 +4178,7 @@ jpeg_fdct_4x8 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[DCTSIZE*7] = (DCTELEM) RIGHT_SHIFT(tmp3, CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -4234,7 +4234,7 @@ jpeg_fdct_3x6 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS-PASS1_BITS-1);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We remove the PASS1_BITS scaling, but leave the results scaled up
@@ -4284,7 +4284,7 @@ jpeg_fdct_3x6 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 	      CONST_BITS+PASS1_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 
@@ -4329,7 +4329,7 @@ jpeg_fdct_2x4 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[1] = (DCTELEM) ((tmp0 - tmp1) << 3);
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns.
    * We leave the results scaled up by an overall factor of 8.
@@ -4364,7 +4364,7 @@ jpeg_fdct_2x4 (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 		  CONST_BITS);
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 

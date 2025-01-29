@@ -57,7 +57,7 @@ add_map_entry (j_decompress_ptr cinfo, int R, int G, int B)
 	GETJSAMPLE(colormap1[index]) == G &&
 	GETJSAMPLE(colormap2[index]) == B)
       return;			/* color is already in map */
-  }
+ }
 
   /* Check for map overflow. */
   if (ncolors >= (MAXJSAMPLE+1))
@@ -87,7 +87,7 @@ read_gif_map (j_decompress_ptr cinfo, FILE * infile)
   for (i = 1; i < 13; i++) {
     if ((header[i] = getc(infile)) == EOF)
       ERREXIT(cinfo, JERR_BAD_CMAP_FILE);
-  }
+ }
 
   /* Verify GIF Header */
   if (header[1] != 'I' || header[2] != 'F')
@@ -110,7 +110,7 @@ read_gif_map (j_decompress_ptr cinfo, FILE * infile)
 		  R << (BITS_IN_JSAMPLE-8),
 		  G << (BITS_IN_JSAMPLE-8),
 		  B << (BITS_IN_JSAMPLE-8));
-  }
+ }
 }
 
 
@@ -128,8 +128,8 @@ pbm_getc (FILE * infile)
   if (ch == '#') {
     do {
       ch = getc(infile);
-    } while (ch != '\n' && ch != EOF);
-  }
+   } while (ch != '\n' && ch != EOF);
+ }
   return ch;
 }
 
@@ -149,7 +149,7 @@ read_pbm_integer (j_decompress_ptr cinfo, FILE * infile)
     ch = pbm_getc(infile);
     if (ch == EOF)
       ERREXIT(cinfo, JERR_BAD_CMAP_FILE);
-  } while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
+ } while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
   
   if (ch < '0' || ch > '9')
     ERREXIT(cinfo, JERR_BAD_CMAP_FILE);
@@ -158,7 +158,7 @@ read_pbm_integer (j_decompress_ptr cinfo, FILE * infile)
   while ((ch = pbm_getc(infile)) >= '0' && ch <= '9') {
     val *= 10;
     val += ch - '0';
-  }
+ }
   return val;
 }
 
@@ -197,8 +197,8 @@ read_ppm_map (j_decompress_ptr cinfo, FILE * infile)
 	G = read_pbm_integer(cinfo, infile);
 	B = read_pbm_integer(cinfo, infile);
 	add_map_entry(cinfo, R, G, B);
-      }
-    }
+     }
+   }
     break;
 
   case '6':			/* it's a raw-format PPM file */
@@ -210,14 +210,14 @@ read_ppm_map (j_decompress_ptr cinfo, FILE * infile)
 	if (R == EOF || G == EOF || B == EOF)
 	  ERREXIT(cinfo, JERR_BAD_CMAP_FILE);
 	add_map_entry(cinfo, R, G, B);
-      }
-    }
+     }
+   }
     break;
 
   default:
     ERREXIT(cinfo, JERR_BAD_CMAP_FILE);
     break;
-  }
+ }
 }
 
 
@@ -247,7 +247,7 @@ read_color_map (j_decompress_ptr cinfo, FILE * infile)
   default:
     ERREXIT(cinfo, JERR_BAD_CMAP_FILE);
     break;
-  }
+ }
 }
 
 #endif /* QUANT_2PASS_SUPPORTED */

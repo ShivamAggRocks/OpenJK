@@ -49,31 +49,31 @@ static SDL_Window *SDL_window = NULL;
 IN_PrintKey
 ===============
 */
-static void IN_PrintKey( const SDL_Keysym *keysym, fakeAscii_t key, qboolean down )
+static void IN_PrintKey(const SDL_Keysym *keysym, fakeAscii_t key, qboolean down)
 {
-	if( down )
-		Com_Printf( "+ " );
+	if(down)
+		Com_Printf("+ ");
 	else
-		Com_Printf( "  " );
+		Com_Printf("  ");
 
-	Com_Printf( "Scancode: 0x%02x(%s) Sym: 0x%02x(%s)",
-			keysym->scancode, SDL_GetScancodeName( keysym->scancode ),
-			keysym->sym, SDL_GetKeyName( keysym->sym ) );
+	Com_Printf("Scancode: 0x%02x(%s) Sym: 0x%02x(%s)",
+			keysym->scancode, SDL_GetScancodeName(keysym->scancode),
+			keysym->sym, SDL_GetKeyName(keysym->sym));
 
-	if( keysym->mod & KMOD_LSHIFT )   Com_Printf( " KMOD_LSHIFT" );
-	if( keysym->mod & KMOD_RSHIFT )   Com_Printf( " KMOD_RSHIFT" );
-	if( keysym->mod & KMOD_LCTRL )    Com_Printf( " KMOD_LCTRL" );
-	if( keysym->mod & KMOD_RCTRL )    Com_Printf( " KMOD_RCTRL" );
-	if( keysym->mod & KMOD_LALT )     Com_Printf( " KMOD_LALT" );
-	if( keysym->mod & KMOD_RALT )     Com_Printf( " KMOD_RALT" );
-	if( keysym->mod & KMOD_LGUI )     Com_Printf( " KMOD_LGUI" );
-	if( keysym->mod & KMOD_RGUI )     Com_Printf( " KMOD_RGUI" );
-	if( keysym->mod & KMOD_NUM )      Com_Printf( " KMOD_NUM" );
-	if( keysym->mod & KMOD_CAPS )     Com_Printf( " KMOD_CAPS" );
-	if( keysym->mod & KMOD_MODE )     Com_Printf( " KMOD_MODE" );
-	if( keysym->mod & KMOD_RESERVED ) Com_Printf( " KMOD_RESERVED" );
+	if(keysym->mod & KMOD_LSHIFT)   Com_Printf(" KMOD_LSHIFT");
+	if(keysym->mod & KMOD_RSHIFT)   Com_Printf(" KMOD_RSHIFT");
+	if(keysym->mod & KMOD_LCTRL)    Com_Printf(" KMOD_LCTRL");
+	if(keysym->mod & KMOD_RCTRL)    Com_Printf(" KMOD_RCTRL");
+	if(keysym->mod & KMOD_LALT)     Com_Printf(" KMOD_LALT");
+	if(keysym->mod & KMOD_RALT)     Com_Printf(" KMOD_RALT");
+	if(keysym->mod & KMOD_LGUI)     Com_Printf(" KMOD_LGUI");
+	if(keysym->mod & KMOD_RGUI)     Com_Printf(" KMOD_RGUI");
+	if(keysym->mod & KMOD_NUM)      Com_Printf(" KMOD_NUM");
+	if(keysym->mod & KMOD_CAPS)     Com_Printf(" KMOD_CAPS");
+	if(keysym->mod & KMOD_MODE)     Com_Printf(" KMOD_MODE");
+	if(keysym->mod & KMOD_RESERVED) Com_Printf(" KMOD_RESERVED");
 
-	Com_Printf( " Q:0x%02x(%s)\n", key, Key_KeynumToString( key ) );
+	Com_Printf(" Q:0x%02x(%s)\n", key, Key_KeynumToString(key));
 }
 
 #define MAX_CONSOLE_KEYS 16
@@ -86,7 +86,7 @@ TODO: If the SDL_Scancode situation improves, use it instead of
       both of these methods
 ===============
 */
-static qboolean IN_IsConsoleKey( fakeAscii_t key, int character )
+static qboolean IN_IsConsoleKey(fakeAscii_t key, int character)
 {
 	typedef struct consoleKey_s
 	{
@@ -108,7 +108,7 @@ static qboolean IN_IsConsoleKey( fakeAscii_t key, int character )
 	int i;
 
 	// Only parse the variable when it changes
-	if( cl_consoleKeys->modified )
+	if(cl_consoleKeys->modified)
 	{
 		const char *text_p;
         char *token;
@@ -118,19 +118,19 @@ static qboolean IN_IsConsoleKey( fakeAscii_t key, int character )
 		numConsoleKeys = 0;
 
 		COM_BeginParseSession("cl_consoleKeys");
-		while( numConsoleKeys < MAX_CONSOLE_KEYS )
+		while(numConsoleKeys < MAX_CONSOLE_KEYS)
 		{
 			consoleKey_t *c = &consoleKeys[ numConsoleKeys ];
 			int charCode = 0;
 
-			token = COM_Parse( &text_p );
-			if( !token[ 0 ] )
+			token = COM_Parse(&text_p);
+			if(!token[ 0 ])
 				break;
 
-			if( strlen( token ) == 4 )
-				charCode = Com_HexStrToInt( token );
+			if(strlen(token) == 4)
+				charCode = Com_HexStrToInt(token);
 
-			if( charCode > 0 )
+			if(charCode > 0)
 			{
 				c->type = consoleKey_t::CHARACTER;
 				c->u.character = charCode;
@@ -138,10 +138,10 @@ static qboolean IN_IsConsoleKey( fakeAscii_t key, int character )
 			else
 			{
 				c->type = consoleKey_t::QUAKE_KEY;
-				c->u.key = (fakeAscii_t)Key_StringToKeynum( token );
+				c->u.key = (fakeAscii_t)Key_StringToKeynum(token);
 
 				// 0 isn't a key
-				if( c->u.key <= 0 )
+				if(c->u.key <= 0)
 					continue;
 			}
 
@@ -150,22 +150,22 @@ static qboolean IN_IsConsoleKey( fakeAscii_t key, int character )
 	}
 
 	// If the character is the same as the key, prefer the character
-	if( key == character )
+	if(key == character)
 		key = A_NULL;
 
-	for( i = 0; i < numConsoleKeys; i++ )
+	for(i = 0; i < numConsoleKeys; i++)
 	{
 		consoleKey_t *c = &consoleKeys[ i ];
 
-		switch( c->type )
+		switch(c->type)
 		{
 			case consoleKey_t::QUAKE_KEY:
-				if( key && c->u.key == key )
+				if(key && c->u.key == key)
 					return qtrue;
 				break;
 
 			case consoleKey_t::CHARACTER:
-				if( c->u.character == character )
+				if(c->u.character == character)
 					return qtrue;
 				break;
 		}
@@ -179,21 +179,21 @@ static qboolean IN_IsConsoleKey( fakeAscii_t key, int character )
 #include <windows.h>
 #endif
 
-static bool IN_NumLockEnabled( void )
+static bool IN_NumLockEnabled(void)
 {
 #if defined(_WIN32)
-	return (GetKeyState( VK_NUMLOCK ) & 1) != 0;
+	return (GetKeyState(VK_NUMLOCK) & 1) != 0;
 #else
 	// @fixme : doesn't give proper state if numlock is on before app startup
 	return (SDL_GetModState() & KMOD_NUM) != 0;
 #endif
 }
 
-static void IN_TranslateNumpad( SDL_Keysym *keysym, fakeAscii_t *key )
+static void IN_TranslateNumpad(SDL_Keysym *keysym, fakeAscii_t *key)
 {
-	if ( IN_NumLockEnabled() )
+	if (IN_NumLockEnabled())
 	{
-		switch ( keysym->sym )
+		switch (keysym->sym)
 		{
 		case SDLK_KP_0:
 			keysym->scancode = SDL_SCANCODE_0;
@@ -256,7 +256,7 @@ static void IN_TranslateNumpad( SDL_Keysym *keysym, fakeAscii_t *key )
 IN_ModTogglesConsole
 ===============
 */
-static qboolean IN_ModTogglesConsole( int mod ) {
+static qboolean IN_ModTogglesConsole(int mod) {
 	switch (cl_consoleShiftRequirement->integer) {
 	case 0:
 		return qtrue;
@@ -273,20 +273,20 @@ static qboolean IN_ModTogglesConsole( int mod ) {
 IN_TranslateSDLToJKKey
 ===============
 */
-static fakeAscii_t IN_TranslateSDLToJKKey( SDL_Keysym *keysym, qboolean down ) {
+static fakeAscii_t IN_TranslateSDLToJKKey(SDL_Keysym *keysym, qboolean down) {
 	fakeAscii_t key = A_NULL;
 
-	if ( keysym->sym >= A_LOW_A && keysym->sym <= A_LOW_Z )
+	if (keysym->sym >= A_LOW_A && keysym->sym <= A_LOW_Z)
 		key = (fakeAscii_t)(A_CAP_A + (keysym->sym - A_LOW_A));
-	else if ( keysym->sym >= A_LOW_AGRAVE && keysym->sym <= A_LOW_THORN && keysym->sym != A_DIVIDE )
+	else if (keysym->sym >= A_LOW_AGRAVE && keysym->sym <= A_LOW_THORN && keysym->sym != A_DIVIDE)
 		key = (fakeAscii_t)(A_CAP_AGRAVE + (keysym->sym - A_LOW_AGRAVE));
-	else if ( keysym->sym >= SDLK_SPACE && keysym->sym < SDLK_DELETE )
+	else if (keysym->sym >= SDLK_SPACE && keysym->sym < SDLK_DELETE)
 		key = (fakeAscii_t)keysym->sym;
 	else
 	{
-		IN_TranslateNumpad( keysym, &key );
+		IN_TranslateNumpad(keysym, &key);
 
-		switch( keysym->sym )
+		switch(keysym->sym)
 		{
 			case SDLK_PAGEUP:       key = A_PAGE_UP;       break;
 			case SDLK_KP_9:         key = A_KP_9;          break;
@@ -386,21 +386,21 @@ static fakeAscii_t IN_TranslateSDLToJKKey( SDL_Keysym *keysym, qboolean down ) {
 		}
 	}
 
-	if( in_keyboardDebug->integer )
-		IN_PrintKey( keysym, key, down );
+	if(in_keyboardDebug->integer)
+		IN_PrintKey(keysym, key, down);
 
-	if ( cl_consoleUseScanCode->integer )
+	if (cl_consoleUseScanCode->integer)
 	{
-		if ( keysym->scancode == SDL_SCANCODE_GRAVE )
+		if (keysym->scancode == SDL_SCANCODE_GRAVE)
 		{
-			if ( IN_ModTogglesConsole(keysym->mod) ) {
+			if (IN_ModTogglesConsole(keysym->mod)) {
 				key = A_CONSOLE;
 			}
 		}
 	}
 	else
 	{
-		if ( IN_IsConsoleKey( key, 0 ) )
+		if (IN_IsConsoleKey(key, 0))
 		{
 			// Console keys can't be bound or generate characters
 			key = A_CONSOLE;
@@ -415,18 +415,18 @@ static fakeAscii_t IN_TranslateSDLToJKKey( SDL_Keysym *keysym, qboolean down ) {
 IN_GobbleMotionEvents
 ===============
 */
-static void IN_GobbleMotionEvents( void )
+static void IN_GobbleMotionEvents(void)
 {
 	SDL_Event dummy[ 1 ];
 	int val = 0;
 
 	// Gobble any mouse motion events
-	SDL_PumpEvents( );
-	while( ( val = SDL_PeepEvents( dummy, 1, SDL_GETEVENT,
-		SDL_MOUSEMOTION, SDL_MOUSEMOTION ) ) > 0 ) { }
+	SDL_PumpEvents();
+	while((val = SDL_PeepEvents(dummy, 1, SDL_GETEVENT,
+		SDL_MOUSEMOTION, SDL_MOUSEMOTION)) > 0) {}
 
-	if ( val < 0 )
-		Com_Printf( "IN_GobbleMotionEvents failed: %s\n", SDL_GetError( ) );
+	if (val < 0)
+		Com_Printf("IN_GobbleMotionEvents failed: %s\n", SDL_GetError());
 }
 
 /*
@@ -434,28 +434,28 @@ static void IN_GobbleMotionEvents( void )
 IN_ActivateMouse
 ===============
 */
-static void IN_ActivateMouse( void )
+static void IN_ActivateMouse(void)
 {
-	if (!mouseAvailable || !SDL_WasInit( SDL_INIT_VIDEO ) )
+	if (!mouseAvailable || !SDL_WasInit(SDL_INIT_VIDEO))
 		return;
 
-	if( !mouseActive )
+	if(!mouseActive)
 	{
-		SDL_SetRelativeMouseMode( SDL_TRUE );
-		SDL_SetWindowGrab( SDL_window, SDL_TRUE );
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		SDL_SetWindowGrab(SDL_window, SDL_TRUE);
 
-		IN_GobbleMotionEvents( );
+		IN_GobbleMotionEvents();
 	}
 
 	// in_nograb makes no sense in fullscreen mode
-	if( !Cvar_VariableIntegerValue("r_fullscreen") )
+	if(!Cvar_VariableIntegerValue("r_fullscreen"))
 	{
-		if( in_nograb->modified || !mouseActive )
+		if(in_nograb->modified || !mouseActive)
 		{
-			if( in_nograb->integer )
-				SDL_SetWindowGrab( SDL_window, SDL_FALSE );
+			if(in_nograb->integer)
+				SDL_SetWindowGrab(SDL_window, SDL_FALSE);
 			else
-				SDL_SetWindowGrab( SDL_window, SDL_TRUE );
+				SDL_SetWindowGrab(SDL_window, SDL_TRUE);
 
 			in_nograb->modified = qfalse;
 		}
@@ -469,29 +469,29 @@ static void IN_ActivateMouse( void )
 IN_DeactivateMouse
 ===============
 */
-static void IN_DeactivateMouse( void )
+static void IN_DeactivateMouse(void)
 {
-	if( !SDL_WasInit( SDL_INIT_VIDEO ) )
+	if(!SDL_WasInit(SDL_INIT_VIDEO))
 		return;
 
 	// Always show the cursor when the mouse is disabled,
 	// but not when fullscreen
-	if( !Cvar_VariableIntegerValue("r_fullscreen") )
-		SDL_ShowCursor( 1 );
+	if(!Cvar_VariableIntegerValue("r_fullscreen"))
+		SDL_ShowCursor(1);
 
-	if( !mouseAvailable )
+	if(!mouseAvailable)
 		return;
 
-	if( mouseActive )
+	if(mouseActive)
 	{
-		IN_GobbleMotionEvents( );
+		IN_GobbleMotionEvents();
 
-		SDL_SetWindowGrab( SDL_window, SDL_FALSE );
-		SDL_SetRelativeMouseMode( SDL_FALSE );
+		SDL_SetWindowGrab(SDL_window, SDL_FALSE);
+		SDL_SetRelativeMouseMode(SDL_FALSE);
 
 		// Don't warp the mouse unless the cursor is within the window
-		if( SDL_GetWindowFlags( SDL_window ) & SDL_WINDOW_MOUSE_FOCUS )
-			SDL_WarpMouseInWindow( SDL_window, cls.glconfig.vidWidth / 2, cls.glconfig.vidHeight / 2 );
+		if(SDL_GetWindowFlags(SDL_window) & SDL_WINDOW_MOUSE_FOCUS)
+			SDL_WarpMouseInWindow(SDL_window, cls.glconfig.vidWidth / 2, cls.glconfig.vidHeight / 2);
 
 		mouseActive = qfalse;
 	}
@@ -536,7 +536,7 @@ struct stick_state_s
 IN_InitJoystick
 ===============
 */
-static void IN_InitJoystick( void )
+static void IN_InitJoystick(void)
 {
 	int i = 0;
 	int total = 0;
@@ -569,86 +569,86 @@ static void IN_InitJoystick( void )
 		Q_strcat(buf, sizeof(buf), "\n");
 	}
 
-	Cvar_Get( "in_availableJoysticks", buf, CVAR_ROM );
+	Cvar_Get("in_availableJoysticks", buf, CVAR_ROM);
 
-	if( !in_joystick->integer ) {
-		Com_DPrintf( "Joystick is not active.\n" );
+	if(!in_joystick->integer) {
+		Com_DPrintf("Joystick is not active.\n");
 		SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 		return;
 	}
 
-	in_joystickNo = Cvar_Get( "in_joystickNo", "0", CVAR_ARCHIVE_ND );
-	if( in_joystickNo->integer < 0 || in_joystickNo->integer >= total )
-		Cvar_Set( "in_joystickNo", "0" );
+	in_joystickNo = Cvar_Get("in_joystickNo", "0", CVAR_ARCHIVE_ND);
+	if(in_joystickNo->integer < 0 || in_joystickNo->integer >= total)
+		Cvar_Set("in_joystickNo", "0");
 
-	in_joystickUseAnalog = Cvar_Get( "in_joystickUseAnalog", "0", CVAR_ARCHIVE_ND );
+	in_joystickUseAnalog = Cvar_Get("in_joystickUseAnalog", "0", CVAR_ARCHIVE_ND);
 
-	in_joystickThreshold = Cvar_Get( "joy_threshold", "0.15", CVAR_ARCHIVE_ND );
+	in_joystickThreshold = Cvar_Get("joy_threshold", "0.15", CVAR_ARCHIVE_ND);
 
-	stick = SDL_JoystickOpen( in_joystickNo->integer );
+	stick = SDL_JoystickOpen(in_joystickNo->integer);
 
 	if (stick == NULL) {
-		Com_DPrintf( "No joystick opened.\n" );
+		Com_DPrintf("No joystick opened.\n");
 		return;
 	}
 
-	Com_DPrintf( "Joystick %d opened\n", in_joystickNo->integer );
-	Com_DPrintf( "Name:       %s\n", SDL_JoystickNameForIndex(in_joystickNo->integer) );
-	Com_DPrintf( "Axes:       %d\n", SDL_JoystickNumAxes(stick) );
-	Com_DPrintf( "Hats:       %d\n", SDL_JoystickNumHats(stick) );
-	Com_DPrintf( "Buttons:    %d\n", SDL_JoystickNumButtons(stick) );
-	Com_DPrintf( "Balls:      %d\n", SDL_JoystickNumBalls(stick) );
-	Com_DPrintf( "Use Analog: %s\n", in_joystickUseAnalog->integer ? "Yes" : "No" );
-	Com_DPrintf( "Threshold: %f\n", in_joystickThreshold->value );
+	Com_DPrintf("Joystick %d opened\n", in_joystickNo->integer);
+	Com_DPrintf("Name:       %s\n", SDL_JoystickNameForIndex(in_joystickNo->integer));
+	Com_DPrintf("Axes:       %d\n", SDL_JoystickNumAxes(stick));
+	Com_DPrintf("Hats:       %d\n", SDL_JoystickNumHats(stick));
+	Com_DPrintf("Buttons:    %d\n", SDL_JoystickNumButtons(stick));
+	Com_DPrintf("Balls:      %d\n", SDL_JoystickNumBalls(stick));
+	Com_DPrintf("Use Analog: %s\n", in_joystickUseAnalog->integer ? "Yes" : "No");
+	Com_DPrintf("Threshold: %f\n", in_joystickThreshold->value);
 
 	SDL_JoystickEventState(SDL_QUERY);
 }
 
-void IN_Init( void *windowData )
+void IN_Init(void *windowData)
 {
-	if( !SDL_WasInit( SDL_INIT_VIDEO ) )
+	if(!SDL_WasInit(SDL_INIT_VIDEO))
 	{
-		Com_Error( ERR_FATAL, "IN_Init called before SDL_Init( SDL_INIT_VIDEO )" );
+		Com_Error(ERR_FATAL, "IN_Init called before SDL_Init(SDL_INIT_VIDEO)");
 		return;
 	}
 
 	SDL_window = (SDL_Window *)windowData;
 
-	Com_DPrintf( "\n------- Input Initialization -------\n" );
+	Com_DPrintf("\n------- Input Initialization -------\n");
 
 	// joystick variables
-	in_keyboardDebug = Cvar_Get( "in_keyboardDebug", "0", CVAR_ARCHIVE_ND );
+	in_keyboardDebug = Cvar_Get("in_keyboardDebug", "0", CVAR_ARCHIVE_ND);
 
-	in_joystick = Cvar_Get( "in_joystick", "0", CVAR_ARCHIVE_ND|CVAR_LATCH );
+	in_joystick = Cvar_Get("in_joystick", "0", CVAR_ARCHIVE_ND|CVAR_LATCH);
 
 	// mouse variables
-	in_mouse = Cvar_Get( "in_mouse", "1", CVAR_ARCHIVE );
-	in_nograb = Cvar_Get( "in_nograb", "0", CVAR_ARCHIVE_ND );
+	in_mouse = Cvar_Get("in_mouse", "1", CVAR_ARCHIVE);
+	in_nograb = Cvar_Get("in_nograb", "0", CVAR_ARCHIVE_ND);
 
-	SDL_StartTextInput( );
+	SDL_StartTextInput();
 
-	mouseAvailable = (qboolean)( in_mouse->value != 0 );
-	if ( in_mouse->integer == 2 ) {
-		Com_DPrintf( "Not using raw mouse input\n" );
-		SDL_SetHint( "SDL_MOUSE_RELATIVE_MODE_WARP", "1" );
+	mouseAvailable = (qboolean)(in_mouse->value != 0);
+	if (in_mouse->integer == 2) {
+		Com_DPrintf("Not using raw mouse input\n");
+		SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "1");
 	}
 	else {
-		Com_DPrintf( "Using raw mouse input\n" );
-		SDL_SetHint( "SDL_MOUSE_RELATIVE_MODE_WARP", "0" );
+		Com_DPrintf("Using raw mouse input\n");
+		SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "0");
 	}
-	IN_DeactivateMouse( );
+	IN_DeactivateMouse();
 
-	int appState = SDL_GetWindowFlags( SDL_window );
-	Cvar_SetValue( "com_unfocused", ( appState & SDL_WINDOW_INPUT_FOCUS ) == 0 );
-	Cvar_SetValue( "com_minimized", ( appState & SDL_WINDOW_MINIMIZED ) != 0 );
+	int appState = SDL_GetWindowFlags(SDL_window);
+	Cvar_SetValue("com_unfocused", (appState & SDL_WINDOW_INPUT_FOCUS) == 0);
+	Cvar_SetValue("com_minimized", (appState & SDL_WINDOW_MINIMIZED) != 0);
 
-	IN_InitJoystick( );
-	Com_DPrintf( "------------------------------------\n" );
+	IN_InitJoystick();
+	Com_DPrintf("------------------------------------\n");
 }
 
-uint8_t ConvertUTF32ToExpectedCharset( uint32_t utf32 )
+uint8_t ConvertUTF32ToExpectedCharset(uint32_t utf32)
 {
-	switch ( utf32 )
+	switch (utf32)
 	{
 		// Cyrillic characters - mapped to Windows-1251 encoding
 		case 0x0410: return 192;
@@ -809,61 +809,61 @@ uint8_t ConvertUTF32ToExpectedCharset( uint32_t utf32 )
 IN_ProcessEvents
 ===============
 */
-void SNDDMA_Activate( qboolean activate );
-static void IN_ProcessEvents( void )
+void SNDDMA_Activate(qboolean activate);
+static void IN_ProcessEvents(void)
 {
 	SDL_Event e;
 	fakeAscii_t key = A_NULL;
 	static fakeAscii_t lastKeyDown = A_NULL;
 
-	if( !SDL_WasInit( SDL_INIT_VIDEO ) )
+	if(!SDL_WasInit(SDL_INIT_VIDEO))
 			return;
 
-	while( SDL_PollEvent( &e ) )
+	while(SDL_PollEvent(&e))
 	{
-		switch( e.type )
+		switch(e.type)
 		{
 			case SDL_KEYDOWN:
-				key = IN_TranslateSDLToJKKey( &e.key.keysym, qtrue );
-				if ( key != A_NULL )
-					Sys_QueEvent( 0, SE_KEY, key, qtrue, 0, NULL );
+				key = IN_TranslateSDLToJKKey(&e.key.keysym, qtrue);
+				if (key != A_NULL)
+					Sys_QueEvent(0, SE_KEY, key, qtrue, 0, NULL);
 
-				if ( key == A_BACKSPACE )
-					Sys_QueEvent( 0, SE_CHAR, CTRL('h'), qfalse, 0, NULL);
-				else if ( kg.keys[A_CTRL].down && key >= A_CAP_A && key <= A_CAP_Z )
-					Sys_QueEvent( 0, SE_CHAR, CTRL(tolower(key)), qfalse, 0, NULL );
+				if (key == A_BACKSPACE)
+					Sys_QueEvent(0, SE_CHAR, CTRL('h'), qfalse, 0, NULL);
+				else if (kg.keys[A_CTRL].down && key >= A_CAP_A && key <= A_CAP_Z)
+					Sys_QueEvent(0, SE_CHAR, CTRL(tolower(key)), qfalse, 0, NULL);
 
 				lastKeyDown = key;
 				break;
 
 			case SDL_KEYUP:
-				key = IN_TranslateSDLToJKKey( &e.key.keysym, qfalse );
-				if( key != A_NULL )
-					Sys_QueEvent( 0, SE_KEY, key, qfalse, 0, NULL );
+				key = IN_TranslateSDLToJKKey(&e.key.keysym, qfalse);
+				if(key != A_NULL)
+					Sys_QueEvent(0, SE_KEY, key, qfalse, 0, NULL);
 
 				lastKeyDown = A_NULL;
 				break;
 
 			case SDL_TEXTINPUT:
-				if( lastKeyDown != A_CONSOLE )
+				if(lastKeyDown != A_CONSOLE)
 				{
 					char *c = e.text.text;
 
 					// Quick and dirty UTF-8 to UTF-32 conversion
-					while( *c )
+					while(*c)
 					{
-						uint32_t utf32 = ConvertUTF8ToUTF32( c, &c );
-						if( utf32 != 0 )
+						uint32_t utf32 = ConvertUTF8ToUTF32(c, &c);
+						if(utf32 != 0)
 						{
-							if( IN_IsConsoleKey( A_NULL, utf32 ) && !cl_consoleUseScanCode->integer )
+							if(IN_IsConsoleKey(A_NULL, utf32) && !cl_consoleUseScanCode->integer)
 							{
-								Sys_QueEvent( 0, SE_KEY, A_CONSOLE, qtrue, 0, NULL );
-								Sys_QueEvent( 0, SE_KEY, A_CONSOLE, qfalse, 0, NULL );
+								Sys_QueEvent(0, SE_KEY, A_CONSOLE, qtrue, 0, NULL);
+								Sys_QueEvent(0, SE_KEY, A_CONSOLE, qfalse, 0, NULL);
 							}
 							else
 							{
-								uint8_t encoded = ConvertUTF32ToExpectedCharset( utf32 );
-								Sys_QueEvent( 0, SE_CHAR, encoded, 0, 0, NULL );
+								uint8_t encoded = ConvertUTF32ToExpectedCharset(utf32);
+								Sys_QueEvent(0, SE_CHAR, encoded, 0, 0, NULL);
 							}
 						}
 					}
@@ -871,11 +871,11 @@ static void IN_ProcessEvents( void )
 				break;
 
 			case SDL_MOUSEMOTION:
-				if ( mouseActive )
+				if (mouseActive)
 				{
-					if ( !e.motion.xrel && !e.motion.yrel )
+					if (!e.motion.xrel && !e.motion.yrel)
 						break;
-					Sys_QueEvent( 0, SE_MOUSE, e.motion.xrel, e.motion.yrel, 0, NULL );
+					Sys_QueEvent(0, SE_MOUSE, e.motion.xrel, e.motion.yrel, 0, NULL);
 				}
 				break;
 
@@ -883,30 +883,30 @@ static void IN_ProcessEvents( void )
 			case SDL_MOUSEBUTTONUP:
 				{
 					unsigned short b;
-					switch( e.button.button )
+					switch(e.button.button)
 					{
 						case SDL_BUTTON_LEFT:	b = A_MOUSE1;     break;
 						case SDL_BUTTON_MIDDLE:	b = A_MOUSE3;     break;
 						case SDL_BUTTON_RIGHT:	b = A_MOUSE2;     break;
 						case SDL_BUTTON_X1:		b = A_MOUSE4;     break;
 						case SDL_BUTTON_X2:		b = A_MOUSE5;     break;
-						default: b = A_AUX0 + ( e.button.button - 6 ) % 32; break;
+						default: b = A_AUX0 + (e.button.button - 6) % 32; break;
 					}
-					Sys_QueEvent( 0, SE_KEY, b,
-						( e.type == SDL_MOUSEBUTTONDOWN ? qtrue : qfalse ), 0, NULL );
+					Sys_QueEvent(0, SE_KEY, b,
+						(e.type == SDL_MOUSEBUTTONDOWN ? qtrue : qfalse), 0, NULL);
 				}
 				break;
 
 			case SDL_MOUSEWHEEL:
-				if( e.wheel.y > 0 )
+				if(e.wheel.y > 0)
 				{
-					Sys_QueEvent( 0, SE_KEY, A_MWHEELUP, qtrue, 0, NULL );
-					Sys_QueEvent( 0, SE_KEY, A_MWHEELUP, qfalse, 0, NULL );
+					Sys_QueEvent(0, SE_KEY, A_MWHEELUP, qtrue, 0, NULL);
+					Sys_QueEvent(0, SE_KEY, A_MWHEELUP, qfalse, 0, NULL);
 				}
-				else if( e.wheel.y < 0 )
+				else if(e.wheel.y < 0)
 				{
-					Sys_QueEvent( 0, SE_KEY, A_MWHEELDOWN, qtrue, 0, NULL );
-					Sys_QueEvent( 0, SE_KEY, A_MWHEELDOWN, qfalse, 0, NULL );
+					Sys_QueEvent(0, SE_KEY, A_MWHEELDOWN, qtrue, 0, NULL);
+					Sys_QueEvent(0, SE_KEY, A_MWHEELDOWN, qfalse, 0, NULL);
 				}
 				break;
 
@@ -915,22 +915,22 @@ static void IN_ProcessEvents( void )
 				break;
 
 			case SDL_WINDOWEVENT:
-				switch( e.window.event )
+				switch(e.window.event)
 				{
-					case SDL_WINDOWEVENT_MINIMIZED:    Cvar_SetValue( "com_minimized", 1 ); break;
+					case SDL_WINDOWEVENT_MINIMIZED:    Cvar_SetValue("com_minimized", 1); break;
 					case SDL_WINDOWEVENT_RESTORED:
-					case SDL_WINDOWEVENT_MAXIMIZED:    Cvar_SetValue( "com_minimized", 0 ); break;
+					case SDL_WINDOWEVENT_MAXIMIZED:    Cvar_SetValue("com_minimized", 0); break;
 					case SDL_WINDOWEVENT_FOCUS_LOST:
 					{
-						Cvar_SetValue( "com_unfocused", 1 );
-						SNDDMA_Activate( qfalse );
+						Cvar_SetValue("com_unfocused", 1);
+						SNDDMA_Activate(qfalse);
 						break;
 					}
 
 					case SDL_WINDOWEVENT_FOCUS_GAINED:
 					{
-						Cvar_SetValue( "com_unfocused", 0 );
-						SNDDMA_Activate( qtrue );
+						Cvar_SetValue("com_unfocused", 0);
+						SNDDMA_Activate(qtrue);
 						break;
 					}
 				}
@@ -947,7 +947,7 @@ static void IN_ProcessEvents( void )
 IN_JoyMove
 ===============
 */
-static void IN_JoyMove( void )
+static void IN_JoyMove(void)
 {
 	unsigned int axes = 0;
 	unsigned int hats = 0;
@@ -981,7 +981,7 @@ static void IN_JoyMove( void )
 				balldx *= 2;
 			if (abs(balldy) > 1)
 				balldy *= 2;
-			Sys_QueEvent( 0, SE_MOUSE, balldx, balldy, 0, NULL );
+			Sys_QueEvent(0, SE_MOUSE, balldx, balldy, 0, NULL);
 		}
 	}
 
@@ -996,7 +996,7 @@ static void IN_JoyMove( void )
 			qboolean pressed = (qboolean)(SDL_JoystickGetButton(stick, i) != 0);
 			if (pressed != stick_state.buttons[i])
 			{
-				Sys_QueEvent( 0, SE_KEY, A_JOY1 + i, pressed, 0, NULL );
+				Sys_QueEvent(0, SE_KEY, A_JOY1 + i, pressed, 0, NULL);
 				stick_state.buttons[i] = pressed;
 			}
 		}
@@ -1016,70 +1016,70 @@ static void IN_JoyMove( void )
 	// update hat state
 	if (hats != stick_state.oldhats)
 	{
-		for( i = 0; i < 4; i++ ) {
-			if( ((Uint8 *)&hats)[i] != ((Uint8 *)&stick_state.oldhats)[i] ) {
+		for(i = 0; i < 4; i++) {
+			if(((Uint8 *)&hats)[i] != ((Uint8 *)&stick_state.oldhats)[i]) {
 				// release event
-				switch( ((Uint8 *)&stick_state.oldhats)[i] ) {
+				switch(((Uint8 *)&stick_state.oldhats)[i]) {
 					case SDL_HAT_UP:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 0], qfalse, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 0], qfalse, 0, NULL);
 						break;
 					case SDL_HAT_RIGHT:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 1], qfalse, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 1], qfalse, 0, NULL);
 						break;
 					case SDL_HAT_DOWN:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 2], qfalse, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 2], qfalse, 0, NULL);
 						break;
 					case SDL_HAT_LEFT:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 3], qfalse, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 3], qfalse, 0, NULL);
 						break;
 					case SDL_HAT_RIGHTUP:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 0], qfalse, 0, NULL );
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 1], qfalse, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 0], qfalse, 0, NULL);
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 1], qfalse, 0, NULL);
 						break;
 					case SDL_HAT_RIGHTDOWN:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 2], qfalse, 0, NULL );
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 1], qfalse, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 2], qfalse, 0, NULL);
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 1], qfalse, 0, NULL);
 						break;
 					case SDL_HAT_LEFTUP:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 0], qfalse, 0, NULL );
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 3], qfalse, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 0], qfalse, 0, NULL);
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 3], qfalse, 0, NULL);
 						break;
 					case SDL_HAT_LEFTDOWN:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 2], qfalse, 0, NULL );
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 3], qfalse, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 2], qfalse, 0, NULL);
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 3], qfalse, 0, NULL);
 						break;
 					default:
 						break;
 				}
 				// press event
-				switch( ((Uint8 *)&hats)[i] ) {
+				switch(((Uint8 *)&hats)[i]) {
 					case SDL_HAT_UP:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 0], qtrue, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 0], qtrue, 0, NULL);
 						break;
 					case SDL_HAT_RIGHT:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 1], qtrue, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 1], qtrue, 0, NULL);
 						break;
 					case SDL_HAT_DOWN:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 2], qtrue, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 2], qtrue, 0, NULL);
 						break;
 					case SDL_HAT_LEFT:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 3], qtrue, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 3], qtrue, 0, NULL);
 						break;
 					case SDL_HAT_RIGHTUP:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 0], qtrue, 0, NULL );
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 1], qtrue, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 0], qtrue, 0, NULL);
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 1], qtrue, 0, NULL);
 						break;
 					case SDL_HAT_RIGHTDOWN:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 2], qtrue, 0, NULL );
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 1], qtrue, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 2], qtrue, 0, NULL);
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 1], qtrue, 0, NULL);
 						break;
 					case SDL_HAT_LEFTUP:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 0], qtrue, 0, NULL );
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 3], qtrue, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 0], qtrue, 0, NULL);
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 3], qtrue, 0, NULL);
 						break;
 					case SDL_HAT_LEFTDOWN:
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 2], qtrue, 0, NULL );
-						Sys_QueEvent( 0, SE_KEY, hat_keys[4*i + 3], qtrue, 0, NULL );
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 2], qtrue, 0, NULL);
+						Sys_QueEvent(0, SE_KEY, hat_keys[4*i + 3], qtrue, 0, NULL);
 						break;
 					default:
 						break;
@@ -1101,13 +1101,13 @@ static void IN_JoyMove( void )
 			for (i = 0; i < total; i++)
 			{
 				Sint16 axis = SDL_JoystickGetAxis(stick, i);
-				float f = ( (float) abs(axis) ) / 32767.0f;
+				float f = ((float) abs(axis)) / 32767.0f;
 
-				if( f < in_joystickThreshold->value ) axis = 0;
+				if(f < in_joystickThreshold->value) axis = 0;
 
-				if ( axis != stick_state.oldaaxes[i] )
+				if (axis != stick_state.oldaaxes[i])
 				{
-					Sys_QueEvent( 0, SE_JOYSTICK_AXIS, i, axis, 0, NULL );
+					Sys_QueEvent(0, SE_JOYSTICK_AXIS, i, axis, 0, NULL);
 					stick_state.oldaaxes[i] = axis;
 				}
 			}
@@ -1118,11 +1118,11 @@ static void IN_JoyMove( void )
 			for (i = 0; i < total; i++)
 			{
 				Sint16 axis = SDL_JoystickGetAxis(stick, i);
-				float f = ( (float) axis ) / 32767.0f;
-				if( f < -in_joystickThreshold->value ) {
-					axes |= ( 1 << ( i * 2 ) );
-				} else if( f > in_joystickThreshold->value ) {
-					axes |= ( 1 << ( ( i * 2 ) + 1 ) );
+				float f = ((float) axis) / 32767.0f;
+				if(f < -in_joystickThreshold->value) {
+					axes |= (1 << (i * 2));
+				} else if(f > in_joystickThreshold->value) {
+					axes |= (1 << ((i * 2) + 1));
 				}
 			}
 		}
@@ -1131,13 +1131,13 @@ static void IN_JoyMove( void )
 	/* Time to update axes state based on old vs. new. */
 	if (axes != stick_state.oldaxes)
 	{
-		for( i = 0; i < 16; i++ ) {
-			if( ( axes & ( 1 << i ) ) && !( stick_state.oldaxes & ( 1 << i ) ) ) {
-				Sys_QueEvent( 0, SE_KEY, joy_keys[i], qtrue, 0, NULL );
+		for(i = 0; i < 16; i++) {
+			if((axes & (1 << i)) && !(stick_state.oldaxes & (1 << i))) {
+				Sys_QueEvent(0, SE_KEY, joy_keys[i], qtrue, 0, NULL);
 			}
 
-			if( !( axes & ( 1 << i ) ) && ( stick_state.oldaxes & ( 1 << i ) ) ) {
-				Sys_QueEvent( 0, SE_KEY, joy_keys[i], qfalse, 0, NULL );
+			if(!(axes & (1 << i)) && (stick_state.oldaxes & (1 << i))) {
+				Sys_QueEvent(0, SE_KEY, joy_keys[i], qfalse, 0, NULL);
 			}
 		}
 	}
@@ -1150,30 +1150,30 @@ static void IN_JoyMove( void )
 void IN_Frame (void) {
 	qboolean loading;
 
-	IN_JoyMove( );
+	IN_JoyMove();
 
 	// If not DISCONNECTED (main menu) or ACTIVE (in game), we're loading
-	loading = (qboolean)( cls.state != CA_DISCONNECTED && cls.state != CA_ACTIVE );
+	loading = (qboolean)(cls.state != CA_DISCONNECTED && cls.state != CA_ACTIVE);
 
-	if( !cls.glconfig.isFullscreen && ( Key_GetCatcher( ) & KEYCATCH_CONSOLE ) )
+	if(!cls.glconfig.isFullscreen && (Key_GetCatcher() & KEYCATCH_CONSOLE))
 	{
 		// Console is down in windowed mode
-		IN_DeactivateMouse( );
+		IN_DeactivateMouse();
 	}
-	else if( !cls.glconfig.isFullscreen && loading && !cls.cursorActive )
+	else if(!cls.glconfig.isFullscreen && loading && !cls.cursorActive)
 	{
 		// Loading in windowed mode
-		IN_DeactivateMouse( );
+		IN_DeactivateMouse();
 	}
-	else if( !( SDL_GetWindowFlags( SDL_window ) & SDL_WINDOW_INPUT_FOCUS ) )
+	else if(!(SDL_GetWindowFlags(SDL_window) & SDL_WINDOW_INPUT_FOCUS))
 	{
 		// Window not got focus
-		IN_DeactivateMouse( );
+		IN_DeactivateMouse();
 	}
 	else
-		IN_ActivateMouse( );
+		IN_ActivateMouse();
 
-	IN_ProcessEvents( );
+	IN_ProcessEvents();
 }
 
 /*
@@ -1181,9 +1181,9 @@ void IN_Frame (void) {
 IN_ShutdownJoystick
 ===============
 */
-static void IN_ShutdownJoystick( void )
+static void IN_ShutdownJoystick(void)
 {
-	if ( !SDL_WasInit( SDL_INIT_JOYSTICK ) )
+	if (!SDL_WasInit(SDL_INIT_JOYSTICK))
 		return;
 
 	if (stick)
@@ -1195,13 +1195,13 @@ static void IN_ShutdownJoystick( void )
 	SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 }
 
-void IN_Shutdown( void ) {
-	SDL_StopTextInput( );
+void IN_Shutdown(void) {
+	SDL_StopTextInput();
 
-	IN_DeactivateMouse( );
+	IN_DeactivateMouse();
 	mouseAvailable = qfalse;
 
-	IN_ShutdownJoystick( );
+	IN_ShutdownJoystick();
 
 	SDL_window = NULL;
 }
@@ -1211,8 +1211,8 @@ void IN_Shutdown( void ) {
 IN_Restart
 ===============
 */
-void IN_Restart( void )
+void IN_Restart(void)
 {
-	IN_ShutdownJoystick( );
-	IN_Init( SDL_window );
+	IN_ShutdownJoystick();
+	IN_Init(SDL_window);
 }

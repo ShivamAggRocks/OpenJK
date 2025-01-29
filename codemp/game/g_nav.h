@@ -35,7 +35,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	MIN_STOP_DIST 64
 #define	MIN_BLOCKED_SPEECH_TIME	4000
 #define	MIN_DOOR_BLOCK_DIST			16
-#define	MIN_DOOR_BLOCK_DIST_SQR		( MIN_DOOR_BLOCK_DIST * MIN_DOOR_BLOCK_DIST )
+#define	MIN_DOOR_BLOCK_DIST_SQR		(MIN_DOOR_BLOCK_DIST * MIN_DOOR_BLOCK_DIST)
 #define	SHOVE_SPEED	200
 #define SHOVE_LIFT	10
 #define	MAX_RADIUS_CHECK	1024
@@ -80,17 +80,17 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 	extern	int	 NAVDEBUG_curGoal;
 
-	void NAV_Shutdown( void );
-	void NAV_CalculatePaths( const char *filename, int checksum );
-	void NAV_CalculateSquadPaths( const char *filename, int checksum );
+	void NAV_Shutdown(void);
+	void NAV_CalculatePaths(const char *filename, int checksum);
+	void NAV_CalculateSquadPaths(const char *filename, int checksum);
 
-	void NAV_ShowDebugInfo( void );
+	void NAV_ShowDebugInfo(void);
 
-	int NAV_GetNearestNode( gentity_t *self, int lastNode );
-	extern int NAV_TestBestNode( gentity_t *self, int startID, int endID, qboolean failEdge );
+	int NAV_GetNearestNode(gentity_t *self, int lastNode);
+	extern int NAV_TestBestNode(gentity_t *self, int startID, int endID, qboolean failEdge);
 
-	qboolean NPC_GetMoveDirection( vec3_t out, float *distance );
-	void NPC_MoveToGoalExt( vec3_t point );
-	void NAV_FindPlayerWaypoint( int clNum );
-	qboolean NAV_CheckAhead( gentity_t *self, vec3_t end, trace_t *trace, int clipmask );
+	qboolean NPC_GetMoveDirection(vec3_t out, float *distance);
+	void NPC_MoveToGoalExt(vec3_t point);
+	void NAV_FindPlayerWaypoint(int clNum);
+	qboolean NAV_CheckAhead(gentity_t *self, vec3_t end, trace_t *trace, int clipmask);
 #endif

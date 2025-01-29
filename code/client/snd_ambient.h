@@ -78,7 +78,7 @@ typedef struct ambientSet_s
 	int				fadeTime;						//When the fade was started on this set
 } ambientSet_t;
 
-typedef void (*parseFunc_t)( ambientSet_t & );
+typedef void (*parseFunc_t)(ambientSet_t &);
 
 // Classes
 
@@ -90,17 +90,17 @@ public:
 	CSetGroup();
 	~CSetGroup();
 
-	void Init( void )
+	void Init(void)
 	{
 		Free();
 	}
 
-	void Free( void );
+	void Free(void);
 
-	ambientSet_t *AddSet( const char *name );
+	ambientSet_t *AddSet(const char *name);
 
-	ambientSet_t *GetSet ( const char *name );
-	ambientSet_t *GetSet ( int ID );
+	ambientSet_t *GetSet (const char *name);
+	ambientSet_t *GetSet (int ID);
 
 protected:
 
@@ -111,14 +111,14 @@ protected:
 
 // Prototypes
 
-extern void AS_Init( void );
-extern void AS_Free( void );
-extern void AS_ParseSets( void );
-extern void AS_AddPrecacheEntry( const char *name );
+extern void AS_Init(void);
+extern void AS_Free(void);
+extern void AS_ParseSets(void);
+extern void AS_AddPrecacheEntry(const char *name);
 
-extern void S_UpdateAmbientSet ( const char *name, vec3_t origin );
-extern int S_AddLocalSet( const char *name, vec3_t origin, int time );
+extern void S_UpdateAmbientSet (const char *name, vec3_t origin);
+extern int S_AddLocalSet(const char *name, vec3_t origin, int time);
 
-extern sfxHandle_t	AS_GetBModelSound( const char *name, int stage );
+extern sfxHandle_t	AS_GetBModelSound(const char *name, int stage);
 
 #endif	//__SND_AMBIENT__

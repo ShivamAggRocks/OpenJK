@@ -29,7 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include <map>
 #include <algorithm>
 
-#define STL_ITERATE( a, b )		for ( a = b.begin(); a != b.end(); ++a )
-#define STL_INSERT( a, b )		a.insert( a.end(), b );
+#define STL_ITERATE(a, b)		for (a = b.begin(); a != b.end(); ++a)
+#define STL_INSERT(a, b)		a.insert(a.end(), b);
 
 #endif

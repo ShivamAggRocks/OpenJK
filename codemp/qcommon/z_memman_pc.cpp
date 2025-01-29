@@ -63,7 +63,7 @@ typedef struct
 
 static inline zoneTail_t *ZoneTailFromHeader(zoneHeader_t *pHeader)
 {
-	return (zoneTail_t*) ( (char*)pHeader + sizeof(*pHeader) + pHeader->iSize );
+	return (zoneTail_t*) ((char*)pHeader + sizeof(*pHeader) + pHeader->iSize);
 }
 
 #ifdef DETAILED_ZONE_DEBUG_CODE
@@ -154,20 +154,20 @@ typedef struct StaticMem_s {
 #pragma pack(pop)
 
 StaticZeroMem_t gZeroMalloc  =
-	{ {ZONE_MAGIC, TAG_STATIC,0,NULL,NULL},{ZONE_MAGIC}};
+	{{ZONE_MAGIC, TAG_STATIC,0,NULL,NULL},{ZONE_MAGIC}};
 StaticMem_t gEmptyString =
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'\0','\0'},{ZONE_MAGIC}};
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'\0','\0'},{ZONE_MAGIC}};
 StaticMem_t gNumberString[] = {
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'0','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'1','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'2','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'3','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'4','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'5','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'6','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'7','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'8','\0'},{ZONE_MAGIC}},
-	{ {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'9','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'0','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'1','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'2','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'3','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'4','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'5','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'6','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'7','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'8','\0'},{ZONE_MAGIC}},
+	{{ZONE_MAGIC, TAG_STATIC,2,NULL,NULL},{'9','\0'},{ZONE_MAGIC}},
 };
 
 qboolean gbMemFreeupOccured = qfalse;
@@ -196,9 +196,9 @@ void *Z_Malloc(int iSize, memtag_t eTag, qboolean bZeroit /* = qfalse */, int iU
 		}
 
 		if (bZeroit) {
-			pMemory = (zoneHeader_t *) calloc ( iRealSize, 1 );
+			pMemory = (zoneHeader_t *) calloc (iRealSize, 1);
 		} else {
-			pMemory = (zoneHeader_t *) malloc ( iRealSize );
+			pMemory = (zoneHeader_t *) malloc (iRealSize);
 		}
 		if (!pMemory)
 		{
@@ -236,7 +236,7 @@ void *Z_Malloc(int iSize, memtag_t eTag, qboolean bZeroit /* = qfalse */, int iU
 
 			// ditch the model-binaries cache...  (must be getting desperate here!)
 			//
-			if ( re->RegisterModels_LevelLoadEnd(qtrue) )
+			if (re->RegisterModels_LevelLoadEnd(qtrue))
 			{
 				gbMemFreeupOccured = qtrue;
 				continue;
@@ -260,7 +260,7 @@ void *Z_Malloc(int iSize, memtag_t eTag, qboolean bZeroit /* = qfalse */, int iU
 				if (iBytesFreed)
 				{
 					int iTheseBytesFreed = 0;
-					while ( (iTheseBytesFreed = SND_FreeOldestSound()) != 0)
+					while ((iTheseBytesFreed = SND_FreeOldestSound()) != 0)
 					{
 						iBytesFreed += iTheseBytesFreed;
 						if (iBytesFreed >= iRealSize)
@@ -339,7 +339,7 @@ void openjk_minizip_free(void *to_free)
 // used during model cacheing to save an extra malloc, lets us morph the disk-load buffer then
 //	just not fs_freefile() it afterwards.
 //
-void Z_MorphMallocTag( void *pvAddress, memtag_t eDesiredTag )
+void Z_MorphMallocTag(void *pvAddress, memtag_t eDesiredTag)
 {
 	zoneHeader_t *pMemory = ((zoneHeader_t *)pvAddress) - 1;
 
@@ -489,7 +489,7 @@ void Z_TagFree(memtag_t eTag)
 	while (pMemory)
 	{
 		zoneHeader_t *pNext = pMemory->pNext;
-		if ( (eTag == TAG_ALL) || (pMemory->eTag == eTag))
+		if ((eTag == TAG_ALL) || (pMemory->eTag == eTag))
 		{
 			Zone_FreeBlock(pMemory);
 		}
@@ -499,15 +499,15 @@ void Z_TagFree(memtag_t eTag)
 // these stupid pragmas don't work here???!?!?!
 //
 //#ifdef _DEBUG
-//#pragma warning( disable : 4189)
+//#pragma warning(disable : 4189)
 //	int iBlocksFreed = iZoneBlocks - TheZone.Stats.iCount;
-//#pragma warning( default : 4189)
+//#pragma warning(default : 4189)
 //#endif
 }
 
 
-void *S_Malloc( int iSize ) {
-	return Z_Malloc( iSize, TAG_SMALL );
+void *S_Malloc(int iSize) {
+	return Z_Malloc(iSize, TAG_SMALL);
 }
 
 
@@ -575,7 +575,7 @@ static void Z_Details_f(void)
 							  iThisSize,
 								iSize,iRemainder,
 								           iThisCount, iThisSize / iThisCount
-					   );
+					  );
 		}
 	}
 	Com_Printf("---------------------------------------------------------------------------\n");
@@ -603,21 +603,21 @@ void Com_ShutdownZoneMemory(void)
 
 // Initialises the zone memory system
 
-void Com_InitZoneMemory( void )
+void Com_InitZoneMemory(void)
 {
 	memset(&TheZone, 0, sizeof(TheZone));
 	TheZone.Header.iMagic = ZONE_MAGIC;
 }
 
-void Com_InitZoneMemoryVars( void ) {
+void Com_InitZoneMemoryVars(void) {
 	//#ifdef _DEBUG
 //	com_validateZone = Cvar_Get("com_validateZone", "1", 0);
 //#else
 	com_validateZone = Cvar_Get("com_validateZone", "0", 0);
 //#endif
 
-	Cmd_AddCommand("zone_stats", Z_Stats_f, "Prints out zone memory stats" );
-	Cmd_AddCommand("zone_details", Z_Details_f, "Prints out full detailed zone memory info" );
+	Cmd_AddCommand("zone_stats", Z_Stats_f, "Prints out zone memory stats");
+	Cmd_AddCommand("zone_details", Z_Details_f, "Prints out full detailed zone memory info");
 
 #ifdef _DEBUG
 	Cmd_AddCommand("zone_memrecovertest", Z_MemRecoverTest_f);
@@ -634,7 +634,7 @@ CopyString
 		memory from a memstatic_t might be returned
 ========================
 */
-char *CopyString( const char *in ) {
+char *CopyString(const char *in) {
 	char	*out;
 
 	if (!in[0]) {
@@ -663,7 +663,7 @@ Com_TouchMemory
 Touch all known used data to make sure it is paged in
 ===============
 */
-void Com_TouchMemory( void ) {
+void Com_TouchMemory(void) {
 //	int		start, end;
 	int		i, j;
 	unsigned int		sum;
@@ -686,7 +686,7 @@ void Com_TouchMemory( void ) {
 	}
 
 //	end = Sys_Milliseconds();
-//	Com_Printf( "Com_TouchMemory: %i msec\n", end - start );
+//	Com_Printf("Com_TouchMemory: %i msec\n", end - start);
 }
 
 
@@ -705,7 +705,7 @@ qboolean Com_TheHunkMarkHasBeenMade(void)
 Com_InitHunkMemory
 =================
 */
-void Com_InitHunkMemory( void ) {
+void Com_InitHunkMemory(void) {
 	hunk_tag = TAG_HUNK_MARK1;
 	Hunk_Clear();
 }
@@ -722,7 +722,7 @@ void Com_ShutdownHunkMemory(void)
 Hunk_MemoryRemaining
 ====================
 */
-int	Hunk_MemoryRemaining( void ) {
+int	Hunk_MemoryRemaining(void) {
 	return (64*1024*1024) - (Z_MemSize(TAG_HUNK_MARK1)+Z_MemSize(TAG_HUNK_MARK2));	//Yeah. Whatever. We've got no size now.
 }
 
@@ -733,7 +733,7 @@ Hunk_SetMark
 The server calls this after the level and game VM have been loaded
 ===================
 */
-void Hunk_SetMark( void ) {
+void Hunk_SetMark(void) {
 	hunk_tag = TAG_HUNK_MARK2;
 }
 
@@ -744,7 +744,7 @@ Hunk_ClearToMark
 The client calls this before starting a vid_restart or snd_restart
 =================
 */
-void Hunk_ClearToMark( void ) {
+void Hunk_ClearToMark(void) {
 	assert(hunk_tag == TAG_HUNK_MARK2); //if this is not true then no mark has been made
 	Z_TagFree(TAG_HUNK_MARK2);
 }
@@ -754,8 +754,8 @@ void Hunk_ClearToMark( void ) {
 Hunk_CheckMark
 =================
 */
-qboolean Hunk_CheckMark( void ) {
-	//if( hunk_low.mark || hunk_high.mark ) {
+qboolean Hunk_CheckMark(void) {
+	//if(hunk_low.mark || hunk_high.mark) {
 	if (hunk_tag != TAG_HUNK_MARK1)
 	{
 		return qtrue;
@@ -763,9 +763,9 @@ qboolean Hunk_CheckMark( void ) {
 	return qfalse;
 }
 
-void CL_ShutdownCGame( void );
-void CL_ShutdownUI( void );
-void SV_ShutdownGameProgs( void );
+void CL_ShutdownCGame(void);
+void CL_ShutdownUI(void);
+void SV_ShutdownGameProgs(void);
 
 /*
 =================
@@ -779,7 +779,7 @@ void R_HunkClearCrap(void);
 void G2_DEBUG_ReportLeaks(void);
 #endif
 
-void Hunk_Clear( void ) {
+void Hunk_Clear(void) {
 
 #ifndef DEDICATED
 	CL_ShutdownCGame();
@@ -795,11 +795,11 @@ void Hunk_Clear( void ) {
 	Z_TagFree(TAG_HUNK_MARK1);
 	Z_TagFree(TAG_HUNK_MARK2);
 
-	if ( re && re->HunkClearCrap ) {
+	if (re && re->HunkClearCrap) {
 		re->HunkClearCrap();
 	}
 
-//	Com_Printf( "Hunk_Clear: reset the hunk ok\n" );
+//	Com_Printf("Hunk_Clear: reset the hunk ok\n");
 	VM_Clear();
 
 //See if any ghoul2 stuff was leaked, at this point it should be all cleaned up.
@@ -820,7 +820,7 @@ Hunk_Alloc
 Allocate permanent (until the hunk is cleared) memory
 =================
 */
-void *Hunk_Alloc( int size, ha_pref preference ) {
+void *Hunk_Alloc(int size, ha_pref preference) {
 	return Z_Malloc(size, hunk_tag, qtrue);
 }
 
@@ -833,7 +833,7 @@ Multiple files can be loaded in temporary memory.
 When the files-in-use count reaches zero, all temp memory will be deleted
 =================
 */
-void *Hunk_AllocateTempMemory( int size ) {
+void *Hunk_AllocateTempMemory(int size) {
 	// don't bother clearing, because we are going to load a file over it
 	return Z_Malloc(size, TAG_TEMP_HUNKALLOC, qfalse);
 }
@@ -844,7 +844,7 @@ void *Hunk_AllocateTempMemory( int size ) {
 Hunk_FreeTempMemory
 ==================
 */
-void Hunk_FreeTempMemory( void *buf )
+void Hunk_FreeTempMemory(void *buf)
 {
 	Z_Free(buf);
 }
@@ -859,6 +859,6 @@ touched but unused memory on this side, have future
 permanent allocs use this side.
 =================
 */
-void Hunk_ClearTempMemory( void ) {
+void Hunk_ClearTempMemory(void) {
 	Z_TagFree(TAG_TEMP_HUNKALLOC);
 }

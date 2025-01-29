@@ -154,10 +154,10 @@ finish_pass (j_compress_ptr cinfo)
       emit_byte(e->buffer + 1, cinfo);
       if (e->buffer + 1 == 0xFF)
 	emit_byte(0x00, cinfo);
-    }
+   }
     e->zc += e->sc;  /* carry-over converts stacked 0xFF bytes to 0x00 */
     e->sc = 0;
-  } else {
+ } else {
     if (e->buffer == 0)
       ++e->zc;
     else if (e->buffer >= 0) {
@@ -165,7 +165,7 @@ finish_pass (j_compress_ptr cinfo)
 	do emit_byte(0x00, cinfo);
 	while (--e->zc);
       emit_byte(e->buffer, cinfo);
-    }
+   }
     if (e->sc) {
       if (e->zc)
 	do emit_byte(0x00, cinfo);
@@ -173,9 +173,9 @@ finish_pass (j_compress_ptr cinfo)
       do {
 	emit_byte(0xFF, cinfo);
 	emit_byte(0x00, cinfo);
-      } while (--e->sc);
-    }
-  }
+     } while (--e->sc);
+   }
+ }
   /* Output final bytes only if they are not 0x00 */
   if (e->c & 0x7FFF800L) {
     if (e->zc)  /* output final pending zero bytes */
@@ -188,8 +188,8 @@ finish_pass (j_compress_ptr cinfo)
       emit_byte((e->c >> 11) & 0xFF, cinfo);
       if (((e->c >> 11) & 0xFF) == 0xFF)
 	emit_byte(0x00, cinfo);
-    }
-  }
+   }
+ }
 }
 
 
@@ -242,9 +242,9 @@ arith_encode (j_compress_ptr cinfo, unsigned char *st, int val)
        * as usual: */
       e->c += e->a;
       e->a = qe;
-    }
+   }
     *st = (sv & 0x80) ^ nl;	/* Estimate_after_LPS */
-  } else {
+ } else {
     /* Encode the more probable symbol */
     if (e->a >= 0x8000L)
       return;  /* A >= 0x8000 -> ready, no renormalization required */
@@ -254,9 +254,9 @@ arith_encode (j_compress_ptr cinfo, unsigned char *st, int val)
        * the two symbols for coding efficiency: */
       e->c += e->a;
       e->a = qe;
-    }
+   }
     *st = (sv & 0x80) ^ nm;	/* Estimate_after_MPS */
-  }
+ }
 
   /* Renormalization & data output per section D.1.6 */
   do {
@@ -281,9 +281,9 @@ arith_encode (j_compress_ptr cinfo, unsigned char *st, int val)
 	 * that the new buffer byte can't be 0xFF here
 	 * (see page 160 in the P&M JPEG book). */
 	e->buffer = temp & 0xFF;  /* new output byte, might overflow later */
-      } else if (temp == 0xFF) {
+     } else if (temp == 0xFF) {
 	++e->sc;  /* stack 0xFF byte (which might overflow later) */
-      } else {
+     } else {
 	/* Output all stacked 0xFF bytes, they will not overflow any more */
 	if (e->buffer == 0)
 	  ++e->zc;
@@ -300,14 +300,14 @@ arith_encode (j_compress_ptr cinfo, unsigned char *st, int val)
 	  do {
 	    emit_byte(0xFF, cinfo);
 	    emit_byte(0x00, cinfo);
-	  } while (--e->sc);
+	 } while (--e->sc);
 	}
 	e->buffer = temp & 0xFF;  /* new output byte (can still overflow) */
-      }
+     }
       e->c &= 0x7FFFFL;
       e->ct += 8;
-    }
-  } while (e->a < 0x8000L);
+   }
+ } while (e->a < 0x8000L);
 }
 
 
@@ -336,12 +336,12 @@ emit_restart (j_compress_ptr cinfo, int restart_num)
       /* Reset DC predictions to 0 */
       entropy->last_dc_val[ci] = 0;
       entropy->dc_context[ci] = 0;
-    }
+   }
     /* AC needs no table when not present */
     if (cinfo->Se) {
       MEMZERO(entropy->ac_stats[compptr->ac_tbl_no], AC_STAT_BINS);
-    }
-  }
+   }
+ }
 
   /* Reset arithmetic encoding variables */
   entropy->c = 0;
@@ -374,9 +374,9 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       entropy->restarts_to_go = cinfo->restart_interval;
       entropy->next_restart_num++;
       entropy->next_restart_num &= 7;
-    }
+   }
     entropy->restarts_to_go--;
-  }
+ }
 
   /* Encode the MCU data blocks */
   for (blkn = 0; blkn < cinfo->blocks_in_MCU; blkn++) {
@@ -397,7 +397,7 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
     if ((v = m - entropy->last_dc_val[ci]) == 0) {
       arith_encode(cinfo, st, 0);
       entropy->dc_context[ci] = 0;	/* zero diff category */
-    } else {
+   } else {
       entropy->last_dc_val[ci] = m;
       arith_encode(cinfo, st, 1);
       /* Figure F.6: Encoding nonzero value v */
@@ -406,12 +406,12 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	arith_encode(cinfo, st + 1, 0);	/* Table F.4: SS = S0 + 1 */
 	st += 2;			/* Table F.4: SP = S0 + 2 */
 	entropy->dc_context[ci] = 4;	/* small positive diff category */
-      } else {
+     } else {
 	v = -v;
 	arith_encode(cinfo, st + 1, 1);	/* Table F.4: SS = S0 + 1 */
 	st += 3;			/* Table F.4: SN = S0 + 3 */
 	entropy->dc_context[ci] = 8;	/* small negative diff category */
-      }
+     }
       /* Figure F.8: Encoding the magnitude category of v */
       m = 0;
       if (v -= 1) {
@@ -424,7 +424,7 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	  m <<= 1;
 	  st += 1;
 	}
-      }
+     }
       arith_encode(cinfo, st, 0);
       /* Section F.1.4.4.1.2: Establish dc_context conditioning category */
       if (m < (int) ((1L << cinfo->arith_dc_L[tbl]) >> 1))
@@ -435,8 +435,8 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       st += 14;
       while (m >>= 1)
 	arith_encode(cinfo, st, (m & v) ? 1 : 0);
-    }
-  }
+   }
+ }
 
   return TRUE;
 }
@@ -464,9 +464,9 @@ encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       entropy->restarts_to_go = cinfo->restart_interval;
       entropy->next_restart_num++;
       entropy->next_restart_num &= 7;
-    }
+   }
     entropy->restarts_to_go--;
-  }
+ }
 
   natural_order = cinfo->natural_order;
 
@@ -485,11 +485,11 @@ encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
      */
     if ((v = (*block)[natural_order[ke]]) >= 0) {
       if (v >>= cinfo->Al) break;
-    } else {
+   } else {
       v = -v;
       if (v >>= cinfo->Al) break;
-    }
-  } while (--ke);
+   }
+ } while (--ke);
 
   /* Figure F.5: Encode_AC_Coefficients */
   for (k = cinfo->Ss - 1; k < ke;) {
@@ -502,17 +502,17 @@ encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	  arith_encode(cinfo, entropy->fixed_bin, 0);
 	  break;
 	}
-      } else {
+     } else {
 	v = -v;
 	if (v >>= cinfo->Al) {
 	  arith_encode(cinfo, st + 1, 1);
 	  arith_encode(cinfo, entropy->fixed_bin, 1);
 	  break;
 	}
-      }
+     }
       arith_encode(cinfo, st + 1, 0);
       st += 3;
-    }
+   }
     st += 2;
     /* Figure F.8: Encoding the magnitude category of v */
     m = 0;
@@ -530,19 +530,19 @@ encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	  m <<= 1;
 	  st += 1;
 	}
-      }
-    }
+     }
+   }
     arith_encode(cinfo, st, 0);
     /* Figure F.9: Encoding the magnitude bit pattern of v */
     st += 14;
     while (m >>= 1)
       arith_encode(cinfo, st, (m & v) ? 1 : 0);
-  }
+ }
   /* Encode EOB decision only if k < cinfo->Se */
   if (k < cinfo->Se) {
     st = entropy->ac_stats[tbl] + 3 * k;
     arith_encode(cinfo, st, 1);
-  }
+ }
 
   return TRUE;
 }
@@ -568,9 +568,9 @@ encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       entropy->restarts_to_go = cinfo->restart_interval;
       entropy->next_restart_num++;
       entropy->next_restart_num &= 7;
-    }
+   }
     entropy->restarts_to_go--;
-  }
+ }
 
   st = entropy->fixed_bin;	/* use fixed probability estimation */
   Al = cinfo->Al;
@@ -579,7 +579,7 @@ encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
   for (blkn = 0; blkn < cinfo->blocks_in_MCU; blkn++) {
     /* We simply emit the Al'th bit of the DC coefficient value. */
     arith_encode(cinfo, st, (MCU_data[blkn][0][0] >> Al) & 1);
-  }
+ }
 
   return TRUE;
 }
@@ -606,9 +606,9 @@ encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       entropy->restarts_to_go = cinfo->restart_interval;
       entropy->next_restart_num++;
       entropy->next_restart_num &= 7;
-    }
+   }
     entropy->restarts_to_go--;
-  }
+ }
 
   natural_order = cinfo->natural_order;
 
@@ -627,20 +627,20 @@ encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
      */
     if ((v = (*block)[natural_order[ke]]) >= 0) {
       if (v >>= cinfo->Al) break;
-    } else {
+   } else {
       v = -v;
       if (v >>= cinfo->Al) break;
-    }
-  } while (--ke);
+   }
+ } while (--ke);
 
   /* Establish EOBx (previous stage end-of-block) index */
   for (kex = ke; kex > 0; kex--)
     if ((v = (*block)[natural_order[kex]]) >= 0) {
       if (v >>= cinfo->Ah) break;
-    } else {
+   } else {
       v = -v;
       if (v >>= cinfo->Ah) break;
-    }
+   }
 
   /* Figure G.10: Encode_AC_Coefficients_SA */
   for (k = cinfo->Ss - 1; k < ke;) {
@@ -655,10 +655,10 @@ encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	  else {			/* newly nonzero coef */
 	    arith_encode(cinfo, st + 1, 1);
 	    arith_encode(cinfo, entropy->fixed_bin, 0);
-	  }
+	 }
 	  break;
 	}
-      } else {
+     } else {
 	v = -v;
 	if (v >>= cinfo->Al) {
 	  if (v >> 1)			/* previously nonzero coef */
@@ -666,19 +666,19 @@ encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	  else {			/* newly nonzero coef */
 	    arith_encode(cinfo, st + 1, 1);
 	    arith_encode(cinfo, entropy->fixed_bin, 1);
-	  }
+	 }
 	  break;
 	}
-      }
+     }
       arith_encode(cinfo, st + 1, 0);
       st += 3;
-    }
-  }
+   }
+ }
   /* Encode EOB decision only if k < cinfo->Se */
   if (k < cinfo->Se) {
     st = entropy->ac_stats[tbl] + 3 * k;
     arith_encode(cinfo, st, 1);
-  }
+ }
 
   return TRUE;
 }
@@ -707,9 +707,9 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       entropy->restarts_to_go = cinfo->restart_interval;
       entropy->next_restart_num++;
       entropy->next_restart_num &= 7;
-    }
+   }
     entropy->restarts_to_go--;
-  }
+ }
 
   natural_order = cinfo->natural_order;
 
@@ -730,7 +730,7 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
     if ((v = (*block)[0] - entropy->last_dc_val[ci]) == 0) {
       arith_encode(cinfo, st, 0);
       entropy->dc_context[ci] = 0;	/* zero diff category */
-    } else {
+   } else {
       entropy->last_dc_val[ci] = (*block)[0];
       arith_encode(cinfo, st, 1);
       /* Figure F.6: Encoding nonzero value v */
@@ -739,12 +739,12 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	arith_encode(cinfo, st + 1, 0);	/* Table F.4: SS = S0 + 1 */
 	st += 2;			/* Table F.4: SP = S0 + 2 */
 	entropy->dc_context[ci] = 4;	/* small positive diff category */
-      } else {
+     } else {
 	v = -v;
 	arith_encode(cinfo, st + 1, 1);	/* Table F.4: SS = S0 + 1 */
 	st += 3;			/* Table F.4: SN = S0 + 3 */
 	entropy->dc_context[ci] = 8;	/* small negative diff category */
-      }
+     }
       /* Figure F.8: Encoding the magnitude category of v */
       m = 0;
       if (v -= 1) {
@@ -757,7 +757,7 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	  m <<= 1;
 	  st += 1;
 	}
-      }
+     }
       arith_encode(cinfo, st, 0);
       /* Section F.1.4.4.1.2: Establish dc_context conditioning category */
       if (m < (int) ((1L << cinfo->arith_dc_L[tbl]) >> 1))
@@ -768,7 +768,7 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       st += 14;
       while (m >>= 1)
 	arith_encode(cinfo, st, (m & v) ? 1 : 0);
-    }
+   }
 
     /* Sections F.1.4.2 & F.1.4.4.2: Encoding of AC coefficients */
 
@@ -778,7 +778,7 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
     /* Establish EOB (end-of-block) index */
     do {
       if ((*block)[natural_order[ke]]) break;
-    } while (--ke);
+   } while (--ke);
 
     /* Figure F.5: Encode_AC_Coefficients */
     for (k = 0; k < ke;) {
@@ -787,16 +787,16 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       while ((v = (*block)[natural_order[++k]]) == 0) {
 	arith_encode(cinfo, st + 1, 0);
 	st += 3;
-      }
+     }
       arith_encode(cinfo, st + 1, 1);
       /* Figure F.6: Encoding nonzero value v */
       /* Figure F.7: Encoding the sign of v */
       if (v > 0) {
 	arith_encode(cinfo, entropy->fixed_bin, 0);
-      } else {
+     } else {
 	v = -v;
 	arith_encode(cinfo, entropy->fixed_bin, 1);
-      }
+     }
       st += 2;
       /* Figure F.8: Encoding the magnitude category of v */
       m = 0;
@@ -813,21 +813,21 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 	    arith_encode(cinfo, st, 1);
 	    m <<= 1;
 	    st += 1;
-	  }
+	 }
 	}
-      }
+     }
       arith_encode(cinfo, st, 0);
       /* Figure F.9: Encoding the magnitude bit pattern of v */
       st += 14;
       while (m >>= 1)
 	arith_encode(cinfo, st, (m & v) ? 1 : 0);
-    }
+   }
     /* Encode EOB decision only if k < cinfo->lim_Se */
     if (k < cinfo->lim_Se) {
       st = entropy->ac_stats[tbl] + 3 * k;
       arith_encode(cinfo, st, 1);
-    }
-  }
+   }
+ }
 
   return TRUE;
 }
@@ -860,13 +860,13 @@ start_pass (j_compress_ptr cinfo, boolean gather_statistics)
 	entropy->pub.encode_mcu = encode_mcu_DC_first;
       else
 	entropy->pub.encode_mcu = encode_mcu_AC_first;
-    } else {
+   } else {
       if (cinfo->Ss == 0)
 	entropy->pub.encode_mcu = encode_mcu_DC_refine;
       else
 	entropy->pub.encode_mcu = encode_mcu_AC_refine;
-    }
-  } else
+   }
+ } else
     entropy->pub.encode_mcu = encode_mcu;
 
   /* Allocate & initialize requested statistics areas */
@@ -884,7 +884,7 @@ start_pass (j_compress_ptr cinfo, boolean gather_statistics)
       /* Initialize DC predictions to 0 */
       entropy->last_dc_val[ci] = 0;
       entropy->dc_context[ci] = 0;
-    }
+   }
     /* AC needs no table when not present */
     if (cinfo->Se) {
       tbl = compptr->ac_tbl_no;
@@ -899,8 +899,8 @@ start_pass (j_compress_ptr cinfo, boolean gather_statistics)
 	/* Section G.1.3.2: Set appropriate arithmetic conditioning value Kx */
 	cinfo->arith_ac_K[tbl] = cinfo->Ss + ((8 + cinfo->Se - cinfo->Ss) >> 4);
 #endif
-    }
-  }
+   }
+ }
 
   /* Initialize arithmetic encoding variables */
   entropy->c = 0;
@@ -937,7 +937,7 @@ jinit_arith_encoder (j_compress_ptr cinfo)
   for (i = 0; i < NUM_ARITH_TBLS; i++) {
     entropy->dc_stats[i] = NULL;
     entropy->ac_stats[i] = NULL;
-  }
+ }
 
   /* Initialize index for fixed probability estimation */
   entropy->fixed_bin[0] = 113;

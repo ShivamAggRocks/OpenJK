@@ -143,7 +143,7 @@ int Export_BotLibSetup(void)
 	int		errnum;
 
 	botDeveloper = LibVarGetValue("bot_developer");
-  memset( &botlibglobals, 0, sizeof(botlibglobals) ); // bk001207 - init
+  memset(&botlibglobals, 0, sizeof(botlibglobals)); // bk001207 - init
 	//initialize byte swapping (litte endian etc.)
 //	Swap_Init();
 
@@ -564,8 +564,8 @@ int BotExportTest(int parm0, char *parm1, vec3_t parm2, vec3_t parm3)
 		VectorCopy(botlibglobals.goalorigin, goal.origin);
 		VectorCopy(origin, curorigin);
 		curarea = newarea;
-		for ( i = 0; i < 100; i++ ) {
-			if ( curarea == goal.areanum ) {
+		for (i = 0; i < 100; i++) {
+			if (curarea == goal.areanum) {
 				break;
 			}
 			reachnum = BotGetReachabilityToGoal(curorigin, curarea,
@@ -681,7 +681,7 @@ int BotExportTest(int parm0, char *parm1, vec3_t parm2, vec3_t parm3)
 Init_AAS_Export
 ============
 */
-static void Init_AAS_Export( aas_export_t *aas ) {
+static void Init_AAS_Export(aas_export_t *aas) {
 	//--------------------------------------------
 	// be_aas_entity.c
 	//--------------------------------------------
@@ -736,7 +736,7 @@ static void Init_AAS_Export( aas_export_t *aas ) {
 Init_EA_Export
 ============
 */
-static void Init_EA_Export( ea_export_t *ea ) {
+static void Init_EA_Export(ea_export_t *ea) {
 	//ClientCommand elementary actions
 	ea->EA_Command = EA_Command;
 	ea->EA_Say = EA_Say;
@@ -774,7 +774,7 @@ static void Init_EA_Export( ea_export_t *ea ) {
 Init_AI_Export
 ============
 */
-static void Init_AI_Export( ai_export_t *ai ) {
+static void Init_AI_Export(ai_export_t *ai) {
 	//-----------------------------------
 	// be_ai_char.h
 	//-----------------------------------
@@ -881,10 +881,10 @@ botlib_export_t *GetBotLibAPI(int apiVersion, botlib_import_t *import) {
   botimport = *import;
   assert(botimport.Print);   // bk001129 - pars pro toto
 
-	Com_Memset( &be_botlib_export, 0, sizeof( be_botlib_export ) );
+	Com_Memset(&be_botlib_export, 0, sizeof(be_botlib_export));
 
-	if ( apiVersion != BOTLIB_API_VERSION ) {
-		botimport.Print( PRT_ERROR, "Mismatched BOTLIB_API_VERSION: expected %i, got %i\n", BOTLIB_API_VERSION, apiVersion );
+	if (apiVersion != BOTLIB_API_VERSION) {
+		botimport.Print(PRT_ERROR, "Mismatched BOTLIB_API_VERSION: expected %i, got %i\n", BOTLIB_API_VERSION, apiVersion);
 		return NULL;
 	}
 

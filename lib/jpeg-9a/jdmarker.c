@@ -125,22 +125,22 @@ typedef my_marker_reader * my_marker_ptr;
 
 /* Unload the local copies --- do this only at a restart boundary */
 #define INPUT_SYNC(cinfo)  \
-	( datasrc->next_input_byte = next_input_byte,  \
-	  datasrc->bytes_in_buffer = bytes_in_buffer )
+	(datasrc->next_input_byte = next_input_byte,  \
+	  datasrc->bytes_in_buffer = bytes_in_buffer)
 
 /* Reload the local copies --- used only in MAKE_BYTE_AVAIL */
 #define INPUT_RELOAD(cinfo)  \
-	( next_input_byte = datasrc->next_input_byte,  \
-	  bytes_in_buffer = datasrc->bytes_in_buffer )
+	(next_input_byte = datasrc->next_input_byte,  \
+	  bytes_in_buffer = datasrc->bytes_in_buffer)
 
 /* Internal macro for INPUT_BYTE and INPUT_2BYTES: make a byte available.
  * Note we do *not* do INPUT_SYNC before calling fill_input_buffer,
  * but we must reload the local copies after a successful fill.
  */
 #define MAKE_BYTE_AVAIL(cinfo,action)  \
-	if (bytes_in_buffer == 0) {  \
+	if (bytes_in_buffer == 0) { \
 	  if (! (*datasrc->fill_input_buffer) (cinfo))  \
-	    { action; }  \
+	    {action;}  \
 	  INPUT_RELOAD(cinfo);  \
 	}
 
@@ -148,20 +148,20 @@ typedef my_marker_reader * my_marker_ptr;
  * If must suspend, take the specified action (typically "return FALSE").
  */
 #define INPUT_BYTE(cinfo,V,action)  \
-	MAKESTMT( MAKE_BYTE_AVAIL(cinfo,action); \
+	MAKESTMT(MAKE_BYTE_AVAIL(cinfo,action); \
 		  bytes_in_buffer--; \
-		  V = GETJOCTET(*next_input_byte++); )
+		  V = GETJOCTET(*next_input_byte++);)
 
 /* As above, but read two bytes interpreted as an unsigned 16-bit integer.
  * V should be declared unsigned int or perhaps INT32.
  */
 #define INPUT_2BYTES(cinfo,V,action)  \
-	MAKESTMT( MAKE_BYTE_AVAIL(cinfo,action); \
+	MAKESTMT(MAKE_BYTE_AVAIL(cinfo,action); \
 		  bytes_in_buffer--; \
 		  V = ((unsigned int) GETJOCTET(*next_input_byte++)) << 8; \
 		  MAKE_BYTE_AVAIL(cinfo,action); \
 		  bytes_in_buffer--; \
-		  V += GETJOCTET(*next_input_byte++); )
+		  V += GETJOCTET(*next_input_byte++);)
 
 
 /*
@@ -212,7 +212,7 @@ get_soi (j_decompress_ptr cinfo)
     cinfo->arith_dc_L[i] = 0;
     cinfo->arith_dc_U[i] = 1;
     cinfo->arith_ac_K[i] = 5;
-  }
+ }
   cinfo->restart_interval = 0;
 
   /* Set initial assumptions for colorspace etc */
@@ -297,19 +297,19 @@ get_sof (j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
 	}
 	c++;
 	break;
-      }
-    }
+     }
+   }
     compptr->component_id = c;
     compptr->component_index = ci;
     INPUT_BYTE(cinfo, c, return FALSE);
     compptr->h_samp_factor = (c >> 4) & 15;
-    compptr->v_samp_factor = (c     ) & 15;
+    compptr->v_samp_factor = (c    ) & 15;
     INPUT_BYTE(cinfo, compptr->quant_tbl_no, return FALSE);
 
     TRACEMS4(cinfo, 1, JTRC_SOF_COMPONENT,
 	     compptr->component_id, compptr->h_samp_factor,
 	     compptr->v_samp_factor, compptr->quant_tbl_no);
-  }
+ }
 
   cinfo->marker->saw_SOF = TRUE;
 
@@ -362,14 +362,14 @@ get_sos (j_decompress_ptr cinfo)
 	}
 	c++;
 	break;
-      }
-    }
+     }
+   }
 
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
 	 ci++, compptr++) {
       if (c == compptr->component_id)
 	goto id_found;
-    }
+   }
 
     ERREXIT1(cinfo, JERR_BAD_COMPONENT_ID, c);
 
@@ -378,11 +378,11 @@ get_sos (j_decompress_ptr cinfo)
     cinfo->cur_comp_info[i] = compptr;
     INPUT_BYTE(cinfo, c, return FALSE);
     compptr->dc_tbl_no = (c >> 4) & 15;
-    compptr->ac_tbl_no = (c     ) & 15;
+    compptr->ac_tbl_no = (c    ) & 15;
 
     TRACEMS3(cinfo, 1, JTRC_SOS_COMPONENT, compptr->component_id,
 	     compptr->dc_tbl_no, compptr->ac_tbl_no);
-  }
+ }
 
   /* Collect the additional scan parameters Ss, Se, Ah/Al. */
   INPUT_BYTE(cinfo, c, return FALSE);
@@ -391,7 +391,7 @@ get_sos (j_decompress_ptr cinfo)
   cinfo->Se = c;
   INPUT_BYTE(cinfo, c, return FALSE);
   cinfo->Ah = (c >> 4) & 15;
-  cinfo->Al = (c     ) & 15;
+  cinfo->Al = (c    ) & 15;
 
   TRACEMS4(cinfo, 1, JTRC_SOS_PARAMS, cinfo->Ss, cinfo->Se,
 	   cinfo->Ah, cinfo->Al);
@@ -431,15 +431,15 @@ get_dac (j_decompress_ptr cinfo)
     if (index < 0 || index >= (2*NUM_ARITH_TBLS))
       ERREXIT1(cinfo, JERR_DAC_INDEX, index);
 
-    if (index >= NUM_ARITH_TBLS) { /* define AC table */
+    if (index >= NUM_ARITH_TBLS) {/* define AC table */
       cinfo->arith_ac_K[index-NUM_ARITH_TBLS] = (UINT8) val;
-    } else {			/* define DC table */
+   } else {			/* define DC table */
       cinfo->arith_dc_L[index] = (UINT8) (val & 0x0F);
       cinfo->arith_dc_U[index] = (UINT8) (val >> 4);
       if (cinfo->arith_dc_L[index] > cinfo->arith_dc_U[index])
 	ERREXIT1(cinfo, JERR_DAC_VALUE, val);
-    }
-  }
+   }
+ }
 
   if (length != 0)
     ERREXIT(cinfo, JERR_BAD_LENGTH);
@@ -479,7 +479,7 @@ get_dht (j_decompress_ptr cinfo)
     for (i = 1; i <= 16; i++) {
       INPUT_BYTE(cinfo, bits[i], return FALSE);
       count += bits[i];
-    }
+   }
 
     length -= 1 + 16;
 
@@ -506,9 +506,9 @@ get_dht (j_decompress_ptr cinfo)
     if (index & 0x10) {		/* AC table definition */
       index -= 0x10;
       htblptr = &cinfo->ac_huff_tbl_ptrs[index];
-    } else {			/* DC table definition */
+   } else {			/* DC table definition */
       htblptr = &cinfo->dc_huff_tbl_ptrs[index];
-    }
+   }
 
     if (index < 0 || index >= NUM_HUFF_TBLS)
       ERREXIT1(cinfo, JERR_DHT_INDEX, index);
@@ -518,7 +518,7 @@ get_dht (j_decompress_ptr cinfo)
   
     MEMCOPY((*htblptr)->bits, bits, SIZEOF((*htblptr)->bits));
     MEMCOPY((*htblptr)->huffval, huffval, SIZEOF((*htblptr)->huffval));
-  }
+ }
 
   if (length != 0)
     ERREXIT(cinfo, JERR_BAD_LENGTH);
@@ -564,18 +564,18 @@ get_dqt (j_decompress_ptr cinfo)
 	  quant_ptr->quantval[i] = 1;
 	}
 	count = length >> 1;
-      } else
+     } else
 	count = DCTSIZE2;
-    } else {
+   } else {
       if (length < DCTSIZE2) {
 	/* Initialize full table for safety. */
 	for (i = 0; i < DCTSIZE2; i++) {
 	  quant_ptr->quantval[i] = 1;
 	}
 	count = length;
-      } else
+     } else
 	count = DCTSIZE2;
-    }
+   }
 
     switch (count) {
     case (2*2): natural_order = jpeg_natural_order2; break;
@@ -585,7 +585,7 @@ get_dqt (j_decompress_ptr cinfo)
     case (6*6): natural_order = jpeg_natural_order6; break;
     case (7*7): natural_order = jpeg_natural_order7; break;
     default:    natural_order = jpeg_natural_order;  break;
-    }
+   }
 
     for (i = 0; i < count; i++) {
       if (prec)
@@ -594,7 +594,7 @@ get_dqt (j_decompress_ptr cinfo)
 	INPUT_BYTE(cinfo, tmp, return FALSE);
       /* We convert the zigzag-order table to natural array order. */
       quant_ptr->quantval[natural_order[i]] = (UINT16) tmp;
-    }
+   }
 
     if (cinfo->err->trace_level >= 2) {
       for (i = 0; i < DCTSIZE2; i += 8) {
@@ -603,12 +603,12 @@ get_dqt (j_decompress_ptr cinfo)
 		 quant_ptr->quantval[i+2], quant_ptr->quantval[i+3],
 		 quant_ptr->quantval[i+4], quant_ptr->quantval[i+5],
 		 quant_ptr->quantval[i+6], quant_ptr->quantval[i+7]);
-      }
-    }
+     }
+   }
 
     length -= count;
     if (prec) length -= count;
-  }
+ }
 
   if (length != 0)
     ERREXIT(cinfo, JERR_BAD_LENGTH);
@@ -694,7 +694,7 @@ get_lse (j_decompress_ptr cinfo)
   if (tmp != 0) {				/* A(3,2)=0 */
     bad:
     ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-  }
+ }
 
   /* OK, valid transform that we can handle. */
   cinfo->color_transform = JCT_SUBTRACT_GREEN;
@@ -761,7 +761,7 @@ examine_app0 (j_decompress_ptr cinfo, JOCTET FAR * data,
     if (totallen !=
 	((INT32)GETJOCTET(data[12]) * (INT32)GETJOCTET(data[13]) * (INT32) 3))
       TRACEMS1(cinfo, 1, JTRC_JFIF_BADTHUMBNAILSIZE, (int) totallen);
-  } else if (datalen >= 6 &&
+ } else if (datalen >= 6 &&
       GETJOCTET(data[0]) == 0x4A &&
       GETJOCTET(data[1]) == 0x46 &&
       GETJOCTET(data[2]) == 0x58 &&
@@ -785,11 +785,11 @@ examine_app0 (j_decompress_ptr cinfo, JOCTET FAR * data,
       TRACEMS2(cinfo, 1, JTRC_JFIF_EXTENSION,
 	       GETJOCTET(data[5]), (int) totallen);
       break;
-    }
-  } else {
+   }
+ } else {
     /* Start of APP0 does not match "JFIF" or "JFXX", or too short */
     TRACEMS1(cinfo, 1, JTRC_APP0, (int) totallen);
-  }
+ }
 }
 
 
@@ -817,10 +817,10 @@ examine_app14 (j_decompress_ptr cinfo, JOCTET FAR * data,
     TRACEMS4(cinfo, 1, JTRC_ADOBE, version, flags0, flags1, transform);
     cinfo->saw_Adobe_marker = TRUE;
     cinfo->Adobe_transform = (UINT8) transform;
-  } else {
+ } else {
     /* Start of APP14 does not match "Adobe", or too short */
     TRACEMS1(cinfo, 1, JTRC_APP14, (int) (datalen + remaining));
-  }
+ }
 }
 
 
@@ -859,7 +859,7 @@ get_interesting_appn (j_decompress_ptr cinfo)
     /* can't get here unless jpeg_save_markers chooses wrong processor */
     ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, cinfo->unread_marker);
     break;
-  }
+ }
 
   /* skip any remaining data -- could be lots */
   INPUT_SYNC(cinfo);
@@ -910,17 +910,17 @@ save_marker (j_decompress_ptr cinfo)
       marker->bytes_read = 0;
       bytes_read = 0;
       data_length = limit;
-    } else {
+   } else {
       /* deal with bogus length word */
       bytes_read = data_length = 0;
       data = NULL;
-    }
-  } else {
+   }
+ } else {
     /* resume reading a marker */
     bytes_read = marker->bytes_read;
     data_length = cur_marker->data_length;
     data = cur_marker->data + bytes_read;
-  }
+ }
 
   while (bytes_read < data_length) {
     INPUT_SYNC(cinfo);		/* move the restart point to here */
@@ -932,24 +932,24 @@ save_marker (j_decompress_ptr cinfo)
       *data++ = *next_input_byte++;
       bytes_in_buffer--;
       bytes_read++;
-    }
-  }
+   }
+ }
 
   /* Done reading what we want to read */
   if (cur_marker != NULL) {	/* will be NULL if bogus length word */
     /* Add new marker to end of list */
     if (cinfo->marker_list == NULL) {
       cinfo->marker_list = cur_marker;
-    } else {
+   } else {
       jpeg_saved_marker_ptr prev = cinfo->marker_list;
       while (prev->next != NULL)
 	prev = prev->next;
       prev->next = cur_marker;
-    }
+   }
     /* Reset pointer & calc remaining data length */
     data = cur_marker->data;
     length = cur_marker->original_length - data_length;
-  }
+ }
   /* Reset to initial state for next marker */
   marker->cur_marker = NULL;
 
@@ -965,7 +965,7 @@ save_marker (j_decompress_ptr cinfo)
     TRACEMS2(cinfo, 1, JTRC_MISC_MARKER, cinfo->unread_marker,
 	     (int) (data_length + length));
     break;
-  }
+ }
 
   /* skip any remaining data -- could be lots */
   INPUT_SYNC(cinfo);		/* do before skip_input_data */
@@ -1024,7 +1024,7 @@ next_marker (j_decompress_ptr cinfo)
       cinfo->marker->discarded_bytes++;
       INPUT_SYNC(cinfo);
       INPUT_BYTE(cinfo, c, return FALSE);
-    }
+   }
     /* This loop swallows any duplicate FF bytes.  Extra FFs are legal as
      * pad bytes, so don't count them in discarded_bytes.  We assume there
      * will not be so many consecutive FF bytes as to overflow a suspending
@@ -1032,7 +1032,7 @@ next_marker (j_decompress_ptr cinfo)
      */
     do {
       INPUT_BYTE(cinfo, c, return FALSE);
-    } while (c == 0xFF);
+   } while (c == 0xFF);
     if (c != 0)
       break;			/* found a valid marker, exit loop */
     /* Reach here if we found a stuffed-zero data sequence (FF/00).
@@ -1040,12 +1040,12 @@ next_marker (j_decompress_ptr cinfo)
      */
     cinfo->marker->discarded_bytes += 2;
     INPUT_SYNC(cinfo);
-  }
+ }
 
   if (cinfo->marker->discarded_bytes != 0) {
     WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA, cinfo->marker->discarded_bytes, c);
     cinfo->marker->discarded_bytes = 0;
-  }
+ }
 
   cinfo->unread_marker = c;
 
@@ -1101,11 +1101,11 @@ read_markers (j_decompress_ptr cinfo)
       if (! cinfo->marker->saw_SOI) {
 	if (! first_marker(cinfo))
 	  return JPEG_SUSPENDED;
-      } else {
+     } else {
 	if (! next_marker(cinfo))
 	  return JPEG_SUSPENDED;
-      }
-    }
+     }
+   }
     /* At this point cinfo->unread_marker contains the marker code and the
      * input point is just past the marker proper, but before any parameters.
      * A suspension will cause us to return with this state still true.
@@ -1241,10 +1241,10 @@ read_markers (j_decompress_ptr cinfo)
        */
       ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, cinfo->unread_marker);
       break;
-    }
+   }
     /* Successfully processed marker, so reset state variable */
     cinfo->unread_marker = 0;
-  } /* end loop */
+ } /* end loop */
 }
 
 
@@ -1268,20 +1268,20 @@ read_restart_marker (j_decompress_ptr cinfo)
   if (cinfo->unread_marker == 0) {
     if (! next_marker(cinfo))
       return FALSE;
-  }
+ }
 
   if (cinfo->unread_marker ==
       ((int) M_RST0 + cinfo->marker->next_restart_num)) {
     /* Normal case --- swallow the marker and let entropy decoder continue */
     TRACEMS1(cinfo, 3, JTRC_RST, cinfo->marker->next_restart_num);
     cinfo->unread_marker = 0;
-  } else {
+ } else {
     /* Uh-oh, the restart markers have been messed up. */
     /* Let the data source manager determine how to resync. */
     if (! (*cinfo->src->resync_to_restart) (cinfo,
 					    cinfo->marker->next_restart_num))
       return FALSE;
-  }
+ }
 
   /* Update next-restart state */
   cinfo->marker->next_restart_num = (cinfo->marker->next_restart_num + 1) & 7;
@@ -1363,7 +1363,7 @@ jpeg_resync_to_restart (j_decompress_ptr cinfo, int desired)
 	action = 2;		/* a prior restart, so advance */
       else
 	action = 1;		/* desired restart or too far away */
-    }
+   }
     TRACEMS2(cinfo, 4, JTRC_RECOVERY_ACTION, marker, action);
     switch (action) {
     case 1:
@@ -1380,8 +1380,8 @@ jpeg_resync_to_restart (j_decompress_ptr cinfo, int desired)
       /* Return without advancing past this marker. */
       /* Entropy decoder will be forced to process an empty segment. */
       return TRUE;
-    }
-  } /* end loop */
+   }
+ } /* end loop */
 }
 
 
@@ -1433,7 +1433,7 @@ jinit_marker_reader (j_decompress_ptr cinfo)
   for (i = 0; i < 16; i++) {
     marker->process_APPn[i] = skip_variable;
     marker->length_limit_APPn[i] = 0;
-  }
+ }
   marker->process_APPn[0] = get_interesting_appn;
   marker->process_APPn[14] = get_interesting_appn;
   /* Reset marker processing state */
@@ -1472,20 +1472,20 @@ jpeg_save_markers (j_decompress_ptr cinfo, int marker_code,
       length_limit = APP0_DATA_LEN;
     else if (marker_code == (int) M_APP14 && length_limit < APP14_DATA_LEN)
       length_limit = APP14_DATA_LEN;
-  } else {
+ } else {
     processor = skip_variable;
     /* If discarding APP0/APP14, use our regular on-the-fly processor. */
     if (marker_code == (int) M_APP0 || marker_code == (int) M_APP14)
       processor = get_interesting_appn;
-  }
+ }
 
   if (marker_code == (int) M_COM) {
     marker->process_COM = processor;
     marker->length_limit_COM = length_limit;
-  } else if (marker_code >= (int) M_APP0 && marker_code <= (int) M_APP15) {
+ } else if (marker_code >= (int) M_APP0 && marker_code <= (int) M_APP15) {
     marker->process_APPn[marker_code - (int) M_APP0] = processor;
     marker->length_limit_APPn[marker_code - (int) M_APP0] = length_limit;
-  } else
+ } else
     ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, marker_code);
 }
 

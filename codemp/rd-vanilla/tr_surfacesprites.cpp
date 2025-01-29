@@ -303,7 +303,7 @@ static void R_SurfaceSpriteFrameUpdate(void)
 
 	if (r_surfaceSprites->integer >= 2)
 	{
-		ri.Printf( PRINT_ALL, "Surfacesprites Drawn: %d, on %d surfaces\n", totalsurfsprites, sssurfaces);
+		ri.Printf(PRINT_ALL, "Surfacesprites Drawn: %d, on %d surfaces\n", totalsurfsprites, sssurfaces);
 	}
 
 	totalsurfsprites=0;
@@ -388,10 +388,10 @@ static void RB_VerticalSurfaceSprite(vec3_t loc, float width, float height, byte
 		loc2[2] += sin(angle*2.5)*windsway;
 	}
 
-	if ( flattened )
+	if (flattened)
 	{
-		right[0] = sin( DEG2RAD( loc[0] ) ) * width;
-		right[1] = cos( DEG2RAD( loc[0] ) ) * height;
+		right[0] = sin(DEG2RAD(loc[0])) * width;
+		right[1] = cos(DEG2RAD(loc[0])) * height;
 		right[2] = 0.0f;
 	}
 	else
@@ -483,10 +483,10 @@ static void RB_VerticalSurfaceSpriteWindPoint(vec3_t loc, float width, float hei
 	loc2[1] += height*winddiff[1]*windforce;
 	loc2[2] -= height*windforce*(0.75 + 0.15*sin((tr.refdef.time + 500*windforce)*0.01));
 
-	if ( flattened )
+	if (flattened)
 	{
-		right[0] = sin( DEG2RAD( loc[0] ) ) * width;
-		right[1] = cos( DEG2RAD( loc[0] ) ) * height;
+		right[0] = sin(DEG2RAD(loc[0])) * width;
+		right[1] = cos(DEG2RAD(loc[0])) * height;
 		right[2] = 0.0f;
 	}
 	else
@@ -532,7 +532,7 @@ static void RB_VerticalSurfaceSpriteWindPoint(vec3_t loc, float width, float hei
 	SQuickSprite.Add(points, color, fog);
 }
 
-static void RB_DrawVerticalSurfaceSprites( shaderStage_t *stage, shaderCommands_t *input)
+static void RB_DrawVerticalSurfaceSprites(shaderStage_t *stage, shaderCommands_t *input)
 {
 	int curindex, curvert;
  	vec3_t dist;
@@ -916,7 +916,7 @@ static void RB_OrientedSurfaceSprite(vec3_t loc, float width, float height, byte
 	SQuickSprite.Add(points, color, fog);
 }
 
-static void RB_DrawOrientedSurfaceSprites( shaderStage_t *stage, shaderCommands_t *input)
+static void RB_DrawOrientedSurfaceSprites(shaderStage_t *stage, shaderCommands_t *input)
 {
 	int curindex, curvert;
  	vec3_t dist;
@@ -1191,7 +1191,7 @@ static void RB_EffectSurfaceSprite(vec3_t loc, float width, float height, byte l
 	SQuickSprite.Add(points, color, NULL);
 }
 
-static void RB_DrawEffectSurfaceSprites( shaderStage_t *stage, shaderCommands_t *input)
+static void RB_DrawEffectSurfaceSprites(shaderStage_t *stage, shaderCommands_t *input)
 {
 	int curindex, curvert;
  	vec3_t dist;
@@ -1428,7 +1428,7 @@ extern void R_WorldToLocal (vec3_t world, vec3_t localVec) ;
 extern float preTransEntMatrix[16], invEntMatrix[16];
 extern void R_InvertMatrix(float *sourcemat, float *destmat);
 
-void RB_DrawSurfaceSprites( shaderStage_t *stage, shaderCommands_t *input)
+void RB_DrawSurfaceSprites(shaderStage_t *stage, shaderCommands_t *input)
 {
 	uint32_t	glbits=stage->stateBits;
 
@@ -1437,7 +1437,7 @@ void RB_DrawSurfaceSprites( shaderStage_t *stage, shaderCommands_t *input)
 	//
 	// Check fog
 	//
-	if ( tess.fogNum && tess.shader->fogPass && r_drawfog->value)
+	if (tess.fogNum && tess.shader->fogPass && r_drawfog->value)
 	{
 		SSUsingFog = qtrue;
 		SQuickSprite.StartGroup(&stage->bundle[0], glbits, tess.fogNum);

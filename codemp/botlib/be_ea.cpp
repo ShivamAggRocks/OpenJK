@@ -57,7 +57,7 @@ bot_input_t *botinputs;
 //===========================================================================
 void EA_Say(int client, char *str)
 {
-	botimport.BotClientCommand(client, va("say %s", str) );
+	botimport.BotClientCommand(client, va("say %s", str));
 } //end of the function EA_Say
 //===========================================================================
 //

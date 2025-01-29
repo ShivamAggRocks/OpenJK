@@ -92,8 +92,8 @@ pbm_getc (FILE * infile)
   if (ch == '#') {
     do {
       ch = getc(infile);
-    } while (ch != '\n' && ch != EOF);
-  }
+   } while (ch != '\n' && ch != EOF);
+ }
   return ch;
 }
 
@@ -113,7 +113,7 @@ read_pbm_integer (j_compress_ptr cinfo, FILE * infile)
     ch = pbm_getc(infile);
     if (ch == EOF)
       ERREXIT(cinfo, JERR_INPUT_EOF);
-  } while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
+ } while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
 
   if (ch < '0' || ch > '9')
     ERREXIT(cinfo, JERR_PPM_NONNUMERIC);
@@ -122,7 +122,7 @@ read_pbm_integer (j_compress_ptr cinfo, FILE * infile)
   while ((ch = pbm_getc(infile)) >= '0' && ch <= '9') {
     val *= 10;
     val += ch - '0';
-  }
+ }
   return val;
 }
 
@@ -151,7 +151,7 @@ get_text_gray_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   ptr = source->pub.buffer[0];
   for (col = cinfo->image_width; col > 0; col--) {
     *ptr++ = rescale[read_pbm_integer(cinfo, infile)];
-  }
+ }
   return 1;
 }
 
@@ -171,7 +171,7 @@ get_text_rgb_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     *ptr++ = rescale[read_pbm_integer(cinfo, infile)];
     *ptr++ = rescale[read_pbm_integer(cinfo, infile)];
     *ptr++ = rescale[read_pbm_integer(cinfo, infile)];
-  }
+ }
   return 1;
 }
 
@@ -192,7 +192,7 @@ get_scaled_gray_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   bufferptr = source->iobuffer;
   for (col = cinfo->image_width; col > 0; col--) {
     *ptr++ = rescale[UCH(*bufferptr++)];
-  }
+ }
   return 1;
 }
 
@@ -215,7 +215,7 @@ get_scaled_rgb_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     *ptr++ = rescale[UCH(*bufferptr++)];
     *ptr++ = rescale[UCH(*bufferptr++)];
     *ptr++ = rescale[UCH(*bufferptr++)];
-  }
+ }
   return 1;
 }
 
@@ -254,7 +254,7 @@ get_word_gray_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     temp  = UCH(*bufferptr++) << 8;
     temp |= UCH(*bufferptr++);
     *ptr++ = rescale[temp];
-  }
+ }
   return 1;
 }
 
@@ -284,7 +284,7 @@ get_word_rgb_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     temp  = UCH(*bufferptr++) << 8;
     temp |= UCH(*bufferptr++);
     *ptr++ = rescale[temp];
-  }
+ }
   return 1;
 }
 
@@ -316,7 +316,7 @@ start_input_ppm (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   default:
     ERREXIT(cinfo, JERR_PPM_NOT);
     break;
-  }
+ }
 
   /* fetch the remaining header info */
   w = read_pbm_integer(cinfo, source->pub.input_file);
@@ -358,13 +358,13 @@ start_input_ppm (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     TRACEMS2(cinfo, 1, JTRC_PGM, w, h);
     if (maxval > 255) {
       source->pub.get_pixel_rows = get_word_gray_row;
-    } else if (maxval == MAXJSAMPLE && SIZEOF(JSAMPLE) == SIZEOF(U_CHAR)) {
+   } else if (maxval == MAXJSAMPLE && SIZEOF(JSAMPLE) == SIZEOF(U_CHAR)) {
       source->pub.get_pixel_rows = get_raw_row;
       use_raw_buffer = TRUE;
       need_rescale = FALSE;
-    } else {
+   } else {
       source->pub.get_pixel_rows = get_scaled_gray_row;
-    }
+   }
     break;
 
   case '6':			/* it's a raw-format PPM file */
@@ -373,15 +373,15 @@ start_input_ppm (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     TRACEMS2(cinfo, 1, JTRC_PPM, w, h);
     if (maxval > 255) {
       source->pub.get_pixel_rows = get_word_rgb_row;
-    } else if (maxval == MAXJSAMPLE && SIZEOF(JSAMPLE) == SIZEOF(U_CHAR)) {
+   } else if (maxval == MAXJSAMPLE && SIZEOF(JSAMPLE) == SIZEOF(U_CHAR)) {
       source->pub.get_pixel_rows = get_raw_row;
       use_raw_buffer = TRUE;
       need_rescale = FALSE;
-    } else {
+   } else {
       source->pub.get_pixel_rows = get_scaled_rgb_row;
-    }
+   }
     break;
-  }
+ }
 
   /* Allocate space for I/O buffer: 1 or 3 bytes or words/pixel. */
   if (need_iobuffer) {
@@ -390,7 +390,7 @@ start_input_ppm (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     source->iobuffer = (U_CHAR *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
 				  source->buffer_width);
-  }
+ }
 
   /* Create compressor input buffer. */
   if (use_raw_buffer) {
@@ -400,13 +400,13 @@ start_input_ppm (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     source->pixrow = (JSAMPROW) source->iobuffer;
     source->pub.buffer = & source->pixrow;
     source->pub.buffer_height = 1;
-  } else {
+ } else {
     /* Need to translate anyway, so make a separate sample buffer. */
     source->pub.buffer = (*cinfo->mem->alloc_sarray)
       ((j_common_ptr) cinfo, JPOOL_IMAGE,
        (JDIMENSION) w * cinfo->input_components, (JDIMENSION) 1);
     source->pub.buffer_height = 1;
-  }
+ }
 
   /* Compute the rescaling array if required. */
   if (need_rescale) {
@@ -420,8 +420,8 @@ start_input_ppm (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     for (val = 0; val <= (INT32) maxval; val++) {
       /* The multiplication here must be done in 32 bits to avoid overflow */
       source->rescale[val] = (JSAMPLE) ((val*MAXJSAMPLE + half_maxval)/maxval);
-    }
-  }
+   }
+ }
 }
 
 

@@ -45,46 +45,46 @@ protected:
 public:
 	void Free(IGameInterface* game);
 
-	int WriteMember ( FILE * );				//Writes the member's data, in block format, to FILE *
-	int	ReadMember( char **, long *, CIcarus* icarus );		//Reads the member's data, in block format, from FILE *
+	int WriteMember (FILE *);				//Writes the member's data, in block format, to FILE *
+	int	ReadMember(char **, long *, CIcarus* icarus);		//Reads the member's data, in block format, from FILE *
 
-	void SetID( int id )		{	m_id = id;		}	//Set the ID member variable
-	void SetSize( int size )	{	m_size = size;	}	//Set the size member variable
+	void SetID(int id)		{	m_id = id;		}	//Set the ID member variable
+	void SetSize(int size)	{	m_size = size;	}	//Set the size member variable
 
-	void GetInfo( int *, int *, void **);
+	void GetInfo(int *, int *, void **);
 
 	//SetData overloads
-	void SetData( const char * ,CIcarus* icarus);
-	void SetData( vec3_t , CIcarus* icarus);
-	void SetData( void *data, int size, CIcarus* icarus);
+	void SetData(const char * ,CIcarus* icarus);
+	void SetData(vec3_t , CIcarus* icarus);
+	void SetData(void *data, int size, CIcarus* icarus);
 
-	int	GetID( void )		const	{	return m_id;	}	//Get ID member variables
-	void *GetData( void )	const	{	return m_data;	}	//Get data member variable
-	int	GetSize( void )		const	{	return m_size;	}	//Get size member variable
+	int	GetID(void)		const	{	return m_id;	}	//Get ID member variables
+	void *GetData(void)	const	{	return m_data;	}	//Get data member variable
+	int	GetSize(void)		const	{	return m_size;	}	//Get size member variable
 
 	// Overloaded new operator.
-	inline void *operator new( size_t size )
+	inline void *operator new(size_t size)
 	{	// Allocate the memory.
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 
 	// Overloaded delete operator.
-	inline void operator delete( void *pRawData )
+	inline void operator delete(void *pRawData)
 	{	// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
-	CBlockMember *Duplicate( CIcarus* icarus );
+	CBlockMember *Duplicate(CIcarus* icarus);
 
 	template <class T> void WriteData(T &data, CIcarus* icarus)
 	{
 		IGameInterface* game = icarus->GetGame();
-		if ( m_data )
+		if (m_data)
 		{
-			game->Free( m_data );
+			game->Free(m_data);
 		}
 
-		m_data = game->Malloc( sizeof(T) );
+		m_data = game->Malloc(sizeof(T));
 		*((T *) m_data) = data;
 		m_size = sizeof(T);
 	}
@@ -92,13 +92,13 @@ public:
 	template <class T> void WriteDataPointer(const T *data, int num, CIcarus* icarus)
 	{
 		IGameInterface* game =icarus->GetGame();
-		if ( m_data )
+		if (m_data)
 		{
-			game->Free( m_data );
+			game->Free(m_data);
 		}
 
-		m_data = game->Malloc( num*sizeof(T) );
-		memcpy( m_data, data, num*sizeof(T) );
+		m_data = game->Malloc(num*sizeof(T));
+		memcpy(m_data, data, num*sizeof(T));
 		m_size = num*sizeof(T);
 	}
 
@@ -123,53 +123,53 @@ public:
 		m_flags			= 0;
 		m_id			= 0;
 	}
-	~CBlock() {	assert(!GetNumMembers()); }
+	~CBlock() {	assert(!GetNumMembers());}
 
-	int Init( void );
+	int Init(void);
 
-	int Create( int );
+	int Create(int);
 	int Free(CIcarus* icarus);
 
 	//Write Overloads
 
-	int Write( int, vec3_t, CIcarus* icaru );
-	int Write( int, float, CIcarus* icaru );
-	int Write( int, const char *, CIcarus* icaru );
-	int Write( int, int, CIcarus* icaru );
-	int Write( CBlockMember *, CIcarus* icaru );
+	int Write(int, vec3_t, CIcarus* icaru);
+	int Write(int, float, CIcarus* icaru);
+	int Write(int, const char *, CIcarus* icaru);
+	int Write(int, int, CIcarus* icaru);
+	int Write(CBlockMember *, CIcarus* icaru);
 
 	//Member push / pop functions
 
-	int AddMember( CBlockMember * );
-	CBlockMember *GetMember( int memberNum );
+	int AddMember(CBlockMember *);
+	CBlockMember *GetMember(int memberNum);
 
-	void	*GetMemberData( int memberNum );
+	void	*GetMemberData(int memberNum);
 
-	CBlock *Duplicate( CIcarus* icarus );
+	CBlock *Duplicate(CIcarus* icarus);
 
-	int	GetBlockID( void )		const	{	return m_id;			}	//Get the ID for the block
-	int	GetNumMembers( void )	const	{	return (int)m_members.size();}	//Get the number of member in the block's list
+	int	GetBlockID(void)		const	{	return m_id;			}	//Get the ID for the block
+	int	GetNumMembers(void)	const	{	return (int)m_members.size();}	//Get the number of member in the block's list
 
-	void SetFlags( unsigned char flags )	{	m_flags = flags;	}
-	void SetFlag( unsigned char flag )		{	m_flags |= flag;	}
+	void SetFlags(unsigned char flags)	{	m_flags = flags;	}
+	void SetFlag(unsigned char flag)		{	m_flags |= flag;	}
 
-	int HasFlag( unsigned char flag )	const	{	return ( m_flags & flag );	}
-	unsigned char GetFlags( void )		const	{	return m_flags;				}
+	int HasFlag(unsigned char flag)	const	{	return (m_flags & flag);	}
+	unsigned char GetFlags(void)		const	{	return m_flags;				}
 
 	// Overloaded new operator.
-	inline void *operator new( size_t size )
+	inline void *operator new(size_t size)
 	{	// Allocate the memory.
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 
 	// Overloaded delete operator.
-	inline void operator delete( void *pRawData )
+	inline void operator delete(void *pRawData)
 	{	// Validate data.
-		if ( pRawData == 0 )
+		if (pRawData == 0)
 			return;
 
 		// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
 
@@ -193,30 +193,30 @@ public:
 	}
 	~CBlockStream() {};
 
-	int Init( void );
+	int Init(void);
 
-	int Create( char * );
-	int Free( void );
+	int Create(char *);
+	int Free(void);
 
 	// Stream I/O functions
 
-	int BlockAvailable( void );
+	int BlockAvailable(void);
 
-	int WriteBlock( CBlock *, CIcarus* icarus );	//Write the block out
-	int ReadBlock( CBlock *, CIcarus* icarus );	//Read the block in
+	int WriteBlock(CBlock *, CIcarus* icarus);	//Write the block out
+	int ReadBlock(CBlock *, CIcarus* icarus);	//Read the block in
 
-	int Open( char *, long );	//Open a stream for reading / writing
+	int Open(char *, long);	//Open a stream for reading / writing
 
 	// Overloaded new operator.
-	static void *operator new( size_t size )
+	static void *operator new(size_t size)
 	{	// Allocate the memory.
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 
 	// Overloaded delete operator.
-	static void operator delete( void *pRawData )
+	static void operator delete(void *pRawData)
 	{	// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
 protected:

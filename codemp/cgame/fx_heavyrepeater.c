@@ -30,16 +30,16 @@ FX_RepeaterProjectileThink
 ---------------------------
 */
 
-void FX_RepeaterProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon )
+void FX_RepeaterProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon)
 {
 	vec3_t forward;
 
-	if ( VectorNormalize2( cent->currentState.pos.trDelta, forward ) == 0.0f )
+	if (VectorNormalize2(cent->currentState.pos.trDelta, forward) == 0.0f)
 	{
 		forward[2] = 1.0f;
 	}
 
-	trap->FX_PlayEffectID( cgs.effects.repeaterProjectileEffect, cent->lerpOrigin, forward, -1, -1, qfalse );
+	trap->FX_PlayEffectID(cgs.effects.repeaterProjectileEffect, cent->lerpOrigin, forward, -1, -1, qfalse);
 }
 
 /*
@@ -48,9 +48,9 @@ FX_RepeaterHitWall
 ------------------------
 */
 
-void FX_RepeaterHitWall( vec3_t origin, vec3_t normal )
+void FX_RepeaterHitWall(vec3_t origin, vec3_t normal)
 {
-	trap->FX_PlayEffectID( cgs.effects.repeaterWallImpactEffect, origin, normal, -1, -1, qfalse );
+	trap->FX_PlayEffectID(cgs.effects.repeaterWallImpactEffect, origin, normal, -1, -1, qfalse);
 }
 
 /*
@@ -59,12 +59,12 @@ FX_RepeaterHitPlayer
 ------------------------
 */
 
-void FX_RepeaterHitPlayer( vec3_t origin, vec3_t normal, qboolean humanoid )
+void FX_RepeaterHitPlayer(vec3_t origin, vec3_t normal, qboolean humanoid)
 {
-	trap->FX_PlayEffectID( cgs.effects.repeaterFleshImpactEffect, origin, normal, -1, -1, qfalse );
+	trap->FX_PlayEffectID(cgs.effects.repeaterFleshImpactEffect, origin, normal, -1, -1, qfalse);
 }
 
-static void CG_DistortionOrb( centity_t *cent )
+static void CG_DistortionOrb(centity_t *cent)
 {
 	refEntity_t ent;
 	vec3_t ang;
@@ -75,9 +75,9 @@ static void CG_DistortionOrb( centity_t *cent )
 	{
 		return;
 	}
-	memset( &ent, 0, sizeof( ent ) );
+	memset(&ent, 0, sizeof(ent));
 
-	VectorCopy( cent->lerpOrigin, ent.origin );
+	VectorCopy(cent->lerpOrigin, ent.origin);
 
 	VectorSubtract(ent.origin, cg.refdef.vieworg, ent.axis[0]);
 	vLen = VectorLength(ent.axis[0]);
@@ -129,7 +129,7 @@ static void CG_DistortionOrb( centity_t *cent )
 	ent.renderfx = RF_DISTORTION;
 #endif
 
-	trap->R_AddRefEntityToScene( &ent );
+	trap->R_AddRefEntityToScene(&ent);
 }
 
 /*
@@ -138,11 +138,11 @@ FX_RepeaterAltProjectileThink
 -----------------------------
 */
 
-void FX_RepeaterAltProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon )
+void FX_RepeaterAltProjectileThink(centity_t *cent, const struct weaponInfo_s *weapon)
 {
 	vec3_t forward;
 
-	if ( VectorNormalize2( cent->currentState.pos.trDelta, forward ) == 0.0f )
+	if (VectorNormalize2(cent->currentState.pos.trDelta, forward) == 0.0f)
 	{
 		forward[2] = 1.0f;
 	}
@@ -151,7 +151,7 @@ void FX_RepeaterAltProjectileThink( centity_t *cent, const struct weaponInfo_s *
 	{
 		CG_DistortionOrb(cent);
 	}
-	trap->FX_PlayEffectID( cgs.effects.repeaterAltProjectileEffect, cent->lerpOrigin, forward, -1, -1, qfalse );
+	trap->FX_PlayEffectID(cgs.effects.repeaterAltProjectileEffect, cent->lerpOrigin, forward, -1, -1, qfalse);
 }
 
 /*
@@ -160,9 +160,9 @@ FX_RepeaterAltHitWall
 ------------------------
 */
 
-void FX_RepeaterAltHitWall( vec3_t origin, vec3_t normal )
+void FX_RepeaterAltHitWall(vec3_t origin, vec3_t normal)
 {
-	trap->FX_PlayEffectID( cgs.effects.repeaterAltWallImpactEffect, origin, normal, -1, -1, qfalse );
+	trap->FX_PlayEffectID(cgs.effects.repeaterAltWallImpactEffect, origin, normal, -1, -1, qfalse);
 }
 
 /*
@@ -171,7 +171,7 @@ FX_RepeaterAltHitPlayer
 ------------------------
 */
 
-void FX_RepeaterAltHitPlayer( vec3_t origin, vec3_t normal, qboolean humanoid )
+void FX_RepeaterAltHitPlayer(vec3_t origin, vec3_t normal, qboolean humanoid)
 {
-	trap->FX_PlayEffectID( cgs.effects.repeaterAltWallImpactEffect, origin, normal, -1, -1, qfalse );
+	trap->FX_PlayEffectID(cgs.effects.repeaterAltWallImpactEffect, origin, normal, -1, -1, qfalse);
 }

@@ -52,10 +52,10 @@ public:
 	CTextPool(int initSize = 10240);
 	~CTextPool(void);
 
-	CTextPool	*GetNext(void) { return mNext; }
-	void		SetNext(CTextPool *which) { mNext = which; }
-	char		*GetPool(void) { return mPool; }
-	int			GetUsed(void) { return mUsed; }
+	CTextPool	*GetNext(void) {return mNext;}
+	void		SetNext(CTextPool *which) {mNext = which;}
+	char		*GetPool(void) {return mPool;}
+	int			GetUsed(void) {return mUsed;}
 
 	char		*AllocText(char *text, bool addNULL = true, CTextPool **poolPtr = 0);
 };
@@ -70,16 +70,16 @@ protected:
 
 public:
 				CGPObject(const char *initName);
-		virtual	~CGPObject( void ) {}
+		virtual	~CGPObject(void) {}
 
-	const char	*GetName(void) { return mName; }
+	const char	*GetName(void) {return mName;}
 
-	CGPObject	*GetNext(void) { return mNext; }
-	void		SetNext(CGPObject *which) { mNext = which; }
-	CGPObject	*GetInOrderNext(void) { return mInOrderNext; }
-	void		SetInOrderNext(CGPObject *which) { mInOrderNext = which; }
-	CGPObject	*GetInOrderPrevious(void) { return mInOrderPrevious; }
-	void		SetInOrderPrevious(CGPObject *which) { mInOrderPrevious = which; }
+	CGPObject	*GetNext(void) {return mNext;}
+	void		SetNext(CGPObject *which) {mNext = which;}
+	CGPObject	*GetInOrderNext(void) {return mInOrderNext;}
+	void		SetInOrderNext(CGPObject *which) {mInOrderNext = which;}
+	CGPObject	*GetInOrderPrevious(void) {return mInOrderPrevious;}
+	void		SetInOrderPrevious(CGPObject *which) {mInOrderPrevious = which;}
 
 	bool		WriteText(CTextPool **textPool, const char *text);
 };
@@ -95,13 +95,13 @@ public:
 					CGPValue(const char *initName, const char *initValue = 0);
 					~CGPValue(void);
 
-	CGPValue		*GetNext(void) { return (CGPValue *)mNext; }
+	CGPValue		*GetNext(void) {return (CGPValue *)mNext;}
 
 	CGPValue		*Duplicate(CTextPool **textPool = 0);
 
 	bool			IsList(void);
 	const char		*GetTopValue(void);
-	CGPObject		*GetList(void) { return mList; }
+	CGPObject		*GetList(void) {return mList;}
 	void			AddValue(const char *newValue, CTextPool **textPool = 0);
 
 	bool			Parse(char **dataPtr, CTextPool **textPool);
@@ -128,19 +128,19 @@ public:
 				CGPGroup(const char *initName = "Top Level", CGPGroup *initParent = 0);
 				~CGPGroup(void);
 
-	CGPGroup	*GetParent(void) { return mParent; }
-	CGPGroup	*GetNext(void) { return (CGPGroup *)mNext; }
+	CGPGroup	*GetParent(void) {return mParent;}
+	CGPGroup	*GetNext(void) {return (CGPGroup *)mNext;}
 	int			GetNumSubGroups(void);
 	int			GetNumPairs(void);
 
 	void		Clean(void);
 	CGPGroup	*Duplicate(CTextPool **textPool = 0, CGPGroup *initParent = 0);
 
-	void		SetWriteable(const bool writeable) { mWriteable = writeable; }
-	CGPValue	*GetPairs(void) { return mPairs; }
-	CGPValue	*GetInOrderPairs(void) { return mInOrderPairs; }
-	CGPGroup	*GetSubGroups(void) { return mSubGroups; }
-	CGPGroup	*GetInOrderSubGroups(void) { return mInOrderSubGroups; }
+	void		SetWriteable(const bool writeable) {mWriteable = writeable;}
+	CGPValue	*GetPairs(void) {return mPairs;}
+	CGPValue	*GetInOrderPairs(void) {return mInOrderPairs;}
+	CGPGroup	*GetSubGroups(void) {return mSubGroups;}
+	CGPGroup	*GetInOrderSubGroups(void) {return mInOrderSubGroups;}
 
 	CGPValue	*AddPair(const char *name, const char *value, CTextPool **textPool = 0);
 	void		AddPair(CGPValue *NewPair);
@@ -165,8 +165,8 @@ public:
 	CGenericParser2(void);
 	~CGenericParser2(void);
 
-	void		SetWriteable(const bool writeable) { mWriteable = writeable; }
-	CGPGroup	*GetBaseParseGroup(void) { return &mTopLevel; }
+	void		SetWriteable(const bool writeable) {mWriteable = writeable;}
+	CGPGroup	*GetBaseParseGroup(void) {return &mTopLevel;}
 
 	bool	Parse(char **dataPtr, bool cleanFirst = true, bool writeable = false);
 	bool	Parse(char *dataPtr, bool cleanFirst = true, bool writeable = false)

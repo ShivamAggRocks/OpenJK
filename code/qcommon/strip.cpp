@@ -60,7 +60,7 @@ static cvar_t	*sp_leet;
 #define SP_PACKAGE		0xff00
 #define SP_STRING		0x00ff
 
-#define SP_GET_PACKAGE(x) ( (x & SP_PACKAGE) >> 8 )
+#define SP_GET_PACKAGE(x) ((x & SP_PACKAGE) >> 8)
 
 // Flags
 #define SP_FLAG1				0x00000001	// CENTERED
@@ -89,9 +89,9 @@ private:
 	std::string	name;
 	byte	reg;
 public:
-	cStringPackageID(const char *in_name, byte in_reg) { name = in_name; reg = in_reg; }
-	const char *GetName(void) const { return(name.c_str()); }
-	byte GetReg(void) const { return(reg); }
+	cStringPackageID(const char *in_name, byte in_reg) {name = in_name; reg = in_reg;}
+	const char *GetName(void) const {return(name.c_str());}
+	byte GetReg(void) const {return(reg);}
 };
 
 
@@ -107,23 +107,23 @@ public:
 					cStringPackage(const char *in, unsigned char initID = 0, char *initDescription = NULL, char *initReference = NULL);
 	virtual			~cStringPackage(void);
 
-	void			Register(unsigned char newRegistration) { Registration |= newRegistration; }
-	bool			UnRegister(unsigned char oldRegistration) { Registration &= ~oldRegistration; return (Registration == 0); }
-	bool			RegisteredOnServer(void) const { return(!!(Registration & SP_REGISTER_SERVER)); }
-	byte			GetRegistration(void) const { return(Registration); }
+	void			Register(unsigned char newRegistration) {Registration |= newRegistration;}
+	bool			UnRegister(unsigned char oldRegistration) {Registration &= ~oldRegistration; return (Registration == 0);}
+	bool			RegisteredOnServer(void) const {return(!!(Registration & SP_REGISTER_SERVER));}
+	byte			GetRegistration(void) const {return(Registration);}
 
-	void			SetID(unsigned char newID) { ID = newID; }
+	void			SetID(unsigned char newID) {ID = newID;}
 	void			SetReference(char *newReference);
 
-	unsigned char	GetID(void) { return ID; }
-	char			*GetReference(void) { return Reference; }
-	const char		*GetName(void) const { return(name.c_str()); }
+	unsigned char	GetID(void) {return ID;}
+	char			*GetReference(void) {return Reference;}
+	const char		*GetName(void) const {return(name.c_str());}
 
-	virtual bool	UnderstandToken(char *&Data, int &Size, int token, char *data );
+	virtual bool	UnderstandToken(char *&Data, int &Size, int token, char *data);
 #if 0
-	virtual bool	Load(char *FileName );
+	virtual bool	Load(char *FileName);
 #endif
-	virtual bool	Load(char *Data, int &Size );
+	virtual bool	Load(char *Data, int &Size);
 };
 
 
@@ -137,11 +137,11 @@ public:
 					cStringPackageSingle(const char *in, unsigned char initID = 0, char *initReference = NULL);
 					~cStringPackageSingle(void);
 
-	cStringsSingle	*FindString(int index) { return &Strings[index]; }
+	cStringsSingle	*FindString(int index) {return &Strings[index];}
 	cStringsSingle	*FindString(char *ReferenceLookup);
 	int				FindStringID(const char *ReferenceLookup);
 
-	virtual bool	UnderstandToken(char *&Data, int &Size, int token, char *data );
+	virtual bool	UnderstandToken(char *&Data, int &Size, int token, char *data);
 };
 
 
@@ -228,32 +228,32 @@ const char *Tokens[TK_END] =
 
 sFlagPair FlagPairs[] =
 {
-	{ TK_SP_FLAG1,		SP_FLAG1 },
-	{ TK_SP_FLAG2,		SP_FLAG2 },
-	{ TK_SP_FLAG3,		SP_FLAG3 },
-	{ TK_SP_FLAG4,		SP_FLAG4 },
-	{ TK_SP_FLAG5,		SP_FLAG5 },
-	{ TK_SP_FLAG6,		SP_FLAG6 },
-	{ TK_SP_FLAG7,		SP_FLAG7 },
-	{ TK_SP_FLAG8,		SP_FLAG8 },
-	{ TK_SP_FLAG9,		SP_FLAG9 },
-	{ TK_SP_FLAG_ORIGINAL,		SP_FLAG_ORIGINAL },
-	{ TK_INVALID,				0 }
+	{TK_SP_FLAG1,		SP_FLAG1},
+	{TK_SP_FLAG2,		SP_FLAG2},
+	{TK_SP_FLAG3,		SP_FLAG3},
+	{TK_SP_FLAG4,		SP_FLAG4},
+	{TK_SP_FLAG5,		SP_FLAG5},
+	{TK_SP_FLAG6,		SP_FLAG6},
+	{TK_SP_FLAG7,		SP_FLAG7},
+	{TK_SP_FLAG8,		SP_FLAG8},
+	{TK_SP_FLAG9,		SP_FLAG9},
+	{TK_SP_FLAG_ORIGINAL,		SP_FLAG_ORIGINAL},
+	{TK_INVALID,				0}
 };
 
 sFlagPair LanguagePairs[] =
 {
-	{ TK_TEXT_LANGUAGE1,	SP_LANGUAGE_ENGLISH },
-	{ TK_TEXT_LANGUAGE2,	SP_LANGUAGE_FRENCH },
-	{ TK_TEXT_LANGUAGE3,	SP_LANGUAGE_GERMAN },
-	{ TK_TEXT_LANGUAGE4,	SP_LANGUAGE_BRITISH },
-	{ TK_TEXT_LANGUAGE5,	SP_LANGUAGE_KOREAN },
-	{ TK_TEXT_LANGUAGE6,	SP_LANGUAGE_TAIWANESE },
-	{ TK_TEXT_LANGUAGE7,	SP_LANGUAGE_ITALIAN },
-	{ TK_TEXT_LANGUAGE8,	SP_LANGUAGE_SPANISH },
-	{ TK_TEXT_LANGUAGE9,	SP_LANGUAGE_JAPANESE },
-	{ TK_TEXT_LANGUAGE10,	SP_LANGUAGE_10},
-	{ TK_INVALID,		0 }
+	{TK_TEXT_LANGUAGE1,	SP_LANGUAGE_ENGLISH},
+	{TK_TEXT_LANGUAGE2,	SP_LANGUAGE_FRENCH},
+	{TK_TEXT_LANGUAGE3,	SP_LANGUAGE_GERMAN},
+	{TK_TEXT_LANGUAGE4,	SP_LANGUAGE_BRITISH},
+	{TK_TEXT_LANGUAGE5,	SP_LANGUAGE_KOREAN},
+	{TK_TEXT_LANGUAGE6,	SP_LANGUAGE_TAIWANESE},
+	{TK_TEXT_LANGUAGE7,	SP_LANGUAGE_ITALIAN},
+	{TK_TEXT_LANGUAGE8,	SP_LANGUAGE_SPANISH},
+	{TK_TEXT_LANGUAGE9,	SP_LANGUAGE_JAPANESE},
+	{TK_TEXT_LANGUAGE10,	SP_LANGUAGE_10},
+	{TK_INVALID,		0}
 };
 
 /************************************************************************************************
@@ -504,7 +504,7 @@ void cStrings::SetReference(char *newReference)
 	strcpy(Reference, newReference);
 }
 
-bool cStrings::UnderstandToken(int token, char *data )
+bool cStrings::UnderstandToken(int token, char *data)
 {
 	sFlagPair		*FlagPair;
 
@@ -554,7 +554,7 @@ bool cStrings::UnderstandToken(int token, char *data )
  *	done or not
  *
  ************************************************************************************************/
-bool cStrings::Load(char *&Data, int &Size )
+bool cStrings::Load(char *&Data, int &Size)
 {
 	int				token;
 	char			*data;
@@ -568,7 +568,7 @@ bool cStrings::Load(char *&Data, int &Size )
 	}
 
 	GetLine(Data, Size, token, data);
-	while (UnderstandToken(token, data) )
+	while (UnderstandToken(token, data))
 	{
 		GetLine(Data, Size, token, data);
 	}
@@ -725,7 +725,7 @@ static void FixIllegalChars(char *psText)
 	}
 }
 
-bool cStringsSingle::UnderstandToken(int token, char *data )
+bool cStringsSingle::UnderstandToken(int token, char *data)
 {
 	sFlagPair		*LanguagePair;
 
@@ -762,7 +762,7 @@ bool cStringsSingle::UnderstandToken(int token, char *data )
 				}
 			}
 
-			return cStrings::UnderstandToken(token, data );
+			return cStrings::UnderstandToken(token, data);
 //	}
 }
 
@@ -805,7 +805,7 @@ void cStringPackage::SetReference(char *newReference)
 }
 
 
-bool cStringPackage::UnderstandToken(char *&Data, int &Size, int token, char *data )
+bool cStringPackage::UnderstandToken(char *&Data, int &Size, int token, char *data)
 {
 	switch(token)
 	{
@@ -831,7 +831,7 @@ bool cStringPackage::UnderstandToken(char *&Data, int &Size, int token, char *da
 
 
 #if 0
-bool cStringPackage::Load(char *FileName )
+bool cStringPackage::Load(char *FileName)
 {
 	FILE	*FH;
 	int		Size;
@@ -851,7 +851,7 @@ bool cStringPackage::Load(char *FileName )
 	fread(buffer, 1, Size, FH);
 	fclose(FH);
 
-	Load(buffer, Size );
+	Load(buffer, Size);
 
 	delete[] buffer;
 
@@ -859,7 +859,7 @@ bool cStringPackage::Load(char *FileName )
 }
 #endif
 
-bool cStringPackage::Load(char *Data, int &Size )
+bool cStringPackage::Load(char *Data, int &Size)
 {
 	char	*token_data;
 	int		token;
@@ -871,7 +871,7 @@ bool cStringPackage::Load(char *Data, int &Size )
 	}
 
 	GetLine(Data, Size, token, token_data);
-	while (UnderstandToken(Data, Size, token, token_data) )
+	while (UnderstandToken(Data, Size, token, token_data))
 	{
 		GetLine(Data, Size, token, token_data);
 	}
@@ -934,7 +934,7 @@ int cStringPackageSingle::FindStringID(const char *ReferenceLookup)
 	return -1;
 }
 
-bool cStringPackageSingle::UnderstandToken(char *&Data, int &Size, int token, char *data )
+bool cStringPackageSingle::UnderstandToken(char *&Data, int &Size, int token, char *data)
 {
 	int		count, i, pos;
 	char	*ReferenceLookup;
@@ -1012,7 +1012,7 @@ qboolean JK2SP_Register(const char *inPackage, unsigned char Registration)
 		size = FS_ReadFile(va("strip/%s.sp", Package), (void **)&buffer);
 		if (size == -1)
 		{
-			if ( Registration & SP_REGISTER_REQUIRED )
+			if (Registration & SP_REGISTER_REQUIRED)
 			{
 				Com_Error(ERR_FATAL, "Could not open string package '%s'", Package);
 			}
@@ -1021,7 +1021,7 @@ qboolean JK2SP_Register(const char *inPackage, unsigned char Registration)
 
 		// Create the new string package
 		new_sp = new cStringPackageSingle(Package);
-		new_sp->Load(buffer, size );
+		new_sp->Load(buffer, size);
 		FS_FreeFile(buffer);
 
 		if (Registration & SP_REGISTER_CLIENT)

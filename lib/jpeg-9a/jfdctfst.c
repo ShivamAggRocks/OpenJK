@@ -174,7 +174,7 @@ jpeg_fdct_ifast (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[7] = z11 - z4;
 
     dataptr += DCTSIZE;		/* advance pointer to next row */
-  }
+ }
 
   /* Pass 2: process columns. */
 
@@ -224,7 +224,7 @@ jpeg_fdct_ifast (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
     dataptr[DCTSIZE*7] = z11 - z4;
 
     dataptr++;			/* advance pointer to next column */
-  }
+ }
 }
 
 #endif /* DCT_IFAST_SUPPORTED */

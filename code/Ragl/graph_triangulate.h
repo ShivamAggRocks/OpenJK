@@ -269,7 +269,7 @@ public:
 					(mLinks.get(RInd, LInd)==0) &&
 					(mLinks.get(LInd, RInd)==0) &&
 					(!user.on_same_floor(PtL, PtA) || !user.on_same_floor(PtL, PtB))
-				   )
+				  )
 				{
 					nEdge= mEdges.alloc();
 
@@ -542,7 +542,7 @@ private:
     ////////////////////////////////////////////////////////////////////////////////////
 	int		add_edge(int A, int B, int Face=0, bool OnHull=true)
 	{
-		assert(A!=B );
+		assert(A!=B);
 
 		int	nEdge = mLinks.get(mGraph.node_index(A), mGraph.node_index(B));
 
@@ -694,7 +694,7 @@ private:
 
 			// Can This Edge "See" The node Handle We Have Passed In?
 			//---------------------------------------------------------
-			if ( mGraph.get_node(nodeHandle).LRTest(mGraph.get_node(curEdge.mA), mGraph.get_node(curEdge.mB))==Side_Left )
+			if (mGraph.get_node(nodeHandle).LRTest(mGraph.get_node(curEdge.mA), mGraph.get_node(curEdge.mB))==Side_Left)
 			{
 				// Then Add The Face And Remove This Edge From The Hull
 				//------------------------------------------------------

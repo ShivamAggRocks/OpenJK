@@ -150,37 +150,37 @@ typedef struct {
 	//============== general Quake services ==================
 
 	// print message on the local console
-	void	(*Printf)( const char *fmt, ... );
+	void	(*Printf)(const char *fmt, ...);
 
 	// Write a camera ref_tag to cameras.map
-	void	(*WriteCam)( const char *text );
+	void	(*WriteCam)(const char *text);
 	void	(*FlushCamFile)();
 
 	// abort the game
-	NORETURN_PTR void	(*Error)( int, const char *fmt, ... );
+	NORETURN_PTR void	(*Error)(int, const char *fmt, ...);
 
 	// get current time for profiling reasons
 	// this should NOT be used for any game related tasks,
 	// because it is not journaled
-	int		(*Milliseconds)( void );
+	int		(*Milliseconds)(void);
 
 	// console variable interaction
-	cvar_t	*(*cvar)( const char *var_name, const char *value, int flags );
-	void	(*cvar_set)( const char *var_name, const char *value );
-	int		(*Cvar_VariableIntegerValue)( const char *var_name );
-	void	(*Cvar_VariableStringBuffer)( const char *var_name, char *buffer, int bufsize );
+	cvar_t	*(*cvar)(const char *var_name, const char *value, int flags);
+	void	(*cvar_set)(const char *var_name, const char *value);
+	int		(*Cvar_VariableIntegerValue)(const char *var_name);
+	void	(*Cvar_VariableStringBuffer)(const char *var_name, char *buffer, int bufsize);
 
 	// ClientCommand and ServerCommand parameter access
-	int		(*argc)( void );
-	char	*(*argv)( int n );
+	int		(*argc)(void);
+	char	*(*argv)(int n);
 
-	int		(*FS_FOpenFile)( const char *qpath, fileHandle_t *file, fsMode_t mode );
-	int		(*FS_Read)( void *buffer, int len, fileHandle_t f );
-	int		(*FS_Write)( const void *buffer, int len, fileHandle_t f );
-	void	(*FS_FCloseFile)( fileHandle_t f );
-	long	(*FS_ReadFile)( const char *name, void **buf );
-	void	(*FS_FreeFile)( void *buf );
-	int		(*FS_GetFileList)(  const char *path, const char *extension, char *listbuf, int bufsize );
+	int		(*FS_FOpenFile)(const char *qpath, fileHandle_t *file, fsMode_t mode);
+	int		(*FS_Read)(void *buffer, int len, fileHandle_t f);
+	int		(*FS_Write)(const void *buffer, int len, fileHandle_t f);
+	void	(*FS_FCloseFile)(fileHandle_t f);
+	long	(*FS_ReadFile)(const char *name, void **buf);
+	void	(*FS_FreeFile)(void *buf);
+	int		(*FS_GetFileList)( const char *path, const char *extension, char *listbuf, int bufsize);
 
 	// Savegame handling
 	//
@@ -188,72 +188,72 @@ typedef struct {
 
 	// add commands to the console as if they were typed in
 	// for map changing, etc
-	void	(*SendConsoleCommand)( const char *text );
+	void	(*SendConsoleCommand)(const char *text);
 
 
 	//=========== server specific functionality =============
 
 	// kick a client off the server with a message
-	void	(*DropClient)( int clientNum, const char *reason );
+	void	(*DropClient)(int clientNum, const char *reason);
 
 	// reliably sends a command string to be interpreted by the given
 	// client.  If clientNum is -1, it will be sent to all clients
-	void	(*SendServerCommand)( int clientNum, const char *fmt, ... );
+	void	(*SendServerCommand)(int clientNum, const char *fmt, ...);
 
 	// config strings hold all the index strings, and various other information
 	// that is reliably communicated to all clients
 	// All of the current configstrings are sent to clients when
 	// they connect, and changes are sent to all connected clients.
 	// All confgstrings are cleared at each level start.
-	void	(*SetConfigstring)( int num, const char *string );
-	void	(*GetConfigstring)( int num, char *buffer, int bufferSize );
+	void	(*SetConfigstring)(int num, const char *string);
+	void	(*GetConfigstring)(int num, char *buffer, int bufferSize);
 
 	// userinfo strings are maintained by the server system, so they
 	// are persistant across level loads, while all other game visible
 	// data is completely reset
-	void	(*GetUserinfo)( int num, char *buffer, int bufferSize );
-	void	(*SetUserinfo)( int num, const char *buffer );
+	void	(*GetUserinfo)(int num, char *buffer, int bufferSize);
+	void	(*SetUserinfo)(int num, const char *buffer);
 
 	// the serverinfo info string has all the cvars visible to server browsers
-	void	(*GetServerinfo)( char *buffer, int bufferSize );
+	void	(*GetServerinfo)(char *buffer, int bufferSize);
 
 	// sets mins and maxs based on the brushmodel name
-	void	(*SetBrushModel)( gentity_t *ent, const char *name );
+	void	(*SetBrushModel)(gentity_t *ent, const char *name);
 
 	// collision detection against all linked entities
-	void	(*trace)( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
-			const int passEntityNum, const int contentmask , const EG2_Collision eG2TraceType , const int useLod );
+	void	(*trace)(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
+			const int passEntityNum, const int contentmask , const EG2_Collision eG2TraceType , const int useLod);
 
 	// point contents against all linked entities
-	int		(*pointcontents)( const vec3_t point, int passEntityNum );
+	int		(*pointcontents)(const vec3_t point, int passEntityNum);
 	// what contents are on the map?
 	int		(*totalMapContents)();
 
-	qboolean	(*inPVS)( const vec3_t p1, const vec3_t p2 );
-	qboolean	(*inPVSIgnorePortals)( const vec3_t p1, const vec3_t p2 );
-	void		(*AdjustAreaPortalState)( gentity_t *ent, qboolean open );
-	qboolean	(*AreasConnected)( int area1, int area2 );
+	qboolean	(*inPVS)(const vec3_t p1, const vec3_t p2);
+	qboolean	(*inPVSIgnorePortals)(const vec3_t p1, const vec3_t p2);
+	void		(*AdjustAreaPortalState)(gentity_t *ent, qboolean open);
+	qboolean	(*AreasConnected)(int area1, int area2);
 
 	// an entity will never be sent to a client or used for collision
 	// if it is not passed to linkentity.  If the size, position, or
 	// solidity changes, it must be relinked.
-	void	(*linkentity)( gentity_t *ent );
-	void	(*unlinkentity)( gentity_t *ent );		// call before removing an interactive entity
+	void	(*linkentity)(gentity_t *ent);
+	void	(*unlinkentity)(gentity_t *ent);		// call before removing an interactive entity
 
 	// EntitiesInBox will return brush models based on their bounding box,
 	// so exact determination must still be done with EntityContact
-	int		(*EntitiesInBox)( const vec3_t mins, const vec3_t maxs, gentity_t **list, int maxcount );
+	int		(*EntitiesInBox)(const vec3_t mins, const vec3_t maxs, gentity_t **list, int maxcount);
 
 	// perform an exact check against inline brush models of non-square shape
-	qboolean	(*EntityContact)( const vec3_t mins, const vec3_t maxs, const gentity_t *ent );
+	qboolean	(*EntityContact)(const vec3_t mins, const vec3_t maxs, const gentity_t *ent);
 
 	// sound volume values
 	int		*VoiceVolume;
 
 	// dynamic memory allocator for things that need to be freed
-	void		*(*Malloc)( int iSize, memtag_t eTag, qboolean bZeroIt);	// see qcommon/tags.h for choices
-	int			(*Free)( void *buf );
-	qboolean	(*bIsFromZone)( const void *buf, memtag_t eTag);	// see qcommon/tags.h for choices
+	void		*(*Malloc)(int iSize, memtag_t eTag, qboolean bZeroIt);	// see qcommon/tags.h for choices
+	int			(*Free)(void *buf);
+	qboolean	(*bIsFromZone)(const void *buf, memtag_t eTag);	// see qcommon/tags.h for choices
 
 /*
 Ghoul2 Insert Start
@@ -261,21 +261,21 @@ Ghoul2 Insert Start
 	qhandle_t	(*G2API_PrecacheGhoul2Model)(const char *fileName);
 
 	int			(*G2API_InitGhoul2Model)(CGhoul2Info_v &ghoul2, const char *fileName, int modelIndex, qhandle_t customSkin,
-								  qhandle_t customShader, int modelFlags, int lodBias );
-	qboolean	(*G2API_SetSkin)(CGhoul2Info *ghlInfo, qhandle_t customSkin, qhandle_t renderSkin );
+								  qhandle_t customShader, int modelFlags, int lodBias);
+	qboolean	(*G2API_SetSkin)(CGhoul2Info *ghlInfo, qhandle_t customSkin, qhandle_t renderSkin);
 	qboolean	(*G2API_SetBoneAnim)(CGhoul2Info *ghlInfo, const char *boneName, const int startFrame, const int endFrame,
-							  const int flags, const float animSpeed, const int currentTime, const float setFrame, const int blendTime );
+							  const int flags, const float animSpeed, const int currentTime, const float setFrame, const int blendTime);
 	qboolean	(*G2API_SetBoneAngles)(CGhoul2Info *ghlInfo, const char *boneName, const vec3_t angles,
 								   const int flags, const Eorientations up, const Eorientations right, const Eorientations forward,
-								   qhandle_t *modelList, int blendTime , int blendStart );
+								   qhandle_t *modelList, int blendTime , int blendStart);
 	qboolean	(*G2API_SetBoneAnglesIndex)(CGhoul2Info *ghlInfo, const int index, const vec3_t angles, const int flags,
 							 const Eorientations yaw, const Eorientations pitch, const Eorientations roll,
-							 qhandle_t *modelList, int blendTime, int currentTime );
+							 qhandle_t *modelList, int blendTime, int currentTime);
 	qboolean	(*G2API_SetBoneAnglesMatrix)(CGhoul2Info *ghlInfo, const char *boneName, const mdxaBone_t &matrix, const int flags,
-									  qhandle_t *modelList, int blendTime , int currentTime );
-	void		(*G2API_CopyGhoul2Instance)(CGhoul2Info_v &ghoul2From, CGhoul2Info_v &ghoul2To, int modelIndex );
+									  qhandle_t *modelList, int blendTime , int currentTime);
+	void		(*G2API_CopyGhoul2Instance)(CGhoul2Info_v &ghoul2From, CGhoul2Info_v &ghoul2To, int modelIndex);
 	qboolean	(*G2API_SetBoneAnimIndex)(CGhoul2Info *ghlInfo, const int index, const int startFrame, const int endFrame, const int flags,
-							const float animSpeed, const int currentTime, const float setFrame , const int blendTime );
+							const float animSpeed, const int currentTime, const float setFrame , const int blendTime);
 
 	qboolean	(*G2API_SetLodBias)(CGhoul2Info *ghlInfo, int lodBias);
 	qboolean	(*G2API_SetShader)(CGhoul2Info *ghlInfo, qhandle_t customShader);
@@ -283,7 +283,7 @@ Ghoul2 Insert Start
 	qboolean	(*G2API_SetSurfaceOnOff)(CGhoul2Info *ghlInfo, const char *surfaceName, const int flags);
 	qboolean	(*G2API_SetRootSurface)(CGhoul2Info_v &ghlInfo, const int modelIndex, const char *surfaceName);
 	qboolean	(*G2API_RemoveSurface)(CGhoul2Info *ghlInfo, const int index);
-	int			(*G2API_AddSurface)(CGhoul2Info *ghlInfo, int surfaceNumber, int polyNumber, float BarycentricI, float BarycentricJ, int lod );
+	int			(*G2API_AddSurface)(CGhoul2Info *ghlInfo, int surfaceNumber, int polyNumber, float BarycentricI, float BarycentricJ, int lod);
 	qboolean	(*G2API_GetBoneAnim)(CGhoul2Info *ghlInfo, const char *boneName, const int currentTime, float *currentFrame,
 							  int *startFrame, int *endFrame, int *flags, float *animSpeed, int *modelList);
 	qboolean	(*G2API_GetBoneAnimIndex)(CGhoul2Info *ghlInfo, const int iBoneIndex, const int currentTime, float *currentFrame,
@@ -356,7 +356,7 @@ Ghoul2 Insert Start
 	//rww - RAGDOLL_END
 
 	void		(*G2API_AddSkinGore)(CGhoul2Info_v &ghoul2,SSkinGoreData &gore);
-	void		(*G2API_ClearSkinGore)( CGhoul2Info_v &ghoul2 );
+	void		(*G2API_ClearSkinGore)(CGhoul2Info_v &ghoul2);
 
 	void		(*RMG_Init)(int terrainID);
 
@@ -394,8 +394,8 @@ typedef struct {
 	// init and shutdown will be called every single level
 	// levelTime will be near zero, while globalTime will be a large number
 	// that can be used to track spectator entry times across restarts
-	void		(*Init)( const char *mapname, const char *spawntarget, int checkSum, const char *entstring,
-		int levelTime, int randomSeed, int globalTime, SavedGameJustLoaded_e eSavedGameJustLoaded, qboolean qbLoadTransition );
+	void		(*Init)(const char *mapname, const char *spawntarget, int checkSum, const char *entstring,
+		int levelTime, int randomSeed, int globalTime, SavedGameJustLoaded_e eSavedGameJustLoaded, qboolean qbLoadTransition);
 	void		(*Shutdown) (void);
 
 	// ReadLevel is called after the default map information has been
@@ -406,22 +406,22 @@ typedef struct {
 
 	// return NULL if the client is allowed to connect, otherwise return
 	// a text string with the reason for denial
-	char		*(*ClientConnect)( int clientNum, qboolean firstTime, SavedGameJustLoaded_e eSavedGameJustLoaded );
+	char		*(*ClientConnect)(int clientNum, qboolean firstTime, SavedGameJustLoaded_e eSavedGameJustLoaded);
 
-	void		(*ClientBegin)( int clientNum, usercmd_t *cmd, SavedGameJustLoaded_e eSavedGameJustLoaded);
-	void		(*ClientUserinfoChanged)( int clientNum );
-	void		(*ClientDisconnect)( int clientNum );
-	void		(*ClientCommand)( int clientNum );
-	void		(*ClientThink)( int clientNum, usercmd_t *cmd );
+	void		(*ClientBegin)(int clientNum, usercmd_t *cmd, SavedGameJustLoaded_e eSavedGameJustLoaded);
+	void		(*ClientUserinfoChanged)(int clientNum);
+	void		(*ClientDisconnect)(int clientNum);
+	void		(*ClientCommand)(int clientNum);
+	void		(*ClientThink)(int clientNum, usercmd_t *cmd);
 
-	void		(*RunFrame)( int levelTime );
-	void		(*ConnectNavs)( const char *mapname, int checkSum );
+	void		(*RunFrame)(int levelTime);
+	void		(*ConnectNavs)(const char *mapname, int checkSum);
 
 	// ConsoleCommand will be called when a command has been issued
 	// that is not recognized as a builtin function.
 	// The game can issue gi.argc() / gi.argv() commands to get the command
 	// and parameters.  Return qfalse if the game doesn't recognize it as a command.
-	qboolean	(*ConsoleCommand)( void );
+	qboolean	(*ConsoleCommand)(void);
 
 	void		(*GameSpawnRMGEntity)(char *s);
 	//

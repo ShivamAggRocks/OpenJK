@@ -134,8 +134,8 @@ static unsigned int bitget(int n)
       {
 	 bitdat.bitbuf = (bitdat.bitbuf << 8) | *bitdat.bs_ptr++;
 	 bitdat.bits += 8;
-      }
-   }
+     }
+  }
    bitdat.bits -= n;
    x = bitdat.bitbuf >> bitdat.bits;
    bitdat.bitbuf -= x << bitdat.bits;
@@ -153,8 +153,8 @@ static unsigned int bitget_lb(int n)
       {
 	 bitdat.bitbuf = (bitdat.bitbuf << 8) | *bitdat.bs_ptr++;
 	 bitdat.bits += 8;
-      }
-   }
+     }
+  }
    bitdat.bits -= n;
    x = bitdat.bitbuf >> bitdat.bits;
    bitdat.bitbuf -= x << bitdat.bits;
@@ -175,8 +175,8 @@ static unsigned int bitget2(int n)
       {
 	 bitdat.bitbuf = (bitdat.bitbuf << 8) | *bitdat.bs_ptr++;
 	 bitdat.bits += 8;
-      }
-   }
+     }
+  }
    x = bitdat.bitbuf >> (bitdat.bits - n);
    return x;
 }
@@ -202,27 +202,27 @@ static unsigned int bitget_1bit()
 */
 /*========================================================*/
 /*========================================================*/
-#define mac_bitget_check(n) if( bitdat.bits < (n) ) {                   \
-    while( bitdat.bits <= 24 ) {            \
+#define mac_bitget_check(n) if(bitdat.bits < (n)) {                  \
+    while(bitdat.bits <= 24) {           \
         bitdat.bitbuf = (bitdat.bitbuf << 8) | *bitdat.bs_ptr++; \
         bitdat.bits += 8;                   \
-    }                                       \
+   }                                       \
 }
 /*---------------------------------------------------------*/
 #define mac_bitget2(n)  (bitdat.bitbuf >> (bitdat.bits-n));
 /*---------------------------------------------------------*/
-#define mac_bitget(n) ( bitdat.bits -= n,           \
+#define mac_bitget(n) (bitdat.bits -= n,           \
          code  = bitdat.bitbuf >> bitdat.bits,     \
          bitdat.bitbuf -= code << bitdat.bits,     \
-         code )
+         code)
 /*---------------------------------------------------------*/
 #define mac_bitget_purge(n) bitdat.bits -= n,                    \
     bitdat.bitbuf -= (bitdat.bitbuf >> bitdat.bits) << bitdat.bits;
 /*---------------------------------------------------------*/
-#define mac_bitget_1bit() ( bitdat.bits--,                           \
+#define mac_bitget_1bit() (bitdat.bits--,                           \
          code  = bitdat.bitbuf >> bitdat.bits,    \
          bitdat.bitbuf -= code << bitdat.bits,  \
-         code )
+         code)
 /*========================================================*/
 /*========================================================*/
 void unpack_huff(int xy[][2], int n, int ntable)
@@ -251,7 +251,7 @@ void unpack_huff(int xy[][2], int n, int ntable)
 	 {
 	    xy[i][0] = 0;
 	    xy[i][1] = 0;
-	 }
+	}
 	 return;
 /*------------------------------------------*/
       case one_shot:
@@ -275,7 +275,7 @@ void unpack_huff(int xy[][2], int n, int ntable)
 	    if (bitdat.bs_ptr > bitdat.bs_ptr_end)
 	       break;		// bad data protect
 
-	 }
+	}
 	 return;
 /*------------------------------------------*/
       case no_linbits:
@@ -291,7 +291,7 @@ void unpack_huff(int xy[][2], int n, int ntable)
 		  break;
 	       t += t[1 + code].ptr;	/* ptr include 1+code */
 	       mac_bitget_purge(bits);
-	    }
+	   }
 	    mac_bitget_purge(t[1 + code].b.purgebits);
 	    x = t[1 + code].b.x;
 	    y = t[1 + code].b.y;
@@ -306,7 +306,7 @@ void unpack_huff(int xy[][2], int n, int ntable)
 	    if (bitdat.bs_ptr > bitdat.bs_ptr_end)
 	       break;		// bad data protect
 
-	 }
+	}
 	 return;
 /*------------------------------------------*/
       case have_linbits:
@@ -321,7 +321,7 @@ void unpack_huff(int xy[][2], int n, int ntable)
 		  break;
 	       t += t[1 + code].ptr;	/* ptr includes 1+code */
 	       mac_bitget_purge(bits);
-	    }
+	   }
 	    mac_bitget_purge(t[1 + code].b.purgebits);
 	    x = t[1 + code].b.x;
 	    y = t[1 + code].b.y;
@@ -340,9 +340,9 @@ void unpack_huff(int xy[][2], int n, int ntable)
 	    if (bitdat.bs_ptr > bitdat.bs_ptr_end)
 	       break;		// bad data protect
 
-	 }
+	}
 	 return;
-   }
+  }
 /*--- end switch ---*/
 
 }
@@ -377,7 +377,7 @@ int unpack_huff_quad(int vwxy[][4], int n, int nbits, int ntable)
       {
 	 i_non_zero = i;
 	 tmp_nz = tmp;
-      }
+     }
       v = (tmp >> 3) & 1;
       w = (tmp >> 2) & 1;
       x = (tmp >> 1) & 1;
@@ -387,25 +387,25 @@ int unpack_huff_quad(int vwxy[][4], int n, int nbits, int ntable)
 	 if (mac_bitget_1bit())
 	    v = -v;
 	 nbits--;
-      }
+     }
       if (w)
       {
 	 if (mac_bitget_1bit())
 	    w = -w;
 	 nbits--;
-      }
+     }
       if (x)
       {
 	 if (mac_bitget_1bit())
 	    x = -x;
 	 nbits--;
-      }
+     }
       if (y)
       {
 	 if (mac_bitget_1bit())
 	    y = -y;
 	 nbits--;
-      }
+     }
       vwxy[i][0] = v;
       vwxy[i][1] = w;
       vwxy[i][2] = x;
@@ -413,7 +413,7 @@ int unpack_huff_quad(int vwxy[][4], int n, int nbits, int ntable)
       if (bitdat.bs_ptr > bitdat.bs_ptr_end)
 	 break;			// bad data protect
 
-   }
+  }
    if (i && nbits < 0)
    {
       i--;
@@ -421,7 +421,7 @@ int unpack_huff_quad(int vwxy[][4], int n, int nbits, int ntable)
       vwxy[i][1] = 0;
       vwxy[i][2] = 0;
       vwxy[i][3] = 0;
-   }
+  }
 
    i_non_zero = (i_non_zero + 1) << 2;
 
@@ -443,7 +443,7 @@ int unpack_huff_quad(int vwxy[][4], int n, int nbits, int ntable)
       {
 	 i_non_zero = i;
 	 tmp_nz = tmp;
-      }
+     }
       v = (tmp >> 3) & 1;
       w = (tmp >> 2) & 1;
       x = (tmp >> 1) & 1;
@@ -453,25 +453,25 @@ int unpack_huff_quad(int vwxy[][4], int n, int nbits, int ntable)
 	 if (mac_bitget_1bit())
 	    v = -v;
 	 nbits--;
-      }
+     }
       if (w)
       {
 	 if (mac_bitget_1bit())
 	    w = -w;
 	 nbits--;
-      }
+     }
       if (x)
       {
 	 if (mac_bitget_1bit())
 	    x = -x;
 	 nbits--;
-      }
+     }
       if (y)
       {
 	 if (mac_bitget_1bit())
 	    y = -y;
 	 nbits--;
-      }
+     }
       vwxy[i][0] = v;
       vwxy[i][1] = w;
       vwxy[i][2] = x;
@@ -479,7 +479,7 @@ int unpack_huff_quad(int vwxy[][4], int n, int nbits, int ntable)
       if (bitdat.bs_ptr > bitdat.bs_ptr_end)
 	 break;			// bad data protect
 
-   }
+  }
    if (nbits < 0)
    {
       i--;
@@ -487,7 +487,7 @@ int unpack_huff_quad(int vwxy[][4], int n, int nbits, int ntable)
       vwxy[i][1] = 0;
       vwxy[i][2] = 0;
       vwxy[i][3] = 0;
-   }
+  }
 
    i_non_zero = (i_non_zero + 1) << 2;
 

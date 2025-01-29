@@ -36,12 +36,12 @@ CL_Netchan_Encode
 
 ==============
 */
-static void CL_Netchan_Encode( msg_t *msg ) {
+static void CL_Netchan_Encode(msg_t *msg) {
 	int serverId, messageAcknowledge, reliableAcknowledge;
 	int i, index, srdc, sbit, soob;
 	byte key, *string;
 
-	if ( msg->cursize <= CL_ENCODE_START ) {
+	if (msg->cursize <= CL_ENCODE_START) {
 		return;
 	}
 
@@ -92,7 +92,7 @@ CL_Netchan_Decode
 
 ==============
 */
-static void CL_Netchan_Decode( msg_t *msg ) {
+static void CL_Netchan_Decode(msg_t *msg) {
 	long reliableAcknowledge, i, index;
 	byte key, *string;
         int	srdc, sbit, soob;
@@ -112,7 +112,7 @@ static void CL_Netchan_Decode( msg_t *msg ) {
 	string = (unsigned char *)clc.reliableCommands[ reliableAcknowledge & (MAX_RELIABLE_COMMANDS-1) ];
 	index = 0;
 	// xor the client challenge with the netchan sequence number (need something that changes every message)
-	key = clc.challenge ^ LittleLong( *(unsigned *)msg->data );
+	key = clc.challenge ^ LittleLong(*(unsigned *)msg->data);
 	for (i = msg->readcount + CL_DECODE_START; i < msg->cursize; i++) {
 		// modify the key with the last sent and with this message acknowledged client command
 		if (!string[index])
@@ -137,8 +137,8 @@ static void CL_Netchan_Decode( msg_t *msg ) {
 CL_Netchan_TransmitNextFragment
 =================
 */
-void CL_Netchan_TransmitNextFragment( netchan_t *chan ) {
-	Netchan_TransmitNextFragment( chan );
+void CL_Netchan_TransmitNextFragment(netchan_t *chan) {
+	Netchan_TransmitNextFragment(chan);
 }
 
 //byte chksum[65536];
@@ -148,16 +148,16 @@ void CL_Netchan_TransmitNextFragment( netchan_t *chan ) {
 CL_Netchan_Transmit
 ================
 */
-void CL_Netchan_Transmit( netchan_t *chan, msg_t* msg ) {
+void CL_Netchan_Transmit(netchan_t *chan, msg_t* msg) {
 //	int i;
-	MSG_WriteByte( msg, clc_EOF );
+	MSG_WriteByte(msg, clc_EOF);
 //	for(i=CL_ENCODE_START;i<msg->cursize;i++) {
 //		chksum[i-CL_ENCODE_START] = msg->data[i];
 //	}
 
-//	Huff_Compress( msg, CL_ENCODE_START );
-	CL_Netchan_Encode( msg );
-	Netchan_Transmit( chan, msg->cursize, msg->data );
+//	Huff_Compress(msg, CL_ENCODE_START);
+	CL_Netchan_Encode(msg);
+	Netchan_Transmit(chan, msg->cursize, msg->data);
 }
 
 extern 	int oldsize;
@@ -168,16 +168,16 @@ int newsize = 0;
 CL_Netchan_Process
 =================
 */
-qboolean CL_Netchan_Process( netchan_t *chan, msg_t *msg ) {
+qboolean CL_Netchan_Process(netchan_t *chan, msg_t *msg) {
 	int ret;
 //	int i;
 //	static		int newsize = 0;
 
-	ret = Netchan_Process( chan, msg );
+	ret = Netchan_Process(chan, msg);
 	if (!ret)
 		return qfalse;
-	CL_Netchan_Decode( msg );
-//	Huff_Decompress( msg, CL_DECODE_START );
+	CL_Netchan_Decode(msg);
+//	Huff_Decompress(msg, CL_DECODE_START);
 //	for(i=CL_DECODE_START+msg->readcount;i<msg->cursize;i++) {
 //		if (msg->data[i] != chksum[i-(CL_DECODE_START+msg->readcount)]) {
 //			Com_Error(ERR_DROP,"bad %d v %d\n", msg->data[i], chksum[i-(CL_DECODE_START+msg->readcount)]);

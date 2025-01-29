@@ -102,21 +102,21 @@ out vec3 var_WSPosition;
 #endif
 
 #if defined(USE_DEFORM_VERTEXES)
-float GetNoiseValue( float x, float y, float z, float t )
+float GetNoiseValue(float x, float y, float z, float t)
 {
 	// Variation on the 'one-liner random function'.
 	// Not sure if this is still 'correctly' random
-	return fract( sin( dot(
-		vec4( x, y, z, t ),
-		vec4( 12.9898, 78.233, 12.9898, 78.233 )
-	)) * 43758.5453 );
+	return fract(sin(dot(
+		vec4(x, y, z, t),
+		vec4(12.9898, 78.233, 12.9898, 78.233)
+	)) * 43758.5453);
 }
 
-float CalculateDeformScale( in int func, in float time, in float phase, in float frequency )
+float CalculateDeformScale(in int func, in float time, in float phase, in float frequency)
 {
 	float value = phase + time * frequency;
 
-	switch ( func )
+	switch (func)
 	{
 		case WF_SIN:
 			return sin(value * 2.0 * M_PI);
@@ -141,18 +141,18 @@ vec3 DeformPosition(const vec3 pos, const vec3 normal, const vec2 st)
 		vec3 delta = u_Disintegration.xyz - pos;
 		float sqrDistance = dot(delta, delta);
 		vec3 normalScale = vec3(-0.01);
-		if ( sqrDistance < u_Disintegration.w )
+		if (sqrDistance < u_Disintegration.w)
 		{
 			normalScale = vec3(2.0, 2.0, 0.5);
 		}
-		else if ( sqrDistance < u_Disintegration.w + 50 )
+		else if (sqrDistance < u_Disintegration.w + 50)
 		{
 			normalScale = vec3(1.0, 1.0, 0.0);
 		}
 		return pos + normal * normalScale;
 	}
 #endif
-	switch ( u_DeformType )
+	switch (u_DeformType)
 	{
 		default:
 		{
@@ -165,7 +165,7 @@ vec3 DeformPosition(const vec3 pos, const vec3 normal, const vec2 st)
 			float bulgeWidth = u_DeformParams0.z; // phase
 			float bulgeSpeed = u_DeformParams0.w; // frequency
 
-			float scale = CalculateDeformScale( WF_SIN, (u_entityTime + u_frameTime + u_Time), bulgeWidth * st.x, bulgeSpeed );
+			float scale = CalculateDeformScale(WF_SIN, (u_entityTime + u_frameTime + u_Time), bulgeWidth * st.x, bulgeSpeed);
 
 			return pos + normal * scale * bulgeHeight;
 		}
@@ -185,8 +185,8 @@ vec3 DeformPosition(const vec3 pos, const vec3 normal, const vec2 st)
 			float frequency = u_DeformParams0.w;
 			float spread = u_DeformParams1.x;
 
-			float offset = dot( pos.xyz, vec3( spread ) );
-			float scale = CalculateDeformScale( u_DeformFunc, (u_entityTime + u_frameTime + u_Time), phase + offset, frequency );
+			float offset = dot(pos.xyz, vec3(spread));
+			float scale = CalculateDeformScale(u_DeformFunc, (u_entityTime + u_frameTime + u_Time), phase + offset, frequency);
 
 			return pos + normal * (base + scale * amplitude);
 		}
@@ -199,7 +199,7 @@ vec3 DeformPosition(const vec3 pos, const vec3 normal, const vec2 st)
 			float frequency = u_DeformParams0.w;
 			vec3 direction = u_DeformParams1.xyz;
 
-			float scale = CalculateDeformScale( u_DeformFunc, (u_entityTime + u_frameTime + u_Time), phase, frequency );
+			float scale = CalculateDeformScale(u_DeformFunc, (u_entityTime + u_frameTime + u_Time), phase, frequency);
 
 			return pos + direction * (base + scale * amplitude);
 		}
@@ -210,14 +210,14 @@ vec3 DeformPosition(const vec3 pos, const vec3 normal, const vec2 st)
 			float groundDist = u_DeformParams0.w;
 			vec3 lightDir = u_DeformParams1.xyz;
 
-			float d = dot( lightDir, ground );
+			float d = dot(lightDir, ground);
 
-			lightDir = lightDir * max( 0.5 - d, 0.0 ) + ground;
-			d = 1.0 / dot( lightDir, ground );
+			lightDir = lightDir * max(0.5 - d, 0.0) + ground;
+			d = 1.0 / dot(lightDir, ground);
 
 			vec3 lightPos = lightDir * d;
 
-			return pos - lightPos * dot( pos, ground ) + groundDist;
+			return pos - lightPos * dot(pos, ground) + groundDist;
 		}
 		//case DEFORM_DISINTEGRATION:
 		//{
@@ -225,9 +225,9 @@ vec3 DeformPosition(const vec3 pos, const vec3 normal, const vec2 st)
 	}
 }
 
-vec3 DeformNormal( const in vec3 position, const in vec3 normal )
+vec3 DeformNormal(const in vec3 position, const in vec3 normal)
 {
-	if ( u_DeformType != DEFORM_NORMALS )
+	if (u_DeformType != DEFORM_NORMALS)
 	{
 		return normal;
 	}
@@ -242,19 +242,19 @@ vec3 DeformNormal( const in vec3 position, const in vec3 normal )
 		position.x * scale,
 		position.y * scale,
 		position.z * scale,
-		(u_entityTime + u_frameTime + u_Time) * frequency );
+		(u_entityTime + u_frameTime + u_Time) * frequency);
 
 	outNormal.y += amplitude * GetNoiseValue(
 		100.0 * position.x * scale,
 		position.y * scale,
 		position.z * scale,
-		(u_entityTime + u_frameTime + u_Time) * frequency );
+		(u_entityTime + u_frameTime + u_Time) * frequency);
 
 	outNormal.z += amplitude * GetNoiseValue(
 		200.0 * position.x * scale,
 		position.y * scale,
 		position.z * scale,
-		(u_entityTime + u_frameTime + u_Time) * frequency );
+		(u_entityTime + u_frameTime + u_Time) * frequency);
 
 	return outNormal;
 }
@@ -418,7 +418,7 @@ void main()
 
 #if defined(USE_DEFORM_VERTEXES)
 	position = DeformPosition(position, normal, attr_TexCoord0.st);
-	normal = DeformNormal( position, normal );
+	normal = DeformNormal(position, normal);
 #endif
 
 	mat4 MVP = u_viewProjectionMatrix * u_ModelMatrix;
@@ -436,7 +436,7 @@ void main()
     var_DiffuseTex = tex;
 #endif
 
-	if ( u_FXVolumetricBase >= 0.0 )
+	if (u_FXVolumetricBase >= 0.0)
 	{
 		vec3 viewForward = u_ViewForward.xyz;
 		float d = clamp(dot(normalize(viewForward), normalize(normal)), 0.0, 1.0);

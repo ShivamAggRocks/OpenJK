@@ -61,11 +61,11 @@ png_error,(png_const_structrp png_ptr, png_const_charp error_message),
                   msg[i] = error_message[i + 1];
                msg[i - 1] = '\0';
                error_message = msg;
-            }
+           }
 
             else
                error_message += offset;
-      }
+     }
 
       else
       {
@@ -74,10 +74,10 @@ png_error,(png_const_structrp png_ptr, png_const_charp error_message),
             msg[0] = '0';
             msg[1] = '\0';
             error_message = msg;
-         }
-       }
-     }
-   }
+        }
+      }
+    }
+  }
 #endif
    if (png_ptr != NULL && png_ptr->error_fn != NULL)
       (*(png_ptr->error_fn))(png_constcast(png_structrp,png_ptr),
@@ -119,7 +119,7 @@ png_safecat(png_charp buffer, size_t bufsize, size_t pos,
            buffer[pos++] = *string++;
 
       buffer[pos] = '\0';
-   }
+  }
 
    return pos;
 }
@@ -156,7 +156,7 @@ png_format_number(png_const_charp start, png_charp end, int format,
             {
                *--end = digits[number % 10];
                output = 1;
-            }
+           }
             number /= 10;
             break;
 
@@ -183,7 +183,7 @@ png_format_number(png_const_charp start, png_charp end, int format,
          default: /* an error */
             number = 0;
             break;
-      }
+     }
 
       /* Keep track of the number of digits added */
       ++count;
@@ -199,8 +199,8 @@ png_format_number(png_const_charp start, png_charp end, int format,
             *--end = '.';
          else if (number == 0) /* and !output */
             *--end = '0';
-      }
-   }
+     }
+  }
 
    return end;
 }
@@ -228,9 +228,9 @@ png_warning(png_const_structrp png_ptr, png_const_charp warning_message)
             for (offset = 1; offset < 15; offset++)
                if (warning_message[offset] == ' ')
                   break;
-         }
-      }
-   }
+        }
+     }
+  }
    if (png_ptr != NULL && png_ptr->warning_fn != NULL)
       (*(png_ptr->warning_fn))(png_constcast(png_structrp,png_ptr),
          warning_message + offset);
@@ -333,18 +333,18 @@ png_formatted_warning(png_const_structrp png_ptr, png_warning_parameters p,
             /* Consume the parameter digit too: */
             ++message;
             continue;
-         }
+        }
 
          /* else not a parameter and there is a character after the @ sign; just
           * copy that.  This is known not to be '\0' because of the test above.
           */
-      }
+     }
 
       /* At this point *message can't be '\0', even in the bad parameter case
        * above where there is a lone '@' at the end of the message string.
        */
       msg[i++] = *message++;
-   }
+  }
 
    /* i is always less than (sizeof msg), so: */
    msg[i] = '\0';
@@ -370,7 +370,7 @@ png_benign_error(png_const_structrp png_ptr, png_const_charp error_message)
          else
 #     endif
       png_warning(png_ptr, error_message);
-   }
+  }
 
    else
    {
@@ -381,7 +381,7 @@ png_benign_error(png_const_structrp png_ptr, png_const_charp error_message)
          else
 #     endif
       png_error(png_ptr, error_message);
-   }
+  }
 
 #  ifndef PNG_ERROR_TEXT_SUPPORTED
       PNG_UNUSED(error_message)
@@ -448,13 +448,13 @@ png_format_buffer(png_const_structrp png_ptr, png_charp buffer, png_const_charp
          buffer[iout++] = png_digit[(c & 0xf0) >> 4];
          buffer[iout++] = png_digit[c & 0x0f];
          buffer[iout++] = PNG_LITERAL_RIGHT_SQUARE_BRACKET;
-      }
+     }
 
       else
       {
          buffer[iout++] = (char)c;
-      }
-   }
+     }
+  }
 
    if (error_message == NULL)
       buffer[iout] = '\0';
@@ -471,7 +471,7 @@ png_format_buffer(png_const_structrp png_ptr, png_charp buffer, png_const_charp
 
       /* iin < PNG_MAX_ERROR_TEXT, so the following is safe: */
       buffer[iout] = '\0';
-   }
+  }
 }
 #endif /* WARNINGS || ERROR_TEXT */
 
@@ -488,7 +488,7 @@ png_chunk_error,(png_const_structrp png_ptr, png_const_charp error_message),
    {
       png_format_buffer(png_ptr, msg, error_message);
       png_error(png_ptr, msg);
-   }
+  }
 }
 #endif /* READ && ERROR_TEXT */
 
@@ -504,7 +504,7 @@ png_chunk_warning(png_const_structrp png_ptr, png_const_charp warning_message)
    {
       png_format_buffer(png_ptr, msg, warning_message);
       png_warning(png_ptr, msg);
-   }
+  }
 }
 #endif /* WARNINGS */
 
@@ -548,7 +548,7 @@ png_chunk_report(png_const_structrp png_ptr, png_const_charp message, int error)
 
          else
             png_chunk_benign_error(png_ptr, message);
-      }
+     }
 #  endif
 
 #  if defined(PNG_READ_SUPPORTED) && defined(PNG_WRITE_SUPPORTED)
@@ -562,7 +562,7 @@ png_chunk_report(png_const_structrp png_ptr, png_const_charp message, int error)
 
          else
             png_app_error(png_ptr, message);
-      }
+     }
 #  endif
 }
 
@@ -582,7 +582,7 @@ png_fixed_error,(png_const_structrp png_ptr, png_const_charp name),PNG_NORETURN)
       {
          msg[fixed_message_ln + iin] = name[iin];
          ++iin;
-      }
+     }
    msg[fixed_message_ln + iin] = 0;
    png_error(png_ptr, msg);
 }
@@ -626,8 +626,8 @@ png_set_longjmp_fn(png_structrp png_ptr, png_longjmp_ptr longjmp_fn,
             return NULL; /* new NULL return on OOM */
 
          png_ptr->jmp_buf_size = jmp_buf_size;
-      }
-   }
+     }
+  }
 
    else /* Already allocated: check the size */
    {
@@ -645,15 +645,15 @@ png_set_longjmp_fn(png_structrp png_ptr, png_longjmp_ptr longjmp_fn,
              */
             png_error(png_ptr, "Libpng jmp_buf still allocated");
             /* png_ptr->jmp_buf_ptr = &png_ptr->jmp_buf_local; */
-         }
-      }
+        }
+     }
 
       if (size != jmp_buf_size)
       {
          png_warning(png_ptr, "Application jmp_buf size changed");
          return NULL; /* caller will probably crash: no choice here */
-      }
-   }
+     }
+  }
 
    /* Finally fill in the function, now we have a satisfactory buffer. It is
     * valid to change the function on every call.
@@ -690,15 +690,15 @@ png_free_jmpbuf(png_structrp png_ptr)
                png_ptr->jmp_buf_size = 0; /* stack allocation */
                png_ptr->longjmp_fn = longjmp;
                png_free(png_ptr, jb); /* Return to setjmp on error */
-            }
-         }
-      }
+           }
+        }
+     }
 
       /* *Always* cancel everything out: */
       png_ptr->jmp_buf_size = 0;
       png_ptr->jmp_buf_ptr = NULL;
       png_ptr->longjmp_fn = 0;
-   }
+  }
 }
 #endif
 
@@ -724,7 +724,7 @@ png_default_error,(png_const_structrp png_ptr, png_const_charp error_message),
          error_number[offset] = error_message[offset + 1];
          if (error_message[offset] == ' ')
             break;
-      }
+     }
 
       if ((offset > 1) && (offset < 15))
       {
@@ -732,22 +732,22 @@ png_default_error,(png_const_structrp png_ptr, png_const_charp error_message),
          fprintf(stderr, "libpng error no. %s: %s",
              error_number, error_message + offset + 1);
          fprintf(stderr, PNG_STRING_NEWLINE);
-      }
+     }
 
       else
       {
          fprintf(stderr, "libpng error: %s, offset=%d",
              error_message, offset);
          fprintf(stderr, PNG_STRING_NEWLINE);
-      }
-   }
+     }
+  }
    else
 #endif
    {
       fprintf(stderr, "libpng error: %s", error_message ? error_message :
          "undefined");
       fprintf(stderr, PNG_STRING_NEWLINE);
-   }
+  }
 #else
    PNG_UNUSED(error_message) /* Make compiler happy */
 #endif
@@ -795,7 +795,7 @@ png_default_warning(png_const_structrp png_ptr, png_const_charp warning_message)
          warning_number[offset] = warning_message[offset + 1];
          if (warning_message[offset] == ' ')
             break;
-      }
+     }
 
       if ((offset > 1) && (offset < 15))
       {
@@ -803,22 +803,22 @@ png_default_warning(png_const_structrp png_ptr, png_const_charp warning_message)
          fprintf(stderr, "libpng warning no. %s: %s",
              warning_number, warning_message + offset);
          fprintf(stderr, PNG_STRING_NEWLINE);
-      }
+     }
 
       else
       {
          fprintf(stderr, "libpng warning: %s",
              warning_message);
          fprintf(stderr, PNG_STRING_NEWLINE);
-      }
-   }
+     }
+  }
    else
 #  endif
 
    {
       fprintf(stderr, "libpng warning: %s", warning_message);
       fprintf(stderr, PNG_STRING_NEWLINE);
-   }
+  }
 #else
    PNG_UNUSED(warning_message) /* Make compiler happy */
 #endif
@@ -871,7 +871,7 @@ png_set_strip_error_numbers(png_structrp png_ptr, png_uint_32 strip_mode)
       png_ptr->flags &=
          ((~(PNG_FLAG_STRIP_ERROR_NUMBERS |
          PNG_FLAG_STRIP_ERROR_TEXT))&strip_mode);
-   }
+  }
 }
 #endif
 
@@ -909,8 +909,8 @@ png_safe_error),(png_structp png_nonconst_ptr, png_const_charp error_message),
             "bad longjmp: ");
          png_safecat(image->message, (sizeof image->message), pos,
              error_message);
-      }
-   }
+     }
+  }
 
    /* Here on an internal programming error. */
    abort();
@@ -928,7 +928,7 @@ png_safe_warning(png_structp png_nonconst_ptr, png_const_charp warning_message)
    {
       png_safecat(image->message, (sizeof image->message), 0, warning_message);
       image->warning_or_error |= PNG_IMAGE_WARNING;
-   }
+  }
 }
 #endif
 
@@ -949,7 +949,7 @@ png_safe_execute(png_imagep image_in, int (*function)(png_voidp), png_voidp arg)
 
       image->opaque->error_buf = safe_jmpbuf;
       result = function(arg);
-   }
+  }
 
    image->opaque->error_buf = saved_error_buf;
 

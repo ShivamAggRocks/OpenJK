@@ -37,8 +37,8 @@ uiimport_t	ui;
 uiStatic_t	uis;
 
 //externs
-static void UI_LoadMenu_f( void );
-static void UI_SaveMenu_f( void );
+static void UI_LoadMenu_f(void);
+static void UI_SaveMenu_f(void);
 
 //locals
 
@@ -50,9 +50,9 @@ UI_ForceMenuOff
 */
 void UI_ForceMenuOff (void)
 {
-	ui.Key_SetCatcher( ui.Key_GetCatcher() & ~KEYCATCH_UI );
+	ui.Key_SetCatcher(ui.Key_GetCatcher() & ~KEYCATCH_UI);
 	ui.Key_ClearStates();
-	ui.Cvar_Set( "cl_paused", "0" );
+	ui.Cvar_Set("cl_paused", "0");
 }
 
 
@@ -63,7 +63,7 @@ UI_SetActiveMenu -
 
 =================
 */
-void UI_SetActiveMenu( const char* menuname,const char *menuID )
+void UI_SetActiveMenu(const char* menuname,const char *menuID)
 {
 	// this should be the ONLY way the menu system is brought up (besides the UI_ConsoleCommand below)
 
@@ -72,44 +72,44 @@ void UI_SetActiveMenu( const char* menuname,const char *menuID )
 		return;
 	}
 
-	if ( !menuname ) {
+	if (!menuname) {
 		UI_ForceMenuOff();
 		return;
 	}
 
 	//make sure force-speed and slowmodeath doesn't slow down menus - NOTE: they should reset the timescale when the game un-pauses
-	Cvar_SetValue( "timescale", 1.0f );
+	Cvar_SetValue("timescale", 1.0f);
 
 	UI_Cursor_Show(qtrue);
 
 	// enusure minumum menu data is cached
 	Menu_Cache();
 
-	if ( Q_stricmp (menuname, "mainMenu") == 0 )
+	if (Q_stricmp (menuname, "mainMenu") == 0)
 	{
 		UI_MainMenu();
 		return;
 	}
 
-	if ( Q_stricmp (menuname, "ingame") == 0 )
+	if (Q_stricmp (menuname, "ingame") == 0)
 	{
-		ui.Cvar_Set( "cl_paused", "1" );
+		ui.Cvar_Set("cl_paused", "1");
 		UI_InGameMenu(menuID);
 		return;
 	}
 
-	if ( Q_stricmp (menuname, "datapad") == 0 )
+	if (Q_stricmp (menuname, "datapad") == 0)
 	{
-		ui.Cvar_Set( "cl_paused", "1" );
+		ui.Cvar_Set("cl_paused", "1");
 		UI_DataPadMenu();
 		return;
 	}
 #ifndef JK2_MODE
-	if ( Q_stricmp (menuname, "missionfailed_menu") == 0 )
+	if (Q_stricmp (menuname, "missionfailed_menu") == 0)
 	{
 		Menus_CloseAll();
 		Menus_ActivateByName("missionfailed_menu");
-		ui.Key_SetCatcher( KEYCATCH_UI );
+		ui.Key_SetCatcher(KEYCATCH_UI);
 		return;
 	}
 #endif
@@ -121,11 +121,11 @@ void UI_SetActiveMenu( const char* menuname,const char *menuID )
 UI_Argv
 =================
 */
-static char *UI_Argv( int arg )
+static char *UI_Argv(int arg)
 {
 	static char	buffer[MAX_STRING_CHARS];
 
-	ui.Argv( arg, buffer, sizeof( buffer ) );
+	ui.Argv(arg, buffer, sizeof(buffer));
 
 	return buffer;
 }
@@ -136,11 +136,11 @@ static char *UI_Argv( int arg )
 UI_Cvar_VariableString
 =================
 */
-char *UI_Cvar_VariableString( const char *var_name )
+char *UI_Cvar_VariableString(const char *var_name)
 {
 	static char	buffer[MAX_STRING_CHARS];
 
-	ui.Cvar_VariableStringBuffer( var_name, buffer, sizeof( buffer ) );
+	ui.Cvar_VariableStringBuffer(var_name, buffer, sizeof(buffer));
 
 	return buffer;
 }
@@ -150,7 +150,7 @@ char *UI_Cvar_VariableString( const char *var_name )
 UI_Cache
 =================
 */
-static void UI_Cache_f( void )
+static void UI_Cache_f(void)
 {
 	Menu_Cache();
 #ifndef JK2_MODE
@@ -199,7 +199,7 @@ UI_ConsoleCommand
 void UI_Load(void);	//in UI_main.cpp
 #endif
 
-qboolean UI_ConsoleCommand( void )
+qboolean UI_ConsoleCommand(void)
 {
 	char	*cmd;
 
@@ -208,37 +208,37 @@ qboolean UI_ConsoleCommand( void )
 		return qfalse;
 	}
 
-	cmd = UI_Argv( 0 );
+	cmd = UI_Argv(0);
 
 	// ensure minimum menu data is available
 	Menu_Cache();
 
-	if ( Q_stricmp (cmd, "ui_cache") == 0 )
+	if (Q_stricmp (cmd, "ui_cache") == 0)
 	{
 		UI_Cache_f();
 		return qtrue;
 	}
 
-	if ( Q_stricmp (cmd, "levelselect") == 0 )
+	if (Q_stricmp (cmd, "levelselect") == 0)
 	{
 		UI_LoadMenu_f();
 		return qtrue;
 	}
 
-	if ( Q_stricmp (cmd, "ui_teamOrders") == 0 )
+	if (Q_stricmp (cmd, "ui_teamOrders") == 0)
 	{
 		UI_SaveMenu_f();
 		return qtrue;
 	}
 
-	if ( Q_stricmp (cmd, "ui_report") == 0 )
+	if (Q_stricmp (cmd, "ui_report") == 0)
 	{
 		UI_Report();
 		return qtrue;
 	}
 
 #ifndef JK2_MODE
-	if ( Q_stricmp (cmd, "ui_load") == 0 )
+	if (Q_stricmp (cmd, "ui_load") == 0)
 	{
 		UI_Load();
 		return qtrue;
@@ -254,60 +254,60 @@ qboolean UI_ConsoleCommand( void )
 UI_Init
 =================
 */
-void UI_Init( int apiVersion, uiimport_t *uiimport, qboolean inGameLoad )
+void UI_Init(int apiVersion, uiimport_t *uiimport, qboolean inGameLoad)
 {
 	ui = *uiimport;
 
-	if ( apiVersion != UI_API_VERSION ) {
-		ui.Error( ERR_FATAL, "Bad UI_API_VERSION: expected %i, got %i\n", UI_API_VERSION, apiVersion );
+	if (apiVersion != UI_API_VERSION) {
+		ui.Error(ERR_FATAL, "Bad UI_API_VERSION: expected %i, got %i\n", UI_API_VERSION, apiVersion);
 	}
 
 	// get static data (glconfig, media)
-	ui.GetGlconfig( &uis.glconfig );
+	ui.GetGlconfig(&uis.glconfig);
 
 	uis.scaley = uis.glconfig.vidHeight * (1.0/480.0);
 	uis.scalex = uis.glconfig.vidWidth * (1.0/640.0);
 
-	Menu_Cache( );
+	Menu_Cache();
 
-	ui.Cvar_Create( "cg_drawCrosshair", "1", CVAR_ARCHIVE );
-	ui.Cvar_Create( "cg_marks", "1", CVAR_ARCHIVE );
+	ui.Cvar_Create("cg_drawCrosshair", "1", CVAR_ARCHIVE);
+	ui.Cvar_Create("cg_marks", "1", CVAR_ARCHIVE);
 	ui.Cvar_Create ("s_language",			"english",	CVAR_ARCHIVE | CVAR_NORESTART);
 #ifndef JK2_MODE
-	ui.Cvar_Create( "g_char_model",			"jedi_tf",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_char_skin_head",		"head_a1",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_char_skin_torso",	"torso_a1",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_char_skin_legs",		"lower_a1",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_char_color_red",		"255",		CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_char_color_green",	"255",		CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_char_color_blue",	"255",		CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_saber_type",			"single",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_saber",				"single_1",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_saber2",				"",			CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_saber_color",		"yellow",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
-	ui.Cvar_Create( "g_saber2_color",		"yellow",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART );
+	ui.Cvar_Create("g_char_model",			"jedi_tf",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_char_skin_head",		"head_a1",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_char_skin_torso",	"torso_a1",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_char_skin_legs",		"lower_a1",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_char_color_red",		"255",		CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_char_color_green",	"255",		CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_char_color_blue",	"255",		CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_saber_type",			"single",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_saber",				"single_1",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_saber2",				"",			CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_saber_color",		"yellow",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("g_saber2_color",		"yellow",	CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART);
 
-	ui.Cvar_Create( "ui_forcepower_inc",	"0",		CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
-	ui.Cvar_Create( "tier_storyinfo",		"0",		CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
-	ui.Cvar_Create( "tiers_complete",		"",			CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
-	ui.Cvar_Create( "ui_prisonerobj_currtotal", "0",	CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
-	ui.Cvar_Create( "ui_prisonerobj_mintotal",  "0",	CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("ui_forcepower_inc",	"0",		CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("tier_storyinfo",		"0",		CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("tiers_complete",		"",			CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("ui_prisonerobj_currtotal", "0",	CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
+	ui.Cvar_Create("ui_prisonerobj_mintotal",  "0",	CVAR_ROM|CVAR_SAVEGAME|CVAR_NORESTART);
 
-	ui.Cvar_Create( "g_dismemberment", "3", CVAR_ARCHIVE );//0 = none, 1 = arms and hands, 2 = legs, 3 = waist and head
-	ui.Cvar_Create( "cg_gunAutoFirst", "1", CVAR_ARCHIVE );
-	ui.Cvar_Create( "cg_crosshairIdentifyTarget", "1", CVAR_ARCHIVE );
-	ui.Cvar_Create( "g_subtitles", "0", CVAR_ARCHIVE );
-	ui.Cvar_Create( "cg_marks", "1", CVAR_ARCHIVE );
-	ui.Cvar_Create( "d_slowmodeath", "3", CVAR_ARCHIVE );
-	ui.Cvar_Create( "cg_shadows", "1", CVAR_ARCHIVE );
+	ui.Cvar_Create("g_dismemberment", "3", CVAR_ARCHIVE);//0 = none, 1 = arms and hands, 2 = legs, 3 = waist and head
+	ui.Cvar_Create("cg_gunAutoFirst", "1", CVAR_ARCHIVE);
+	ui.Cvar_Create("cg_crosshairIdentifyTarget", "1", CVAR_ARCHIVE);
+	ui.Cvar_Create("g_subtitles", "0", CVAR_ARCHIVE);
+	ui.Cvar_Create("cg_marks", "1", CVAR_ARCHIVE);
+	ui.Cvar_Create("d_slowmodeath", "3", CVAR_ARCHIVE);
+	ui.Cvar_Create("cg_shadows", "1", CVAR_ARCHIVE);
 
-	ui.Cvar_Create( "cg_runpitch", "0.002", CVAR_ARCHIVE );
-	ui.Cvar_Create( "cg_runroll", "0.005", CVAR_ARCHIVE );
-	ui.Cvar_Create( "cg_bobup", "0.005", CVAR_ARCHIVE );
-	ui.Cvar_Create( "cg_bobpitch", "0.002", CVAR_ARCHIVE );
-	ui.Cvar_Create( "cg_bobroll", "0.002", CVAR_ARCHIVE );
+	ui.Cvar_Create("cg_runpitch", "0.002", CVAR_ARCHIVE);
+	ui.Cvar_Create("cg_runroll", "0.005", CVAR_ARCHIVE);
+	ui.Cvar_Create("cg_bobup", "0.005", CVAR_ARCHIVE);
+	ui.Cvar_Create("cg_bobpitch", "0.002", CVAR_ARCHIVE);
+	ui.Cvar_Create("cg_bobroll", "0.002", CVAR_ARCHIVE);
 
-	ui.Cvar_Create( "ui_disableWeaponSway", "0", CVAR_ARCHIVE );
+	ui.Cvar_Create("ui_disableWeaponSway", "0", CVAR_ARCHIVE);
 #endif
 
 
@@ -320,12 +320,12 @@ void UI_Init( int apiVersion, uiimport_t *uiimport, qboolean inGameLoad )
 UI_DrawNamedPic
 =================
 */
-void UI_DrawNamedPic( float x, float y, float width, float height, const char *picname )
+void UI_DrawNamedPic(float x, float y, float width, float height, const char *picname)
 {
 	qhandle_t	hShader;
 
-	hShader = ui.R_RegisterShaderNoMip( picname );
-	ui.R_DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader );
+	hShader = ui.R_RegisterShaderNoMip(picname);
+	ui.R_DrawStretchPic(x, y, width, height, 0, 0, 1, 1, hShader);
 }
 
 
@@ -334,14 +334,14 @@ void UI_DrawNamedPic( float x, float y, float width, float height, const char *p
 UI_DrawHandlePic
 =================
 */
-void UI_DrawHandlePic( float x, float y, float w, float h, qhandle_t hShader )
+void UI_DrawHandlePic(float x, float y, float w, float h, qhandle_t hShader)
 {
 	float	s0;
 	float	s1;
 	float	t0;
 	float	t1;
 
-	if( w < 0 ) {	// flip about horizontal
+	if(w < 0) {	// flip about horizontal
 		w  = -w;
 		s0 = 1;
 		s1 = 0;
@@ -351,7 +351,7 @@ void UI_DrawHandlePic( float x, float y, float w, float h, qhandle_t hShader )
 		s1 = 1;
 	}
 
-	if( h < 0 ) {	// flip about vertical
+	if(h < 0) {	// flip about vertical
 		h  = -h;
 		t0 = 1;
 		t1 = 0;
@@ -361,7 +361,7 @@ void UI_DrawHandlePic( float x, float y, float w, float h, qhandle_t hShader )
 		t1 = 1;
 	}
 
-	ui.R_DrawStretchPic( x, y, w, h, s0, t0, s1, t1, hShader );
+	ui.R_DrawStretchPic(x, y, w, h, s0, t0, s1, t1, hShader);
 }
 
 /*
@@ -371,13 +371,13 @@ UI_FillRect
 Coordinates are 640*480 virtual values
 =================
 */
-void UI_FillRect( float x, float y, float width, float height, const float *color )
+void UI_FillRect(float x, float y, float width, float height, const float *color)
 {
-	ui.R_SetColor( color );
+	ui.R_SetColor(color);
 
-	ui.R_DrawStretchPic( x, y, width, height, 0, 0, 0, 0, uis.whiteShader );
+	ui.R_DrawStretchPic(x, y, width, height, 0, 0, 0, 0, uis.whiteShader);
 
-	ui.R_SetColor( NULL );
+	ui.R_SetColor(NULL);
 }
 
 /*
@@ -385,7 +385,7 @@ void UI_FillRect( float x, float y, float width, float height, const float *colo
 UI_UpdateScreen
 =================
 */
-void UI_UpdateScreen( void )
+void UI_UpdateScreen(void)
 {
 	ui.UpdateScreen();
 }
@@ -396,9 +396,9 @@ void UI_UpdateScreen( void )
 UI_LoadMenu_f
 ===============
 */
-static void UI_LoadMenu_f( void )
+static void UI_LoadMenu_f(void)
 {
-	trap_Key_SetCatcher( KEYCATCH_UI );
+	trap_Key_SetCatcher(KEYCATCH_UI);
 	Menus_ActivateByName("ingameloadMenu");
 }
 
@@ -407,13 +407,13 @@ static void UI_LoadMenu_f( void )
 UI_SaveMenu_f
 ===============
 */
-static void UI_SaveMenu_f( void )
+static void UI_SaveMenu_f(void)
 {
 #ifdef JK2_MODE
 	ui.PrecacheScreenshot();
 #endif
 
-	trap_Key_SetCatcher( KEYCATCH_UI );
+	trap_Key_SetCatcher(KEYCATCH_UI);
 	Menus_ActivateByName("ingamesaveMenu");
 }
 
@@ -425,9 +425,9 @@ static void UI_SaveMenu_f( void )
 UI_SetColor
 =================
 */
-void UI_SetColor( const float *rgba )
+void UI_SetColor(const float *rgba)
 {
-	trap_R_SetColor( rgba );
+	trap_R_SetColor(rgba);
 }
 
 /*int registeredFontCount = 0;
@@ -453,17 +453,17 @@ int UI_RegisterFont(const char *fontName)
 	}
 
 	// Store font
-	if ( iFontIndex )
+	if (iFontIndex)
 	{
 		int i;
-		for ( i = 0; i < registeredFontsCount; i++ )
+		for (i = 0; i < registeredFontsCount; i++)
 		{
-			if ( registeredFonts[i] == iFontIndex ) break;
+			if (registeredFonts[i] == iFontIndex) break;
 		}
 
-		if ( i == registeredFontsCount )
-		{ // It's not in the list: add it
-			if ( registeredFontsCount >= MAX_FONTS ) Com_Printf( "^3UI_RegisterFont: MAX_FONTS (%i) exceeded\n", MAX_FONTS );
+		if (i == registeredFontsCount)
+		{// It's not in the list: add it
+			if (registeredFontsCount >= MAX_FONTS) Com_Printf("^3UI_RegisterFont: MAX_FONTS (%i) exceeded\n", MAX_FONTS);
 			else registeredFonts[registeredFontsCount++] = iFontIndex;
 		}
 	}

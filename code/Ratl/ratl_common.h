@@ -137,29 +137,29 @@ namespace	mem
 	} __attribute__ ((aligned(16)));
 #endif
 
-	inline void*	cpy( void *dest, const void *src, size_t count )
+	inline void*	cpy(void *dest, const void *src, size_t count)
 	{
 		return memcpy(dest, src, count);
 	}
-	inline void*	set( void *dest, int c, size_t count )
+	inline void*	set(void *dest, int c, size_t count)
 	{
 		return memset(dest, c, count);
 	}
-	inline int		cmp( const void *buf1, const void *buf2, size_t count )
+	inline int		cmp(const void *buf1, const void *buf2, size_t count)
 	{
-		return memcmp( buf1, buf2, count );
+		return memcmp(buf1, buf2, count);
 	}
-	inline bool	eql( const void *buf1, const void *buf2, size_t count )
+	inline bool	eql(const void *buf1, const void *buf2, size_t count)
 	{
-		return (memcmp( buf1, buf2, count )==0);
+		return (memcmp(buf1, buf2, count)==0);
 	}
-	inline void*	zero( void *dest, size_t count )
+	inline void*	zero(void *dest, size_t count)
 	{
 		return memset(dest, 0, count);
 	}
 
 	template<class T>
-	inline 	void	cpy( T *dest, const T *src)
+	inline 	void	cpy(T *dest, const T *src)
 	{
 		cpy(dest, src, sizeof(T));
 	}
@@ -179,19 +179,19 @@ namespace	mem
 	}
 
 	template<class T>
-	inline 	int		cmp( const T *buf1, const T *buf2)
+	inline 	int		cmp(const T *buf1, const T *buf2)
 	{
-		return cmp( buf1, buf2, sizeof(T) );
+		return cmp(buf1, buf2, sizeof(T));
 	}
 
 	template<class T>
-	inline 	bool	eql( const T *buf1, const T *buf2)
+	inline 	bool	eql(const T *buf1, const T *buf2)
 	{
-		return cmp( buf1, buf2,sizeof(T))==0;
+		return cmp(buf1, buf2,sizeof(T))==0;
 	}
 
 	template<class T>
-	inline 	void	zero( T *dest )
+	inline 	void	zero(T *dest)
 	{
 		return set(dest, 0, sizeof(T));
 	}
@@ -583,7 +583,7 @@ namespace storage
 
 		struct TStorage
 		{
-			TAlign mMemory[((sizeof(T) + sizeof(TAlign) -1 )/sizeof(TAlign))];
+			TAlign mMemory[((sizeof(T) + sizeof(TAlign) -1)/sizeof(TAlign))];
 		};
 		typedef TStorage TArray[SIZE];
 
@@ -645,7 +645,7 @@ namespace storage
 
 		struct TStorage
 		{
-			TAlign mMemory[((MAX_CLASS_SIZE + sizeof(TAlign) -1 )/sizeof(TAlign))];
+			TAlign mMemory[((MAX_CLASS_SIZE + sizeof(TAlign) -1)/sizeof(TAlign))];
 		};
 		typedef TStorage TArray[SIZE];
 
@@ -799,7 +799,7 @@ namespace storage
 
 		struct TValueStorage
 		{
-			TAlign mMemory[((sizeof(T) + sizeof(TAlign) -1 )/sizeof(TAlign))];
+			TAlign mMemory[((sizeof(T) + sizeof(TAlign) -1)/sizeof(TAlign))];
 		};
 		struct SNode
 		{
@@ -892,7 +892,7 @@ namespace storage
 
 		struct TValueStorage
 		{
-			TAlign mMemory[((MAX_CLASS_SIZE + sizeof(TAlign) -1 )/sizeof(TAlign))];
+			TAlign mMemory[((MAX_CLASS_SIZE + sizeof(TAlign) -1)/sizeof(TAlign))];
 		};
 		struct SNode
 		{

@@ -46,7 +46,7 @@ TIMER_Clear
 -------------------------
 */
 
-void TIMER_Clear( void )
+void TIMER_Clear(void)
 {
 	int i;
 	for (i = 0; i < MAX_GENTITIES; i++)
@@ -68,10 +68,10 @@ TIMER_Clear
 -------------------------
 */
 
-void TIMER_Clear2( gentity_t *ent )
+void TIMER_Clear2(gentity_t *ent)
 {
 	// rudimentary safety checks, might be other things to check?
-	if ( ent && ent->s.number >= 0 && ent->s.number < MAX_GENTITIES )
+	if (ent && ent->s.number >= 0 && ent->s.number < MAX_GENTITIES)
 	{
 		gtimer_t *p = g_timers[ent->s.number];
 
@@ -106,7 +106,7 @@ gtimer_t *TIMER_GetNew(int num, const char *identifier)
 	while (p)
 	{
 		if (!Q_stricmp(p->name, identifier))
-		{ // Found it
+		{// Found it
 			return p;
 		}
 
@@ -132,7 +132,7 @@ gtimer_t *TIMER_GetExisting(int num, const char *identifier)
 	while (p)
 	{
 		if (!Q_stricmp(p->name, identifier))
-		{ // Found it
+		{// Found it
 			return p;
 		}
 
@@ -148,7 +148,7 @@ TIMER_Set
 -------------------------
 */
 
-void TIMER_Set( gentity_t *ent, const char *identifier, int duration )
+void TIMER_Set(gentity_t *ent, const char *identifier, int duration)
 {
 	gtimer_t *timer = TIMER_GetNew(ent->s.number, identifier);
 
@@ -166,7 +166,7 @@ TIMER_Get
 -------------------------
 */
 
-int	TIMER_Get( gentity_t *ent, const char *identifier )
+int	TIMER_Get(gentity_t *ent, const char *identifier)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 
@@ -184,7 +184,7 @@ TIMER_Done
 -------------------------
 */
 
-qboolean TIMER_Done( gentity_t *ent, const char *identifier )
+qboolean TIMER_Done(gentity_t *ent, const char *identifier)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 
@@ -206,7 +206,7 @@ timer from the list and put it on the free list
 Doesn't do much error checking, only called below
 -------------------------
 */
-void TIMER_RemoveHelper( int num, gtimer_t *timer )
+void TIMER_RemoveHelper(int num, gtimer_t *timer)
 {
 	gtimer_t *p = g_timers[num];
 
@@ -242,7 +242,7 @@ timer was never started
 -------------------------
 */
 
-qboolean TIMER_Done2( gentity_t *ent, const char *identifier, qboolean remove )
+qboolean TIMER_Done2(gentity_t *ent, const char *identifier, qboolean remove)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 	qboolean res;
@@ -268,7 +268,7 @@ qboolean TIMER_Done2( gentity_t *ent, const char *identifier, qboolean remove )
 TIMER_Exists
 -------------------------
 */
-qboolean TIMER_Exists( gentity_t *ent, const char *identifier )
+qboolean TIMER_Exists(gentity_t *ent, const char *identifier)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 
@@ -286,7 +286,7 @@ TIMER_Remove
 Utility to get rid of any timer
 -------------------------
 */
-void TIMER_Remove( gentity_t *ent, const char *identifier )
+void TIMER_Remove(gentity_t *ent, const char *identifier)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 
@@ -305,11 +305,11 @@ TIMER_Start
 -------------------------
 */
 
-qboolean TIMER_Start( gentity_t *self, const char *identifier, int duration )
+qboolean TIMER_Start(gentity_t *self, const char *identifier, int duration)
 {
-	if ( TIMER_Done( self, identifier ) )
+	if (TIMER_Done(self, identifier))
 	{
-		TIMER_Set( self, identifier, duration );
+		TIMER_Set(self, identifier, duration);
 		return qtrue;
 	}
 	return qfalse;

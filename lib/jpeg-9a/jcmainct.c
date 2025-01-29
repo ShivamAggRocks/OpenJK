@@ -100,7 +100,7 @@ start_pass_main (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
   default:
     ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     break;
-  }
+ }
 }
 
 
@@ -143,19 +143,19 @@ process_data_simple_main (j_compress_ptr cinfo,
       if (! mainp->suspended) {
 	(*in_row_ctr)--;
 	mainp->suspended = TRUE;
-      }
+     }
       return;
-    }
+   }
     /* We did finish the row.  Undo our little suspension hack if a previous
      * call suspended; then mark the main buffer empty.
      */
     if (mainp->suspended) {
       (*in_row_ctr)++;
       mainp->suspended = FALSE;
-    }
+   }
     mainp->rowgroup_ctr = 0;
     mainp->cur_iMCU_row++;
-  }
+ }
 }
 
 
@@ -186,14 +186,14 @@ process_data_buffer_main (j_compress_ptr cinfo,
 	   ((JDIMENSION) (compptr->v_samp_factor * cinfo->min_DCT_v_scaled_size)),
 	   (JDIMENSION) (compptr->v_samp_factor * cinfo->min_DCT_v_scaled_size),
 	   writing);
-      }
+     }
       /* In a read pass, pretend we just read some source data. */
       if (! writing) {
 	*in_row_ctr += (JDIMENSION)
 	  (cinfo->max_v_samp_factor * cinfo->min_DCT_v_scaled_size);
 	mainp->rowgroup_ctr = (JDIMENSION) cinfo->min_DCT_v_scaled_size;
-      }
-    }
+     }
+   }
 
     /* If a write pass, read input data until the current iMCU row is full. */
     /* Note: preprocessor will pad if necessary to fill the last iMCU row. */
@@ -205,7 +205,7 @@ process_data_buffer_main (j_compress_ptr cinfo,
       /* Return to application if we need more data to fill the iMCU row. */
       if (mainp->rowgroup_ctr < (JDIMENSION) cinfo->min_DCT_v_scaled_size)
 	return;
-    }
+   }
 
     /* Emit data, unless this is a sink-only pass. */
     if (mainp->pass_mode != JBUF_SAVE_SOURCE) {
@@ -221,20 +221,20 @@ process_data_buffer_main (j_compress_ptr cinfo,
 	  mainp->suspended = TRUE;
 	}
 	return;
-      }
+     }
       /* We did finish the row.  Undo our little suspension hack if a previous
        * call suspended; then mark the main buffer empty.
        */
       if (mainp->suspended) {
 	(*in_row_ctr)++;
 	mainp->suspended = FALSE;
-      }
-    }
+     }
+   }
 
     /* If get here, we are done with this iMCU row.  Mark buffer empty. */
     mainp->rowgroup_ctr = 0;
     mainp->cur_iMCU_row++;
-  }
+ }
 }
 
 #endif /* FULL_MAIN_BUFFER_SUPPORTED */
@@ -277,11 +277,11 @@ jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 				 (long) compptr->v_samp_factor)) *
 	 ((JDIMENSION) cinfo->min_DCT_v_scaled_size),
 	 (JDIMENSION) (compptr->v_samp_factor * compptr->DCT_v_scaled_size));
-    }
+   }
 #else
     ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 #endif
-  } else {
+ } else {
 #ifdef FULL_MAIN_BUFFER_SUPPORTED
     mainp->whole_image[0] = NULL; /* flag for no virtual arrays */
 #endif
@@ -292,6 +292,6 @@ jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 	((j_common_ptr) cinfo, JPOOL_IMAGE,
 	 compptr->width_in_blocks * ((JDIMENSION) compptr->DCT_h_scaled_size),
 	 (JDIMENSION) (compptr->v_samp_factor * compptr->DCT_v_scaled_size));
-    }
-  }
+   }
+ }
 }

@@ -314,7 +314,7 @@ typedef int boolean;
 #define TRUE	1
 #endif
 #else
-typedef enum { FALSE = 0, TRUE = 1 } boolean;
+typedef enum {FALSE = 0, TRUE = 1} boolean;
 #endif
 #endif
 

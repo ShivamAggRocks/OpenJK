@@ -51,23 +51,23 @@ std::vector < sstring_t > g_vstrEffectsNeededPerSlot;
 SLoopedEffect	gLoopedEffectArray[MAX_LOOPED_FX];	// must be in sync with CFxScheduler::mLoopedEffectArray
 void CFxScheduler::FX_CopeWithAnyLoadedSaveGames(void)
 {
-	if ( !g_vstrEffectsNeededPerSlot.empty() )
+	if (!g_vstrEffectsNeededPerSlot.empty())
 	{
-		memcpy( mLoopedEffectArray, gLoopedEffectArray, sizeof(mLoopedEffectArray) );
-		assert( g_vstrEffectsNeededPerSlot.size() == MAX_LOOPED_FX );
+		memcpy(mLoopedEffectArray, gLoopedEffectArray, sizeof(mLoopedEffectArray));
+		assert(g_vstrEffectsNeededPerSlot.size() == MAX_LOOPED_FX);
 
 		for (size_t iFX = 0; iFX < g_vstrEffectsNeededPerSlot.size(); iFX++)
 		{
 			const char *psFX_Filename = g_vstrEffectsNeededPerSlot[iFX].c_str();
-			if ( psFX_Filename[0] )
+			if (psFX_Filename[0])
 			{
 				// register it...
 				//
-				mLoopedEffectArray[ iFX ].mId = RegisterEffect( psFX_Filename );
+				mLoopedEffectArray[ iFX ].mId = RegisterEffect(psFX_Filename);
 				//
 				// cope with any relative stop time...
 				//
-				if ( mLoopedEffectArray[ iFX ].mLoopStopTime )
+				if (mLoopedEffectArray[ iFX ].mLoopStopTime)
 				{
 					 mLoopedEffectArray[ iFX ].mLoopStopTime -= mLoopedEffectArray[ iFX ].mNextTime;
 				}
@@ -93,14 +93,14 @@ void FX_CopeWithAnyLoadedSaveGames(void)
 
 // for loadsave...
 //
-void FX_Read( void )
+void FX_Read(void)
 {
 	theFxScheduler.LoadSave_Read();
 }
 
 // for loadsave...
 //
-void FX_Write( void )
+void FX_Write(void)
 {
 	theFxScheduler.LoadSave_Write();
 }
@@ -128,7 +128,7 @@ void CFxScheduler::LoadSave_Read()
 			INT_ID('F', 'X', 'F', 'N'),
 			sFX_Filename);
 
-		g_vstrEffectsNeededPerSlot.push_back( sFX_Filename );
+		g_vstrEffectsNeededPerSlot.push_back(sFX_Filename);
 	}
 }
 
@@ -157,16 +157,16 @@ void CFxScheduler::LoadSave_Write()
 		memset(sFX_Filename,0,sizeof(sFX_Filename));	// instead of "sFX_Filename[0]=0;" so RLE will squash whole array to nothing, not just stop at '\0' then have old crap after it to compress
 
 		int &iID = mLoopedEffectArray[ iFX ].mId;
-		if ( iID )
+		if (iID)
 		{
 			// now we need to look up what string this represents, unfortunately the existing
 			//	lookup table is backwards (keywise) for our needs, so parse the whole thing...
 			//
 			for (TEffectID::iterator it = mEffectIDs.begin(); it != mEffectIDs.end(); ++it)
 			{
-				if ( (*it).second == iID )
+				if ((*it).second == iID)
 				{
-					Q_strncpyz( sFX_Filename, (*it).first.c_str(), sizeof(sFX_Filename) );
+					Q_strncpyz(sFX_Filename, (*it).first.c_str(), sizeof(sFX_Filename));
 					break;
 				}
 			}
@@ -182,24 +182,24 @@ void CFxScheduler::LoadSave_Write()
 
 
 //-----------------------------------------------------------
-void CMediaHandles::operator=(const CMediaHandles &that )
+void CMediaHandles::operator=(const CMediaHandles &that)
 {
 	mMediaList.clear();
 
-	for ( size_t i = 0; i < that.mMediaList.size(); i++ )
+	for (size_t i = 0; i < that.mMediaList.size(); i++)
 	{
-		mMediaList.push_back( that.mMediaList[i] );
+		mMediaList.push_back(that.mMediaList[i]);
 	}
 }
 
 //------------------------------------------------------
 CFxScheduler::CFxScheduler()
 {
-	memset( &mEffectTemplates, 0, sizeof( mEffectTemplates ));
-	memset( &mLoopedEffectArray, 0, sizeof( mLoopedEffectArray ));
+	memset(&mEffectTemplates, 0, sizeof(mEffectTemplates));
+	memset(&mLoopedEffectArray, 0, sizeof(mLoopedEffectArray));
 }
 
-int CFxScheduler::ScheduleLoopedEffect( int id, int boltInfo, bool isPortal, int iLoopTime, bool isRelative )
+int CFxScheduler::ScheduleLoopedEffect(int id, int boltInfo, bool isPortal, int iLoopTime, bool isRelative)
 {
 	int i;
 
@@ -214,7 +214,7 @@ int CFxScheduler::ScheduleLoopedEffect( int id, int boltInfo, bool isPortal, int
 			)
 		{
 #ifdef _DEBUG
-//			theFxHelper.Print( "CFxScheduler::ScheduleLoopedEffect- updating %s\n", mEffectTemplates[id].mEffectName);
+//			theFxHelper.Print("CFxScheduler::ScheduleLoopedEffect- updating %s\n", mEffectTemplates[id].mEffectName);
 #endif
 			break;
 		}
@@ -234,7 +234,7 @@ int CFxScheduler::ScheduleLoopedEffect( int id, int boltInfo, bool isPortal, int
 	if(i==MAX_LOOPED_FX)
 	{//bad
 		assert(i!=MAX_LOOPED_FX);
-		theFxHelper.Print( "CFxScheduler::AddLoopedEffect- No Free Slots available for %d\n", mEffectTemplates[id].mEffectName);
+		theFxHelper.Print("CFxScheduler::AddLoopedEffect- No Free Slots available for %d\n", mEffectTemplates[id].mEffectName);
 		return -1;
 	}
 	mLoopedEffectArray[i].mId = id;
@@ -246,18 +246,18 @@ int CFxScheduler::ScheduleLoopedEffect( int id, int boltInfo, bool isPortal, int
 	return i;
 }
 
-void CFxScheduler::StopEffect( const char *file, int boltInfo, bool isPortal )
+void CFxScheduler::StopEffect(const char *file, int boltInfo, bool isPortal)
 {
 	int i;
 	char	sfile[MAX_QPATH];
 
 	// Get an extenstion stripped version of the file
-	COM_StripExtension( file, sfile, sizeof(sfile) );
+	COM_StripExtension(file, sfile, sizeof(sfile));
 	const int id = mEffectIDs[sfile];
 #ifndef FINAL_BUILD
-	if ( id == 0 )
+	if (id == 0)
 	{
-		theFxHelper.Print( "CFxScheduler::StopEffect- unregistered/non-existent effect: %s\n", sfile );
+		theFxHelper.Print("CFxScheduler::StopEffect- unregistered/non-existent effect: %s\n", sfile);
 		return;
 	}
 #endif
@@ -269,12 +269,12 @@ void CFxScheduler::StopEffect( const char *file, int boltInfo, bool isPortal )
 			mLoopedEffectArray[i].mPortalEffect == isPortal
 			)
 		{
-			memset( &mLoopedEffectArray[i], 0, sizeof(mLoopedEffectArray[i]) );
+			memset(&mLoopedEffectArray[i], 0, sizeof(mLoopedEffectArray[i]));
 			return;
 		}
 	}
 #ifdef _DEBUG_FX
-	theFxHelper.Print( "CFxScheduler::StopEffect- (%s) is not looping!\n", file);
+	theFxHelper.Print("CFxScheduler::StopEffect- (%s) is not looping!\n", file);
 #endif
 }
 
@@ -284,23 +284,23 @@ void CFxScheduler::AddLoopedEffects()
 
 	for (i=0;i<MAX_LOOPED_FX;i++)
 	{
-		if (mLoopedEffectArray[i].mId && mLoopedEffectArray[i].mNextTime < theFxHelper.mTime )
+		if (mLoopedEffectArray[i].mId && mLoopedEffectArray[i].mNextTime < theFxHelper.mTime)
 		{
-			const int entNum = ( mLoopedEffectArray[i].mBoltInfo >> ENTITY_SHIFT )	& ENTITY_AND;
-			if ( cg_entities[entNum].gent->inuse )
+			const int entNum = (mLoopedEffectArray[i].mBoltInfo >> ENTITY_SHIFT)	& ENTITY_AND;
+			if (cg_entities[entNum].gent->inuse)
 			{// only play the looped effect when the ent is still inUse....
-				PlayEffect( mLoopedEffectArray[i].mId, cg_entities[entNum].lerpOrigin, 0, mLoopedEffectArray[i].mBoltInfo, -1, mLoopedEffectArray[i].mPortalEffect, false,  mLoopedEffectArray[i].mIsRelative );	//very important to send FALSE looptime to not recursively add me!
+				PlayEffect(mLoopedEffectArray[i].mId, cg_entities[entNum].lerpOrigin, 0, mLoopedEffectArray[i].mBoltInfo, -1, mLoopedEffectArray[i].mPortalEffect, false,  mLoopedEffectArray[i].mIsRelative);	//very important to send FALSE looptime to not recursively add me!
 				mLoopedEffectArray[i].mNextTime = theFxHelper.mTime + mEffectTemplates[mLoopedEffectArray[i].mId].mRepeatDelay;
 			}
 			else
 			{
-				theFxHelper.Print( "CFxScheduler::AddLoopedEffects- entity was removed without stopping any looping fx it owned." );
-				memset( &mLoopedEffectArray[i], 0, sizeof(mLoopedEffectArray[i]) );
+				theFxHelper.Print("CFxScheduler::AddLoopedEffects- entity was removed without stopping any looping fx it owned.");
+				memset(&mLoopedEffectArray[i], 0, sizeof(mLoopedEffectArray[i]));
 				continue;
 			}
-			if ( mLoopedEffectArray[i].mLoopStopTime && mLoopedEffectArray[i].mLoopStopTime < theFxHelper.mTime )	//time's up
+			if (mLoopedEffectArray[i].mLoopStopTime && mLoopedEffectArray[i].mLoopStopTime < theFxHelper.mTime)	//time's up
 			{//kill this entry
-				memset( &mLoopedEffectArray[i], 0, sizeof(mLoopedEffectArray[i]) );
+				memset(&mLoopedEffectArray[i], 0, sizeof(mLoopedEffectArray[i]));
 			}
 		}
 	}
@@ -312,11 +312,11 @@ void SEffectTemplate::operator=(const SEffectTemplate &that)
 {
 	mCopy = true;
 
-	strcpy( mEffectName, that.mEffectName );
+	strcpy(mEffectName, that.mEffectName);
 
 	mPrimitiveCount = that.mPrimitiveCount;
 
-	for( int i = 0; i < mPrimitiveCount; i++ )
+	for(int i = 0; i < mPrimitiveCount; i++)
 	{
 		mPrimitives[i] = new CPrimitiveTemplate;
 		*(mPrimitives[i]) = *(that.mPrimitives[i]);
@@ -344,7 +344,7 @@ void CFxScheduler::Clean(bool bRemoveTemplates /*= true*/, int idToPreserve /*= 
 	// Ditch any scheduled effects
 	itr = mFxSchedule.begin();
 
-	while ( itr != mFxSchedule.end() )
+	while (itr != mFxSchedule.end())
 	{
 		next = itr;
 		++next;
@@ -358,14 +358,14 @@ void CFxScheduler::Clean(bool bRemoveTemplates /*= true*/, int idToPreserve /*= 
 	if (bRemoveTemplates)
 	{
 		// Ditch any effect templates
-		for ( i = 1; i < FX_MAX_EFFECTS; i++ )
+		for (i = 1; i < FX_MAX_EFFECTS; i++)
 		{
-			if ( i == idToPreserve)
+			if (i == idToPreserve)
 			{
 				continue;
 			}
 
-			if ( mEffectTemplates[i].mInUse )
+			if (mEffectTemplates[i].mInUse)
 			{
 				// Ditch the primitives
 				for (j = 0; j < mEffectTemplates[i].mPrimitiveCount; j++)
@@ -415,7 +415,7 @@ void CFxScheduler::Clean(bool bRemoveTemplates /*= true*/, int idToPreserve /*= 
 // Return:
 //	int handle to the effect
 //------------------------------------------------------
-int CFxScheduler::RegisterEffect( const char *path, bool bHasCorrectPath /*= false*/ )
+int CFxScheduler::RegisterEffect(const char *path, bool bHasCorrectPath /*= false*/)
 {
 	// Dealing with file names:
 	// File names can come from two places - the editor, in which case we should use the given
@@ -440,19 +440,19 @@ int CFxScheduler::RegisterEffect( const char *path, bool bHasCorrectPath /*= fal
 			p++;
 		}
 
-		COM_StripExtension( last, filenameNoExt, sizeof( filenameNoExt ) );
+		COM_StripExtension(last, filenameNoExt, sizeof(filenameNoExt));
 	}
 	else
 	{
-		COM_StripExtension( path, filenameNoExt, sizeof( filenameNoExt ) );
+		COM_StripExtension(path, filenameNoExt, sizeof(filenameNoExt));
 	}
 
 	// see if the specified file is already registered.  If it is, just return the id of that file
 	TEffectID::iterator itr;
 
-	itr = mEffectIDs.find( filenameNoExt );
+	itr = mEffectIDs.find(filenameNoExt);
 
-	if ( itr != mEffectIDs.end() )
+	if (itr != mEffectIDs.end())
 	{
 		return (*itr).second;
 	}
@@ -466,26 +466,26 @@ int CFxScheduler::RegisterEffect( const char *path, bool bHasCorrectPath /*= fal
 	else
 	{
 		// Add on our extension and prepend the file with the default path
-		Com_sprintf( correctFilenameBuffer, sizeof( correctFilenameBuffer ), "%s/%s.efx", FX_FILE_PATH, filenameNoExt );
+		Com_sprintf(correctFilenameBuffer, sizeof(correctFilenameBuffer), "%s/%s.efx", FX_FILE_PATH, filenameNoExt);
 		pfile = correctFilenameBuffer;
 	}
 
 	// Let the generic parser process the whole file
 	CGenericParser2	parser;
-	if( !parser.Parse( pfile ) )
+	if(!parser.Parse(pfile))
 	{
-		if( !parser.ValidFile() )
+		if(!parser.ValidFile())
 		{
-			theFxHelper.Print( "RegisterEffect: INVALID file: %s\n", pfile );
+			theFxHelper.Print("RegisterEffect: INVALID file: %s\n", pfile);
 		}
 		return false;
-		if( parser.ValidFile() )
+		if(parser.ValidFile())
 		{
 			return false;
 		}
 	}
 	// Lets convert the effect file into something that we can work with
-	return ParseEffect( filenameNoExt, parser.GetBaseParseGroup() );
+	return ParseEffect(filenameNoExt, parser.GetBaseParseGroup());
 }
 
 
@@ -503,52 +503,52 @@ int CFxScheduler::RegisterEffect( const char *path, bool bHasCorrectPath /*= fal
 //	int handle of the effect
 //------------------------------------------------------
 
-int CFxScheduler::ParseEffect( const char *file, const CGPGroup& base )
+int CFxScheduler::ParseEffect(const char *file, const CGPGroup& base)
 {
 	int handle;
-	SEffectTemplate* effect = GetNewEffectTemplate( &handle, file );
+	SEffectTemplate* effect = GetNewEffectTemplate(&handle, file);
 
-	if ( !handle || !effect )
+	if (!handle || !effect)
 	{
 		// failure
 		return 0;
 	}
 
-	for( auto& property : base.GetProperties() )
+	for(auto& property : base.GetProperties())
 	{
-		if( Q::stricmp( property.GetName(), CSTRING_VIEW( "repeatDelay" ) ) == Q::Ordering::EQ )
+		if(Q::stricmp(property.GetName(), CSTRING_VIEW("repeatDelay")) == Q::Ordering::EQ)
 		{
-			effect->mRepeatDelay = Q::svtoi( property.GetTopValue() );
+			effect->mRepeatDelay = Q::svtoi(property.GetTopValue());
 		}
 	}
 
-	for( const auto& primitiveGroup : base.GetSubGroups() )
+	for(const auto& primitiveGroup : base.GetSubGroups())
 	{
 		static std::map< gsl::cstring_span, EPrimType, Q::CStringViewILess > primitiveTypes{
-			{ CSTRING_VIEW( "particle" ), Particle },
-			{ CSTRING_VIEW( "line" ), Line },
-			{ CSTRING_VIEW( "tail" ), Tail },
-			{ CSTRING_VIEW( "sound" ), Sound },
-			{ CSTRING_VIEW( "cylinder" ), Cylinder },
-			{ CSTRING_VIEW( "electricity" ), Electricity },
-			{ CSTRING_VIEW( "emitter" ), Emitter },
-			{ CSTRING_VIEW( "decal" ), Decal },
-			{ CSTRING_VIEW( "orientedparticle" ), OrientedParticle },
-			{ CSTRING_VIEW( "fxrunner" ), FxRunner },
-			{ CSTRING_VIEW( "light" ), Light },
-			{ CSTRING_VIEW( "cameraShake" ), CameraShake },
-			{ CSTRING_VIEW( "flash" ), ScreenFlash }
+			{CSTRING_VIEW("particle"), Particle},
+			{CSTRING_VIEW("line"), Line},
+			{CSTRING_VIEW("tail"), Tail},
+			{CSTRING_VIEW("sound"), Sound},
+			{CSTRING_VIEW("cylinder"), Cylinder},
+			{CSTRING_VIEW("electricity"), Electricity},
+			{CSTRING_VIEW("emitter"), Emitter},
+			{CSTRING_VIEW("decal"), Decal},
+			{CSTRING_VIEW("orientedparticle"), OrientedParticle},
+			{CSTRING_VIEW("fxrunner"), FxRunner},
+			{CSTRING_VIEW("light"), Light},
+			{CSTRING_VIEW("cameraShake"), CameraShake},
+			{CSTRING_VIEW("flash"), ScreenFlash}
 		};
-		auto pos = primitiveTypes.find( primitiveGroup.GetName() );
-		if( pos != primitiveTypes.end() )
+		auto pos = primitiveTypes.find(primitiveGroup.GetName());
+		if(pos != primitiveTypes.end())
 		{
 			CPrimitiveTemplate *prim = new CPrimitiveTemplate;
 
 			prim->mType = pos->second;
-			prim->ParsePrimitive( primitiveGroup );
+			prim->ParsePrimitive(primitiveGroup);
 
 			// Add our primitive template to the effect list
-			AddPrimitiveToEffect( effect, prim );
+			AddPrimitiveToEffect(effect, prim);
 		}
 	}
 
@@ -567,13 +567,13 @@ int CFxScheduler::ParseEffect( const char *file, const CGPGroup& base )
 // Return:
 //	None
 //------------------------------------------------------
-void CFxScheduler::AddPrimitiveToEffect( SEffectTemplate *fx, CPrimitiveTemplate *prim )
+void CFxScheduler::AddPrimitiveToEffect(SEffectTemplate *fx, CPrimitiveTemplate *prim)
 {
 	int ct = fx->mPrimitiveCount;
 
-	if ( ct >= FX_MAX_EFFECT_COMPONENTS )
+	if (ct >= FX_MAX_EFFECT_COMPONENTS)
 	{
-		theFxHelper.Print( "FxScheduler:  Error--too many primitives in an effect\n" );
+		theFxHelper.Print("FxScheduler:  Error--too many primitives in an effect\n");
 	}
 	else
 	{
@@ -594,25 +594,25 @@ void CFxScheduler::AddPrimitiveToEffect( SEffectTemplate *fx, CPrimitiveTemplate
 // Return:
 //	the id of the added effect template
 //------------------------------------------------------
-SEffectTemplate *CFxScheduler::GetNewEffectTemplate( int *id, const char *file )
+SEffectTemplate *CFxScheduler::GetNewEffectTemplate(int *id, const char *file)
 {
 	SEffectTemplate *effect;
 
 	// wanted zero to be a bogus effect ID, so we just skip it.
-	for ( int i = 1; i < FX_MAX_EFFECTS; i++ )
+	for (int i = 1; i < FX_MAX_EFFECTS; i++)
 	{
 		effect = &mEffectTemplates[i];
 
-		if ( !effect->mInUse )
+		if (!effect->mInUse)
 		{
 			*id = i;
-			memset( effect, 0, sizeof( SEffectTemplate ));
+			memset(effect, 0, sizeof(SEffectTemplate));
 
 			// If we are a copy, we really won't have a name that we care about saving for later
-			if ( file )
+			if (file)
 			{
 				mEffectIDs[file] = i;
-				strcpy( effect->mEffectName, file );
+				strcpy(effect->mEffectName, file);
 			}
 
 			effect->mInUse = true;
@@ -621,7 +621,7 @@ SEffectTemplate *CFxScheduler::GetNewEffectTemplate( int *id, const char *file )
 		}
 	}
 
-	theFxHelper.Print( "FxScheduler:  Error--reached max effects\n" );
+	theFxHelper.Print("FxScheduler:  Error--reached max effects\n");
 	*id = 0;
 	return nullptr;
 }
@@ -639,9 +639,9 @@ SEffectTemplate *CFxScheduler::GetNewEffectTemplate( int *id, const char *file )
 // Return:
 //	the pointer to the copy
 //------------------------------------------------------
-SEffectTemplate *CFxScheduler::GetEffectCopy( const char *file, int *newHandle )
+SEffectTemplate *CFxScheduler::GetEffectCopy(const char *file, int *newHandle)
 {
-	return ( GetEffectCopy( mEffectIDs[file], newHandle ) );
+	return (GetEffectCopy(mEffectIDs[file], newHandle));
 }
 
 //------------------------------------------------------
@@ -657,27 +657,27 @@ SEffectTemplate *CFxScheduler::GetEffectCopy( const char *file, int *newHandle )
 // Return:
 //	the pointer to the copy
 //------------------------------------------------------
-SEffectTemplate *CFxScheduler::GetEffectCopy( int fxHandle, int *newHandle )
+SEffectTemplate *CFxScheduler::GetEffectCopy(int fxHandle, int *newHandle)
 {
-	if ( fxHandle < 1 || fxHandle >= FX_MAX_EFFECTS || !mEffectTemplates[fxHandle].mInUse )
+	if (fxHandle < 1 || fxHandle >= FX_MAX_EFFECTS || !mEffectTemplates[fxHandle].mInUse)
 	{
 		// Didn't even request a valid effect to copy!!!
-		theFxHelper.Print( "FxScheduler: Bad effect file copy request\n" );
+		theFxHelper.Print("FxScheduler: Bad effect file copy request\n");
 
 		*newHandle = 0;
 		return 0;
 	}
 
 	// never get a copy when time is frozen
-	if ( fx_freeze.integer )
+	if (fx_freeze.integer)
 	{
 		return 0;
 	}
 
 	// Copies shouldn't have names, otherwise they could trash our stl map used for getting ID from name
-	SEffectTemplate *copy = GetNewEffectTemplate( newHandle, NULL );
+	SEffectTemplate *copy = GetNewEffectTemplate(newHandle, NULL);
 
-	if ( copy && *newHandle )
+	if (copy && *newHandle)
 	{
 		// do the effect copy and mark us as what we are
 		*copy = mEffectTemplates[fxHandle];
@@ -703,16 +703,16 @@ SEffectTemplate *CFxScheduler::GetEffectCopy( int fxHandle, int *newHandle )
 // Return:
 //	the pointer to the desired primitive
 //------------------------------------------------------
-CPrimitiveTemplate *CFxScheduler::GetPrimitiveCopy( SEffectTemplate *effectCopy, const char *componentName )
+CPrimitiveTemplate *CFxScheduler::GetPrimitiveCopy(SEffectTemplate *effectCopy, const char *componentName)
 {
-	if ( !effectCopy || !effectCopy->mInUse )
+	if (!effectCopy || !effectCopy->mInUse)
 	{
 		return NULL;
 	}
 
-	for ( int i = 0; i < effectCopy->mPrimitiveCount; i++ )
+	for (int i = 0; i < effectCopy->mPrimitiveCount; i++)
 	{
-		if ( !Q_stricmp( effectCopy->mPrimitives[i]->mName, componentName ))
+		if (!Q_stricmp(effectCopy->mPrimitives[i]->mName, componentName))
 		{
 			// we found a match, so return it
 			return effectCopy->mPrimitives[i];
@@ -727,7 +727,7 @@ CPrimitiveTemplate *CFxScheduler::GetPrimitiveCopy( SEffectTemplate *effectCopy,
 static void ReportPlayEffectError(int id)
 {
 #ifdef _DEBUG
-		theFxHelper.Print( "CFxScheduler::PlayEffect called with invalid effect ID: %i\n", id );
+		theFxHelper.Print("CFxScheduler::PlayEffect called with invalid effect ID: %i\n", id);
 #endif
 }
 
@@ -744,15 +744,15 @@ static void ReportPlayEffectError(int id)
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::PlayEffect( int id, vec3_t origin, bool isPortal )
+void CFxScheduler::PlayEffect(int id, vec3_t origin, bool isPortal)
 {
 	vec3_t	axis[3];
 
-	VectorSet( axis[0], 0, 0, 1 );
-	VectorSet( axis[1], 1, 0, 0 );
-	VectorSet( axis[2], 0, 1, 0 );
+	VectorSet(axis[0], 0, 0, 1);
+	VectorSet(axis[1], 1, 0, 0);
+	VectorSet(axis[2], 0, 1, 0);
 
-	PlayEffect( id, origin, axis, -1, -1, isPortal );
+	PlayEffect(id, origin, axis, -1, -1, isPortal);
 }
 
 //------------------------------------------------------
@@ -767,15 +767,15 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, bool isPortal )
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t forward, bool isPortal )
+void CFxScheduler::PlayEffect(int id, vec3_t origin, vec3_t forward, bool isPortal)
 {
 	vec3_t	axis[3];
 
 	// Take the forward vector and create two arbitrary but perpendicular vectors
-	VectorCopy( forward, axis[0] );
-	MakeNormalVectors( forward, axis[1], axis[2] );
+	VectorCopy(forward, axis[0]);
+	MakeNormalVectors(forward, axis[1], axis[2]);
 
-	PlayEffect( id, origin, axis, -1, -1, isPortal );
+	PlayEffect(id, origin, axis, -1, -1, isPortal);
 }
 
 //------------------------------------------------------
@@ -791,29 +791,29 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t forward, bool isPor
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::PlayEffect( const char *file, vec3_t origin, vec3_t axis[3], const int boltInfo, const int entNum, bool isPortal, int iLoopTime, bool isRelative )
+void CFxScheduler::PlayEffect(const char *file, vec3_t origin, vec3_t axis[3], const int boltInfo, const int entNum, bool isPortal, int iLoopTime, bool isRelative)
 {
 	char	sfile[MAX_QPATH];
 
 	// Get an extenstion stripped version of the file
-	COM_StripExtension( file, sfile, sizeof(sfile) );
+	COM_StripExtension(file, sfile, sizeof(sfile));
 
 	// This is a horribly dumb thing to have to do, but QuakeIII might not have calc'd the lerpOrigin
 	//	for the entity we may be trying to bolt onto.  We like having the correct origin, so we are
 	//	forced to call this function....
-	if ( entNum > -1 )
+	if (entNum > -1)
 	{
-		CG_CalcEntityLerpPositions( &cg_entities[entNum] );
+		CG_CalcEntityLerpPositions(&cg_entities[entNum]);
 	}
 
 #ifndef FINAL_BUILD
-	if ( mEffectIDs[sfile] == 0 )
+	if (mEffectIDs[sfile] == 0)
 	{
-		theFxHelper.Print( "CFxScheduler::PlayEffect unregistered/non-existent effect: %s\n", sfile );
+		theFxHelper.Print("CFxScheduler::PlayEffect unregistered/non-existent effect: %s\n", sfile);
 	}
 #endif
 
-	PlayEffect( mEffectIDs[sfile], origin, axis, boltInfo, entNum, isPortal, iLoopTime, isRelative );
+	PlayEffect(mEffectIDs[sfile], origin, axis, boltInfo, entNum, isPortal, iLoopTime, isRelative);
 }
 
 //------------------------------------------------------
@@ -829,19 +829,19 @@ void CFxScheduler::PlayEffect( const char *file, vec3_t origin, vec3_t axis[3], 
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::PlayEffect( const char *file, int clientID, bool isPortal )
+void CFxScheduler::PlayEffect(const char *file, int clientID, bool isPortal)
 {
 	char	sfile[MAX_QPATH];
 	int		id;
 
 	// Get an extenstion stripped version of the file
-	COM_StripExtension( file, sfile, sizeof(sfile) );
+	COM_StripExtension(file, sfile, sizeof(sfile));
 	id = mEffectIDs[sfile];
 
 #ifndef FINAL_BUILD
-	if ( id == 0 )
+	if (id == 0)
 	{
-		theFxHelper.Print( "CFxScheduler::PlayEffect unregistered/non-existent effect: %s\n", file );
+		theFxHelper.Print("CFxScheduler::PlayEffect unregistered/non-existent effect: %s\n", file);
 	}
 #endif
 
@@ -851,7 +851,7 @@ void CFxScheduler::PlayEffect( const char *file, int clientID, bool isPortal )
 	int						count = 0, delay = 0;
 	float					factor = 0.0f;
 
-	if ( id < 1 || id >= FX_MAX_EFFECTS || !mEffectTemplates[id].mInUse )
+	if (id < 1 || id >= FX_MAX_EFFECTS || !mEffectTemplates[id].mInUse)
 	{
 		// Now you've done it!
 		ReportPlayEffectError(id);
@@ -864,28 +864,28 @@ void CFxScheduler::PlayEffect( const char *file, int clientID, bool isPortal )
 	fx = &mEffectTemplates[id];
 
 	// Loop through the primitives and schedule each bit
-	for ( i = 0; i < fx->mPrimitiveCount; i++ )
+	for (i = 0; i < fx->mPrimitiveCount; i++)
 	{
 		prim = fx->mPrimitives[i];
 
 		count = prim->mSpawnCount.GetRoundedVal();
 
-		if ( prim->mCopy )
+		if (prim->mCopy)
 		{
 			// If we are a copy, we need to store a "how many references count" so that we
 			//	can keep the primitive template around for the correct amount of time.
 			prim->mRefCount = count;
 		}
 
-		if ( prim->mSpawnFlags & FX_EVEN_DISTRIBUTION )
+		if (prim->mSpawnFlags & FX_EVEN_DISTRIBUTION)
 		{
 			factor = abs(prim->mSpawnDelay.GetMax() - prim->mSpawnDelay.GetMin()) / (float)count;
 		}
 
 		// Schedule the random number of bits
-		for ( int t = 0; t < count; t++ )
+		for (int t = 0; t < count; t++)
 		{
-			if ( prim->mSpawnFlags & FX_EVEN_DISTRIBUTION )
+			if (prim->mSpawnFlags & FX_EVEN_DISTRIBUTION)
 			{
 				delay = t * factor;
 			}
@@ -895,15 +895,15 @@ void CFxScheduler::PlayEffect( const char *file, int clientID, bool isPortal )
 			}
 
 			// if the delay is so small, we may as well just create this bit right now
-			if ( delay < 1 && !isPortal )
+			if (delay < 1 && !isPortal)
 			{
-				CreateEffect( prim, clientID, -delay );
+				CreateEffect(prim, clientID, -delay);
 			}
 			else
 			{
 				SScheduledEffect		*sfx = mScheduledEffectsPool.Alloc();
 
-				if ( sfx == NULL )
+				if (sfx == NULL)
 				{
 					Com_Error (ERR_DROP, "ERROR: Failed to allocate EFX from memory pool.");
 					return;
@@ -922,13 +922,13 @@ void CFxScheduler::PlayEffect( const char *file, int clientID, bool isPortal )
 					sfx->mPortalEffect = false;
 				}
 
-				mFxSchedule.push_front( sfx );
+				mFxSchedule.push_front(sfx);
 			}
 		}
 	}
 
 	// We track effect templates and primitive templates separately.
-	if ( fx->mCopy )
+	if (fx->mCopy)
 	{
 		// We don't use dynamic memory allocation, so just mark us as dead
 		fx->mInUse = false;
@@ -950,7 +950,7 @@ bool gEffectsInPortal = false; //this is just because I don't want to have to ad
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, int clientID, int delay )
+void CFxScheduler::CreateEffect(CPrimitiveTemplate *fx, int clientID, int delay)
 {
 	vec3_t	sRGB, eRGB;
 	vec3_t	vel, accel;
@@ -959,30 +959,30 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, int clientID, int delay
 
 	// Origin calculations -- completely ignores most things
 	//-------------------------------------
-	VectorSet( org,  fx->mOrigin1X.GetVal(), fx->mOrigin1Y.GetVal(), fx->mOrigin1Z.GetVal() );
-	VectorSet( org2, fx->mOrigin2X.GetVal(), fx->mOrigin2Y.GetVal(), fx->mOrigin2Z.GetVal() );
+	VectorSet(org,  fx->mOrigin1X.GetVal(), fx->mOrigin1Y.GetVal(), fx->mOrigin1Z.GetVal());
+	VectorSet(org2, fx->mOrigin2X.GetVal(), fx->mOrigin2Y.GetVal(), fx->mOrigin2Z.GetVal());
 
 	// handle RGB color
-	if ( fx->mSpawnFlags & FX_RGB_COMPONENT_INTERP )
+	if (fx->mSpawnFlags & FX_RGB_COMPONENT_INTERP)
 	{
 		float perc = Q_flrand(0.0f, 1.0f);
 
-		VectorSet( sRGB, fx->mRedStart.GetVal( perc ), fx->mGreenStart.GetVal( perc ), fx->mBlueStart.GetVal( perc ) );
-		VectorSet( eRGB, fx->mRedEnd.GetVal( perc ), fx->mGreenEnd.GetVal( perc ), fx->mBlueEnd.GetVal( perc ) );
+		VectorSet(sRGB, fx->mRedStart.GetVal(perc), fx->mGreenStart.GetVal(perc), fx->mBlueStart.GetVal(perc));
+		VectorSet(eRGB, fx->mRedEnd.GetVal(perc), fx->mGreenEnd.GetVal(perc), fx->mBlueEnd.GetVal(perc));
 	}
 	else
 	{
-		VectorSet( sRGB, fx->mRedStart.GetVal(), fx->mGreenStart.GetVal(), fx->mBlueStart.GetVal() );
-		VectorSet( eRGB, fx->mRedEnd.GetVal(), fx->mGreenEnd.GetVal(), fx->mBlueEnd.GetVal() );
+		VectorSet(sRGB, fx->mRedStart.GetVal(), fx->mGreenStart.GetVal(), fx->mBlueStart.GetVal());
+		VectorSet(eRGB, fx->mRedEnd.GetVal(), fx->mGreenEnd.GetVal(), fx->mBlueEnd.GetVal());
 	}
 
 	// NOTE: This completely disregards a few specialty flags.
-	VectorSet( vel, fx->mVelX.GetVal( ), fx->mVelY.GetVal( ), fx->mVelZ.GetVal( ) );
-	VectorSet( accel, fx->mAccelX.GetVal( ), fx->mAccelY.GetVal( ), fx->mAccelZ.GetVal( ) );
+	VectorSet(vel, fx->mVelX.GetVal(), fx->mVelY.GetVal(), fx->mVelZ.GetVal());
+	VectorSet(accel, fx->mAccelX.GetVal(), fx->mAccelY.GetVal(), fx->mAccelZ.GetVal());
 
 	// If depth hack ISN'T already on, then turn it on.  Otherwise, we treat a pre-existing depth_hack flag as NOT being depth_hack.
 	//	This is done because muzzle flash fx files are shared amongst all shooters, but for the player we need to do depth hack in first person....
-	if ( !( fx->mFlags & FX_DEPTH_HACK ) && !cg.renderingThirdPerson ) // hack!
+	if (!(fx->mFlags & FX_DEPTH_HACK) && !cg.renderingThirdPerson) // hack!
 	{
 		flags = fx->mFlags | FX_RELATIVE | FX_DEPTH_HACK;
 	}
@@ -993,45 +993,45 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, int clientID, int delay
 
 	// We only support particles for now
 	//------------------------
-	switch( fx->mType )
+	switch(fx->mType)
 	{
 	//---------
 	case Particle:
 	//---------
 
-		FX_AddParticle( clientID, org, vel, accel, fx->mGravity.GetVal(),
+		FX_AddParticle(clientID, org, vel, accel, fx->mGravity.GetVal(),
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
 						fx->mRotation.GetVal(), fx->mRotationDelta.GetVal(),
 						fx->mMin, fx->mMax, fx->mElasticity.GetVal(),
 						fx->mDeathFxHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(),
-						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags );
+						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags);
 		break;
 
 	//---------
 	case Line:
 	//---------
 
-		FX_AddLine( clientID, org, org2,
+		FX_AddLine(clientID, org, org2,
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
-						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(), flags );
+						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(), flags);
 		break;
 
 	//---------
 	case Tail:
 	//---------
 
-		FX_AddTail( clientID, org, vel, accel,
+		FX_AddTail(clientID, org, vel, accel,
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mLengthStart.GetVal(), fx->mLengthEnd.GetVal(), fx->mLengthParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
 						fx->mMin, fx->mMax, fx->mElasticity.GetVal(),
 						fx->mDeathFxHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(),
-						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags );
+						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags);
 		break;
 
 
@@ -1040,13 +1040,13 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, int clientID, int delay
 	//---------
 
 		if (gEffectsInPortal)
-		{ //could orient this anyway for panning, but eh. It's going to appear to the player in the sky the same place no matter what, so just make it a local sound.
-			theFxHelper.PlayLocalSound( fx->mMediaHandles.GetHandle(), CHAN_AUTO );
+		{//could orient this anyway for panning, but eh. It's going to appear to the player in the sky the same place no matter what, so just make it a local sound.
+			theFxHelper.PlayLocalSound(fx->mMediaHandles.GetHandle(), CHAN_AUTO);
 		}
 		else
 		{
 			// bolted sounds actually play on the client....
-			theFxHelper.PlaySound( NULL, clientID, CHAN_WEAPON, fx->mMediaHandles.GetHandle() );
+			theFxHelper.PlaySound(NULL, clientID, CHAN_WEAPON, fx->mMediaHandles.GetHandle());
 		}
 		break;
 	//---------
@@ -1054,16 +1054,16 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, int clientID, int delay
 	//---------
 
 		// don't much care if the light stays bolted...so just add it.
-		if ( clientID >= 0 && clientID < ENTITYNUM_WORLD )
+		if (clientID >= 0 && clientID < ENTITYNUM_WORLD)
 		{
 			// ..um, ok.....
 			centity_t *cent = &cg_entities[clientID];
 
-			if ( cent && cent->gent && cent->gent->client )
+			if (cent && cent->gent && cent->gent->client)
 			{
-				FX_AddLight( cent->gent->client->renderInfo.muzzlePoint, fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
+				FX_AddLight(cent->gent->client->renderInfo.muzzlePoint, fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
-						fx->mLife.GetVal(), fx->mFlags );
+						fx->mLife.GetVal(), fx->mFlags);
 			}
 		}
 		break;
@@ -1072,14 +1072,14 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, int clientID, int delay
 	case CameraShake:
 	//---------
 
-		if ( clientID >= 0 && clientID < ENTITYNUM_WORLD )
+		if (clientID >= 0 && clientID < ENTITYNUM_WORLD)
 		{
 			// ..um, ok.....
 			centity_t *cent = &cg_entities[clientID];
 
-			if ( cent && cent->gent && cent->gent->client )
+			if (cent && cent->gent && cent->gent->client)
 			{
-				theFxHelper.CameraShake( cent->gent->currentOrigin, fx->mElasticity.GetVal(), fx->mRadius.GetVal(), fx->mLife.GetVal() );
+				theFxHelper.CameraShake(cent->gent->currentOrigin, fx->mElasticity.GetVal(), fx->mRadius.GetVal(), fx->mLife.GetVal());
 			}
 		}
 		break;
@@ -1089,11 +1089,11 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, int clientID, int delay
 	}
 
 	// Track when we need to clean ourselves up if we are a copy
-	if ( fx->mCopy )
+	if (fx->mCopy)
 	{
 		fx->mRefCount--;
 
-		if ( fx->mRefCount <= 0 )
+		if (fx->mRefCount <= 0)
 		{
 			delete fx;
 		}
@@ -1113,7 +1113,7 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, int clientID, int delay
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int boltInfo, const int entNum, bool isPortal, int iLoopTime, bool isRelative )
+void CFxScheduler::PlayEffect(int id, vec3_t origin, vec3_t axis[3], const int boltInfo, const int entNum, bool isPortal, int iLoopTime, bool isRelative)
 {
 	SEffectTemplate			*fx;
 	CPrimitiveTemplate		*prim;
@@ -1122,7 +1122,7 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 	float					factor = 0.0f;
 	bool					forceScheduling = false;
 
-	if ( id < 1 || id >= FX_MAX_EFFECTS || !mEffectTemplates[id].mInUse )
+	if (id < 1 || id >= FX_MAX_EFFECTS || !mEffectTemplates[id].mInUse)
 	{
 		// Now you've done it!
 		ReportPlayEffectError(id);
@@ -1130,7 +1130,7 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 	}
 
 	// Don't bother scheduling the effect if the system is currently frozen
-	if ( fx_freeze.integer )
+	if (fx_freeze.integer)
 	{
 		return;
 	}
@@ -1138,12 +1138,12 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 	int	modelNum = 0, boltNum = -1;
 	int	entityNum = entNum;
 
-	if ( boltInfo > 0 )
+	if (boltInfo > 0)
 	{
 		// extract the wraith ID from the bolt info
-		modelNum	= ( boltInfo >> MODEL_SHIFT )	& MODEL_AND;
-		boltNum		= ( boltInfo >> BOLT_SHIFT )	& BOLT_AND;
-		entityNum	= ( boltInfo >> ENTITY_SHIFT )	& ENTITY_AND;
+		modelNum	= (boltInfo >> MODEL_SHIFT)	& MODEL_AND;
+		boltNum		= (boltInfo >> BOLT_SHIFT)	& BOLT_AND;
+		entityNum	= (boltInfo >> ENTITY_SHIFT)	& ENTITY_AND;
 
 		// We always force ghoul bolted objects to be scheduled so that they don't play right away.
 		forceScheduling = true;
@@ -1159,13 +1159,13 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 	fx = &mEffectTemplates[id];
 
 	// Loop through the primitives and schedule each bit
-	for ( i = 0; i < fx->mPrimitiveCount; i++ )
+	for (i = 0; i < fx->mPrimitiveCount; i++)
 	{
 		prim = fx->mPrimitives[i];
 
-		if ( prim->mCullRange )
+		if (prim->mCullRange)
 		{
-			if ( DistanceSquared( origin, cg.refdef.vieworg ) > prim->mCullRange )  // cull range has already been squared
+			if (DistanceSquared(origin, cg.refdef.vieworg) > prim->mCullRange)  // cull range has already been squared
 			{
 				// is too far away, so don't add this primitive group
 				continue;
@@ -1174,22 +1174,22 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 
 		count = prim->mSpawnCount.GetRoundedVal();
 
-		if ( prim->mCopy )
+		if (prim->mCopy)
 		{
 			// If we are a copy, we need to store a "how many references count" so that we
 			//	can keep the primitive template around for the correct amount of time.
 			prim->mRefCount = count;
 		}
 
-		if ( prim->mSpawnFlags & FX_EVEN_DISTRIBUTION )
+		if (prim->mSpawnFlags & FX_EVEN_DISTRIBUTION)
 		{
 			factor = abs(prim->mSpawnDelay.GetMax() - prim->mSpawnDelay.GetMin()) / (float)count;
 		}
 
 		// Schedule the random number of bits
-		for ( int t = 0; t < count; t++ )
+		for (int t = 0; t < count; t++)
 		{
-			if ( prim->mSpawnFlags & FX_EVEN_DISTRIBUTION )
+			if (prim->mSpawnFlags & FX_EVEN_DISTRIBUTION)
 			{
 				delay = t * factor;
 			}
@@ -1199,23 +1199,23 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 			}
 
 			// if the delay is so small, we may as well just create this bit right now
-			if ( delay < 1 && !forceScheduling && !isPortal )
+			if (delay < 1 && !forceScheduling && !isPortal)
 			{
-				if ( boltInfo == -1 && entNum != -1 )
+				if (boltInfo == -1 && entNum != -1)
 				{
 					// Find out where the entity currently is
-					CreateEffect( prim, cg_entities[entNum].lerpOrigin, axis, -delay );
+					CreateEffect(prim, cg_entities[entNum].lerpOrigin, axis, -delay);
 				}
 				else
 				{
-					CreateEffect( prim, origin, axis, -delay );
+					CreateEffect(prim, origin, axis, -delay);
 				}
 			}
 			else
 			{
 				SScheduledEffect		*sfx = mScheduledEffectsPool.Alloc();
 
-				if ( sfx == NULL )
+				if (sfx == NULL)
 				{
 					Com_Error (ERR_DROP, "ERROR: Failed to allocate EFX from memory pool.");
 					return;
@@ -1229,24 +1229,24 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 
 				sfx->mPortalEffect = isPortal;
 
-				if ( boltInfo == -1 )
+				if (boltInfo == -1)
 				{
-					if ( entNum == -1 )
+					if (entNum == -1)
 					{
 						// we aren't bolting, so make sure the spawn system knows this by putting -1's in these fields
 						sfx->mBoltNum = -1;
 						sfx->mModelNum = 0;
 
-						if ( origin )
+						if (origin)
 						{
-							VectorCopy( origin, sfx->mOrigin );
+							VectorCopy(origin, sfx->mOrigin);
 						}
 						else
 						{
-							VectorClear( sfx->mOrigin );
+							VectorClear(sfx->mOrigin);
 						}
 
-						AxisCopy( axis, sfx->mAxis );
+						AxisCopy(axis, sfx->mAxis);
 					}
 					else
 					{
@@ -1254,7 +1254,7 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 						sfx->mBoltNum = -1;
 						sfx->mModelNum = 0;
 
-						AxisCopy( axis, sfx->mAxis );
+						AxisCopy(axis, sfx->mAxis);
 					}
 				}
 				else
@@ -1267,13 +1267,13 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 					sfx->mStartTime++;
 				}
 
-				mFxSchedule.push_front( sfx );
+				mFxSchedule.push_front(sfx);
 			}
 		}
 	}
 
 	// We track effect templates and primitive templates separately.
-	if ( fx->mCopy )
+	if (fx->mCopy)
 	{
 		// We don't use dynamic memory allocation, so just mark us as dead
 		fx->mInUse = false;
@@ -1292,19 +1292,19 @@ void CFxScheduler::PlayEffect( int id, vec3_t origin, vec3_t axis[3], const int 
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::PlayEffect( const char *file, vec3_t origin, bool isPortal )
+void CFxScheduler::PlayEffect(const char *file, vec3_t origin, bool isPortal)
 {
 	char	sfile[MAX_QPATH];
 
 	// Get an extenstion stripped version of the file
-	COM_StripExtension( file, sfile, sizeof(sfile) );
+	COM_StripExtension(file, sfile, sizeof(sfile));
 
-	PlayEffect( mEffectIDs[sfile], origin, isPortal );
+	PlayEffect(mEffectIDs[sfile], origin, isPortal);
 
 #ifndef FINAL_BUILD
-	if ( mEffectIDs[sfile] == 0 )
+	if (mEffectIDs[sfile] == 0)
 	{
-		theFxHelper.Print( "CFxScheduler::PlayEffect unregistered/non-existent effect: %s\n", file );
+		theFxHelper.Print("CFxScheduler::PlayEffect unregistered/non-existent effect: %s\n", file);
 	}
 #endif
 }
@@ -1321,19 +1321,19 @@ void CFxScheduler::PlayEffect( const char *file, vec3_t origin, bool isPortal )
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::PlayEffect( const char *file, vec3_t origin, vec3_t forward, bool isPortal )
+void CFxScheduler::PlayEffect(const char *file, vec3_t origin, vec3_t forward, bool isPortal)
 {
 	char	sfile[MAX_QPATH];
 
 	// Get an extenstion stripped version of the file
-	COM_StripExtension( file, sfile, sizeof(sfile) );
+	COM_StripExtension(file, sfile, sizeof(sfile));
 
-	PlayEffect( mEffectIDs[sfile], origin, forward, isPortal );
+	PlayEffect(mEffectIDs[sfile], origin, forward, isPortal);
 
 #ifndef FINAL_BUILD
-	if ( mEffectIDs[sfile] == 0 )
+	if (mEffectIDs[sfile] == 0)
 	{
-		theFxHelper.Print( "CFxScheduler::PlayEffect unregistered/non-existent effect: %s\n", file );
+		theFxHelper.Print("CFxScheduler::PlayEffect unregistered/non-existent effect: %s\n", file);
 	}
 #endif
 }
@@ -1350,7 +1350,7 @@ void CFxScheduler::PlayEffect( const char *file, vec3_t origin, vec3_t forward, 
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::AddScheduledEffects( bool portal )
+void CFxScheduler::AddScheduledEffects(bool portal)
 {
 	TScheduledEffect::iterator	itr, next;
 	vec3_t						origin;
@@ -1367,31 +1367,31 @@ void CFxScheduler::AddScheduledEffects( bool portal )
 		AddLoopedEffects();
 	}
 
-	for ( itr = mFxSchedule.begin(); itr != mFxSchedule.end(); /* do nothing */ )
+	for (itr = mFxSchedule.begin(); itr != mFxSchedule.end(); /* do nothing */)
 	{
 		SScheduledEffect *effect = *itr;
 
-		if (portal == effect->mPortalEffect && effect->mStartTime <= theFxHelper.mTime )
+		if (portal == effect->mPortalEffect && effect->mStartTime <= theFxHelper.mTime)
 		{
-			if ( effect->mClientID >= 0 )
+			if (effect->mClientID >= 0)
 			{
-				CreateEffect( effect->mpTemplate, effect->mClientID,
-								theFxHelper.mTime - effect->mStartTime );
+				CreateEffect(effect->mpTemplate, effect->mClientID,
+								theFxHelper.mTime - effect->mStartTime);
 			}
 			else if (effect->mBoltNum == -1)
 			{// normal effect
-				if ( effect->mEntNum != -1 ) // -1
+				if (effect->mEntNum != -1) // -1
 				{
 					// Find out where the entity currently is
-					CreateEffect( effect->mpTemplate,
+					CreateEffect(effect->mpTemplate,
 								cg_entities[effect->mEntNum].lerpOrigin, effect->mAxis,
-								theFxHelper.mTime - (*itr)->mStartTime );
+								theFxHelper.mTime - (*itr)->mStartTime);
 				}
 				else
 				{
-					CreateEffect( effect->mpTemplate,
+					CreateEffect(effect->mpTemplate,
 								effect->mOrigin, effect->mAxis,
-								theFxHelper.mTime - effect->mStartTime );
+								theFxHelper.mTime - effect->mStartTime);
 				}
 			}
 			else
@@ -1419,23 +1419,23 @@ void CFxScheduler::AddScheduledEffects( bool portal )
 				// only do this if we found the bolt
 				if (doesBoltExist)
 				{
-					if (effect->mIsRelative )
+					if (effect->mIsRelative)
 					{
-						CreateEffect( effect->mpTemplate,
+						CreateEffect(effect->mpTemplate,
 									vec3_origin, axis,
-									0, effect->mEntNum, effect->mModelNum, effect->mBoltNum );
+									0, effect->mEntNum, effect->mModelNum, effect->mBoltNum);
 					}
 					else
 					{
-						CreateEffect( effect->mpTemplate,
+						CreateEffect(effect->mpTemplate,
 									origin, axis,
-									theFxHelper.mTime - effect->mStartTime );
+									theFxHelper.mTime - effect->mStartTime);
 					}
 				}
 			}
 
-			mScheduledEffectsPool.Free( effect );
-			itr = mFxSchedule.erase( itr );
+			mScheduledEffectsPool.Free(effect);
+			itr = mFxSchedule.erase(itr);
 		}
 		else
 		{
@@ -1462,7 +1462,7 @@ void CFxScheduler::AddScheduledEffects( bool portal )
 // Return:
 //	none
 //------------------------------------------------------
-void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, vec3_t axis[3], int lateTime, int clientID, int modelNum, int boltNum )
+void CFxScheduler::CreateEffect(CPrimitiveTemplate *fx, const vec3_t origin, vec3_t axis[3], int lateTime, int clientID, int modelNum, int boltNum)
 {
 	vec3_t	org, org2, temp,
 				vel, accel,
@@ -1473,7 +1473,7 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 	int		emitterModel;
 
 	// We may modify the axis, so make a work copy
-	AxisCopy( axis, ax );
+	AxisCopy(axis, ax);
 
 	int flags = fx->mFlags;
 	if (clientID>=0 && modelNum>=0 && boltNum>=0)
@@ -1481,128 +1481,128 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 		flags |= FX_RELATIVE;
 	}
 
-	if( fx->mSpawnFlags & FX_RAND_ROT_AROUND_FWD )
+	if(fx->mSpawnFlags & FX_RAND_ROT_AROUND_FWD)
 	{
-		RotatePointAroundVector( ax[1], ax[0], axis[1], Q_flrand(0.0f, 1.0f)*360.0f );
-		CrossProduct( ax[0], ax[1], ax[2] );
+		RotatePointAroundVector(ax[1], ax[0], axis[1], Q_flrand(0.0f, 1.0f)*360.0f);
+		CrossProduct(ax[0], ax[1], ax[2]);
 	}
 
 	// Origin calculations
 	//-------------------------------------
-	if ( fx->mSpawnFlags & FX_CHEAP_ORG_CALC || flags & FX_RELATIVE  )
-	{ // let's take the easy way out
-		VectorSet( org, fx->mOrigin1X.GetVal(), fx->mOrigin1Y.GetVal(), fx->mOrigin1Z.GetVal() );
+	if (fx->mSpawnFlags & FX_CHEAP_ORG_CALC || flags & FX_RELATIVE )
+	{// let's take the easy way out
+		VectorSet(org, fx->mOrigin1X.GetVal(), fx->mOrigin1Y.GetVal(), fx->mOrigin1Z.GetVal());
 	}
 	else
-	{ // time for some extra work
-		VectorScale( ax[0], fx->mOrigin1X.GetVal(), org );
-		VectorMA( org, fx->mOrigin1Y.GetVal(), ax[1], org );
-		VectorMA( org, fx->mOrigin1Z.GetVal(), ax[2], org );
+	{// time for some extra work
+		VectorScale(ax[0], fx->mOrigin1X.GetVal(), org);
+		VectorMA(org, fx->mOrigin1Y.GetVal(), ax[1], org);
+		VectorMA(org, fx->mOrigin1Z.GetVal(), ax[2], org);
 	}
 
 	// We always add our calculated offset to the passed in origin...
-	VectorAdd( org, origin, org );
+	VectorAdd(org, origin, org);
 
 	// Now, we may need to calc a point on a sphere/ellipsoid/cylinder/disk and add that to it
 	//----------------------------------------------------------------
-	if ( fx->mSpawnFlags & FX_ORG_ON_SPHERE )
+	if (fx->mSpawnFlags & FX_ORG_ON_SPHERE)
 	{
 		float x, y;
 		float width, height;
 
-		x = DEG2RAD( Q_flrand(0.0f, 1.0f) * 360.0f );
-		y = DEG2RAD( Q_flrand(0.0f, 1.0f) * 180.0f );
+		x = DEG2RAD(Q_flrand(0.0f, 1.0f) * 360.0f);
+		y = DEG2RAD(Q_flrand(0.0f, 1.0f) * 180.0f);
 
 		width = fx->mRadius.GetVal();
 		height = fx->mHeight.GetVal();
 
 		// calculate point on ellipse
-		VectorSet( temp, sin(x) * width * sin(y), cos(x) * width * sin(y), cos(y) * height ); // sinx * siny, cosx * siny, cosy
-		VectorAdd( org, temp, org );
+		VectorSet(temp, sin(x) * width * sin(y), cos(x) * width * sin(y), cos(y) * height); // sinx * siny, cosx * siny, cosy
+		VectorAdd(org, temp, org);
 
-		if ( fx->mSpawnFlags & FX_AXIS_FROM_SPHERE )
+		if (fx->mSpawnFlags & FX_AXIS_FROM_SPHERE)
 		{
 			// well, we will now override the axis at the users request
-			VectorNormalize2( temp, ax[0] );
-			MakeNormalVectors( ax[0], ax[1], ax[2] );
+			VectorNormalize2(temp, ax[0]);
+			MakeNormalVectors(ax[0], ax[1], ax[2]);
 		}
 	}
-	else if ( fx->mSpawnFlags & FX_ORG_ON_CYLINDER )
+	else if (fx->mSpawnFlags & FX_ORG_ON_CYLINDER)
 	{
 		vec3_t	pt;
 
 		// set up our point, then rotate around the current direction to.  Make unrotated cylinder centered around 0,0,0
-		VectorScale( ax[1], fx->mRadius.GetVal(), pt );
-		VectorMA( pt, Q_flrand(-1.0f, 1.0f) * 0.5f * fx->mHeight.GetVal(), ax[0], pt );
-		RotatePointAroundVector( temp, ax[0], pt, Q_flrand(0.0f, 1.0f) * 360.0f );
+		VectorScale(ax[1], fx->mRadius.GetVal(), pt);
+		VectorMA(pt, Q_flrand(-1.0f, 1.0f) * 0.5f * fx->mHeight.GetVal(), ax[0], pt);
+		RotatePointAroundVector(temp, ax[0], pt, Q_flrand(0.0f, 1.0f) * 360.0f);
 
-		VectorAdd( org, temp, org );
+		VectorAdd(org, temp, org);
 
-		if ( fx->mSpawnFlags & FX_AXIS_FROM_SPHERE )
+		if (fx->mSpawnFlags & FX_AXIS_FROM_SPHERE)
 		{
 			vec3_t up={0,0,1};
 
 			// well, we will now override the axis at the users request
-			VectorNormalize2( temp, ax[0] );
+			VectorNormalize2(temp, ax[0]);
 
-			if ( ax[0][2] == 1.0f )
+			if (ax[0][2] == 1.0f)
 			{
 				// readjust up
-				VectorSet( up, 0, 1, 0 );
+				VectorSet(up, 0, 1, 0);
 			}
 
-			CrossProduct( up, ax[0], ax[1] );
-			CrossProduct( ax[0], ax[1], ax[2] );
+			CrossProduct(up, ax[0], ax[1]);
+			CrossProduct(ax[0], ax[1], ax[2]);
 		}
 	}
 
 
 	// There are only a few types that really use velocity and acceleration, so do extra work for those types
 	//--------------------------------------------------------------------------------------------------------
-	if ( fx->mType == Particle || fx->mType == OrientedParticle || fx->mType == Tail || fx->mType == Emitter )
+	if (fx->mType == Particle || fx->mType == OrientedParticle || fx->mType == Tail || fx->mType == Emitter)
 	{
 		// Velocity calculations
 		//-------------------------------------
-		if ( fx->mSpawnFlags & FX_VEL_IS_ABSOLUTE || flags & FX_RELATIVE )
+		if (fx->mSpawnFlags & FX_VEL_IS_ABSOLUTE || flags & FX_RELATIVE)
 		{
-			VectorSet( vel, fx->mVelX.GetVal(), fx->mVelY.GetVal(), fx->mVelZ.GetVal() );
+			VectorSet(vel, fx->mVelX.GetVal(), fx->mVelY.GetVal(), fx->mVelZ.GetVal());
 		}
 		else
-		{ // bah, do some extra work to coerce it
-			VectorScale( ax[0], fx->mVelX.GetVal(), vel );
-			VectorMA( vel, fx->mVelY.GetVal(), ax[1], vel );
-			VectorMA( vel, fx->mVelZ.GetVal(), ax[2], vel );
+		{// bah, do some extra work to coerce it
+			VectorScale(ax[0], fx->mVelX.GetVal(), vel);
+			VectorMA(vel, fx->mVelY.GetVal(), ax[1], vel);
+			VectorMA(vel, fx->mVelZ.GetVal(), ax[2], vel);
 		}
 
 		// Acceleration calculations
 		//-------------------------------------
-		if ( fx->mSpawnFlags & FX_ACCEL_IS_ABSOLUTE || flags & FX_RELATIVE )
+		if (fx->mSpawnFlags & FX_ACCEL_IS_ABSOLUTE || flags & FX_RELATIVE)
 		{
-			VectorSet( accel, fx->mAccelX.GetVal(), fx->mAccelY.GetVal(), fx->mAccelZ.GetVal() );
+			VectorSet(accel, fx->mAccelX.GetVal(), fx->mAccelY.GetVal(), fx->mAccelZ.GetVal());
 		}
 		else
 		{
-			VectorScale( ax[0], fx->mAccelX.GetVal(), accel );
-			VectorMA( accel, fx->mAccelY.GetVal(), ax[1], accel );
-			VectorMA( accel, fx->mAccelZ.GetVal(), ax[2], accel );
+			VectorScale(ax[0], fx->mAccelX.GetVal(), accel);
+			VectorMA(accel, fx->mAccelY.GetVal(), ax[1], accel);
+			VectorMA(accel, fx->mAccelZ.GetVal(), ax[2], accel);
 		}
 
 		// Gravity is completely decoupled from acceleration since it is __always__ absolute
-		// NOTE: I only effect Z ( up/down in the Quake world )
+		// NOTE: I only effect Z (up/down in the Quake world)
 		accel[2] += fx->mGravity.GetVal();
 
 		// There may be a lag between when the effect should be created and when it actually gets created.
 		//	Since we know what the discrepancy is, we can attempt to compensate...
-		if ( lateTime > 0 )
+		if (lateTime > 0)
 		{
 			// Calc the time differences
 			float ftime = lateTime * 0.001f;
 			float time2 = ftime * ftime * 0.5f;
 
-			VectorMA( vel, ftime, accel, vel );
+			VectorMA(vel, ftime, accel, vel);
 
 			// Predict the new position
-			for ( int i = 0 ; i < 3 ; i++ )
+			for (int i = 0 ; i < 3 ; i++)
 			{
 				org[i] = org[i] + ftime * vel[i] + time2 * vel[i];
 			}
@@ -1611,59 +1611,59 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 
 	// Line type primitives work with an origin2, so do the extra work for them
 	//--------------------------------------------------------------------------
-	if ( fx->mType == Line || fx->mType == Electricity )
+	if (fx->mType == Line || fx->mType == Electricity)
 	{
 		// We may have to do a trace to find our endpoint
-		if ( fx->mSpawnFlags & FX_ORG2_FROM_TRACE )
+		if (fx->mSpawnFlags & FX_ORG2_FROM_TRACE)
 		{
-			VectorMA( org, FX_MAX_TRACE_DIST, ax[0], temp );
+			VectorMA(org, FX_MAX_TRACE_DIST, ax[0], temp);
 
-			if ( fx->mSpawnFlags & FX_ORG2_IS_OFFSET )
-			{ // add a random flair to the endpoint...note: org2 will have to be pretty large to affect this much
+			if (fx->mSpawnFlags & FX_ORG2_IS_OFFSET)
+			{// add a random flair to the endpoint...note: org2 will have to be pretty large to affect this much
 				// we also do this pre-trace as opposed to post trace since we may have to render an impact effect
 				//	and we will want the normal at the exact endpos...
-				if ( fx->mSpawnFlags & FX_CHEAP_ORG2_CALC || flags & FX_RELATIVE )
+				if (fx->mSpawnFlags & FX_CHEAP_ORG2_CALC || flags & FX_RELATIVE)
 				{
-					VectorSet( org2, fx->mOrigin2X.GetVal(), fx->mOrigin2Y.GetVal(), fx->mOrigin2Z.GetVal() );
-					VectorAdd( org2, temp, temp );
+					VectorSet(org2, fx->mOrigin2X.GetVal(), fx->mOrigin2Y.GetVal(), fx->mOrigin2Z.GetVal());
+					VectorAdd(org2, temp, temp);
 				}
 				else
-				{ // I can only imagine a few cases where you might want to do this...
-					VectorMA( temp, fx->mOrigin2X.GetVal(), ax[0], temp );
-					VectorMA( temp, fx->mOrigin2Y.GetVal(), ax[1], temp );
-					VectorMA( temp, fx->mOrigin2Z.GetVal(), ax[2], temp );
+				{// I can only imagine a few cases where you might want to do this...
+					VectorMA(temp, fx->mOrigin2X.GetVal(), ax[0], temp);
+					VectorMA(temp, fx->mOrigin2Y.GetVal(), ax[1], temp);
+					VectorMA(temp, fx->mOrigin2Z.GetVal(), ax[2], temp);
 				}
 			}
 
-			theFxHelper.Trace( &tr, org, NULL, NULL, temp, -1, CONTENTS_SOLID | CONTENTS_SHOTCLIP );//MASK_SHOT );
+			theFxHelper.Trace(&tr, org, NULL, NULL, temp, -1, CONTENTS_SOLID | CONTENTS_SHOTCLIP);//MASK_SHOT);
 
-			if ( tr.startsolid || tr.allsolid )
+			if (tr.startsolid || tr.allsolid)
 			{
-				VectorCopy( org, org2 ); // this is not a very good solution
+				VectorCopy(org, org2); // this is not a very good solution
 			}
 			else
 			{
-				VectorCopy( tr.endpos, org2 );
+				VectorCopy(tr.endpos, org2);
 			}
 
-			if ( fx->mSpawnFlags & FX_TRACE_IMPACT_FX )
+			if (fx->mSpawnFlags & FX_TRACE_IMPACT_FX)
 			{
-				PlayEffect( fx->mImpactFxHandles.GetHandle(), org2, tr.plane.normal );
+				PlayEffect(fx->mImpactFxHandles.GetHandle(), org2, tr.plane.normal);
 			}
 		}
 		else
 		{
-			if ( fx->mSpawnFlags & FX_CHEAP_ORG2_CALC || flags & FX_RELATIVE )
+			if (fx->mSpawnFlags & FX_CHEAP_ORG2_CALC || flags & FX_RELATIVE)
 			{
-				VectorSet( org2, fx->mOrigin2X.GetVal(), fx->mOrigin2Y.GetVal(), fx->mOrigin2Z.GetVal() );
+				VectorSet(org2, fx->mOrigin2X.GetVal(), fx->mOrigin2Y.GetVal(), fx->mOrigin2Z.GetVal());
 			}
 			else
 			{
-				VectorScale( ax[0], fx->mOrigin2X.GetVal(), org2 );
-				VectorMA( org2, fx->mOrigin2Y.GetVal(), ax[1], org2 );
-				VectorMA( org2, fx->mOrigin2Z.GetVal(), ax[2], org2 );
+				VectorScale(ax[0], fx->mOrigin2X.GetVal(), org2);
+				VectorMA(org2, fx->mOrigin2Y.GetVal(), ax[1], org2);
+				VectorMA(org2, fx->mOrigin2Z.GetVal(), ax[2], org2);
 
-				VectorAdd( org2, origin, org2 );
+				VectorAdd(org2, origin, org2);
 			}
 
 		}
@@ -1671,87 +1671,87 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 
 	// handle RGB color, but only for types that will use it
 	//---------------------------------------------------------------------------
-	if ( fx->mType != Sound && fx->mType != FxRunner && fx->mType != CameraShake )
+	if (fx->mType != Sound && fx->mType != FxRunner && fx->mType != CameraShake)
 	{
-		if ( fx->mSpawnFlags & FX_RGB_COMPONENT_INTERP )
+		if (fx->mSpawnFlags & FX_RGB_COMPONENT_INTERP)
 		{
 			float perc = Q_flrand(0.0f, 1.0f);
 
-			VectorSet( sRGB, fx->mRedStart.GetVal( perc ), fx->mGreenStart.GetVal( perc ), fx->mBlueStart.GetVal( perc ) );
-			VectorSet( eRGB, fx->mRedEnd.GetVal( perc ), fx->mGreenEnd.GetVal( perc ), fx->mBlueEnd.GetVal( perc ) );
+			VectorSet(sRGB, fx->mRedStart.GetVal(perc), fx->mGreenStart.GetVal(perc), fx->mBlueStart.GetVal(perc));
+			VectorSet(eRGB, fx->mRedEnd.GetVal(perc), fx->mGreenEnd.GetVal(perc), fx->mBlueEnd.GetVal(perc));
 		}
 		else
 		{
-			VectorSet( sRGB, fx->mRedStart.GetVal(), fx->mGreenStart.GetVal(), fx->mBlueStart.GetVal() );
-			VectorSet( eRGB, fx->mRedEnd.GetVal(), fx->mGreenEnd.GetVal(), fx->mBlueEnd.GetVal() );
+			VectorSet(sRGB, fx->mRedStart.GetVal(), fx->mGreenStart.GetVal(), fx->mBlueStart.GetVal());
+			VectorSet(eRGB, fx->mRedEnd.GetVal(), fx->mGreenEnd.GetVal(), fx->mBlueEnd.GetVal());
 		}
 	}
 
 	// Now create the appropriate effect entity
 	//------------------------
-	switch( fx->mType )
+	switch(fx->mType)
 	{
 	//---------
 	case Particle:
 	//---------
 
-		FX_AddParticle( clientID, org, vel, accel, fx->mGravity.GetVal(),
+		FX_AddParticle(clientID, org, vel, accel, fx->mGravity.GetVal(),
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
 						fx->mRotation.GetVal(), fx->mRotationDelta.GetVal(),
 						fx->mMin, fx->mMax, fx->mElasticity.GetVal(),
 						fx->mDeathFxHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(),
-						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum );
+						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum);
 		break;
 
 	//---------
 	case Line:
 	//---------
 
-		FX_AddLine( clientID, org, org2,
+		FX_AddLine(clientID, org, org2,
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
-						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(), flags, modelNum, boltNum );
+						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(), flags, modelNum, boltNum);
 		break;
 
 	//---------
 	case Tail:
 	//---------
 
-		FX_AddTail( clientID, org, vel, accel,
+		FX_AddTail(clientID, org, vel, accel,
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mLengthStart.GetVal(), fx->mLengthEnd.GetVal(), fx->mLengthParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
 						fx->mMin, fx->mMax, fx->mElasticity.GetVal(),
 						fx->mDeathFxHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(),
-						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum );
+						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum);
 		break;
 
 	//----------------
 	case Electricity:
 	//----------------
 
-		FX_AddElectricity( clientID, org, org2,
+		FX_AddElectricity(clientID, org, org2,
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
-						fx->mElasticity.GetVal(), fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum );
+						fx->mElasticity.GetVal(), fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum);
 		break;
 
 	//---------
 	case Cylinder:
 	//---------
 
-		FX_AddCylinder( clientID, org, ax[0],
+		FX_AddCylinder(clientID, org, ax[0],
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mSize2Start.GetVal(), fx->mSize2End.GetVal(), fx->mSize2Parm.GetVal(),
 						fx->mLengthStart.GetVal(), fx->mLengthEnd.GetVal(), fx->mLengthParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
-						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum );
+						fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum);
 		break;
 
 	//---------
@@ -1759,22 +1759,22 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 	//---------
 
 		// for chunk angles, you don't really need much control over the end result...you just want variation..
-		VectorSet( ang,
+		VectorSet(ang,
 					fx->mAngle1.GetVal(),
 					fx->mAngle2.GetVal(),
-					fx->mAngle3.GetVal() );
+					fx->mAngle3.GetVal());
 
-		vectoangles( ax[0], temp );
-		VectorAdd( ang, temp, ang );
+		vectoangles(ax[0], temp);
+		VectorAdd(ang, temp, ang);
 
-		VectorSet( angDelta,
+		VectorSet(angDelta,
 					fx->mAngle1Delta.GetVal(),
 					fx->mAngle2Delta.GetVal(),
-					fx->mAngle3Delta.GetVal() );
+					fx->mAngle3Delta.GetVal());
 
 		emitterModel = fx->mMediaHandles.GetHandle();
 
-		FX_AddEmitter( org, vel, accel,
+		FX_AddEmitter(org, vel, accel,
 						fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
@@ -1783,19 +1783,19 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 						fx->mDeathFxHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(),
 						fx->mEmitterFxHandles.GetHandle(),
 						fx->mDensity.GetVal(), fx->mVariance.GetVal(),
-						fx->mLife.GetVal(), emitterModel, flags );
+						fx->mLife.GetVal(), emitterModel, flags);
 		break;
 
 	//---------
 	case Decal:
 	//---------
 
-		// I'm calling this function ( at least for now ) because it handles projecting
+		// I'm calling this function (at least for now) because it handles projecting
 		//	the decal mark onto the surfaces properly.  This is especially important for large marks.
 		// The downside is that it's much less flexible....
-		CG_ImpactMark( fx->mMediaHandles.GetHandle(), org, ax[0], fx->mRotation.GetVal(),
+		CG_ImpactMark(fx->mMediaHandles.GetHandle(), org, ax[0], fx->mRotation.GetVal(),
 			sRGB[0], sRGB[1], sRGB[2], fx->mAlphaStart.GetVal(),
-			qtrue, fx->mSizeStart.GetVal(), qfalse );
+			qtrue, fx->mSizeStart.GetVal(), qfalse);
 
 		if (fx->mFlags & FX_GHOUL2_DECALS)
 		{
@@ -1811,22 +1811,22 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 			{
 				gentity_t *ent = &g_entities[tr.entityNum];
 
-				if ( ent != NULL )
+				if (ent != NULL)
 				{
 					vec3_t entOrg, hitDir;
 					float entYaw;
 					float firstModel = 0;
-					if ( !(ent->s.eFlags&EF_NODRAW) )
+					if (!(ent->s.eFlags&EF_NODRAW))
 					{//not drawn, no marks
-						if ( ent->client )
+						if (ent->client)
 						{
-							VectorCopy( ent->client->ps.origin, entOrg );
+							VectorCopy(ent->client->ps.origin, entOrg);
 						}
 						else
 						{
-							VectorCopy( ent->currentOrigin, entOrg );
+							VectorCopy(ent->currentOrigin, entOrg);
 						}
-						if ( ent->client )
+						if (ent->client)
 						{
 							entYaw = ent->client->ps.viewangles[YAW];
 						}
@@ -1834,14 +1834,14 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 						{
 							entYaw = ent->currentAngles[YAW];
 						}
-						//if ( VectorCompare( tr.plane.normal, vec3_origin ) )
+						//if (VectorCompare(tr.plane.normal, vec3_origin))
 						{//hunh, no plane?  Use trace dir
-							VectorCopy( ax[0], hitDir );
+							VectorCopy(ax[0], hitDir);
 						}
 						/*
 						else
 						{
-							VectorCopy( tr.plane.normal, hitDir );
+							VectorCopy(tr.plane.normal, hitDir);
 						}
 						*/
 
@@ -1858,46 +1858,46 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 	case OrientedParticle:
 	//-------------------
 
-		FX_AddOrientedParticle( clientID, org, ax[0], vel, accel,
+		FX_AddOrientedParticle(clientID, org, ax[0], vel, accel,
 					fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 					fx->mAlphaStart.GetVal(), fx->mAlphaEnd.GetVal(), fx->mAlphaParm.GetVal(),
 					sRGB, eRGB, fx->mRGBParm.GetVal(),
 					fx->mRotation.GetVal(), fx->mRotationDelta.GetVal(),
 					fx->mMin, fx->mMax, fx->mElasticity.GetVal(),
 					fx->mDeathFxHandles.GetHandle(), fx->mImpactFxHandles.GetHandle(),
-					fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum );
+					fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), flags, modelNum, boltNum);
 		break;
 
 	//---------
 	case Sound:
 	//---------
 		if (gEffectsInPortal)
-		{ //could orient this anyway for panning, but eh. It's going to appear to the player in the sky the same place no matter what, so just make it a local sound.
-			theFxHelper.PlayLocalSound( fx->mMediaHandles.GetHandle(), CHAN_AUTO );
+		{//could orient this anyway for panning, but eh. It's going to appear to the player in the sky the same place no matter what, so just make it a local sound.
+			theFxHelper.PlayLocalSound(fx->mMediaHandles.GetHandle(), CHAN_AUTO);
 		}
-		else if ( fx->mSpawnFlags & FX_SND_LESS_ATTENUATION )
+		else if (fx->mSpawnFlags & FX_SND_LESS_ATTENUATION)
 		{
-			theFxHelper.PlaySound( org, ENTITYNUM_NONE, CHAN_LESS_ATTEN, fx->mMediaHandles.GetHandle() );
+			theFxHelper.PlaySound(org, ENTITYNUM_NONE, CHAN_LESS_ATTEN, fx->mMediaHandles.GetHandle());
 		}
 		else
 		{
-			theFxHelper.PlaySound( org, ENTITYNUM_NONE, CHAN_AUTO, fx->mMediaHandles.GetHandle() );
+			theFxHelper.PlaySound(org, ENTITYNUM_NONE, CHAN_AUTO, fx->mMediaHandles.GetHandle());
 		}
 		break;
 	//---------
 	case FxRunner:
 	//---------
 
-		PlayEffect( fx->mPlayFxHandles.GetHandle(), org, ax );
+		PlayEffect(fx->mPlayFxHandles.GetHandle(), org, ax);
 		break;
 
 	//---------
 	case Light:
 	//---------
 
-		FX_AddLight( org, fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
+		FX_AddLight(org, fx->mSizeStart.GetVal(), fx->mSizeEnd.GetVal(), fx->mSizeParm.GetVal(),
 						sRGB, eRGB, fx->mRGBParm.GetVal(),
-						fx->mLife.GetVal(), fx->mFlags );
+						fx->mLife.GetVal(), fx->mFlags);
 		break;
 
 	//---------
@@ -1906,16 +1906,16 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 		// It calculates how intense the shake should be based on how close you are to the origin you pass in here
 		//	elasticity is actually the intensity...radius is the distance in which the shake will have some effect
 		//	life is how long the effect lasts.
-		theFxHelper.CameraShake( org, fx->mElasticity.GetVal(), fx->mRadius.GetVal(), fx->mLife.GetVal() );
+		theFxHelper.CameraShake(org, fx->mElasticity.GetVal(), fx->mRadius.GetVal(), fx->mLife.GetVal());
 		break;
 
 	//--------------
 	case ScreenFlash:
 	//--------------
 
-		FX_AddFlash( org,
+		FX_AddFlash(org,
 					sRGB, eRGB, fx->mRGBParm.GetVal(),
-					fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), fx->mFlags );
+					fx->mLife.GetVal(), fx->mMediaHandles.GetHandle(), fx->mFlags);
 		break;
 
 	default:
@@ -1923,11 +1923,11 @@ void CFxScheduler::CreateEffect( CPrimitiveTemplate *fx, const vec3_t origin, ve
 	}
 
 	// Track when we need to clean ourselves up if we are a copy
-	if ( fx->mCopy )
+	if (fx->mCopy)
 	{
 		fx->mRefCount--;
 
-		if ( fx->mRefCount <= 0 )
+		if (fx->mRefCount <= 0)
 		{
 			delete fx;
 		}

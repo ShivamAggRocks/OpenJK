@@ -64,8 +64,8 @@ static void forward_bf(int m, int n, float x[], float f[], float coef[])
       {
 	 f[p] = x[p] + x[q];
 	 f[n2 + p] = coef[k] * (x[p] - x[q]);
-      }
-   }
+     }
+  }
 }
 /*------------------------------------------------------------*/
 static void back_bf(int m, int n, float x[], float f[])
@@ -86,7 +86,7 @@ static void back_bf(int m, int n, float x[], float f[])
       for (j = 0; j < n21; j++, p += 2, q++)
 	 f[p] = x[q] + x[q + 1];
       f[p] = x[q];
-   }
+  }
 }
 /*------------------------------------------------------------*/
 
@@ -104,7 +104,7 @@ void fdct32(float x[], float c[])
    {
       a[p] = src[p] + src[q];
       a[16 + p] = coef32[p] * (src[p] - src[q]);
-   }
+  }
    forward_bf(2, 16, a, b, coef32 + 16);
    forward_bf(4, 8, b, a, coef32 + 16 + 8);
    forward_bf(8, 4, a, b, coef32 + 16 + 8 + 4);
@@ -128,7 +128,7 @@ void fdct32_dual(float x[], float c[])
    {
       a[p] = x[pp] + x[qq];
       a[16 + p] = coef32[p] * (x[pp] - x[qq]);
-   }
+  }
    forward_bf(2, 16, a, b, coef32 + 16);
    forward_bf(4, 8, b, a, coef32 + 16 + 8);
    forward_bf(8, 4, a, b, coef32 + 16 + 8 + 4);
@@ -155,7 +155,7 @@ void fdct32_dual_mono(float x[], float c[])
       t2 = 0.5F * (x[qq] + x[qq + 1]);
       a[p] = t1 + t2;
       a[16 + p] = coef32[p] * (t1 - t2);
-   }
+  }
    forward_bf(2, 16, a, b, coef32 + 16);
    forward_bf(4, 8, b, a, coef32 + 16 + 8);
    forward_bf(8, 4, a, b, coef32 + 16 + 8 + 4);
@@ -180,7 +180,7 @@ void fdct16(float x[], float c[])
    {
       a[p] = x[p] + x[q];
       a[8 + p] = coef32[16 + p] * (x[p] - x[q]);
-   }
+  }
    forward_bf(2, 8, a, b, coef32 + 16 + 8);
    forward_bf(4, 4, b, a, coef32 + 16 + 8 + 4);
    forward_bf(8, 2, a, b, coef32 + 16 + 8 + 4 + 2);
@@ -205,7 +205,7 @@ void fdct16_dual(float x[], float c[])
    {
       a[p] = x[pp] + x[qq];
       a[8 + p] = coef32[16 + p] * (x[pp] - x[qq]);
-   }
+  }
    forward_bf(2, 8, a, b, coef32 + 16 + 8);
    forward_bf(4, 4, b, a, coef32 + 16 + 8 + 4);
    forward_bf(8, 2, a, b, coef32 + 16 + 8 + 4 + 2);
@@ -233,7 +233,7 @@ void fdct16_dual_mono(float x[], float c[])
       t2 = 0.5F * (x[qq] + x[qq + 1]);
       a[p] = t1 + t2;
       a[8 + p] = coef32[16 + p] * (t1 - t2);
-   }
+  }
    forward_bf(2, 8, a, b, coef32 + 16 + 8);
    forward_bf(4, 4, b, a, coef32 + 16 + 8 + 4);
    forward_bf(8, 2, a, b, coef32 + 16 + 8 + 4 + 2);
@@ -257,7 +257,7 @@ void fdct8(float x[], float c[])
    {
       b[p] = x[p] + x[q];
       b[4 + p] = coef32[16 + 8 + p] * (x[p] - x[q]);
-   }
+  }
 
    forward_bf(2, 4, b, a, coef32 + 16 + 8 + 4);
    forward_bf(4, 2, a, b, coef32 + 16 + 8 + 4 + 2);
@@ -281,7 +281,7 @@ void fdct8_dual(float x[], float c[])
    {
       b[p] = x[pp] + x[qq];
       b[4 + p] = coef32[16 + 8 + p] * (x[pp] - x[qq]);
-   }
+  }
    forward_bf(2, 4, b, a, coef32 + 16 + 8 + 4);
    forward_bf(4, 2, a, b, coef32 + 16 + 8 + 4 + 2);
    back_bf(2, 4, b, a);
@@ -309,7 +309,7 @@ void fdct8_dual_mono(float x[], float c[])
       t2 = 0.5F * (x[qq] + x[qq + 1]);
       b[p] = t1 + t2;
       b[4 + p] = coef32[16 + 8 + p] * (t1 - t2);
-   }
+  }
    forward_bf(2, 4, b, a, coef32 + 16 + 8 + 4);
    forward_bf(4, 2, a, b, coef32 + 16 + 8 + 4 + 2);
    back_bf(2, 4, b, a);

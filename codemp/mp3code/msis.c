@@ -122,9 +122,9 @@ void antialias(float x[], int n)
 	 b = x[18 + i];
 	 x[17 - i] = a * csa[i][0] - b * csa[i][1];
 	 x[18 + i] = b * csa[i][0] + a * csa[i][1];
-      }
+     }
       x += 18;
-   }
+  }
 }
 /*===============================================================*/
 void ms_process(float x[][1152], int n)		/* sum-difference stereo */
@@ -139,7 +139,7 @@ void ms_process(float x[][1152], int n)		/* sum-difference stereo */
       xr = x[0][i] - x[1][i];
       x[0][i] = xl;
       x[1][i] = xr;
-   }
+  }
    return;
 }
 /*===============================================================*/
@@ -177,8 +177,8 @@ void is_process_MPEG1(float x[][1152],	/* intensity stereo */
 	    goto exit;
 	 x[1][i] = fr * x[0][i];
 	 x[0][i] = fl * x[0][i];
-      }
-   }
+     }
+  }
    return;
 /*------------------------*/
  short_blocks:
@@ -189,7 +189,7 @@ void is_process_MPEG1(float x[][1152],	/* intensity stereo */
 	 isf = sf->s[w][cb];
 	 fls[w] = lr[ms_mode][isf][0];
 	 frs[w] = lr[ms_mode][isf][1];
-      }
+     }
       n = pMP3Stream->nBand[1][cb];
       for (j = 0; j < n; j++)
       {
@@ -203,8 +203,8 @@ void is_process_MPEG1(float x[][1152],	/* intensity stereo */
 	 x[1][2 + i] = frs[2] * x[0][2 + i];
 	 x[0][2 + i] = fls[2] * x[0][2 + i];
 	 i += 3;
-      }
-   }
+     }
+  }
 
  exit:
    return;
@@ -242,7 +242,7 @@ void is_process_MPEG2(float x[][1152],	/* intensity stereo */
       tmp = (1 << is_sf_info->slen[r]) - 1;
       for (j = 0; j < is_sf_info->nr[r]; j++, k++)
 	 il[k] = tmp;
-   }
+  }
    for (cb = cb0 + 1; cb < 21; cb++)
    {
       isf = il[cb] + sf->l[cb];
@@ -255,8 +255,8 @@ void is_process_MPEG2(float x[][1152],	/* intensity stereo */
 	    goto exit;
 	 x[1][i] = fr * x[0][i];
 	 x[0][i] = fl * x[0][i];
-      }
-   }
+     }
+  }
    return;
 /*------------------------*/
  short_blocks:
@@ -266,7 +266,7 @@ void is_process_MPEG2(float x[][1152],	/* intensity stereo */
       tmp = (1 << is_sf_info->slen[r]) - 1;
       for (j = 0; j < is_sf_info->nr[r]; j++, k++)
 	 il[k] = tmp;
-   }
+  }
 
    for (w = 0; w < 3; w++)
    {
@@ -285,10 +285,10 @@ void is_process_MPEG2(float x[][1152],	/* intensity stereo */
 	    x[1][i] = fr * x[0][i];
 	    x[0][i] = fl * x[0][i];
 	    i += 3;
-	 }
-      }
+	}
+     }
 
-   }
+  }
 
  exit:
    return;

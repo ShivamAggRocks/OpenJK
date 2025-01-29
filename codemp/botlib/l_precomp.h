@@ -187,5 +187,5 @@ int PC_FreeSourceHandle(int handle);
 int PC_ReadTokenHandle(int handle, pc_token_t *pc_token);
 int PC_SourceFileAndLine(int handle, char *filename, int *line);
 void PC_CheckOpenSourceHandles(void);
-int PC_LoadGlobalDefines ( const char* filename );
-void PC_RemoveAllGlobalDefines ( void );
+int PC_LoadGlobalDefines (const char* filename);
+void PC_RemoveAllGlobalDefines (void);

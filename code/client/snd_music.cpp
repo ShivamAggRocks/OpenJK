@@ -40,22 +40,22 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "../game/genericparser2.h"
 
-extern qboolean S_FileExists( const char *psFilename );
+extern qboolean S_FileExists(const char *psFilename);
 
-#define sKEY_MUSICFILES	CSTRING_VIEW( "musicfiles" )
-#define sKEY_ENTRY		CSTRING_VIEW( "entry" )
-#define sKEY_EXIT		CSTRING_VIEW( "exit" )
-#define sKEY_MARKER		CSTRING_VIEW( "marker" )
-#define sKEY_TIME		CSTRING_VIEW( "time" )
-#define sKEY_NEXTFILE	CSTRING_VIEW( "nextfile" )
-#define sKEY_NEXTMARK	CSTRING_VIEW( "nextmark" )
-#define sKEY_LEVELMUSIC	CSTRING_VIEW( "levelmusic" )
-#define sKEY_EXPLORE	CSTRING_VIEW( "explore" )
-#define sKEY_ACTION		CSTRING_VIEW( "action" )
-#define sKEY_BOSS		CSTRING_VIEW( "boss" )
-#define sKEY_DEATH		CSTRING_VIEW( "death" )
-#define sKEY_USES		CSTRING_VIEW( "uses" )
-#define sKEY_USEBOSS	CSTRING_VIEW( "useboss" )
+#define sKEY_MUSICFILES	CSTRING_VIEW("musicfiles")
+#define sKEY_ENTRY		CSTRING_VIEW("entry")
+#define sKEY_EXIT		CSTRING_VIEW("exit")
+#define sKEY_MARKER		CSTRING_VIEW("marker")
+#define sKEY_TIME		CSTRING_VIEW("time")
+#define sKEY_NEXTFILE	CSTRING_VIEW("nextfile")
+#define sKEY_NEXTMARK	CSTRING_VIEW("nextmark")
+#define sKEY_LEVELMUSIC	CSTRING_VIEW("levelmusic")
+#define sKEY_EXPLORE	CSTRING_VIEW("explore")
+#define sKEY_ACTION		CSTRING_VIEW("action")
+#define sKEY_BOSS		CSTRING_VIEW("boss")
+#define sKEY_DEATH		CSTRING_VIEW("death")
+#define sKEY_USES		CSTRING_VIEW("uses")
+#define sKEY_USEBOSS	CSTRING_VIEW("useboss")
 
 #define sKEY_PLACEHOLDER "placeholder"	// ignore these
 
@@ -112,47 +112,47 @@ void Music_Free(void)
 
 namespace detail
 {
-	static void build_string( std::ostream& stream )
+	static void build_string(std::ostream& stream)
 	{
 	}
 
 	template< typename T, typename... Tail >
-	static void build_string( std::ostream& stream, const T& head, Tail... tail )
+	static void build_string(std::ostream& stream, const T& head, Tail... tail)
 	{
 		stream << head;
-		build_string( stream, tail... );
+		build_string(stream, tail...);
 	}
 }
 
 template< typename... Tail >
-static std::string build_string( Tail... tail )
+static std::string build_string(Tail... tail)
 {
 	std::ostringstream os;
-	detail::build_string( os, tail... );
+	detail::build_string(os, tail...);
 	return os.str();
 }
 
 // some sort of error in the music data...
 // only use during parse, not run-time use, and bear in mid that data is zapped after error message, so exit any loops immediately
 //
-static void Music_Parse_Error( gsl::czstring filename, const std::string& error )
+static void Music_Parse_Error(gsl::czstring filename, const std::string& error)
 {
 	std::string message = build_string(
 		S_COLOR_RED "Error parsing music data (in \"", filename, "\"):\n",
 		error , "\n"
 		);
-	Com_Printf( "%s", message.c_str() );
+	Com_Printf("%s", message.c_str());
 	MusicData->clear();
 }
 
 // something to just mention if interested...
 //
-static void Music_Parse_Warning( const std::string& error )
+static void Music_Parse_Warning(const std::string& error)
 {
 	extern cvar_t *s_debugdynamic;
-	if( s_debugdynamic && s_debugdynamic->integer )
+	if(s_debugdynamic && s_debugdynamic->integer)
 	{
-		Com_Printf( S_COLOR_YELLOW "%s", error.c_str() );
+		Com_Printf(S_COLOR_YELLOW "%s", error.c_str());
 	}
 }
 
@@ -160,7 +160,7 @@ static void Music_Parse_Warning( const std::string& error )
 // Unfortunately two of the places that calls this doesn't have much other access to the state other than
 //	a string, not an enum, so for those cases they only pass in BOSS or EXPLORE, so don't rely on it totally.
 //
-static const char *Music_BuildFileName(const char *psFileNameBase, MusicState_e eMusicState )
+static const char *Music_BuildFileName(const char *psFileNameBase, MusicState_e eMusicState)
 {
 	static sstring_t sFileName;
 
@@ -177,7 +177,7 @@ static const char *Music_BuildFileName(const char *psFileNameBase, MusicState_e 
 }
 
 // this MUST return NULL for non-base states unless doing debug-query
-const char *Music_BaseStateToString( MusicState_e eMusicState, qboolean bDebugPrintQuery /* = qfalse */ )
+const char *Music_BaseStateToString(MusicState_e eMusicState, qboolean bDebugPrintQuery /* = qfalse */)
 {
 	switch (eMusicState)
 	{
@@ -204,13 +204,13 @@ const char *Music_BaseStateToString( MusicState_e eMusicState, qboolean bDebugPr
 	return NULL;
 }
 
-static qboolean Music_ParseMusic( gsl::czstring filename, const CGenericParser2& Parser, MusicData_t* MusicData, const CGPGroup& pgMusicFiles, const gsl::cstring_span& psMusicName, const gsl::cstring_span& psMusicNameKey, MusicState_e eMusicState )
+static qboolean Music_ParseMusic(gsl::czstring filename, const CGenericParser2& Parser, MusicData_t* MusicData, const CGPGroup& pgMusicFiles, const gsl::cstring_span& psMusicName, const gsl::cstring_span& psMusicNameKey, MusicState_e eMusicState)
 {
 	bool bReturn = false;
 	MusicFile_t MusicFile;
 
-	const CGPGroup* const pgMusicFile = pgMusicFiles.FindSubGroup( psMusicName );
-	if( pgMusicFile )
+	const CGPGroup* const pgMusicFile = pgMusicFiles.FindSubGroup(psMusicName);
+	if(pgMusicFile)
 	{
 		// read subgroups...
 		//
@@ -219,96 +219,96 @@ static qboolean Music_ParseMusic( gsl::czstring filename, const CGenericParser2&
 		//
 		// (read entry points first, so I can check exit points aren't too close in time)
 		//
-		const CGPGroup* pEntryGroup = pgMusicFile->FindSubGroup( sKEY_ENTRY );
-		if( pEntryGroup )
+		const CGPGroup* pEntryGroup = pgMusicFile->FindSubGroup(sKEY_ENTRY);
+		if(pEntryGroup)
 		{
 			// read entry points...
 			//
-			for( auto& prop : pEntryGroup->GetProperties() )
+			for(auto& prop : pEntryGroup->GetProperties())
 			{
-				//if( Q::substr( prop.GetName(), 0, sKEY_MARKER.size() ) == sKEY_MARKER )	// for now, assume anything is a marker
+				//if(Q::substr(prop.GetName(), 0, sKEY_MARKER.size()) == sKEY_MARKER)	// for now, assume anything is a marker
 				{
-					MusicFile.MusicEntryTimes[ prop.GetName() ] = Q::svtoi( prop.GetTopValue() );
+					MusicFile.MusicEntryTimes[ prop.GetName() ] = Q::svtoi(prop.GetTopValue());
 					bEntryFound = true;
 				}
 			}
 		}
 
-		for( auto& group : pgMusicFile->GetSubGroups() )
+		for(auto& group : pgMusicFile->GetSubGroups())
 		{
 			auto& groupName = group.GetName();
 
-			if( groupName == sKEY_ENTRY )
+			if(groupName == sKEY_ENTRY)
 			{
 				// skip entry points, I've already read them in above
 				//
 			}
-			else if( groupName == sKEY_EXIT )
+			else if(groupName == sKEY_EXIT)
 			{
 				int iThisExitPointIndex = MusicFile.MusicExitPoints.size();	// must eval this first, so unaffected by push_back etc
 				//
 				// read this set of exit points...
 				//
 				MusicExitPoint_t MusicExitPoint;
-				for( auto& prop : group.GetProperties() )
+				for(auto& prop : group.GetProperties())
 				{
 					auto& key = prop.GetName();
 					auto& value = prop.GetTopValue();
 
-					if( key == sKEY_NEXTFILE )
+					if(key == sKEY_NEXTFILE)
 					{
 						MusicExitPoint.sNextFile = value;
 						bExitFound = true;	// harmless to keep setting
 					}
-					else if( key == sKEY_NEXTMARK )
+					else if(key == sKEY_NEXTMARK)
 					{
 						MusicExitPoint.sNextMark = value;
 					}
-					else if( Q::substr( key, 0, sKEY_TIME.size() ) == sKEY_TIME )
+					else if(Q::substr(key, 0, sKEY_TIME.size()) == sKEY_TIME)
 					{
 						MusicExitTime_t MusicExitTime;
-						MusicExitTime.fTime = Q::svtof( value );
+						MusicExitTime.fTime = Q::svtof(value);
 						MusicExitTime.iExitPoint = iThisExitPointIndex;
 
 						// new check, don't keep this this exit point if it's within 1.5 seconds either way of an entry point...
 						//
 						bool bTooCloseToEntryPoint = false;
-						for( auto& item : MusicFile.MusicEntryTimes )
+						for(auto& item : MusicFile.MusicEntryTimes)
 						{
 							float fThisEntryTime = item.second;
 
-							if( Q_fabs( fThisEntryTime - MusicExitTime.fTime ) < 1.5f )
+							if(Q_fabs(fThisEntryTime - MusicExitTime.fTime) < 1.5f)
 							{
 								//								bTooCloseToEntryPoint = true;	// not sure about this, ignore for now
 								break;
 							}
 						}
-						if( !bTooCloseToEntryPoint )
+						if(!bTooCloseToEntryPoint)
 						{
-							MusicFile.MusicExitTimes.push_back( MusicExitTime );
+							MusicFile.MusicExitTimes.push_back(MusicExitTime);
 						}
 					}
 				}
 
-				MusicFile.MusicExitPoints.push_back( MusicExitPoint );
+				MusicFile.MusicExitPoints.push_back(MusicExitPoint);
 				int iNumExitPoints = MusicFile.MusicExitPoints.size();
 
 				// error checking...
 				//
-				switch( eMusicState )
+				switch(eMusicState)
 				{
 				case eBGRNDTRACK_EXPLORE:
-					if( iNumExitPoints > iMAX_EXPLORE_TRANSITIONS )
+					if(iNumExitPoints > iMAX_EXPLORE_TRANSITIONS)
 					{
-						Music_Parse_Error( filename, build_string( "\"", psMusicName, "\" has > ", iMAX_EXPLORE_TRANSITIONS, " ", psMusicNameKey, " transitions defined!\n" ) );
+						Music_Parse_Error(filename, build_string("\"", psMusicName, "\" has > ", iMAX_EXPLORE_TRANSITIONS, " ", psMusicNameKey, " transitions defined!\n"));
 						return qfalse;
 					}
 					break;
 
 				case eBGRNDTRACK_ACTION:
-					if( iNumExitPoints > iMAX_ACTION_TRANSITIONS )
+					if(iNumExitPoints > iMAX_ACTION_TRANSITIONS)
 					{
-						Music_Parse_Error( filename, build_string( "\"", psMusicName, "\" has > ", iMAX_ACTION_TRANSITIONS, " ", psMusicNameKey, " transitions defined!\n" ) );
+						Music_Parse_Error(filename, build_string("\"", psMusicName, "\" has > ", iMAX_ACTION_TRANSITIONS, " ", psMusicNameKey, " transitions defined!\n"));
 						return qfalse;
 					}
 					break;
@@ -316,7 +316,7 @@ static qboolean Music_ParseMusic( gsl::czstring filename, const CGenericParser2&
 				case eBGRNDTRACK_BOSS:
 				case eBGRNDTRACK_DEATH:
 
-					Music_Parse_Error( filename, build_string( "\"", psMusicName, "\" has ", psMusicNameKey, " transitions defined, this is not allowed!\n" ) );
+					Music_Parse_Error(filename, build_string("\"", psMusicName, "\" has ", psMusicNameKey, " transitions defined, this is not allowed!\n"));
 					return qfalse;
 				default:
 					break;
@@ -329,29 +329,29 @@ static qboolean Music_ParseMusic( gsl::czstring filename, const CGenericParser2&
 		bReturn = true;
 
 		// boss & death pieces can omit entry/exit stuff
-		if( eMusicState != eBGRNDTRACK_BOSS && eMusicState != eBGRNDTRACK_DEATH )
+		if(eMusicState != eBGRNDTRACK_BOSS && eMusicState != eBGRNDTRACK_DEATH)
 		{
-			if( !bEntryFound )
+			if(!bEntryFound)
 			{
-				Music_Parse_Error( filename, build_string( "Unable to find subgroup \"", sKEY_ENTRY, "\" in group \"", psMusicName, "\"\n" ) );
+				Music_Parse_Error(filename, build_string("Unable to find subgroup \"", sKEY_ENTRY, "\" in group \"", psMusicName, "\"\n"));
 				bReturn = false;
 			}
-			if( !bExitFound )
+			if(!bExitFound)
 			{
-				Music_Parse_Error( filename, build_string( "Unable to find subgroup \"", sKEY_EXIT, "\" in group \"", psMusicName, "\"\n" ) );
+				Music_Parse_Error(filename, build_string("Unable to find subgroup \"", sKEY_EXIT, "\" in group \"", psMusicName, "\"\n"));
 				bReturn = false;
 			}
 		}
 	}
 	else
 	{
-		Music_Parse_Error( filename, build_string( "Unable to find musicfiles entry \"", psMusicName, "\"\n" ) );
+		Music_Parse_Error(filename, build_string("Unable to find musicfiles entry \"", psMusicName, "\"\n"));
 	}
 
-	if( bReturn )
+	if(bReturn)
 	{
 		MusicFile.sFileNameBase = psMusicName;
-		( *MusicData )[ psMusicNameKey ] = MusicFile;
+		(*MusicData)[ psMusicNameKey ] = MusicFile;
 	}
 
 	return (qboolean)bReturn;
@@ -367,7 +367,7 @@ void Music_SetLevelName(const char *psLevelName)
 	gsLevelNameFromServer = psLevelName;
 }
 
-static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
+static qboolean Music_ParseLeveldata(gsl::czstring psLevelName)
 {
 	qboolean bReturn = qfalse;
 
@@ -397,25 +397,25 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 
 	gsl::czstring filename = sFILENAME_DMS;
 	CGenericParser2 Parser;
-	if( !Parser.Parse( filename ) )
+	if(!Parser.Parse(filename))
 	{
-		Music_Parse_Error( filename, "Error using GP to parse file\n" );
+		Music_Parse_Error(filename, "Error using GP to parse file\n");
 	}
 	else
 	{
 		const CGPGroup& pFileGroup = Parser.GetBaseParseGroup();
-		const CGPGroup* pgMusicFiles = pFileGroup.FindSubGroup( sKEY_MUSICFILES );
-		if( !pgMusicFiles )
+		const CGPGroup* pgMusicFiles = pFileGroup.FindSubGroup(sKEY_MUSICFILES);
+		if(!pgMusicFiles)
 		{
-			Music_Parse_Error(filename, build_string( "Unable to find subgroup \"", sKEY_MUSICFILES ,"\"\n" ) );
+			Music_Parse_Error(filename, build_string("Unable to find subgroup \"", sKEY_MUSICFILES ,"\"\n"));
 		}
 		else
 		{
-			const CGPGroup* pgLevelMusic = pFileGroup.FindSubGroup( sKEY_LEVELMUSIC );
+			const CGPGroup* pgLevelMusic = pFileGroup.FindSubGroup(sKEY_LEVELMUSIC);
 
-			if( !pgLevelMusic )
+			if(!pgLevelMusic)
 			{
-				Music_Parse_Error( filename, build_string( "Unable to find subgroup \"", sKEY_MUSICFILES, "\"\n" ) );
+				Music_Parse_Error(filename, build_string("Unable to find subgroup \"", sKEY_MUSICFILES, "\"\n"));
 			}
 			else
 			{
@@ -424,19 +424,19 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 				// check for new USE keyword...
 				//
 				int steps = 0;
-				gsl::cstring_span searchName{ &sLevelName[ 0 ], &sLevelName[ strlen( &sLevelName[ 0 ] ) ] };
+				gsl::cstring_span searchName{&sLevelName[ 0 ], &sLevelName[ strlen(&sLevelName[ 0 ]) ]};
 
 				const int sanityLimit = 10;
-				while( !searchName.empty() && steps < sanityLimit )
+				while(!searchName.empty() && steps < sanityLimit)
 				{
 					gsLevelNameForLoad = searchName;
 					gsLevelNameForBossLoad = gsLevelNameForLoad;
-					pgThisLevelMusic = pgLevelMusic->FindSubGroup( searchName );
+					pgThisLevelMusic = pgLevelMusic->FindSubGroup(searchName);
 
-					if( pgThisLevelMusic )
+					if(pgThisLevelMusic)
 					{
-						const CGPProperty* pValue = pgThisLevelMusic->FindProperty( sKEY_USES );
-						if( pValue )
+						const CGPProperty* pValue = pgThisLevelMusic->FindProperty(sKEY_USES);
+						if(pValue)
 						{
 							// re-search using the USE param...
 							//
@@ -461,9 +461,9 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 
 				// now go ahead and use the final music set we've decided on...
 				//
-				if( !pgThisLevelMusic || steps >= sanityLimit )
+				if(!pgThisLevelMusic || steps >= sanityLimit)
 				{
-					Music_Parse_Warning( build_string( "Unable to find entry for \"", sLevelName, "\" in \"", filename, "\"\n" ) );
+					Music_Parse_Warning(build_string("Unable to find entry for \"", sLevelName, "\" in \"", filename, "\"\n"));
 				}
 				else
 				{
@@ -474,30 +474,30 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 					gsl::cstring_span psName_Boss;
 					gsl::cstring_span psName_UseBoss;
 
-					for( auto& prop : pgThisLevelMusic->GetProperties() )
+					for(auto& prop : pgThisLevelMusic->GetProperties())
 					{
 						auto& key = prop.GetName();
 						auto& value = prop.GetTopValue();
 
-						if( Q::stricmp( value, sKEY_PLACEHOLDER ) == Q::Ordering::EQ )
+						if(Q::stricmp(value, sKEY_PLACEHOLDER) == Q::Ordering::EQ)
 						{
 							// ignore "placeholder" items
 							continue;
 						}
 
-						if( Q::stricmp( key, sKEY_EXPLORE ) == Q::Ordering::EQ )
+						if(Q::stricmp(key, sKEY_EXPLORE) == Q::Ordering::EQ)
 						{
 							psName_Explore = value;
 						}
-						else if( Q::stricmp( key, sKEY_ACTION ) == Q::Ordering::EQ )
+						else if(Q::stricmp(key, sKEY_ACTION) == Q::Ordering::EQ)
 						{
 							psName_Action = value;
 						}
-						else if( Q::stricmp( key, sKEY_USEBOSS ) == Q::Ordering::EQ )
+						else if(Q::stricmp(key, sKEY_USEBOSS) == Q::Ordering::EQ)
 						{
 							psName_UseBoss = value;
 						}
-						else if( Q::stricmp( key, sKEY_BOSS ) == Q::Ordering::EQ )
+						else if(Q::stricmp(key, sKEY_BOSS) == Q::Ordering::EQ)
 						{
 							psName_Boss = value;
 						}
@@ -505,20 +505,20 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 
 					bReturn = qtrue;	// defualt to ON now, so I can turn it off if "useboss" fails
 
-					if( !psName_UseBoss.empty() )
+					if(!psName_UseBoss.empty())
 					{
-						const CGPGroup *pgLevelMusicOfBoss = pgLevelMusic->FindSubGroup( psName_UseBoss );
-						if( !pgLevelMusicOfBoss )
+						const CGPGroup *pgLevelMusicOfBoss = pgLevelMusic->FindSubGroup(psName_UseBoss);
+						if(!pgLevelMusicOfBoss)
 						{
-							Music_Parse_Error( filename, build_string( "Unable to find 'useboss' entry \"", psName_UseBoss, "\"\n", psName_UseBoss ) );
+							Music_Parse_Error(filename, build_string("Unable to find 'useboss' entry \"", psName_UseBoss, "\"\n", psName_UseBoss));
 							bReturn = qfalse;
 						}
 						else
 						{
-							const CGPProperty *pValueBoss = pgLevelMusicOfBoss->FindProperty( sKEY_BOSS );
-							if( !pValueBoss )
+							const CGPProperty *pValueBoss = pgLevelMusicOfBoss->FindProperty(sKEY_BOSS);
+							if(!pValueBoss)
 							{
-								Music_Parse_Error( filename, build_string( "'useboss' \"", psName_UseBoss, "\" has no \"boss\" entry!\n" ) );
+								Music_Parse_Error(filename, build_string("'useboss' \"", psName_UseBoss, "\" has no \"boss\" entry!\n"));
 								bReturn = qfalse;
 							}
 							else
@@ -532,25 +532,25 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 
 					// done this way in case I want to conditionally pass any bools depending on music type...
 					//
-					if( bReturn && psName_Explore.length() )
+					if(bReturn && psName_Explore.length())
 					{
-						bReturn = Music_ParseMusic( filename, Parser, MusicData, *pgMusicFiles, psName_Explore, sKEY_EXPLORE, eBGRNDTRACK_EXPLORE );
+						bReturn = Music_ParseMusic(filename, Parser, MusicData, *pgMusicFiles, psName_Explore, sKEY_EXPLORE, eBGRNDTRACK_EXPLORE);
 					}
-					if( bReturn && psName_Action.length() )
+					if(bReturn && psName_Action.length())
 					{
-						bReturn = Music_ParseMusic( filename, Parser, MusicData, *pgMusicFiles, psName_Action, sKEY_ACTION, eBGRNDTRACK_ACTION );
+						bReturn = Music_ParseMusic(filename, Parser, MusicData, *pgMusicFiles, psName_Action, sKEY_ACTION, eBGRNDTRACK_ACTION);
 					}
-					if( bReturn && psName_Boss.length() )
+					if(bReturn && psName_Boss.length())
 					{
-						bReturn = Music_ParseMusic( filename, Parser, MusicData, *pgMusicFiles, psName_Boss, sKEY_BOSS, eBGRNDTRACK_BOSS );
+						bReturn = Music_ParseMusic(filename, Parser, MusicData, *pgMusicFiles, psName_Boss, sKEY_BOSS, eBGRNDTRACK_BOSS);
 					}
-					if( bReturn /*&& psName_Death*/ )	// LAST MINUTE HACK!!, always force in some death music!!!!
+					if(bReturn /*&& psName_Death*/)	// LAST MINUTE HACK!!, always force in some death music!!!!
 					{
 						//bReturn = Music_ParseMusic(Parser, MusicData, pgMusicFiles, psName_Death,	sKEY_DEATH,   eBGRNDTRACK_DEATH);
 
 						MusicFile_t m;
 						m.sFileNameBase = "death_music";
-						( *MusicData )[ sKEY_DEATH ] = m;
+						(*MusicData)[ sKEY_DEATH ] = m;
 					}
 				}
 			}
@@ -577,10 +577,10 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 
 			// check music exists...
 			//
-			const char *psMusicFileName = Music_BuildFileName( MusicFile.sFileNameBase.c_str(), eMusicState );
-			if (!S_FileExists( psMusicFileName ))
+			const char *psMusicFileName = Music_BuildFileName(MusicFile.sFileNameBase.c_str(), eMusicState);
+			if (!S_FileExists(psMusicFileName))
 			{
-				Music_Parse_Error( filename, build_string( "Music file \"", psMusicFileName, "\" not found!\n" ) );
+				Music_Parse_Error(filename, build_string("Music file \"", psMusicFileName, "\" not found!\n"));
 				return qfalse;		// have to return, because music data destroyed now
 			}
 
@@ -590,10 +590,10 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 			{
 				MusicExitPoint_t &MusicExitPoint = MusicFile.MusicExitPoints[ iExitPoint ];
 
-				const char *psTransitionFileName = Music_BuildFileName( MusicExitPoint.sNextFile.c_str(), eMusicState );
-				if (!S_FileExists( psTransitionFileName ))
+				const char *psTransitionFileName = Music_BuildFileName(MusicExitPoint.sNextFile.c_str(), eMusicState);
+				if (!S_FileExists(psTransitionFileName))
 				{
-					Music_Parse_Error( filename, build_string( "Transition file \"", psTransitionFileName, "\" (entry \"", MusicExitPoint.sNextFile.c_str(), "\" ) not found!\n" ) );
+					Music_Parse_Error(filename, build_string("Transition file \"", psTransitionFileName, "\" (entry \"", MusicExitPoint.sNextFile.c_str(), "\") not found!\n"));
 					return qfalse;		// have to return, because music data destroyed now
 				}
 
@@ -602,24 +602,24 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 				{
 					// then this must be "action" music under current rules...
 					//
-					assert( !strcmp(psMusicStateType, Music_BaseStateToString(eBGRNDTRACK_ACTION) ? Music_BaseStateToString(eBGRNDTRACK_ACTION):"") );
+					assert(!strcmp(psMusicStateType, Music_BaseStateToString(eBGRNDTRACK_ACTION) ? Music_BaseStateToString(eBGRNDTRACK_ACTION):""));
 					//
 					// does this marker exist in the explore piece?
 					//
-					MusicData_t::iterator itExploreMusicData = MusicData->find( Music_BaseStateToString(eBGRNDTRACK_EXPLORE) );
+					MusicData_t::iterator itExploreMusicData = MusicData->find(Music_BaseStateToString(eBGRNDTRACK_EXPLORE));
 					if (itExploreMusicData != MusicData->end())
 					{
 						MusicFile_t &MusicFile_Explore = (*itExploreMusicData).second;
 
 						if (!MusicFile_Explore.MusicEntryTimes.count(psNextMark))
 						{
-							Music_Parse_Error( filename, build_string( "Unable to find entry point \"", psNextMark, "\" in description for \"", MusicFile_Explore.sFileNameBase.c_str(), "\"\n" ) );
+							Music_Parse_Error(filename, build_string("Unable to find entry point \"", psNextMark, "\" in description for \"", MusicFile_Explore.sFileNameBase.c_str(), "\"\n"));
 							return qfalse;		// have to return, because music data destroyed now
 						}
 					}
 					else
 					{
-						Music_Parse_Error( filename, build_string( "Unable to find ", Music_BaseStateToString( eBGRNDTRACK_EXPLORE ), " piece to match \"", MusicFile.sFileNameBase.c_str(), "\"\n" ) );
+						Music_Parse_Error(filename, build_string("Unable to find ", Music_BaseStateToString(eBGRNDTRACK_EXPLORE), " piece to match \"", MusicFile.sFileNameBase.c_str(), "\"\n"));
 						return qfalse;		// have to return, because music data destroyed now
 					}
 				}
@@ -633,9 +633,9 @@ static qboolean Music_ParseLeveldata( gsl::czstring psLevelName )
 
 // returns ptr to music file, or NULL for error/missing...
 //
-static MusicFile_t *Music_GetBaseMusicFile( const char *psMusicState )	// where psMusicState is (eg) "explore", "action" or "boss"
+static MusicFile_t *Music_GetBaseMusicFile(const char *psMusicState)	// where psMusicState is (eg) "explore", "action" or "boss"
 {
-	MusicData_t::iterator it = MusicData->find( psMusicState );
+	MusicData_t::iterator it = MusicData->find(psMusicState);
 	if (it != MusicData->end())
 	{
 		MusicFile_t *pMusicFile = &(*it).second;
@@ -645,12 +645,12 @@ static MusicFile_t *Music_GetBaseMusicFile( const char *psMusicState )	// where 
 	return NULL;
 }
 
-static MusicFile_t *Music_GetBaseMusicFile( MusicState_e eMusicState )
+static MusicFile_t *Music_GetBaseMusicFile(MusicState_e eMusicState)
 {
-	const char *psMusicStateString = Music_BaseStateToString( eMusicState );
-	if ( psMusicStateString )
+	const char *psMusicStateString = Music_BaseStateToString(eMusicState);
+	if (psMusicStateString)
 	{
-		return Music_GetBaseMusicFile( psMusicStateString );
+		return Music_GetBaseMusicFile(psMusicStateString);
 	}
 
 	return NULL;
@@ -662,7 +662,7 @@ static MusicFile_t *Music_GetBaseMusicFile( MusicState_e eMusicState )
 qboolean Music_DynamicDataAvailable(const char *psDynamicMusicLabel)
 {
 	char sLevelName[MAX_QPATH];
-	Q_strncpyz(sLevelName,COM_SkipPath( const_cast<char*>( (psDynamicMusicLabel&&psDynamicMusicLabel[0])?psDynamicMusicLabel:gsLevelNameFromServer.c_str() ) ),sizeof(sLevelName));
+	Q_strncpyz(sLevelName,COM_SkipPath(const_cast<char*>((psDynamicMusicLabel&&psDynamicMusicLabel[0])?psDynamicMusicLabel:gsLevelNameFromServer.c_str())),sizeof(sLevelName));
 	Q_strlwr(sLevelName);
 
 	if (strlen(sLevelName))	// avoid error messages when there's no music waiting to be played and we try and restart it...
@@ -677,7 +677,7 @@ qboolean Music_DynamicDataAvailable(const char *psDynamicMusicLabel)
 	return qfalse;
 }
 
-const char *Music_GetFileNameForState( MusicState_e eMusicState)
+const char *Music_GetFileNameForState(MusicState_e eMusicState)
 {
 	MusicFile_t *pMusicFile = NULL;
 	switch (eMusicState)
@@ -687,10 +687,10 @@ const char *Music_GetFileNameForState( MusicState_e eMusicState)
 		case eBGRNDTRACK_BOSS:
 		case eBGRNDTRACK_DEATH:
 
-			pMusicFile = Music_GetBaseMusicFile( eMusicState );
+			pMusicFile = Music_GetBaseMusicFile(eMusicState);
 			if (pMusicFile)
 			{
-				return Music_BuildFileName( pMusicFile->sFileNameBase.c_str(), eMusicState );
+				return Music_BuildFileName(pMusicFile->sFileNameBase.c_str(), eMusicState);
 			}
 			break;
 
@@ -699,13 +699,13 @@ const char *Music_GetFileNameForState( MusicState_e eMusicState)
 		case eBGRNDTRACK_ACTIONTRANS2:
 		case eBGRNDTRACK_ACTIONTRANS3:
 
-			pMusicFile = Music_GetBaseMusicFile( eBGRNDTRACK_ACTION );
+			pMusicFile = Music_GetBaseMusicFile(eBGRNDTRACK_ACTION);
 			if (pMusicFile)
 			{
 				size_t iTransNum = eMusicState - eBGRNDTRACK_ACTIONTRANS0;
 				if (iTransNum < pMusicFile->MusicExitPoints.size())
 				{
-					return Music_BuildFileName( pMusicFile->MusicExitPoints[iTransNum].sNextFile.c_str(), eMusicState );
+					return Music_BuildFileName(pMusicFile->MusicExitPoints[iTransNum].sNextFile.c_str(), eMusicState);
 				}
 			}
 			break;
@@ -715,13 +715,13 @@ const char *Music_GetFileNameForState( MusicState_e eMusicState)
 		case eBGRNDTRACK_EXPLORETRANS2:
 		case eBGRNDTRACK_EXPLORETRANS3:
 
-			pMusicFile = Music_GetBaseMusicFile( eBGRNDTRACK_EXPLORE );
+			pMusicFile = Music_GetBaseMusicFile(eBGRNDTRACK_EXPLORE);
 			if (pMusicFile)
 			{
 				size_t iTransNum = eMusicState - eBGRNDTRACK_EXPLORETRANS0;
 				if (iTransNum < pMusicFile->MusicExitPoints.size())
 				{
-					return Music_BuildFileName( pMusicFile->MusicExitPoints[iTransNum].sNextFile.c_str(), eMusicState );
+					return Music_BuildFileName(pMusicFile->MusicExitPoints[iTransNum].sNextFile.c_str(), eMusicState);
 				}
 			}
 			break;
@@ -729,7 +729,7 @@ const char *Music_GetFileNameForState( MusicState_e eMusicState)
 		default:
 			#ifndef FINAL_BUILD
 			assert(0);	// duh....what state are they asking for?
-			Com_Printf( S_COLOR_RED "Music_GetFileNameForState( %d ) unhandled case!\n",eMusicState );
+			Com_Printf(S_COLOR_RED "Music_GetFileNameForState(%d) unhandled case!\n",eMusicState);
 			#endif
 			break;
 	}
@@ -739,14 +739,14 @@ const char *Music_GetFileNameForState( MusicState_e eMusicState)
 
 
 
-qboolean Music_StateIsTransition( MusicState_e eMusicState )
+qboolean Music_StateIsTransition(MusicState_e eMusicState)
 {
 	return (qboolean)(eMusicState >= eBGRNDTRACK_FIRSTTRANSITION &&
 						eMusicState <= eBGRNDTRACK_LASTTRANSITION);
 }
 
 
-qboolean Music_StateCanBeInterrupted( MusicState_e eMusicState, MusicState_e eProposedMusicState )
+qboolean Music_StateCanBeInterrupted(MusicState_e eMusicState, MusicState_e eProposedMusicState)
 {
 	// death music can interrupt anything...
 	//
@@ -784,7 +784,7 @@ qboolean Music_StateCanBeInterrupted( MusicState_e eMusicState, MusicState_e ePr
 
 	// nothing can interrupt a transition (after above filters)...
 	//
-	if (Music_StateIsTransition( eMusicState ))
+	if (Music_StateIsTransition(eMusicState))
 		return qfalse;
 
 	// current state is therefore interruptable...
@@ -807,7 +807,7 @@ qboolean Music_StateCanBeInterrupted( MusicState_e eMusicState, MusicState_e ePr
 // enum of transition track to switch to
 // float time of entry point of new track *after* transition
 //
-qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
+qboolean Music_AllowedToTransition(float			fPlayingTimeElapsed,
 									MusicState_e	eMusicState,
 									//
 									MusicState_e	*peTransition /* = NULL */,
@@ -819,7 +819,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 										//		if set too low[/precise] then we might miss an exit if client fps is poor
 
 
-	MusicFile_t *pMusicFile = Music_GetBaseMusicFile( eMusicState );
+	MusicFile_t *pMusicFile = Music_GetBaseMusicFile(eMusicState);
 	if (pMusicFile && !pMusicFile->MusicExitTimes.empty())
 	{
 		MusicExitTime_t	T;
@@ -827,7 +827,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 
 		// since a MusicExitTimes_t item is a sorted array, we can use the equal_range algorithm...
 		//
-		std::pair <MusicExitTimes_t::iterator, MusicExitTimes_t::iterator> itp = equal_range( pMusicFile->MusicExitTimes.begin(), pMusicFile->MusicExitTimes.end(), T);
+		std::pair <MusicExitTimes_t::iterator, MusicExitTimes_t::iterator> itp = equal_range(pMusicFile->MusicExitTimes.begin(), pMusicFile->MusicExitTimes.end(), T);
 		if (itp.first != pMusicFile->MusicExitTimes.begin())
 			itp.first--;	// encompass the one before, in case we've just missed an exit point by < fTimeEpsilon
 		if (itp.second!= pMusicFile->MusicExitTimes.end())
@@ -836,7 +836,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 		{
 			MusicExitTimes_t::iterator pExitTime = it;
 
-			if ( Q_fabs(pExitTime->fTime - fPlayingTimeElapsed) <= fTimeEpsilon )
+			if (Q_fabs(pExitTime->fTime - fPlayingTimeElapsed) <= fTimeEpsilon)
 			{
 				// got an exit point!, work out feedback params...
 				//
@@ -872,7 +872,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 							//
 							if (ExitPoint.sNextMark.c_str()[0])
 							{
-								MusicData_t::iterator itExploreMusicData = MusicData->find( Music_BaseStateToString(eBGRNDTRACK_EXPLORE) );
+								MusicData_t::iterator itExploreMusicData = MusicData->find(Music_BaseStateToString(eBGRNDTRACK_EXPLORE));
 								//
 								// find "explore" music...
 								//
@@ -882,7 +882,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 									//
 									// find the entry marker within the music and read the time there...
 									//
-									MusicEntryTimes_t::iterator itEntryTime = MusicFile_Explore.MusicEntryTimes.find( ExitPoint.sNextMark.c_str() );
+									MusicEntryTimes_t::iterator itEntryTime = MusicFile_Explore.MusicEntryTimes.find(ExitPoint.sNextMark.c_str());
 									if (itEntryTime != MusicFile_Explore.MusicEntryTimes.end())
 									{
 										fFeedBackNewTrackEntryTime = (*itEntryTime).second;
@@ -892,7 +892,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 									{
 										#ifndef FINAL_BUILD
 										assert(0);	// sanity, should have been caught elsewhere, but harmless to do this
-										Com_Printf( S_COLOR_RED "Music_AllowedToTransition() unable to find entry marker \"%s\" in \"%s\"",ExitPoint.sNextMark.c_str(), MusicFile_Explore.sFileNameBase.c_str());
+										Com_Printf(S_COLOR_RED "Music_AllowedToTransition() unable to find entry marker \"%s\" in \"%s\"",ExitPoint.sNextMark.c_str(), MusicFile_Explore.sFileNameBase.c_str());
 										#endif
 										return qfalse;
 									}
@@ -901,7 +901,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 								{
 									#ifndef FINAL_BUILD
 									assert(0);	// sanity, should have been caught elsewhere, but harmless to do this
-									Com_Printf( S_COLOR_RED "Music_AllowedToTransition() unable to find %s version of \"%s\"\n",Music_BaseStateToString(eBGRNDTRACK_EXPLORE), pMusicFile->sFileNameBase.c_str());
+									Com_Printf(S_COLOR_RED "Music_AllowedToTransition() unable to find %s version of \"%s\"\n",Music_BaseStateToString(eBGRNDTRACK_EXPLORE), pMusicFile->sFileNameBase.c_str());
 									#endif
 									return qfalse;
 								}
@@ -918,7 +918,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 						{
 							#ifndef FINAL_BUILD
 							assert(0);
-							Com_Printf( S_COLOR_RED "Music_AllowedToTransition(): No code to transition from music type %d\n",eMusicState);
+							Com_Printf(S_COLOR_RED "Music_AllowedToTransition(): No code to transition from music type %d\n",eMusicState);
 							#endif
 							return qfalse;
 						}
@@ -929,7 +929,7 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 				{
 					#ifndef FINAL_BUILD
 					assert(0);
-					Com_Printf( S_COLOR_RED "Music_AllowedToTransition(): Illegal exit point %d, max = %d (music: \"%s\")\n",iExitPoint, pMusicFile->MusicExitPoints.size()-1, pMusicFile->sFileNameBase.c_str() );
+					Com_Printf(S_COLOR_RED "Music_AllowedToTransition(): Illegal exit point %d, max = %d (music: \"%s\")\n",iExitPoint, pMusicFile->MusicExitPoints.size()-1, pMusicFile->sFileNameBase.c_str());
 					#endif
 					return qfalse;
 				}
@@ -937,12 +937,12 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 
 				// feed back answers...
 				//
-				if ( peTransition)
+				if (peTransition)
 				{
 					*peTransition = eFeedBackTransition;
 				}
 
-				if ( pfNewTrackEntryTime )
+				if (pfNewTrackEntryTime)
 				{
 					*pfNewTrackEntryTime = fFeedBackNewTrackEntryTime;
 				}
@@ -959,9 +959,9 @@ qboolean Music_AllowedToTransition( float			fPlayingTimeElapsed,
 // typically used to get a (predefined) random entry point for the action music, but will work on any defined type with entry points,
 //	defaults safely to 0.0f if no info available...
 //
-float Music_GetRandomEntryTime( MusicState_e eMusicState )
+float Music_GetRandomEntryTime(MusicState_e eMusicState)
 {
-	MusicData_t::iterator itMusicData = MusicData->find( Music_BaseStateToString( eMusicState ) );
+	MusicData_t::iterator itMusicData = MusicData->find(Music_BaseStateToString(eMusicState));
 	if (itMusicData != MusicData->end())
 	{
 		MusicFile_t &MusicFile = (*itMusicData).second;
@@ -970,7 +970,7 @@ float Music_GetRandomEntryTime( MusicState_e eMusicState )
 		{
 			// Quake's random number generator isn't very good, so instead of this:
 			//
-			// int iRandomEntryNum = Q_irand(0, (MusicFile.MusicEntryTimes.size()-1) );
+			// int iRandomEntryNum = Q_irand(0, (MusicFile.MusicEntryTimes.size()-1));
 			//
 			// ... I'll do this (ensuring we don't get the same result on two consecutive calls, but without while-loop)...
 			//

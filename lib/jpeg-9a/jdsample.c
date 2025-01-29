@@ -108,9 +108,9 @@ sep_upsample (j_decompress_ptr cinfo,
       (*upsample->methods[ci]) (cinfo, compptr,
 	input_buf[ci] + (*in_row_group_ctr * upsample->rowgroup_height[ci]),
 	upsample->color_buf + ci);
-    }
+   }
     upsample->next_row_out = 0;
-  }
+ }
 
   /* Color-convert and emit rows */
 
@@ -212,16 +212,16 @@ int_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       invalue = *inptr++;	/* don't need GETJSAMPLE() here */
       for (h = h_expand; h > 0; h--) {
 	*outptr++ = invalue;
-      }
-    }
+     }
+   }
     /* Generate any additional output rows by duplicating the first one */
     if (v_expand > 1) {
       jcopy_sample_rows(output_data, outrow, output_data, outrow+1,
 			v_expand-1, cinfo->output_width);
-    }
+   }
     inrow++;
     outrow += v_expand;
-  }
+ }
 }
 
 
@@ -248,8 +248,8 @@ h2v1_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       invalue = *inptr++;	/* don't need GETJSAMPLE() here */
       *outptr++ = invalue;
       *outptr++ = invalue;
-    }
-  }
+   }
+ }
 }
 
 
@@ -277,12 +277,12 @@ h2v2_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       invalue = *inptr++;	/* don't need GETJSAMPLE() here */
       *outptr++ = invalue;
       *outptr++ = invalue;
-    }
+   }
     jcopy_sample_rows(output_data, outrow, output_data, outrow+1,
 		      1, cinfo->output_width);
     inrow++;
     outrow += 2;
-  }
+ }
 }
 
 
@@ -330,25 +330,25 @@ jinit_upsampler (j_decompress_ptr cinfo)
       /* Don't bother to upsample an uninteresting component. */
       upsample->methods[ci] = noop_upsample;
       need_buffer = FALSE;
-    } else if (h_in_group == h_out_group && v_in_group == v_out_group) {
+   } else if (h_in_group == h_out_group && v_in_group == v_out_group) {
       /* Fullsize components can be processed without any work. */
       upsample->methods[ci] = fullsize_upsample;
       need_buffer = FALSE;
-    } else if (h_in_group * 2 == h_out_group &&
+   } else if (h_in_group * 2 == h_out_group &&
 	       v_in_group == v_out_group) {
       /* Special case for 2h1v upsampling */
       upsample->methods[ci] = h2v1_upsample;
-    } else if (h_in_group * 2 == h_out_group &&
+   } else if (h_in_group * 2 == h_out_group &&
 	       v_in_group * 2 == v_out_group) {
       /* Special case for 2h2v upsampling */
       upsample->methods[ci] = h2v2_upsample;
-    } else if ((h_out_group % h_in_group) == 0 &&
+   } else if ((h_out_group % h_in_group) == 0 &&
 	       (v_out_group % v_in_group) == 0) {
       /* Generic integral-factors upsampling method */
       upsample->methods[ci] = int_upsample;
       upsample->h_expand[ci] = (UINT8) (h_out_group / h_in_group);
       upsample->v_expand[ci] = (UINT8) (v_out_group / v_in_group);
-    } else
+   } else
       ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
     if (need_buffer) {
       upsample->color_buf[ci] = (*cinfo->mem->alloc_sarray)
@@ -356,6 +356,6 @@ jinit_upsampler (j_decompress_ptr cinfo)
 	 (JDIMENSION) jround_up((long) cinfo->output_width,
 				(long) cinfo->max_h_samp_factor),
 	 (JDIMENSION) cinfo->max_v_samp_factor);
-    }
-  }
+   }
+ }
 }

@@ -370,9 +370,9 @@ int BotFindCachedCharacter(char *charfile, float skill)
 
 	for (handle = 1; handle <= MAX_CLIENTS; handle++)
 	{
-		if ( !botcharacters[handle] ) continue;
-		if ( strcmp( botcharacters[handle]->filename, charfile ) == 0 &&
-			(skill < 0 || fabs(botcharacters[handle]->skill - skill) < 0.01) )
+		if (!botcharacters[handle]) continue;
+		if (strcmp(botcharacters[handle]->filename, charfile) == 0 &&
+			(skill < 0 || fabs(botcharacters[handle]->skill - skill) < 0.01))
 		{
 			return handle;
 		} //end if

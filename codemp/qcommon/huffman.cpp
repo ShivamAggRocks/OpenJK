@@ -29,7 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 static int			bloc = 0;
 
-void	Huff_putBit( int bit, byte *fout, int *offset) {
+void	Huff_putBit(int bit, byte *fout, int *offset) {
 	bloc = *offset;
 	if ((bloc&7) == 0) {
 		fout[(bloc>>3)] = 0;
@@ -39,7 +39,7 @@ void	Huff_putBit( int bit, byte *fout, int *offset) {
 	*offset = bloc;
 }
 
-int		Huff_getBit( byte *fin, int *offset) {
+int		Huff_getBit(byte *fin, int *offset) {
 	int t;
 	bloc = *offset;
 	t = (fin[(bloc>>3)] >> (bloc&7)) & 0x1;
@@ -185,7 +185,7 @@ static void increment(huff_t* huff, node_t *node) {
 
 void Huff_addRef(huff_t* huff, byte ch) {
 	node_t *tnode, *tnode2;
-	if (huff->loc[ch] == NULL) { /* if this is the first transmission of this node */
+	if (huff->loc[ch] == NULL) {/* if this is the first transmission of this node */
 		tnode = &(huff->nodeList[huff->blocNode++]);
 		tnode2 = &(huff->nodeList[huff->blocNode++]);
 
@@ -218,7 +218,7 @@ void Huff_addRef(huff_t* huff, byte ch) {
 				/* this should never happen */
 				tnode->head = get_ppnode(huff);
 				*tnode->head = tnode2;
-		    }
+		   }
 		} else {
 			/* this should never happen */
 			tnode->head = get_ppnode(huff);
@@ -229,7 +229,7 @@ void Huff_addRef(huff_t* huff, byte ch) {
 		tnode->left = tnode->right = NULL;
 
 		if (huff->lhead->parent) {
-			if (huff->lhead->parent->left == huff->lhead) { /* lhead is guaranteed to by the NYT */
+			if (huff->lhead->parent->left == huff->lhead) {/* lhead is guaranteed to by the NYT */
 				huff->lhead->parent->left = tnode2;
 			} else {
 				huff->lhead->parent->right = tnode2;
@@ -339,7 +339,7 @@ void Huff_Decompress(msg_t *mbuf, int offset) {
 	size = mbuf->cursize - offset;
 	buffer = mbuf->data + offset;
 
-	if ( size <= 0 ) {
+	if (size <= 0) {
 		return;
 	}
 
@@ -353,23 +353,23 @@ void Huff_Decompress(msg_t *mbuf, int offset) {
 
 	cch = buffer[0]*256 + buffer[1];
 	// don't overflow with bad messages
-	if ( cch > mbuf->maxsize - offset ) {
+	if (cch > mbuf->maxsize - offset) {
 		cch = mbuf->maxsize - offset;
 	}
 	bloc = 16;
 
-	for ( j = 0; j < cch; j++ ) {
+	for (j = 0; j < cch; j++) {
 		ch = 0;
 		// don't overflow reading from the messages
 		// FIXME: would it be better to have a overflow check in get_bit ?
-		if ( (bloc >> 3) > size ) {
+		if ((bloc >> 3) > size) {
 			seq[j] = 0;
 			break;
 		}
 		Huff_Receive(huff.tree, &ch, buffer);				/* Get a character */
-		if ( ch == NYT ) {								/* We got a NYT, get the symbol associated with it */
+		if (ch == NYT) {								/* We got a NYT, get the symbol associated with it */
 			ch = 0;
-			for ( i = 0; i < 8; i++ ) {
+			for (i = 0; i < 8; i++) {
 				ch = (ch<<1) + get_bit(buffer);
 			}
 		}
@@ -411,7 +411,7 @@ void Huff_Compress(msg_t *mbuf, int offset) {
 
 	bloc = 16;
 
-	for (i=0; i<size; i++ ) {
+	for (i=0; i<size; i++) {
 		ch = buffer[i];
 		Huff_transmit(&huff, ch, seq, size<<3);						/* Transmit symbol */
 		Huff_addRef(&huff, (byte)ch);								/* Do update */

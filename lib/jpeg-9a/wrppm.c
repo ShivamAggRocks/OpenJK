@@ -43,7 +43,7 @@
 #else
 /* The word-per-sample format always puts the MSB first. */
 #define PUTPPMSAMPLE(ptr,v)			\
-	{ register int val_ = v;		\
+	{register int val_ = v;		\
 	  *ptr++ = (char) ((val_ >> 8) & 0xFF);	\
 	  *ptr++ = (char) (val_ & 0xFF);	\
 	}
@@ -115,7 +115,7 @@ copy_pixel_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
   bufferptr = dest->iobuffer;
   for (col = dest->samples_per_row; col > 0; col--) {
     PUTPPMSAMPLE(bufferptr, GETJSAMPLE(*ptr++));
-  }
+ }
   (void) JFWRITE(dest->pub.output_file, dest->iobuffer, dest->buffer_width);
 }
 
@@ -145,7 +145,7 @@ put_demapped_rgb (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
     PUTPPMSAMPLE(bufferptr, GETJSAMPLE(color_map0[pixval]));
     PUTPPMSAMPLE(bufferptr, GETJSAMPLE(color_map1[pixval]));
     PUTPPMSAMPLE(bufferptr, GETJSAMPLE(color_map2[pixval]));
-  }
+ }
   (void) JFWRITE(dest->pub.output_file, dest->iobuffer, dest->buffer_width);
 }
 
@@ -164,7 +164,7 @@ put_demapped_gray (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
   bufferptr = dest->iobuffer;
   for (col = cinfo->output_width; col > 0; col--) {
     PUTPPMSAMPLE(bufferptr, GETJSAMPLE(color_map[GETJSAMPLE(*ptr++)]));
-  }
+ }
   (void) JFWRITE(dest->pub.output_file, dest->iobuffer, dest->buffer_width);
 }
 
@@ -194,7 +194,7 @@ start_output_ppm (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
     break;
   default:
     ERREXIT(cinfo, JERR_PPM_COLORSPACE);
-  }
+ }
 }
 
 
@@ -253,7 +253,7 @@ jinit_write_ppm (j_decompress_ptr cinfo)
       dest->pub.put_pixel_rows = put_demapped_gray;
     else
       dest->pub.put_pixel_rows = put_demapped_rgb;
-  } else {
+ } else {
     /* We will fwrite() directly from decompressor output buffer. */
     /* Synthesize a JSAMPARRAY pointer structure */
     /* Cast here implies near->far pointer conversion on PCs */
@@ -261,7 +261,7 @@ jinit_write_ppm (j_decompress_ptr cinfo)
     dest->pub.buffer = & dest->pixrow;
     dest->pub.buffer_height = 1;
     dest->pub.put_pixel_rows = put_pixel_rows;
-  }
+ }
 
   return (djpeg_dest_ptr) dest;
 }

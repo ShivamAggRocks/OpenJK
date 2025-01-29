@@ -105,11 +105,11 @@ int G2_Add_Bone (const model_t *mod, boneInfo_v &blist, const char *boneName)
 		// didn't find it? Error
 		//assert(0);
 #ifdef _DEBUG
-		ri.Printf( PRINT_ALL, "WARNING: Failed to add bone %s\n", boneName);
+		ri.Printf(PRINT_ALL, "WARNING: Failed to add bone %s\n", boneName);
 #endif
 
 #ifdef _RAG_PRINT_TEST
-		ri.Printf( PRINT_ALL, "WARNING: Failed to add bone %s\n", boneName);
+		ri.Printf(PRINT_ALL, "WARNING: Failed to add bone %s\n", boneName);
 #endif
 		return -1;
 	}
@@ -137,7 +137,7 @@ int G2_Add_Bone (const model_t *mod, boneInfo_v &blist, const char *boneName)
 	}
 
 #ifdef _RAG_PRINT_TEST
-	ri.Printf( PRINT_ALL, "New bone added for %s\n", boneName);
+	ri.Printf(PRINT_ALL, "New bone added for %s\n", boneName);
 #endif
 	// ok, we didn't find an existing bone of that name, or an empty slot. Lets add an entry
 	tempBone.boneNumber = x;
@@ -148,7 +148,7 @@ int G2_Add_Bone (const model_t *mod, boneInfo_v &blist, const char *boneName)
 
 
 // Given a model handle, and a bone name, we want to remove this bone from the bone override list
-qboolean G2_Remove_Bone_Index ( boneInfo_v &blist, int index)
+qboolean G2_Remove_Bone_Index (boneInfo_v &blist, int index)
 {
 	if (index != -1)
 	{
@@ -213,7 +213,7 @@ int	G2_Find_Bone_In_List(boneInfo_v &blist, const int boneNum)
 }
 
 // given a model, bonelist and bonename, lets stop an anim if it's playing.
-qboolean G2_Stop_Bone_Index( boneInfo_v &blist, int index, int flags)
+qboolean G2_Stop_Bone_Index(boneInfo_v &blist, int index, int flags)
 {
 	// did we find it?
 	if (index != -1)
@@ -448,7 +448,7 @@ qboolean G2_Remove_Bone (CGhoul2Info *ghlInfo, boneInfo_v &blist, const char *bo
 
 
 // Given a model handle, and a bone name, we want to set angles specifically for overriding
-qboolean G2_Set_Bone_Angles_Index( boneInfo_v &blist, const int index,
+qboolean G2_Set_Bone_Angles_Index(boneInfo_v &blist, const int index,
 							const float *angles, const int flags, const Eorientations yaw,
 							const Eorientations pitch, const Eorientations roll, qhandle_t *modelList,
 							const int modelIndex, const int blendTime, const int currentTime)
@@ -697,7 +697,7 @@ qboolean G2_Set_Bone_Anim_Index(
 					blist[index].blendLerpFrame = currentFrame+1;
 
 					// cope with if the lerp frame is actually off the end of the anim
-					if (blist[index].blendFrame >= endFrame )
+					if (blist[index].blendFrame >= endFrame)
 					{
 						// we only want to lerp with the first frame of the anim if we are looping
 						if (blist[index].flags & BONE_ANIM_OVERRIDE_LOOP)
@@ -720,7 +720,7 @@ qboolean G2_Set_Bone_Anim_Index(
 					}
 
 					// cope with if the lerp frame is actually off the end of the anim
-					if (blist[index].blendLerpFrame >= endFrame )
+					if (blist[index].blendLerpFrame >= endFrame)
 					{
 						// we only want to lerp with the first frame of the anim if we are looping
 						if (blist[index].flags & BONE_ANIM_OVERRIDE_LOOP)
@@ -883,7 +883,7 @@ qboolean G2_Get_Bone_Anim_Range(CGhoul2Info *ghlInfo, boneInfo_v &blist, const c
 // NOTE if we aren't running an animation, then qfalse is returned
 void G2_TimingModel(boneInfo_t &bone,int currentTime,int numFramesInFile,int &currentFrame,int &newFrame,float &lerp);
 
-qboolean G2_Get_Bone_Anim_Index( boneInfo_v &blist, const int index, const int currentTime,
+qboolean G2_Get_Bone_Anim_Index(boneInfo_v &blist, const int index, const int currentTime,
 						  float *currentFrame, int *startFrame, int *endFrame, int *flags, float *retAnimSpeed, qhandle_t *modelList, int numFrames)
 {
 
@@ -1076,7 +1076,7 @@ qboolean G2_Stop_Bone_Angles(const char *fileName, boneInfo_v &blist, const char
 
 
 // actually walk the bone list and update each and every bone if we have ended an animation for them.
-void G2_Animate_Bone_List(CGhoul2Info_v &ghoul2, const int currentTime, const int index )
+void G2_Animate_Bone_List(CGhoul2Info_v &ghoul2, const int currentTime, const int index)
 {
 	boneInfo_v &blist = ghoul2[index].mBlist;
 
@@ -1109,8 +1109,8 @@ void G2_Animate_Bone_List(CGhoul2Info_v &ghoul2, const int currentTime, const in
 				if (animSize)
 				{
 					// did we run off the end?
-					if (((animSpeed > 0.0f) && (newFrame_g > endFrame-1 )) ||
-						((animSpeed < 0.0f) && (newFrame_g < endFrame+1 )))
+					if (((animSpeed > 0.0f) && (newFrame_g > endFrame-1)) ||
+						((animSpeed < 0.0f) && (newFrame_g < endFrame+1)))
 					{
 						// yep - decide what to do
 						if (blist[i].flags & BONE_ANIM_OVERRIDE_LOOP)
@@ -1268,11 +1268,11 @@ static void G2_Generate_MatrixRag(
 	memcpy(&bone.matrix,&bone.ragOverrideMatrix, sizeof(mdxaBone_t));
 #ifdef _DEBUG
 	int i,j;
-	for (i = 0; i < 3; i++ )
+	for (i = 0; i < 3; i++)
 	{
-		for (j = 0; j < 4; j++ )
+		for (j = 0; j < 4; j++)
 		{
-			assert( !Q_isnan(bone.matrix.matrix[i][j]));
+			assert(!Q_isnan(bone.matrix.matrix[i][j]));
 		}
 	}
 #endif// _DEBUG
@@ -1351,8 +1351,8 @@ static int G2_Set_Bone_Rag(const mdxaHeader_t *mod_a,
 
 		G2_GetBoneMatrixLow(ghoul2,bone.boneNumber,scale,bone.originalTrueBoneMatrix,bone.basepose,bone.baseposeInv);
 //		bone.parentRawBoneIndex=G2_GetParentBoneMatrixLow(ghoul2,bone.boneNumber,scale,bone.parentTrueBoneMatrix,bone.baseposeParent,bone.baseposeInvParent);
-		assert( !Q_isnan(bone.originalTrueBoneMatrix.matrix[1][1]));
-		assert( !Q_isnan(bone.originalTrueBoneMatrix.matrix[1][3]));
+		assert(!Q_isnan(bone.originalTrueBoneMatrix.matrix[1][1]));
+		assert(!Q_isnan(bone.originalTrueBoneMatrix.matrix[1][3]));
 		bone.originalOrigin[0]=bone.originalTrueBoneMatrix.matrix[0][3];
 		bone.originalOrigin[1]=bone.originalTrueBoneMatrix.matrix[1][3];
 		bone.originalOrigin[2]=bone.originalTrueBoneMatrix.matrix[2][3];
@@ -1437,9 +1437,9 @@ static int G2_Set_Bone_Angles_Rag(
 			static mdxaBone_t		id =
 			{
 				{
-					{ 1.0f, 0.0f, 0.0f, 0.0f },
-					{ 0.0f, 1.0f, 0.0f, 0.0f },
-					{ 0.0f, 0.0f, 1.0f, 0.0f }
+					{1.0f, 0.0f, 0.0f, 0.0f},
+					{0.0f, 1.0f, 0.0f, 0.0f},
+					{0.0f, 0.0f, 1.0f, 0.0f}
 				}
 			};
 			memcpy(&bone.ragOverrideMatrix,&id, sizeof(mdxaBone_t));
@@ -1606,7 +1606,7 @@ void G2_ResetRagDoll(CGhoul2Info_v &ghoul2V)
 	CGhoul2Info &ghoul2 = ghoul2V[model];
 
 	if (!(ghoul2.mFlags & GHOUL2_RAG_STARTED))
-	{ //no use in doing anything if we aren't ragging
+	{//no use in doing anything if we aren't ragging
 		return;
 	}
 
@@ -1726,7 +1726,7 @@ void G2_SetRagDoll(CGhoul2Info_v &ghoul2V,CRagDollParams *parms)
 						float magicFactor14=8.0f; //64.0f; // kick strength
 
 						if (parms->fShotStrength)
-						{ //if there is a shot strength, use it instead
+						{//if there is a shot strength, use it instead
 							magicFactor14 = parms->fShotStrength;
 						}
 
@@ -1738,7 +1738,7 @@ void G2_SetRagDoll(CGhoul2Info_v &ghoul2V,CRagDollParams *parms)
 						//I am just leaving it whatever it is for now, because my velocity scaling
 						//only works on x and y and the gravity stuff for NPCs is a bit unpleasent
 						//trying to change/work with
-						assert( !Q_isnan(bone.lastShotDir[1]));
+						assert(!Q_isnan(bone.lastShotDir[1]));
 						*/
 					}
 				}
@@ -2091,7 +2091,7 @@ void G2_SetRagDollBullet(CGhoul2Info &ghoul2,const vec3_t rayStart,const vec3_t 
 #if 1
 						TheGhoul2Wraith()->GetAnimFrames(ghoul2.mID, "unconsciousdeadflop01", startFrame, endFrame);
 						if (startFrame == -1 && endFrame == -1)
-						{ //A bad thing happened! Just use the hardcoded numbers even though they could be wrong.
+						{//A bad thing happened! Just use the hardcoded numbers even though they could be wrong.
 							startFrame = 3573;
 							endFrame = 3583;
 							assert(0);
@@ -2108,7 +2108,7 @@ void G2_SetRagDollBullet(CGhoul2Info &ghoul2,const vec3_t rayStart,const vec3_t 
 #else
 						TheGhoul2Wraith()->GetAnimFrames(ghoul2.mID, "backdeadflop01", startFrame, endFrame);
 						if (startFrame == -1 && endFrame == -1)
-						{ //A bad thing happened! Just use the hardcoded numbers even though they could be wrong.
+						{//A bad thing happened! Just use the hardcoded numbers even though they could be wrong.
 							startFrame = 3581;
 							endFrame = 3592;
 							assert(0);
@@ -2143,7 +2143,7 @@ void G2_SetRagDollBullet(CGhoul2Info &ghoul2,const vec3_t rayStart,const vec3_t 
 //					bone.velocityEffector[0]=shotDir[0]*(effect+flrand(0.0f,0.05f))*flrand(-0.1f,3.0f);
 //					bone.velocityEffector[1]=shotDir[1]*(effect+flrand(0.0f,0.05f))*flrand(-0.1f,3.0f);
 //					bone.velocityEffector[2]=fabs(shotDir[2])*(effect+flrand(0.0f,0.05f))*flrand(-0.1f,3.0f);
-					assert( !Q_isnan(shotDir[2]));
+					assert(!Q_isnan(shotDir[2]));
 	//				bone.currentAngles[0]+=flrand(-10.0f*lenr,10.0f*lenr);
 	//				bone.currentAngles[1]+=flrand(-10.0f*lenr,10.0f*lenr);
 	//				bone.currentAngles[2]+=flrand(-10.0f*lenr,10.0f*lenr);
@@ -2179,7 +2179,7 @@ static float G2_RagSetState(CGhoul2Info &ghoul2, boneInfo_t &bone,int frameNum,c
 		{
 			VectorCopy(origin,bone.extraVec1);
 			if (ragOriginChange>15.0f)
-			{ //if we moved, or if this bone is still in solid
+			{//if we moved, or if this bone is still in solid
 				bone.firstCollisionTime=frameNum;
 			}
 			else
@@ -2198,7 +2198,7 @@ static float G2_RagSetState(CGhoul2Info &ghoul2, boneInfo_t &bone,int frameNum,c
 		{
 			VectorCopy(origin,bone.extraVec1);
 			if (ragOriginChange>15.0f)
-			{ //if we moved, or if this bone is still in solid
+			{//if we moved, or if this bone is still in solid
 				bone.firstCollisionTime=frameNum;
 			}
 			else
@@ -2504,7 +2504,7 @@ static void G2_RagDoll(CGhoul2Info_v &ghoul2V,int g2Index,CRagDollUpdateParams *
 					}
 
 					if (noneInSolid)
-					{ //we're settled then
+					{//we're settled then
 						params->RagDollSettled();
 						return;
 					}
@@ -2642,7 +2642,7 @@ static void G2_RagDollCurrentPosition(CGhoul2Info_v &ghoul2V,int g2Index,int fra
 		for (k=0;k<3;k++)
 		{
 			ragEffectors[i].currentOrigin[k]=ragBones[i].matrix[k][3];
-			assert( !Q_isnan(ragEffectors[i].currentOrigin[k]));
+			assert(!Q_isnan(ragEffectors[i].currentOrigin[k]));
 			if (!i)
 			{
 				// set mins, maxs and cm
@@ -2690,12 +2690,12 @@ int ragSSCount = 0;
 int ragTraceCount = 0;
 #endif
 
-void Rag_Trace( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, const int passEntityNum, const int contentmask, const EG2_Collision eG2TraceType, const int useLod )
+void Rag_Trace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, const int passEntityNum, const int contentmask, const EG2_Collision eG2TraceType, const int useLod)
 {
 #ifdef _DEBUG
 	int ragPreTrace = ri.Milliseconds();
 #endif
-	if ( ri.CGVMLoaded() )
+	if (ri.CGVMLoaded())
 	{
 		ragCallbackTraceLine_t *callData = (ragCallbackTraceLine_t *)ri.GetSharedMemory();
 
@@ -2706,7 +2706,7 @@ void Rag_Trace( trace_t *results, const vec3_t start, const vec3_t mins, const v
 		callData->ignore = passEntityNum;
 		callData->mask = contentmask;
 
-		ri.CGVM_RagCallback( RAG_CALLBACK_TRACELINE );
+		ri.CGVM_RagCallback(RAG_CALLBACK_TRACELINE);
 
 		*results = callData->tr;
 	}
@@ -2745,7 +2745,7 @@ static inline bool G2_BoneOnGround(const vec3_t org, const vec3_t mins, const ve
 	Rag_Trace(&tr, org, mins, maxs, gSpot, ignoreNum, RAG_MASK, G2_NOCOLLIDE, 0);
 
 	if (tr.fraction != 1.0f && !tr.startsolid && !tr.allsolid)
-	{ //not in solid, and hit something. Guess it's ground.
+	{//not in solid, and hit something. Guess it's ground.
 		return true;
 	}
 
@@ -2766,12 +2766,12 @@ static inline bool G2_ApplyRealBonePhysics(boneInfo_t &bone, SRagEffector &e, CR
 	assert(mass <= 1.0f && mass >= 0.01f);
 
 	if (bone.physicsSettled)
-	{ //then we have no need to continue
+	{//then we have no need to continue
 		return true;
 	}
 
 	if (gravity)
-	{ //factor it in before we do anything.
+	{//factor it in before we do anything.
 		VectorCopy(e.currentOrigin, ground);
 		ground[2] -= 1.0f;
 
@@ -2789,19 +2789,19 @@ static inline bool G2_ApplyRealBonePhysics(boneInfo_t &bone, SRagEffector &e, CR
 		if (!boneOnGround)
 		{
 			if (!params->velocity[2])
-			{ //only increase gravitational pull once the actual entity is still
+			{//only increase gravitational pull once the actual entity is still
 				bone.epGravFactor += gravity;
 			}
 
 			if (bone.epGravFactor > MAX_GRAVITY_PULL)
-			{ //cap it off if needed
+			{//cap it off if needed
 				bone.epGravFactor = MAX_GRAVITY_PULL;
 			}
 
 			bone.epVelocity[2] -= bone.epGravFactor;
 		}
 		else
-		{ //if we're sitting on something then reset the gravity factor.
+		{//if we're sitting on something then reset the gravity factor.
 			bone.epGravFactor = 0;
 		}
 	}
@@ -2811,7 +2811,7 @@ static inline bool G2_ApplyRealBonePhysics(boneInfo_t &bone, SRagEffector &e, CR
 	}
 
 	if (!bone.epVelocity[0] && !bone.epVelocity[1] && !bone.epVelocity[2])
-	{ //nothing to do if we have no velocity even after gravity.
+	{//nothing to do if we have no velocity even after gravity.
 		VectorCopy(e.currentOrigin, goalSpot);
 		return true;
 	}
@@ -2826,7 +2826,7 @@ static inline bool G2_ApplyRealBonePhysics(boneInfo_t &bone, SRagEffector &e, CR
 	vTotal = VectorNormalize(vNorm);
 
 	if (vTotal < 1 && boneOnGround)
-	{ //we've pretty much stopped moving anyway, just clear it out then.
+	{//we've pretty much stopped moving anyway, just clear it out then.
 		VectorClear(bone.epVelocity);
 		bone.epGravFactor = 0;
 		VectorCopy(e.currentOrigin, goalSpot);
@@ -2836,7 +2836,7 @@ static inline bool G2_ApplyRealBonePhysics(boneInfo_t &bone, SRagEffector &e, CR
 	Rag_Trace(&tr, e.currentOrigin, testMins, testMaxs, projectedOrigin, params->me, RAG_MASK, G2_NOCOLLIDE, 0);
 
 	if (tr.startsolid || tr.allsolid)
-	{ //can't go anywhere from here
+	{//can't go anywhere from here
 		return false;
 	}
 
@@ -2844,7 +2844,7 @@ static inline bool G2_ApplyRealBonePhysics(boneInfo_t &bone, SRagEffector &e, CR
 	VectorCopy(tr.endpos, goalSpot);
 
 	if (tr.fraction == 1.0f)
-	{ //Nothing was in the way.
+	{//Nothing was in the way.
 		return true;
 	}
 
@@ -2869,13 +2869,13 @@ static inline bool G2_ApplyRealBonePhysics(boneInfo_t &bone, SRagEffector &e, CR
 		//when bones slam into things. But it could be slow too.
 		/*
 		if (tr.entityNum != ENTITYNUM_NONE && ent->touch)
-		{ //then call the touch function
+		{//then call the touch function
 			ent->touch(ent, &g_entities[tr.entityNum], &tr);
 		}
 		*/
 	}
 	else
-	{ //if no bounce, kill when it hits something.
+	{//if no bounce, kill when it hits something.
 		bone.epVelocity[0] = 0;
 		bone.epVelocity[1] = 0;
 
@@ -2890,7 +2890,7 @@ static inline bool G2_ApplyRealBonePhysics(boneInfo_t &bone, SRagEffector &e, CR
 #ifdef _DEBUG_BONE_NAMES
 static inline void G2_RagDebugBox(vec3_t mins, vec3_t maxs, int duration)
 {
-	if ( !ri.CGVMLoaded() )
+	if (!ri.CGVMLoaded())
 		return;
 
 	ragCallbackDebugBox_t *callData = (ragCallbackDebugBox_t *)ri.GetSharedMemory();
@@ -2899,12 +2899,12 @@ static inline void G2_RagDebugBox(vec3_t mins, vec3_t maxs, int duration)
 	VectorCopy(mins, callData->mins);
 	VectorCopy(maxs, callData->maxs);
 
-	ri.CGVM_RagCallback( RAG_CALLBACK_DEBUGBOX );
+	ri.CGVM_RagCallback(RAG_CALLBACK_DEBUGBOX);
 }
 
 static inline void G2_RagDebugLine(vec3_t start, vec3_t end, int time, int color, int radius)
 {
-	if ( !ri.CGVMLoaded() )
+	if (!ri.CGVMLoaded())
 		return;
 
 	ragCallbackDebugLine_t *callData = (ragCallbackDebugLine_t *)ri.GetSharedMemory();
@@ -2915,7 +2915,7 @@ static inline void G2_RagDebugLine(vec3_t start, vec3_t end, int time, int color
 	callData->color = color;
 	callData->radius = radius;
 
-	ri.CGVM_RagCallback( RAG_CALLBACK_DEBUGLINE );
+	ri.CGVM_RagCallback(RAG_CALLBACK_DEBUGLINE);
 }
 #endif
 
@@ -2948,10 +2948,10 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 
 		{
 			trace_t		tr;
-			assert( !Q_isnan(testStart[1]));
-			assert( !Q_isnan(testEnd[1]));
-			assert( !Q_isnan(testMins[1]));
-			assert( !Q_isnan(testMaxs[1]));
+			assert(!Q_isnan(testStart[1]));
+			assert(!Q_isnan(testEnd[1]));
+			assert(!Q_isnan(testMins[1]));
+			assert(!Q_isnan(testMaxs[1]));
 			Rag_Trace(&tr,testStart,testMins,testMaxs,testEnd,ignoreNum,RAG_MASK,G2_NOCOLLIDE,0/*SV_TRACE_NO_PLAYER*/);
 			if (tr.entityNum==0)
 			{
@@ -3006,10 +3006,10 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 		vec3_t testEnd;
 		VectorCopy(testStart,testEnd); //last arg is dest
 		testEnd[2]-=8.0f;
-		assert( !Q_isnan(testStart[1]));
-		assert( !Q_isnan(testEnd[1]));
-		assert( !Q_isnan(testMins[1]));
-		assert( !Q_isnan(testMaxs[1]));
+		assert(!Q_isnan(testStart[1]));
+		assert(!Q_isnan(testEnd[1]));
+		assert(!Q_isnan(testMins[1]));
+		assert(!Q_isnan(testMaxs[1]));
 		float vertEffectorTraceFraction=0.0f;
 		{
 			trace_t		tr;
@@ -3048,15 +3048,15 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 					{
 						//SRagDollEffectorCollision args(e.currentOrigin,tr);
 						//params->EffectorCollision(args);
-						if ( ri.CGVMLoaded() )
-						{ //make a callback and see if the cgame wants to help us out
+						if (ri.CGVMLoaded())
+						{//make a callback and see if the cgame wants to help us out
 							ragCallbackBoneInSolid_t *callData = (ragCallbackBoneInSolid_t *)ri.GetSharedMemory();
 
 							VectorCopy(e.currentOrigin, callData->bonePos);
 							callData->entNum = params->me;
 							callData->solidCount = bone.solidCount;
 
-							ri.CGVM_RagCallback( RAG_CALLBACK_BONEINSOLID );
+							ri.CGVM_RagCallback(RAG_CALLBACK_BONEINSOLID);
 						}
 					}
 				}
@@ -3075,15 +3075,15 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 					//SRagDollEffectorCollision args(e.currentOrigin,tr);
 					//args.useTracePlane=true;
 					//params->EffectorCollision(args);
-					if ( ri.CGVMLoaded() )
-					{ //make a callback and see if the cgame wants to help us out
+					if (ri.CGVMLoaded())
+					{//make a callback and see if the cgame wants to help us out
 						ragCallbackBoneInSolid_t *callData = (ragCallbackBoneInSolid_t *)ri.GetSharedMemory();
 
 						VectorCopy(e.currentOrigin, callData->bonePos);
 						callData->entNum = params->me;
 						callData->solidCount = bone.solidCount;
 
-						ri.CGVM_RagCallback( RAG_CALLBACK_BONEINSOLID );
+						ri.CGVM_RagCallback(RAG_CALLBACK_BONEINSOLID);
 					}
 				}
 			}
@@ -3105,10 +3105,10 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 			VectorCopy(effectorGroundSpot,testEnd); //last arg is dest
 			bone.solidCount = 0;
 		}
-		assert( !Q_isnan(testStart[1]));
-		assert( !Q_isnan(testEnd[1]));
-		assert( !Q_isnan(testMins[1]));
-		assert( !Q_isnan(testMaxs[1]));
+		assert(!Q_isnan(testStart[1]));
+		assert(!Q_isnan(testEnd[1]));
+		assert(!Q_isnan(testMins[1]));
+		assert(!Q_isnan(testMaxs[1]));
 
 		float ztest;
 
@@ -3168,15 +3168,15 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 						//SRagDollEffectorCollision args(e.currentOrigin,tr);
 						//args.useTracePlane=true;
 						//params->EffectorCollision(args);
-						if ( ri.CGVMLoaded() )
-						{ //make a callback and see if the cgame wants to help us out
+						if (ri.CGVMLoaded())
+						{//make a callback and see if the cgame wants to help us out
 							ragCallbackBoneInSolid_t *callData = (ragCallbackBoneInSolid_t *)ri.GetSharedMemory();
 
 							VectorCopy(e.currentOrigin, callData->bonePos);
 							callData->entNum = params->me;
 							callData->solidCount = bone.solidCount;
 
-							ri.CGVM_RagCallback( RAG_CALLBACK_BONEINSOLID );
+							ri.CGVM_RagCallback(RAG_CALLBACK_BONEINSOLID);
 						}
 					}
 				}
@@ -3203,15 +3203,15 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 							//SRagDollEffectorCollision args(e.currentOrigin,tr);
 							//args.useTracePlane=true;
 							//params->EffectorCollision(args);
-							if ( ri.CGVMLoaded() )
-							{ //make a callback and see if the cgame wants to help us out
+							if (ri.CGVMLoaded())
+							{//make a callback and see if the cgame wants to help us out
 								ragCallbackBoneInSolid_t *callData = (ragCallbackBoneInSolid_t *)ri.GetSharedMemory();
 
 								VectorCopy(e.currentOrigin, callData->bonePos);
 								callData->entNum = params->me;
 								callData->solidCount = bone.solidCount;
 
-								ri.CGVM_RagCallback( RAG_CALLBACK_BONEINSOLID );
+								ri.CGVM_RagCallback(RAG_CALLBACK_BONEINSOLID);
 							}
 						}
 					}
@@ -3249,7 +3249,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 		VectorAdvance(HorizontalHitSpot,horzontalTraceFraction*horzontalTraceFraction,goalSpot,goalSpot);//  VA(a,t,b,c)-> c := (1-t)a+tb
 #if 0
 		if ((bone.RagFlags & RAG_EFFECTOR) && (bone.RagFlags & RAG_BONE_LIGHTWEIGHT))
-		{ //new rule - don't even bother unless it's a lightweight effector
+		{//new rule - don't even bother unless it's a lightweight effector
 			//rww - Factor object velocity into the final desired spot..
 			//We want the limbs with a "light" weight to drag behind the general mass.
 			//If we got here, we shouldn't be the pelvis or the root, so we should be
@@ -3354,7 +3354,7 @@ void G2_RagPrintMatrix(mdxaBone_t *mat)
 		n++;
 	}
 	strcat(x, "\n");
-	ri.Printf( PRINT_ALL, x);
+	ri.Printf(PRINT_ALL, x);
 }
 #endif
 
@@ -3434,7 +3434,7 @@ static inline void G2_RagGetPelvisLumbarOffsets(CGhoul2Info &ghoul2, CRagDollUpd
 }
 
 static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const vec3_t currentOrg, CRagDollUpdateParams *params, int curTime)
-{ //now returns true if any bone was in solid, otherwise false
+{//now returns true if any bone was in solid, otherwise false
 	int ignoreNum = params->me;
 	static int i;
 	static vec3_t goalSpot;
@@ -3536,7 +3536,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 		}
 
 		if (bone.hasOverGoal)
-		{ //api call was made to override the goal spot
+		{//api call was made to override the goal spot
 			VectorCopy(bone.overGoalSpot, goalSpot);
 			bone.solidCount = 0;
 			for (k = 0; k < 3; k++)
@@ -3574,7 +3574,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 				bParentIndex = skel->parent;
 
 				while (bParentIndex > 0)
-				{ //go upward through hierarchy searching for the first parent that is a rag bone
+				{//go upward through hierarchy searching for the first parent that is a rag bone
 					skel = (mdxaSkel_t *)((byte *)ghoul2V[0].aHeader + sizeof(mdxaHeader_t) + offsets->offsets[bParentIndex]);
 					bParentIndex = skel->parent;
 					bParentListIndex = G2_Find_Bone(ghoul2V[0].animModel, ghoul2V[0].mBlist, skel->name);
@@ -3583,7 +3583,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 					{
 						boneInfo_t &pbone = ghoul2V[0].mBlist[bParentListIndex];
 						if (pbone.flags & BONE_ANGLES_RAGDOLL)
-						{ //valid rag bone
+						{//valid rag bone
 							break;
 						}
 					}
@@ -3600,7 +3600,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 				boneInfo_t &pbone = ghoul2V[0].mBlist[bone.parentBoneIndex];
 
 				if (pbone.flags & BONE_ANGLES_RAGDOLL)
-				{ //has origin calculated for us already
+				{//has origin calculated for us already
 					VectorCopy(ragEffectors[pbone.ragIndex].currentOrigin, parentOrigin);
 					hasDaddy = true;
 				}
@@ -3625,7 +3625,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 
 				if (d > 16.0f ||
 					d < -16.0f)
-				{ //don't update unless x degrees away from the ideal to avoid moving goal spots too much if pelvis rotates
+				{//don't update unless x degrees away from the ideal to avoid moving goal spots too much if pelvis rotates
 					bone.offsetRotation = fa;
 				}
 				else
@@ -3690,14 +3690,14 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 		}
 
 		if (tr.startsolid || tr.allsolid || tr.fraction != 1.0f)
-		{ //currently in solid, see what we can do about it
+		{//currently in solid, see what we can do about it
 			vec3_t vSub;
 
 			startSolid = true;
 			anySolid = true;
 
 			if (hasBasePos)// && bone.solidCount < 32)
-			{ //only go to the base pos for slightly in solid bones
+			{//only go to the base pos for slightly in solid bones
 #if 0 //over-compensation
 				float fl;
 				float floorBase;
@@ -3716,10 +3716,10 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 				VectorCopy(basePos, goalSpot);
 				goalSpot[2] = (params->position[2]-23)-testMins[2];
 #endif
-				//ri.Printf( PRINT_ALL, "%i: %f %f %f\n", bone.boneNumber, basePos[0], basePos[1], basePos[2]);
+				//ri.Printf(PRINT_ALL, "%i: %f %f %f\n", bone.boneNumber, basePos[0], basePos[1], basePos[2]);
 			}
 			else
-			{ //if deep in solid want to try to rise up out of solid before hinting back to base
+			{//if deep in solid want to try to rise up out of solid before hinting back to base
 				VectorSubtract(e.currentOrigin, params->position, vSub);
 				VectorNormalize(vSub);
 				VectorMA(params->position, 40.0f, vSub, goalSpot);
@@ -3756,7 +3756,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 			}
 
 			if (VectorLength(velDir) > 2.0f)
-			{ //don't bother if already close
+			{//don't bother if already close
 				VectorNormalize(velDir);
 				VectorScale(velDir, 8.0f, velDir);
 				velDir[2] = 0; //don't want to nudge on Z, the gravity will take care of things.
@@ -3780,7 +3780,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 				vellen = VectorLength(vel);
 
 				if (vellen > 64.0f)
-				{ //cap it off
+				{//cap it off
 					VectorScale(vel, 64.0f/vellen, vel);
 				}
 
@@ -3788,7 +3788,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 				VectorInverse(vel);
 
 				if (vel[2])
-				{ //want to override entirely instead then
+				{//want to override entirely instead then
 					VectorCopy(vel, bone.epVelocity);
 				}
 				else
@@ -3800,7 +3800,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 			//We're not in solid so we can apply physics freely now.
 			if (!G2_ApplyRealBonePhysics(bone, e, params, goalSpot, testMins, testMaxs,
 				gravity, mass, bounce))
-			{ //if this is the case then somehow we failed to apply physics/get a good goal spot, just use the ent origin
+			{//if this is the case then somehow we failed to apply physics/get a good goal spot, just use the ent origin
 				VectorCopy(params->position, goalSpot);
 			}
 		}
@@ -3810,8 +3810,8 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 		{
 			bone.solidCount++;
 #if 0
-			if ( ri.CGVMLoaded() && bone.solidCount > 8 )
-			{ //make a callback and see if the cgame wants to help us out
+			if (ri.CGVMLoaded() && bone.solidCount > 8)
+			{//make a callback and see if the cgame wants to help us out
 				Rag_Trace(&solidTr, params->position, testMins, testMaxs, e.currentOrigin, ignoreNum, RAG_MASK, G2_NOCOLLIDE, 0);
 
 				if (solidTr.fraction != 1.0f &&
@@ -3825,7 +3825,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 					callData->entNum = params->me;
 					callData->solidCount = bone.solidCount;
 
-					ri.CGVM_RagCallback( RAG_CALLBACK_BONEINSOLID );
+					ri.CGVM_RagCallback(RAG_CALLBACK_BONEINSOLID);
 				}
 			}
 #endif
@@ -3838,7 +3838,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 
 				assert(debugBoneName);
 
-				ri.Printf( PRINT_ALL, "High bone (%s, %i) solid count: %i\n", debugBoneName, bone.boneNumber, bone.solidCount);
+				ri.Printf(PRINT_ALL, "High bone (%s, %i) solid count: %i\n", debugBoneName, bone.boneNumber, bone.solidCount);
 
 				VectorAdd(e.currentOrigin, testMins, absmin);
 				VectorAdd(e.currentOrigin, testMaxs, absmax);
@@ -3866,7 +3866,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 			len = VectorLength(moveDist);
 
 			if (len > extent)
-			{ //if greater than the extent then scale the vector down to the extent and factor it back into the goalspot
+			{//if greater than the extent then scale the vector down to the extent and factor it back into the goalspot
                 VectorScale(moveDist, extent/len, moveDist);
 				VectorAdd(e.currentOrigin, moveDist, goalSpot);
 			}
@@ -3888,7 +3888,7 @@ static bool G2_RagDollSettlePositionNumeroTrois(CGhoul2Info_v &ghoul2V, const ve
 					float solidFactor = bone.solidCount*0.2f;
 
 					if (solidFactor > 16.0f)
-					{ //don't go too high or something ugly might happen
+					{//don't go too high or something ugly might happen
 						solidFactor = 16.0f;
 					}
 
@@ -3935,7 +3935,7 @@ static float AngleNormZero(float theta)
 
 static inline void G2_BoneSnap(CGhoul2Info_v &ghoul2V, boneInfo_t &bone, CRagDollUpdateParams *params)
 {
-	if ( !ri.CGVMLoaded() || !params )
+	if (!ri.CGVMLoaded() || !params)
 	{
 		return;
 	}
@@ -3945,7 +3945,7 @@ static inline void G2_BoneSnap(CGhoul2Info_v &ghoul2V, boneInfo_t &bone, CRagDol
 	callData->entNum = params->me;
 	strcpy(callData->boneName, G2_Get_Bone_Name(&ghoul2V[0], ghoul2V[0].mBlist, bone.boneNumber));
 
-	ri.CGVM_RagCallback( RAG_CALLBACK_BONESNAP );
+	ri.CGVM_RagCallback(RAG_CALLBACK_BONESNAP);
 }
 
 static void G2_RagDollSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int frameNum,const vec3_t currentOrg,bool limitAngles,CRagDollUpdateParams *params)
@@ -3985,7 +3985,7 @@ static void G2_RagDollSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int f
 									MyAnimMatrix * ragBasepose[i] * current_rot_matrix * ragBaseposeInv[i] *
 									[skeletal heirachy2] * EffectorAnimMatrix * ragBasepose[depIndex]
 
-						My ( sub-i) true bone matrix is:
+						My (sub-i) true bone matrix is:
 								M = ragBones[i] = EntToWorld * [skeletal heirachry1] *
 								MyAnimMatrix * ragBasepose[i] * current_rot_matrix * ragBaseposeInv[i] * ragBasepose[i]
 
@@ -4050,7 +4050,7 @@ static void G2_RagDollSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int f
 			{
 				float	magicFactor12=0.25f; // dampfactor for pelvis pos
 				float	magicFactor13=0.20f; //controls the speed of the gradient descent (pelvis pos)
-				assert( !Q_isnan(bone.ragOverrideMatrix.matrix[2][3]));
+				assert(!Q_isnan(bone.ragOverrideMatrix.matrix[2][3]));
 				vec3_t deltaInEntitySpace;
 				TransformPoint(desiredPelvisOffset,deltaInEntitySpace,&N); // dest middle arg
 				for (k=0;k<3;k++)
@@ -4119,10 +4119,10 @@ static void G2_RagDollSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int f
 						vec3_t change;
 						VectorSubtract(tPosition,ragEffectors[depIndex].currentOrigin,change); // dest is last arg
 						float goodness=DotProduct(change,ragEffectors[depIndex].desiredDirection);
-						assert( !Q_isnan(goodness));
+						assert(!Q_isnan(goodness));
 						goodness*=depBone.weight;
 						delAngles[k]+=goodness; // keep bigger stuff more out of wall or something
-						assert( !Q_isnan(delAngles[k]));
+						assert(!Q_isnan(delAngles[k]));
 					}
 					allSolidCount += depBone.solidCount;
 				}
@@ -4152,7 +4152,7 @@ static void G2_RagDollSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int f
 			}
 
 			if (bone.overGradSpeed)
-			{ //api call was made to specify a speed for this bone
+			{//api call was made to specify a speed for this bone
 				magicFactor1 = bone.overGradSpeed;
 			}
 
@@ -4184,7 +4184,7 @@ static void G2_RagDollSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int f
 				bone.currentAngles[k]=AngleNormZero(bone.currentAngles[k]);
 //	bone.currentAngles[k]=flrand(bone.minAngles[k],bone.maxAngles[k]);
 #if 1 //constraint breaks?
-				if (limitAngles && ( allSolidCount < 32 || (bone.RagFlags & RAG_UNSNAPPABLE) )) //32 tries and still in solid? Then we'll let you move freely
+				if (limitAngles && (allSolidCount < 32 || (bone.RagFlags & RAG_UNSNAPPABLE))) //32 tries and still in solid? Then we'll let you move freely
 #else
 				if (limitAngles)
 #endif
@@ -4229,7 +4229,7 @@ static void G2_RagDollSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int f
 			Create_Matrix(bone.currentAngles,&temp1);
 			Multiply_3x4Matrix(&temp2,&temp1,bone.baseposeInv);
 			Multiply_3x4Matrix(&bone.ragOverrideMatrix,bone.basepose, &temp2);
-			assert( !Q_isnan(bone.ragOverrideMatrix.matrix[2][3]));
+			assert(!Q_isnan(bone.ragOverrideMatrix.matrix[2][3]));
 		}
 		G2_Generate_MatrixRag(blist,ragBlistIndex[bone.boneNumber]);
 	}
@@ -4365,10 +4365,10 @@ static void G2_IKSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int frameN
 					vec3_t change;
 					VectorSubtract(tPosition,ragEffectors[depIndex].currentOrigin,change); // dest is last arg
 					float goodness=DotProduct(change,ragEffectors[depIndex].desiredDirection);
-					assert( !Q_isnan(goodness));
+					assert(!Q_isnan(goodness));
 					goodness*=depBone.weight;
 					delAngles[k]+=goodness; // keep bigger stuff more out of wall or something
-					assert( !Q_isnan(delAngles[k]));
+					assert(!Q_isnan(delAngles[k]));
 				}
 			}
 		}
@@ -4425,7 +4425,7 @@ static void G2_IKSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int frameN
 		Create_Matrix(bone.currentAngles, &temp1);
 		Multiply_3x4Matrix(&temp2, &temp1, bone.baseposeInv);
 		Multiply_3x4Matrix(&bone.ragOverrideMatrix, bone.basepose, &temp2);
-		assert( !Q_isnan(bone.ragOverrideMatrix.matrix[2][3]));
+		assert(!Q_isnan(bone.ragOverrideMatrix.matrix[2][3]));
 
 		G2_Generate_MatrixRag(blist, ragBlistIndex[bone.boneNumber]);
 	}
@@ -4502,7 +4502,7 @@ void G2_Animate_Bone_List(CGhoul2Info_v &ghoul2, const int currentTime, const in
 	if (!index&&params)
 	{
 		if (anyIK)
-		{ //we use ragdoll params so we know what our current position, etc. is.
+		{//we use ragdoll params so we know what our current position, etc. is.
 			G2_DoIK(ghoul2, 0, params);
 		}
 		else
@@ -4555,9 +4555,9 @@ static int G2_Set_Bone_Angles_IK(
 			static mdxaBone_t		id =
 			{
 				{
-					{ 1.0f, 0.0f, 0.0f, 0.0f },
-					{ 0.0f, 1.0f, 0.0f, 0.0f },
-					{ 0.0f, 0.0f, 1.0f, 0.0f }
+					{1.0f, 0.0f, 0.0f, 0.0f},
+					{0.0f, 1.0f, 0.0f, 0.0f},
+					{0.0f, 0.0f, 1.0f, 0.0f}
 				}
 			};
 			memcpy(&bone.ragOverrideMatrix,&id, sizeof(mdxaBone_t));
@@ -4654,14 +4654,14 @@ qboolean G2_SetBoneIKState(CGhoul2Info_v &ghoul2, int time, const char *boneName
 	mod_a = (model_t *)g2.animModel;
 
 	if (!boneName)
-	{ //null bonename param means it's time to init the ik stuff on this instance
+	{//null bonename param means it's time to init the ik stuff on this instance
 		sharedRagDollUpdateParams_t sRDUP;
 
 		if (ikState == IKS_NONE)
-		{ //this means we want to reset the IK state completely.. run through the bone list, and reset all the appropriate flags
+		{//this means we want to reset the IK state completely.. run through the bone list, and reset all the appropriate flags
 			size_t i = 0;
 			while (i < blist.size())
-			{ //we can't use this method for ragdoll. However, since we expect them to set their anims/angles again on the PCJ
+			{//we can't use this method for ragdoll. However, since we expect them to set their anims/angles again on the PCJ
 			  //limb after they reset it gameside, it's reasonable for IK bones.
 				boneInfo_t &bone = blist[i];
 				if (bone.boneNumber != -1)
@@ -4704,17 +4704,17 @@ qboolean G2_SetBoneIKState(CGhoul2Info_v &ghoul2, int time, const char *boneName
 	}
 
 	if (index == -1)
-	{ //couldn't find or add the bone..
+	{//couldn't find or add the bone..
 		return qfalse;
 	}
 
 	boneInfo_t &bone = blist[index];
 
 	if (ikState == IKS_NONE)
-	{ //remove the bone from the list then, so it has to reinit. I don't think this should hurt anything since
+	{//remove the bone from the list then, so it has to reinit. I don't think this should hurt anything since
 	  //we don't store bone index handles gameside anywhere.
 		if (!(bone.flags & BONE_ANGLES_RAGDOLL))
-		{ //you can't set the ik state to none if it's not a rag/ik bone.
+		{//you can't set the ik state to none if it's not a rag/ik bone.
 			return qfalse;
 		}
 		//bone.flags = 0;
@@ -4734,12 +4734,12 @@ qboolean G2_SetBoneIKState(CGhoul2Info_v &ghoul2, int time, const char *boneName
 	}
 
 	if (bone.flags & BONE_ANGLES_RAGDOLL)
-	{ //otherwise if the bone is already flagged as rag, then we can't set it again. (non-active ik bones will be BONE_ANGLES_IK, active are considered rag)
+	{//otherwise if the bone is already flagged as rag, then we can't set it again. (non-active ik bones will be BONE_ANGLES_IK, active are considered rag)
 		return qfalse;
 	}
 #if 0 //this is wrong now.. we're only initing effectors with initik now.. which SHOULDN'T be used as pcj's
 	if (!(bone.flags & BONE_ANGLES_IK) && !(bone.flags & BONE_ANGLES_RAGDOLL))
-	{ //IK system has not been inited yet, because any bone that can be IK should be in the ragdoll list, not flagged as BONE_ANGLES_RAGDOLL but as BONE_ANGLES_IK
+	{//IK system has not been inited yet, because any bone that can be IK should be in the ragdoll list, not flagged as BONE_ANGLES_RAGDOLL but as BONE_ANGLES_IK
 		sharedRagDollUpdateParams_t sRDUP;
 		sRDUP.me = 0;
 		VectorCopy(params->angles, sRDUP.angles);
@@ -4775,7 +4775,7 @@ qboolean G2_SetBoneIKState(CGhoul2Info_v &ghoul2, int time, const char *boneName
 	int startFrame = params->startFrame, endFrame = params->endFrame;
 
 	if (bone.startFrame != startFrame || bone.endFrame != endFrame || params->forceAnimOnBone)
-	{ //if it's already on this anim leave it alone, to allow smooth transitions into IK on the current anim if it is so desired.
+	{//if it's already on this anim leave it alone, to allow smooth transitions into IK on the current anim if it is so desired.
 		G2_Set_Bone_Anim_No_BS(g2, rmod_a, blist, boneName, startFrame, endFrame-1,
 			BONE_ANIM_OVERRIDE_FREEZE|BONE_ANIM_BLEND,
 			1.0f, curTime, float(startFrame), 150, 0, true);
@@ -4815,7 +4815,7 @@ qboolean G2_IKMove(CGhoul2Info_v &ghoul2, int time, sharedIKMoveParams_t *params
 
 	//don't add here if you can't find it.. ik bones should already be there, because they need to have special stuff done to them anyway.
 	if (index == -1)
-	{ //couldn't find the bone..
+	{//couldn't find the bone..
 		return qfalse;
 	}
 
@@ -4826,7 +4826,7 @@ qboolean G2_IKMove(CGhoul2Info_v &ghoul2, int time, sharedIKMoveParams_t *params
 	}
 
 	if (!(blist[index].flags & BONE_ANGLES_RAGDOLL) && !(blist[index].flags & BONE_ANGLES_IK))
-	{ //no-can-do, buddy
+	{//no-can-do, buddy
 		return qfalse;
 	}
 
@@ -4839,7 +4839,7 @@ qboolean G2_IKMove(CGhoul2Info_v &ghoul2, int time, sharedIKMoveParams_t *params
 
 	//rwwFIXMEFIXME: Doing this on all bones at the moment, fix this later?
 	if (!G2_RagDollSetup(g2,curTime,true,params->origin,false))
-	{ //changed models, possibly.
+	{//changed models, possibly.
 		return qfalse;
 	}
 

@@ -123,7 +123,7 @@ rgb_ycc_start (j_compress_ptr cinfo)
 */
     rgb_ycc_tab[i+G_CR_OFF] = (-FIX(0.418687589)) * i;
     rgb_ycc_tab[i+B_CR_OFF] = (-FIX(0.081312411)) * i;
-  }
+ }
 }
 
 
@@ -180,8 +180,8 @@ rgb_ycc_convert (j_compress_ptr cinfo,
 		((ctab[r+R_CR_OFF] + ctab[g+G_CR_OFF] + ctab[b+B_CR_OFF])
 		 >> SCALEBITS);
       inptr += RGB_PIXELSIZE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -220,8 +220,8 @@ rgb_gray_convert (j_compress_ptr cinfo,
 		((ctab[r+R_Y_OFF] + ctab[g+G_Y_OFF] + ctab[b+B_Y_OFF])
 		 >> SCALEBITS);
       inptr += RGB_PIXELSIZE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -277,8 +277,8 @@ cmyk_ycck_convert (j_compress_ptr cinfo,
 		((ctab[r+R_CR_OFF] + ctab[g+G_CR_OFF] + ctab[b+B_CR_OFF])
 		 >> SCALEBITS);
       inptr += 4;
-    }
-  }
+   }
+ }
 }
 
 
@@ -319,8 +319,8 @@ rgb_rgb1_convert (j_compress_ptr cinfo,
       outptr1[col] = (JSAMPLE) g;
       outptr2[col] = (JSAMPLE) ((b - g + CENTERJSAMPLE) & MAXJSAMPLE);
       inptr += RGB_PIXELSIZE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -347,8 +347,8 @@ grayscale_convert (j_compress_ptr cinfo,
     for (col = 0; col < num_cols; col++) {
       outptr[col] = inptr[0];	/* don't need GETJSAMPLE() here */
       inptr += instride;
-    }
-  }
+   }
+ }
 }
 
 
@@ -380,8 +380,8 @@ rgb_convert (j_compress_ptr cinfo,
       outptr1[col] = inptr[RGB_GREEN];
       outptr2[col] = inptr[RGB_BLUE];
       inptr += RGB_PIXELSIZE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -411,11 +411,11 @@ null_convert (j_compress_ptr cinfo,
       for (col = 0; col < num_cols; col++) {
 	*outptr++ = *inptr;	/* don't need GETJSAMPLE() here */
 	inptr += nc;
-      }
-    }
+     }
+   }
     input_buf++;
     output_row++;
-  }
+ }
 }
 
 
@@ -475,7 +475,7 @@ jinit_color_converter (j_compress_ptr cinfo)
     if (cinfo->input_components < 1)
       ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
     break;
-  }
+ }
 
   /* Support color transform only for RGB colorspaces */
   if (cinfo->color_transform &&
@@ -500,7 +500,7 @@ jinit_color_converter (j_compress_ptr cinfo)
       break;
     default:
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-    }
+   }
     break;
 
   case JCS_RGB:
@@ -517,8 +517,8 @@ jinit_color_converter (j_compress_ptr cinfo)
 	break;
       default:
 	ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-      }
-    } else
+     }
+   } else
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     break;
 
@@ -535,7 +535,7 @@ jinit_color_converter (j_compress_ptr cinfo)
       break;
     default:
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-    }
+   }
     break;
 
   case JCS_BG_YCC:
@@ -566,7 +566,7 @@ jinit_color_converter (j_compress_ptr cinfo)
       break;
     default:
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-    }
+   }
     break;
 
   case JCS_CMYK:
@@ -591,7 +591,7 @@ jinit_color_converter (j_compress_ptr cinfo)
       break;
     default:
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-    }
+   }
     break;
 
   default:			/* allow null conversion of JCS_UNKNOWN */
@@ -600,5 +600,5 @@ jinit_color_converter (j_compress_ptr cinfo)
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     cconvert->pub.color_convert = null_convert;
     break;
-  }
+ }
 }

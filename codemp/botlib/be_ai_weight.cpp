@@ -304,27 +304,27 @@ weightconfig_t *ReadWeightConfig(char *filename)
 	if (!LibVarGetValue("bot_reloadcharacters"))
 	{
 		avail = -1;
-		for( n = 0; n < MAX_WEIGHT_FILES; n++ )
+		for(n = 0; n < MAX_WEIGHT_FILES; n++)
 		{
 			config = weightFileList[n];
-			if( !config )
+			if(!config)
 			{
-				if( avail == -1 )
+				if(avail == -1)
 				{
 					avail = n;
 				} //end if
 				continue;
 			} //end if
-			if( strcmp( filename, config->filename ) == 0 )
+			if(strcmp(filename, config->filename) == 0)
 			{
-				//botimport.Print( PRT_MESSAGE, "retained %s\n", filename );
+				//botimport.Print(PRT_MESSAGE, "retained %s\n", filename);
 				return config;
 			} //end if
 		} //end for
 
-		if( avail == -1 )
+		if(avail == -1)
 		{
-			botimport.Print( PRT_ERROR, "weightFileList was full trying to load %s\n", filename );
+			botimport.Print(PRT_ERROR, "weightFileList was full trying to load %s\n", filename);
 			return NULL;
 		} //end if
 	} //end if
@@ -339,7 +339,7 @@ weightconfig_t *ReadWeightConfig(char *filename)
 	//
 	config = (weightconfig_t *) GetClearedMemory(sizeof(weightconfig_t));
 	config->numweights = 0;
-	Q_strncpyz( config->filename, filename, sizeof(config->filename) );
+	Q_strncpyz(config->filename, filename, sizeof(config->filename));
 	//parse the item config file
 	while(PC_ReadToken(source, &token))
 	{
@@ -919,7 +919,7 @@ void BotShutdownWeights(void)
 {
 	int i;
 
-	for( i = 0; i < MAX_WEIGHT_FILES; i++ )
+	for(i = 0; i < MAX_WEIGHT_FILES; i++)
 	{
 		if (weightFileList[i])
 		{

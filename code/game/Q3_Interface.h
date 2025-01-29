@@ -352,14 +352,14 @@ const	int	Q3_TIME_SCALE	= 1;	//MILLISECONDS
 extern char	cinematicSkipScript[64];
 
 //General
-extern	void		Q3_TaskIDClear( int *taskID );
-extern	qboolean	Q3_TaskIDPending( gentity_t *ent, taskID_t taskType );
-extern	void		Q3_TaskIDComplete( gentity_t *ent, taskID_t taskType );
-extern	void		Q3_DPrintf( const char *, ... );
+extern	void		Q3_TaskIDClear(int *taskID);
+extern	qboolean	Q3_TaskIDPending(gentity_t *ent, taskID_t taskType);
+extern	void		Q3_TaskIDComplete(gentity_t *ent, taskID_t taskType);
+extern	void		Q3_DPrintf(const char *, ...);
 
 //Not referenced directly as script function - all are called through Q3_Set
-extern	void		Q3_SetAnimBoth( int entID, const char *anim_name );
-extern	void		Q3_SetVelocity( int entID, vec3_t angles );
+extern	void		Q3_SetAnimBoth(int entID, const char *anim_name);
+extern	void		Q3_SetVelocity(int entID, vec3_t angles);
 
 //////////////////////////////////////////////////////////////////////////
 /*		BEGIN Almost useless tokenizer and interpreter constants BEGIN	*/
@@ -585,19 +585,19 @@ private:
 	int				m_entFilter;
 
 	// Register variables functions.
-	void SetVar( int taskID, int entID, const char *type_name, const char *data );
-	void VariableSaveFloats( varFloat_m &fmap );
-	void VariableSaveStrings( varString_m &smap );
-	void VariableLoadFloats( varFloat_m &fmap );
-	void VariableLoadStrings( int type, varString_m &fmap );
-	void InitVariables( void );
-	int  GetStringVariable( const char *name, const char **value );
-	int  GetFloatVariable( const char *name, float *value );
-	int  GetVectorVariable( const char *name, vec3_t value );
-	int  VariableDeclared( const char *name );
-	int  SetFloatVariable( const char *name, float value );
-	int  SetStringVariable( const char *name, const char *value );
-	int  SetVectorVariable( const char *name, const char *value );
+	void SetVar(int taskID, int entID, const char *type_name, const char *data);
+	void VariableSaveFloats(varFloat_m &fmap);
+	void VariableSaveStrings(varString_m &smap);
+	void VariableLoadFloats(varFloat_m &fmap);
+	void VariableLoadStrings(int type, varString_m &fmap);
+	void InitVariables(void);
+	int  GetStringVariable(const char *name, const char **value);
+	int  GetFloatVariable(const char *name, float *value);
+	int  GetVectorVariable(const char *name, vec3_t value);
+	int  VariableDeclared(const char *name);
+	int  SetFloatVariable(const char *name, float value);
+	int  SetStringVariable(const char *name, const char *value);
+	int  SetVectorVariable(const char *name, const char *value);
 	void PrisonerObjCheck(const char *name,const char *data);
 
 public:
@@ -605,10 +605,10 @@ public:
 	static CQuake3GameInterface *m_pInstance;
 
 	// Variable enums
-	enum { VTYPE_NONE = 0, VTYPE_FLOAT, VTYPE_STRING, VTYPE_VECTOR, MAX_VARIABLES = 32 };
+	enum {VTYPE_NONE = 0, VTYPE_FLOAT, VTYPE_STRING, VTYPE_VECTOR, MAX_VARIABLES = 32};
 
 	// Register enums.
-	enum { SCRIPT_COULDNOTREGISTER = 0, SCRIPT_REGISTERED, SCRIPT_ALREADYREGISTERED };
+	enum {SCRIPT_COULDNOTREGISTER = 0, SCRIPT_REGISTERED, SCRIPT_ALREADYREGISTERED};
 
 	// Constructor.
 	CQuake3GameInterface();
@@ -617,42 +617,42 @@ public:
 	~CQuake3GameInterface();
 
 	// Initialize an Entity by ID.
-	bool InitEntity( gentity_t *pEntity );
+	bool InitEntity(gentity_t *pEntity);
 
 	// Free an Entity by ID (NOTE, if this is called while a script is running the game will crash!).
-	void FreeEntity( gentity_t *pEntity );
+	void FreeEntity(gentity_t *pEntity);
 
 	// Determines whether or not an Entity needs ICARUS information.
-	bool ValidEntity( gentity_t *pEntity );
+	bool ValidEntity(gentity_t *pEntity);
 
 	// Associate the entity's id and name so that it can be referenced later.
-	void AssociateEntity( gentity_t *pEntity );
+	void AssociateEntity(gentity_t *pEntity);
 
 	// Make a valid script name.
-	int MakeValidScriptName( char **strScriptName );
+	int MakeValidScriptName(char **strScriptName);
 
 	// First looks to see if a script has already been loaded, if so, return SCRIPT_ALREADYREGISTERED. If a script has
 	// NOT been already cached, that script is loaded and the return is SCRIPT_REGISTERED. If a script could not
 	// be found cached and could not be loaded we return SCRIPT_COULDNOTREGISTER.
-	int RegisterScript( const char *strFileName, void **ppBuf, int &iLength );
+	int RegisterScript(const char *strFileName, void **ppBuf, int &iLength);
 
 	// Precache all the resources needed by a Script and it's Entity (or vice-versa).
-	int PrecacheEntity( gentity_t *pEntity );
+	int PrecacheEntity(gentity_t *pEntity);
 
 	// Run the script.
-	void RunScript( const gentity_t *pEntity, const char *strScriptName );
+	void RunScript(const gentity_t *pEntity, const char *strScriptName);
 
 	// Log Icarus Entity's?
-	void Svcmd( void );
+	void Svcmd(void);
 
 	// Clear the list of entitys.
-	void ClearEntityList() { m_EntityList.clear(); }
+	void ClearEntityList() {m_EntityList.clear();}
 
 	// Save all Variables.
-	int VariableSave( void );
+	int VariableSave(void);
 
 	// Load all Variables.
-	int VariableLoad( void );
+	int VariableLoad(void);
 
     // Overiddables.
 
@@ -660,71 +660,71 @@ public:
 	int GetFlavor() OVERRIDE;
 
 	//General
-	int		LoadFile( const char *name, void **buf ) OVERRIDE;
-	void	CenterPrint( const char *format, ... ) OVERRIDE;
-	void	DebugPrint( e_DebugPrintLevel, const char *, ... ) OVERRIDE;
-	unsigned int GetTime( void ) OVERRIDE;							//Gets the current time
-	//DWORD	GetTimeScale(void );
-	int 	PlayIcarusSound( int taskID, int entID, const char *name, const char *channel ) OVERRIDE;
-	void	Lerp2Pos( int taskID, int entID, vec3_t origin, vec3_t angles, float duration ) OVERRIDE;
-	void	Lerp2Angles( int taskID, int entID, vec3_t angles, float duration ) OVERRIDE;
-	int		GetTag( int entID, const char *name, int lookup, vec3_t info ) OVERRIDE;
-	void	Set( int taskID, int entID, const char *type_name, const char *data ) OVERRIDE;
-	void	Use( int entID, const char *name ) OVERRIDE;
-	void	Activate( int entID, const char *name ) OVERRIDE;
-	void	Deactivate( int entID, const char *name ) OVERRIDE;
-	void	Kill( int entID, const char *name ) OVERRIDE;
-	void	Remove( int entID, const char *name ) OVERRIDE;
-	float	Random( float min, float max ) OVERRIDE;
-	void	Play( int taskID, int entID, const char *type, const char *name ) OVERRIDE;
+	int		LoadFile(const char *name, void **buf) OVERRIDE;
+	void	CenterPrint(const char *format, ...) OVERRIDE;
+	void	DebugPrint(e_DebugPrintLevel, const char *, ...) OVERRIDE;
+	unsigned int GetTime(void) OVERRIDE;							//Gets the current time
+	//DWORD	GetTimeScale(void);
+	int 	PlayIcarusSound(int taskID, int entID, const char *name, const char *channel) OVERRIDE;
+	void	Lerp2Pos(int taskID, int entID, vec3_t origin, vec3_t angles, float duration) OVERRIDE;
+	void	Lerp2Angles(int taskID, int entID, vec3_t angles, float duration) OVERRIDE;
+	int		GetTag(int entID, const char *name, int lookup, vec3_t info) OVERRIDE;
+	void	Set(int taskID, int entID, const char *type_name, const char *data) OVERRIDE;
+	void	Use(int entID, const char *name) OVERRIDE;
+	void	Activate(int entID, const char *name) OVERRIDE;
+	void	Deactivate(int entID, const char *name) OVERRIDE;
+	void	Kill(int entID, const char *name) OVERRIDE;
+	void	Remove(int entID, const char *name) OVERRIDE;
+	float	Random(float min, float max) OVERRIDE;
+	void	Play(int taskID, int entID, const char *type, const char *name) OVERRIDE;
 
 	//Camera functions
-	void	CameraPan( vec3_t angles, vec3_t dir, float duration ) OVERRIDE;
-	void	CameraMove( vec3_t origin, float duration ) OVERRIDE;
-	void	CameraZoom( float fov, float duration ) OVERRIDE;
-	void	CameraRoll( float angle, float duration ) OVERRIDE;
-	void	CameraFollow( const char *name, float speed, float initLerp ) OVERRIDE;
-	void	CameraTrack( const char *name, float speed, float initLerp ) OVERRIDE;
-	void	CameraDistance( float dist, float initLerp ) OVERRIDE;
-	void	CameraFade( float sr, float sg, float sb, float sa, float dr, float dg, float db, float da, float duration ) OVERRIDE;
-	void	CameraPath( const char *name ) OVERRIDE;
-	void	CameraEnable( void ) OVERRIDE;
-	void	CameraDisable( void ) OVERRIDE;
-	void	CameraShake( float intensity, int duration ) OVERRIDE;
+	void	CameraPan(vec3_t angles, vec3_t dir, float duration) OVERRIDE;
+	void	CameraMove(vec3_t origin, float duration) OVERRIDE;
+	void	CameraZoom(float fov, float duration) OVERRIDE;
+	void	CameraRoll(float angle, float duration) OVERRIDE;
+	void	CameraFollow(const char *name, float speed, float initLerp) OVERRIDE;
+	void	CameraTrack(const char *name, float speed, float initLerp) OVERRIDE;
+	void	CameraDistance(float dist, float initLerp) OVERRIDE;
+	void	CameraFade(float sr, float sg, float sb, float sa, float dr, float dg, float db, float da, float duration) OVERRIDE;
+	void	CameraPath(const char *name) OVERRIDE;
+	void	CameraEnable(void) OVERRIDE;
+	void	CameraDisable(void) OVERRIDE;
+	void	CameraShake(float intensity, int duration) OVERRIDE;
 
-	int		GetFloat( int entID, const char *name, float *value ) OVERRIDE;
-	int		GetVector( int entID, const char *name, vec3_t value ) OVERRIDE;
-	int		GetString( int entID, const char *name, char **value ) OVERRIDE;
+	int		GetFloat(int entID, const char *name, float *value) OVERRIDE;
+	int		GetVector(int entID, const char *name, vec3_t value) OVERRIDE;
+	int		GetString(int entID, const char *name, char **value) OVERRIDE;
 
-	int		Evaluate( int p1Type, const char *p1, int p2Type, const char *p2, int operatorType ) OVERRIDE;
+	int		Evaluate(int p1Type, const char *p1, int p2Type, const char *p2, int operatorType) OVERRIDE;
 
-	void	DeclareVariable( int type, const char *name ) OVERRIDE;
-	void	FreeVariable( const char *name ) OVERRIDE;
+	void	DeclareVariable(int type, const char *name) OVERRIDE;
+	void	FreeVariable(const char *name) OVERRIDE;
 
 	//Save / Load functions
-	int		LinkGame( int entID, int icarusID ) OVERRIDE;
+	int		LinkGame(int entID, int icarusID) OVERRIDE;
 
 	ojk::ISavedGame* get_saved_game_file() override;
 
 	// Access functions
-	int		CreateIcarus( int entID) OVERRIDE;
+	int		CreateIcarus(int entID) OVERRIDE;
 			//Polls the engine for the sequencer of the entity matching the name passed
-	int		GetByName( const char *name ) OVERRIDE;
+	int		GetByName(const char *name) OVERRIDE;
 	// (g_entities[m_ownerID].svFlags&SVF_ICARUS_FREEZE)	// return -1 indicates invalid
 	int		IsFrozen(int entID) OVERRIDE;
 	void	Free(void* data) OVERRIDE;
-	void	*Malloc( int size ) OVERRIDE;
+	void	*Malloc(int size) OVERRIDE;
 	float	MaxFloat(void) OVERRIDE;
 
 	// Script precache functions.
-	void	PrecacheRoff( const char *name ) OVERRIDE;
-	void	PrecacheScript( const char *name ) OVERRIDE;
-	void	PrecacheSound( const char *name ) OVERRIDE;
-	void	PrecacheFromSet( const char *setname, const char *filename ) OVERRIDE;
+	void	PrecacheRoff(const char *name) OVERRIDE;
+	void	PrecacheScript(const char *name) OVERRIDE;
+	void	PrecacheSound(const char *name) OVERRIDE;
+	void	PrecacheFromSet(const char *setname, const char *filename) OVERRIDE;
 };
 
 // A Quick accessor function for accessing Quake 3 Interface specific functions.
-inline CQuake3GameInterface *Quake3Game() { return (CQuake3GameInterface *)IGameInterface::GetGame(); }
+inline CQuake3GameInterface *Quake3Game() {return (CQuake3GameInterface *)IGameInterface::GetGame();}
 
 //////////////////////////////////////////////////////////////////////////
 /*					END Quake 3 Game Interface END						*/

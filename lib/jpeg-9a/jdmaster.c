@@ -117,14 +117,14 @@ jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
 	   (cinfo->do_fancy_upsampling ? DCTSIZE : DCTSIZE / 2) &&
 	   (cinfo->max_h_samp_factor % (compptr->h_samp_factor * ssize * 2)) == 0) {
       ssize = ssize * 2;
-    }
+   }
     compptr->DCT_h_scaled_size = cinfo->min_DCT_h_scaled_size * ssize;
     ssize = 1;
     while (cinfo->min_DCT_v_scaled_size * ssize <=
 	   (cinfo->do_fancy_upsampling ? DCTSIZE : DCTSIZE / 2) &&
 	   (cinfo->max_v_samp_factor % (compptr->v_samp_factor * ssize * 2)) == 0) {
       ssize = ssize * 2;
-    }
+   }
     compptr->DCT_v_scaled_size = cinfo->min_DCT_v_scaled_size * ssize;
 
     /* We don't support IDCT ratios larger than 2. */
@@ -132,7 +132,7 @@ jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
 	compptr->DCT_h_scaled_size = compptr->DCT_v_scaled_size * 2;
     else if (compptr->DCT_v_scaled_size > compptr->DCT_h_scaled_size * 2)
 	compptr->DCT_v_scaled_size = compptr->DCT_h_scaled_size * 2;
-  }
+ }
 
   /* Recompute downsampled dimensions of components;
    * application needs to know these if using raw downsampled data.
@@ -148,7 +148,7 @@ jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height *
 		    (long) (compptr->v_samp_factor * compptr->DCT_v_scaled_size),
 		    (long) (cinfo->max_v_samp_factor * cinfo->block_size));
-  }
+ }
 
 #endif /* IDCT_SCALING_SUPPORTED */
 
@@ -173,7 +173,7 @@ jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
   default:			/* else must be same colorspace as in file */
     cinfo->out_color_components = cinfo->num_components;
     break;
-  }
+ }
   cinfo->output_components = (cinfo->quantize_colors ? 1 :
 			      cinfo->out_color_components);
 
@@ -307,7 +307,7 @@ master_selection (j_decompress_ptr cinfo)
     cinfo->enable_1pass_quant = FALSE;
     cinfo->enable_external_quant = FALSE;
     cinfo->enable_2pass_quant = FALSE;
-  }
+ }
   if (cinfo->quantize_colors) {
     if (cinfo->raw_data_out)
       ERREXIT(cinfo, JERR_NOTIMPL);
@@ -317,13 +317,13 @@ master_selection (j_decompress_ptr cinfo)
       cinfo->enable_external_quant = FALSE;
       cinfo->enable_2pass_quant = FALSE;
       cinfo->colormap = NULL;
-    } else if (cinfo->colormap != NULL) {
+   } else if (cinfo->colormap != NULL) {
       cinfo->enable_external_quant = TRUE;
-    } else if (cinfo->two_pass_quantize) {
+   } else if (cinfo->two_pass_quantize) {
       cinfo->enable_2pass_quant = TRUE;
-    } else {
+   } else {
       cinfo->enable_1pass_quant = TRUE;
-    }
+   }
 
     if (cinfo->enable_1pass_quant) {
 #ifdef QUANT_1PASS_SUPPORTED
@@ -332,7 +332,7 @@ master_selection (j_decompress_ptr cinfo)
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
-    }
+   }
 
     /* We use the 2-pass code to map to external colormaps. */
     if (cinfo->enable_2pass_quant || cinfo->enable_external_quant) {
@@ -342,11 +342,11 @@ master_selection (j_decompress_ptr cinfo)
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
-    }
+   }
     /* If both quantizers are initialized, the 2-pass one is left active;
      * this is necessary for starting with quantization to an external map.
      */
-  }
+ }
 
   /* Post-processing: in particular, color conversion first */
   if (! cinfo->raw_data_out) {
@@ -356,12 +356,12 @@ master_selection (j_decompress_ptr cinfo)
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
-    } else {
+   } else {
       jinit_color_deconverter(cinfo);
       jinit_upsampler(cinfo);
-    }
+   }
     jinit_d_post_controller(cinfo, cinfo->enable_2pass_quant);
-  }
+ }
   /* Inverse DCT */
   jinit_inverse_dct(cinfo);
   /* Entropy decoding: either Huffman or arithmetic coding. */
@@ -369,7 +369,7 @@ master_selection (j_decompress_ptr cinfo)
     jinit_arith_decoder(cinfo);
   else {
     jinit_huff_decoder(cinfo);
-  }
+ }
 
   /* Initialize principal buffer controllers. */
   use_c_buffer = cinfo->inputctl->has_multiple_scans || cinfo->buffered_image;
@@ -396,17 +396,17 @@ master_selection (j_decompress_ptr cinfo)
     if (cinfo->progressive_mode) {
       /* Arbitrarily estimate 2 interleaved DC scans + 3 AC scans/component. */
       nscans = 2 + 3 * cinfo->num_components;
-    } else {
+   } else {
       /* For a nonprogressive multiscan file, estimate 1 scan per component. */
       nscans = cinfo->num_components;
-    }
+   }
     cinfo->progress->pass_counter = 0L;
     cinfo->progress->pass_limit = (long) cinfo->total_iMCU_rows * nscans;
     cinfo->progress->completed_passes = 0;
     cinfo->progress->total_passes = (cinfo->enable_2pass_quant ? 3 : 2);
     /* Count the input pass as done */
     master->pass_number++;
-  }
+ }
 #endif /* D_MULTISCAN_FILES_SUPPORTED */
 }
 
@@ -435,18 +435,18 @@ prepare_for_output_pass (j_decompress_ptr cinfo)
 #else
     ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif /* QUANT_2PASS_SUPPORTED */
-  } else {
+ } else {
     if (cinfo->quantize_colors && cinfo->colormap == NULL) {
       /* Select new quantization method */
       if (cinfo->two_pass_quantize && cinfo->enable_2pass_quant) {
 	cinfo->cquantize = master->quantizer_2pass;
 	master->pub.is_dummy_pass = TRUE;
-      } else if (cinfo->enable_1pass_quant) {
+     } else if (cinfo->enable_1pass_quant) {
 	cinfo->cquantize = master->quantizer_1pass;
-      } else {
+     } else {
 	ERREXIT(cinfo, JERR_MODE_CHANGE);
-      }
-    }
+     }
+   }
     (*cinfo->idct->start_pass) (cinfo);
     (*cinfo->coef->start_output_pass) (cinfo);
     if (! cinfo->raw_data_out) {
@@ -458,8 +458,8 @@ prepare_for_output_pass (j_decompress_ptr cinfo)
       (*cinfo->post->start_pass) (cinfo,
 	    (master->pub.is_dummy_pass ? JBUF_SAVE_AND_PASS : JBUF_PASS_THRU));
       (*cinfo->main->start_pass) (cinfo, JBUF_PASS_THRU);
-    }
-  }
+   }
+ }
 
   /* Set up progress monitor's pass info if present */
   if (cinfo->progress != NULL) {
@@ -471,8 +471,8 @@ prepare_for_output_pass (j_decompress_ptr cinfo)
      */
     if (cinfo->buffered_image && ! cinfo->inputctl->eoi_reached) {
       cinfo->progress->total_passes += (cinfo->enable_2pass_quant ? 2 : 1);
-    }
-  }
+   }
+ }
 }
 
 
@@ -513,7 +513,7 @@ jpeg_new_colormap (j_decompress_ptr cinfo)
     /* Notify quantizer of colormap change */
     (*cinfo->cquantize->new_color_map) (cinfo);
     master->pub.is_dummy_pass = FALSE; /* just in case */
-  } else
+ } else
     ERREXIT(cinfo, JERR_MODE_CHANGE);
 }
 

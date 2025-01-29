@@ -39,7 +39,7 @@ jpeg_abort (j_common_ptr cinfo)
    */
   for (pool = JPOOL_NUMPOOLS-1; pool > JPOOL_PERMANENT; pool--) {
     (*cinfo->mem->free_pool) (cinfo, pool);
-  }
+ }
 
   /* Reset overall state for possible reuse of object */
   if (cinfo->is_decompressor) {
@@ -48,9 +48,9 @@ jpeg_abort (j_common_ptr cinfo)
      * A bit kludgy to do it here, but this is the most central place.
      */
     ((j_decompress_ptr) cinfo)->marker_list = NULL;
-  } else {
+ } else {
     cinfo->global_state = CSTATE_START;
-  }
+ }
 }
 
 

@@ -57,17 +57,17 @@ unsigned short FAR *work;
     int end;                    /* use base and extra for symbol > end */
     unsigned short count[MAXBITS+1];    /* number of codes of each length */
     unsigned short offs[MAXBITS+1];     /* offsets in table for each length */
-    static const unsigned short lbase[31] = { /* Length codes 257..285 base */
+    static const unsigned short lbase[31] = {/* Length codes 257..285 base */
         3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
         35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0};
-    static const unsigned short lext[31] = { /* Length codes 257..285 extra */
+    static const unsigned short lext[31] = {/* Length codes 257..285 extra */
         16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18,
         19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 72, 78};
-    static const unsigned short dbase[32] = { /* Distance codes 0..29 base */
+    static const unsigned short dbase[32] = {/* Distance codes 0..29 base */
         1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
         257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
         8193, 12289, 16385, 24577, 0, 0};
-    static const unsigned short dext[32] = { /* Distance codes 0..29 extra */
+    static const unsigned short dext[32] = {/* Distance codes 0..29 extra */
         16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
         23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
         28, 28, 29, 29, 64, 64};
@@ -114,7 +114,7 @@ unsigned short FAR *work;
     for (max = MAXBITS; max >= 1; max--)
         if (count[max] != 0) break;
     if (root > max) root = max;
-    if (max == 0) {                     /* no symbols to code at all */
+    if (max == 0) {                    /* no symbols to code at all */
         here.op = (unsigned char)64;    /* invalid code marker */
         here.bits = (unsigned char)1;
         here.val = (unsigned short)0;
@@ -122,7 +122,7 @@ unsigned short FAR *work;
         *(*table)++ = here;
         *bits = 1;
         return 0;     /* no symbols, but wait for decoding to report error */
-    }
+   }
     for (min = 1; min < max; min++)
         if (count[min] != 0) break;
     if (root < min) root = min;
@@ -133,7 +133,7 @@ unsigned short FAR *work;
         left <<= 1;
         left -= count[len];
         if (left < 0) return -1;        /* over-subscribed */
-    }
+   }
     if (left > 0 && (type == CODES || max != 1))
         return -1;                      /* incomplete set */
 
@@ -194,7 +194,7 @@ unsigned short FAR *work;
         base = dbase;
         extra = dext;
         end = -1;
-    }
+   }
 
     /* initialize state for loop */
     huff = 0;                   /* starting code */
@@ -219,15 +219,15 @@ unsigned short FAR *work;
         if ((int)(work[sym]) < end) {
             here.op = (unsigned char)0;
             here.val = work[sym];
-        }
+       }
         else if ((int)(work[sym]) > end) {
             here.op = (unsigned char)(extra[work[sym]]);
             here.val = base[work[sym]];
-        }
+       }
         else {
             here.op = (unsigned char)(32 + 64);         /* end of block */
             here.val = 0;
-        }
+       }
 
         /* replicate for those indices with low len bits equal to huff */
         incr = 1U << (len - drop);
@@ -236,7 +236,7 @@ unsigned short FAR *work;
         do {
             fill -= incr;
             next[(huff >> drop) + fill] = here;
-        } while (fill != 0);
+       } while (fill != 0);
 
         /* backwards increment the len-bit code huff */
         incr = 1U << (len - 1);
@@ -245,7 +245,7 @@ unsigned short FAR *work;
         if (incr != 0) {
             huff &= incr - 1;
             huff += incr;
-        }
+       }
         else
             huff = 0;
 
@@ -254,7 +254,7 @@ unsigned short FAR *work;
         if (--(count[len]) == 0) {
             if (len == max) break;
             len = lens[work[sym]];
-        }
+       }
 
         /* create new sub-table if needed */
         if (len > root && (huff & mask) != low) {
@@ -273,7 +273,7 @@ unsigned short FAR *work;
                 if (left <= 0) break;
                 curr++;
                 left <<= 1;
-            }
+           }
 
             /* check for enough space */
             used += 1U << curr;
@@ -286,8 +286,8 @@ unsigned short FAR *work;
             (*table)[low].op = (unsigned char)curr;
             (*table)[low].bits = (unsigned char)root;
             (*table)[low].val = (unsigned short)(next - *table);
-        }
-    }
+       }
+   }
 
     /* fill in remaining table entry if code is incomplete (guaranteed to have
        at most one remaining entry, since if the code is incomplete, the
@@ -297,7 +297,7 @@ unsigned short FAR *work;
         here.bits = (unsigned char)(len - drop);
         here.val = (unsigned short)0;
         next[huff] = here;
-    }
+   }
 
     /* set return parameters */
     *table += used;

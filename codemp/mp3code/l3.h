@@ -56,7 +56,7 @@ typedef union
       unsigned char y;
       unsigned char purgebits;	// 0 = esc
 
-   }
+  }
    b;
 }
 HUFF_ELEMENT;
@@ -72,7 +72,7 @@ typedef union
       unsigned char y;
       unsigned char x;
       unsigned char signbits;
-   }
+  }
    b;
 }
 HUFF_ELEMENT;

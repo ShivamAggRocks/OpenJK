@@ -53,7 +53,7 @@ void sbtB_mono(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 32) & 511;
       pcm += 32;
-   }
+  }
 
 }
 /*------------------------------------------------------------*/
@@ -70,7 +70,7 @@ void sbtB_dual(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 32) & 511;
       pcm += 64;
-   }
+  }
 
 
 }
@@ -87,7 +87,7 @@ void sbtB_dual_mono(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 32) & 511;
       pcm += 32;
-   }
+  }
 
 }
 /*------------------------------------------------------------*/
@@ -103,7 +103,7 @@ void sbtB_dual_left(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 32) & 511;
       pcm += 32;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 /* convert dual to right */
@@ -119,7 +119,7 @@ void sbtB_dual_right(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 32) & 511;
       pcm += 32;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 /*---------------- 16 pt sbt's  -------------------------------*/
@@ -135,7 +135,7 @@ void sbtB16_mono(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 16) & 255;
       pcm += 16;
-   }
+  }
 
 
 }
@@ -153,7 +153,7 @@ void sbtB16_dual(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 16) & 255;
       pcm += 32;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 void sbtB16_dual_mono(float *sample, unsigned char *pcm, int n)
@@ -167,7 +167,7 @@ void sbtB16_dual_mono(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 16) & 255;
       pcm += 16;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 void sbtB16_dual_left(float *sample, unsigned char *pcm, int n)
@@ -181,7 +181,7 @@ void sbtB16_dual_left(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 16) & 255;
       pcm += 16;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 void sbtB16_dual_right(float *sample, unsigned char *pcm, int n)
@@ -196,7 +196,7 @@ void sbtB16_dual_right(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 16) & 255;
       pcm += 16;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 /*---------------- 8 pt sbt's  -------------------------------*/
@@ -212,7 +212,7 @@ void sbtB8_mono(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 8) & 127;
       pcm += 8;
-   }
+  }
 
 }
 /*------------------------------------------------------------*/
@@ -229,7 +229,7 @@ void sbtB8_dual(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 8) & 127;
       pcm += 16;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 void sbtB8_dual_mono(float *sample, unsigned char *pcm, int n)
@@ -243,7 +243,7 @@ void sbtB8_dual_mono(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 8) & 127;
       pcm += 8;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 void sbtB8_dual_left(float *sample, unsigned char *pcm, int n)
@@ -257,7 +257,7 @@ void sbtB8_dual_left(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 8) & 127;
       pcm += 8;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 void sbtB8_dual_right(float *sample, unsigned char *pcm, int n)
@@ -272,7 +272,7 @@ void sbtB8_dual_right(float *sample, unsigned char *pcm, int n)
       sample += 64;
       pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 8) & 127;
       pcm += 8;
-   }
+  }
 }
 /*------------------------------------------------------------*/
 #endif	// #ifdef COMPILE_ME

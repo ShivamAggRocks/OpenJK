@@ -2635,7 +2635,7 @@ PNG_EXPORT(216, png_uint_32, png_get_io_chunk_type,
  * column version.  The mask has the appropriate bit set for each column in
  * the tile.
  */
-#define PNG_PASS_MASK(pass,off) ( \
+#define PNG_PASS_MASK(pass,off) (\
    ((0x110145AF>>(((7-(off))-(pass))<<2)) & 0xF) | \
    ((0x01145AF0>>(((7-(off))-(pass))<<2)) & 0xF0))
 
@@ -2660,18 +2660,18 @@ PNG_EXPORT(216, png_uint_32, png_get_io_chunk_type,
  /* fg and bg should be in `gamma 1.0' space; alpha is the opacity */
 
 #  define png_composite(composite, fg, alpha, bg)         \
-     { png_uint_16 temp = (png_uint_16)((png_uint_16)(fg) \
+     {png_uint_16 temp = (png_uint_16)((png_uint_16)(fg) \
            * (png_uint_16)(alpha)                         \
            + (png_uint_16)(bg)*(png_uint_16)(255          \
            - (png_uint_16)(alpha)) + 128);                \
-       (composite) = (png_byte)((temp + (temp >> 8)) >> 8); }
+       (composite) = (png_byte)((temp + (temp >> 8)) >> 8);}
 
 #  define png_composite_16(composite, fg, alpha, bg)       \
-     { png_uint_32 temp = (png_uint_32)((png_uint_32)(fg)  \
+     {png_uint_32 temp = (png_uint_32)((png_uint_32)(fg)  \
            * (png_uint_32)(alpha)                          \
            + (png_uint_32)(bg)*(65535                      \
            - (png_uint_32)(alpha)) + 32768);               \
-       (composite) = (png_uint_16)((temp + (temp >> 16)) >> 16); }
+       (composite) = (png_uint_16)((temp + (temp >> 16)) >> 16);}
 
 #else  /* Standard method using integer division */
 

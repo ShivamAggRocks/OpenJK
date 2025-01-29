@@ -51,24 +51,24 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "game/teams.h" //npc team stuff
 
-#define MAX_WORLD_COORD		( 64 * 1024 )
-#define MIN_WORLD_COORD		( -64 * 1024 )
-#define WORLD_SIZE			( MAX_WORLD_COORD - MIN_WORLD_COORD )
+#define MAX_WORLD_COORD		(64 * 1024)
+#define MIN_WORLD_COORD		(-64 * 1024)
+#define WORLD_SIZE			(MAX_WORLD_COORD - MIN_WORLD_COORD)
 
 //Pointer safety utilities
-#define VALID( a )		( a != NULL )
-#define	VALIDATE( a )	( assert( a ) )
+#define VALID(a)		(a != NULL)
+#define	VALIDATE(a)	(assert(a))
 
-#define	VALIDATEV( a )	if ( a == NULL ) {	assert(0);	return;			}
-#define	VALIDATEB( a )	if ( a == NULL ) {	assert(0);	return qfalse;	}
-#define VALIDATEP( a )	if ( a == NULL ) {	assert(0);	return NULL;	}
+#define	VALIDATEV(a)	if (a == NULL) {	assert(0);	return;			}
+#define	VALIDATEB(a)	if (a == NULL) {	assert(0);	return qfalse;	}
+#define VALIDATEP(a)	if (a == NULL) {	assert(0);	return NULL;	}
 
-#define VALIDSTRING( a )	( ( a != NULL ) && ( a[0] != '\0' ) )
-#define VALIDENT( e )		( ( e != NULL ) && ( (e)->inuse ) )
+#define VALIDSTRING(a)	((a != NULL) && (a[0] != '\0'))
+#define VALIDENT(e)		((e != NULL) && ((e)->inuse))
 
-#define ARRAY_LEN( x ) ( sizeof( x ) / sizeof( *(x) ) )
-#define STRING( a ) #a
-#define XSTRING( a ) STRING( a )
+#define ARRAY_LEN(x) (sizeof(x) / sizeof(*(x)))
+#define STRING(a) #a
+#define XSTRING(a) STRING(a)
 /*
 #define G2_EHNANCEMENTS
 
@@ -171,7 +171,7 @@ typedef int32_t qhandle_t, thandle_t, fxHandle_t, sfxHandle_t, fileHandle_t, cli
 #define NULL ((void *)0)
 #endif
 
-#define INT_ID( a, b, c, d ) (uint32_t)((((a) & 0xff) << 24) | (((b) & 0xff) << 16) | (((c) & 0xff) << 8) | ((d) & 0xff))
+#define INT_ID(a, b, c, d) (uint32_t)((((a) & 0xff) << 24) | (((b) & 0xff) << 16) | (((c) & 0xff) << 8) | ((d) & 0xff))
 
 // the game guarantees that no string from the network will ever
 // exceed MAX_STRING_CHARS
@@ -312,7 +312,7 @@ typedef enum {
 	h_dontcare
 } ha_pref;
 
-void *Hunk_Alloc( int size, ha_pref preference );
+void *Hunk_Alloc(int size, ha_pref preference);
 
 #define Com_Memset memset
 #define Com_Memcpy memcpy
@@ -573,25 +573,25 @@ typedef struct wpobject_s
 
 //=============================================
 
-char	*COM_SkipPath( char *pathname );
-const char	*COM_GetExtension( const char *name );
-void	COM_StripExtension( const char *in, char *out, int destsize );
+char	*COM_SkipPath(char *pathname);
+const char	*COM_GetExtension(const char *name);
+void	COM_StripExtension(const char *in, char *out, int destsize);
 qboolean COM_CompareExtension(const char *in, const char *ext);
-void	COM_DefaultExtension( char *path, int maxSize, const char *extension );
+void	COM_DefaultExtension(char *path, int maxSize, const char *extension);
 
-void	COM_BeginParseSession( const char *name );
-int		COM_GetCurrentParseLine( void );
-const char	*SkipWhitespace( const char *data, qboolean *hasNewLines );
-char	*COM_Parse( const char **data_p );
-char	*COM_ParseExt( const char **data_p, qboolean allowLineBreak );
-int		COM_Compress( char *data_p );
-void	COM_ParseError( char *format, ... );
-void	COM_ParseWarning( char *format, ... );
-qboolean COM_ParseString( const char **data, const char **s );
-qboolean COM_ParseInt( const char **data, int *i );
-qboolean COM_ParseFloat( const char **data, float *f );
-qboolean COM_ParseVec4( const char **buffer, vec4_t *c);
-//int		COM_ParseInfos( char *buf, int max, char infos[][MAX_INFO_STRING] );
+void	COM_BeginParseSession(const char *name);
+int		COM_GetCurrentParseLine(void);
+const char	*SkipWhitespace(const char *data, qboolean *hasNewLines);
+char	*COM_Parse(const char **data_p);
+char	*COM_ParseExt(const char **data_p, qboolean allowLineBreak);
+int		COM_Compress(char *data_p);
+void	COM_ParseError(char *format, ...);
+void	COM_ParseWarning(char *format, ...);
+qboolean COM_ParseString(const char **data, const char **s);
+qboolean COM_ParseInt(const char **data, int *i);
+qboolean COM_ParseFloat(const char **data, float *f);
+qboolean COM_ParseVec4(const char **buffer, vec4_t *c);
+//int		COM_ParseInfos(char *buf, int max, char infos[][MAX_INFO_STRING]);
 
 #define MAX_TOKENLENGTH		1024
 
@@ -615,22 +615,22 @@ typedef struct pc_token_s
 
 // data is an in/out parm, returns a parsed out token
 
-void	COM_MatchToken( const char**buf_p, char *match );
+void	COM_MatchToken(const char**buf_p, char *match);
 
 qboolean SkipBracedSection (const char **program, int depth);
-void SkipRestOfLine ( const char **data );
+void SkipRestOfLine (const char **data);
 
 void Parse1DMatrix (const char **buf_p, int x, float *m);
 void Parse2DMatrix (const char **buf_p, int y, int x, float *m);
 void Parse3DMatrix (const char **buf_p, int z, int y, int x, float *m);
-int Com_HexStrToInt( const char *str );
+int Com_HexStrToInt(const char *str);
 
 int	QDECL Com_sprintf (char *dest, int size, const char *fmt, ...);
 
-char *Com_SkipTokens( char *s, int numTokens, char *sep );
-char *Com_SkipCharset( char *s, char *sep );
+char *Com_SkipTokens(char *s, int numTokens, char *sep);
+char *Com_SkipCharset(char *s, char *sep);
 
-void Com_RandomBytes( byte *string, int len );
+void Com_RandomBytes(byte *string, int len);
 
 // mode parm for FS_FOpenFile
 typedef enum {
@@ -661,33 +661,33 @@ typedef struct qint64_s {
 	byte	b7;
 } qint64;
 
-int FloatAsInt( float f );
+int FloatAsInt(float f);
 
 char	* QDECL va(const char *format, ...);
 
 #define TRUNCATE_LENGTH	64
-void Com_TruncateLongString( char *buffer, const char *s );
+void Com_TruncateLongString(char *buffer, const char *s);
 
 //=============================================
 
 //
 // key / value info strings
 //
-char *Info_ValueForKey( const char *s, const char *key );
-void Info_RemoveKey( char *s, const char *key );
-void Info_RemoveKey_Big( char *s, const char *key );
-void Info_SetValueForKey( char *s, const char *key, const char *value );
-void Info_SetValueForKey_Big( char *s, const char *key, const char *value );
-qboolean Info_Validate( const char *s );
-qboolean Info_NextPair( const char **s, char *key, char *value );
+char *Info_ValueForKey(const char *s, const char *key);
+void Info_RemoveKey(char *s, const char *key);
+void Info_RemoveKey_Big(char *s, const char *key);
+void Info_SetValueForKey(char *s, const char *key, const char *value);
+void Info_SetValueForKey_Big(char *s, const char *key, const char *value);
+qboolean Info_Validate(const char *s);
+qboolean Info_NextPair(const char **s, char *key, char *value);
 
 // this is only here so the functions in q_shared.c and bg_*.c can link
-#if defined( _GAME ) || defined( _CGAME ) || defined( UI_BUILD )
-	extern NORETURN_PTR void (*Com_Error)( int level, const char *error, ... );
-	extern void (*Com_Printf)( const char *msg, ... );
+#if defined(_GAME) || defined(_CGAME) || defined(UI_BUILD)
+	extern NORETURN_PTR void (*Com_Error)(int level, const char *error, ...);
+	extern void (*Com_Printf)(const char *msg, ...);
 #else
-	void NORETURN QDECL Com_Error( int level, const char *error, ... );
-	void QDECL Com_Printf( const char *msg, ... );
+	void NORETURN QDECL Com_Error(int level, const char *error, ...);
+	void QDECL Com_Printf(const char *msg, ...);
 #endif
 
 
@@ -739,8 +739,8 @@ typedef struct cvar_s {
 	uint32_t		flags;
 	qboolean		modified;			// set each time the cvar is changed
 	int				modificationCount;	// incremented each time the cvar is changed
-	float			value;				// atof( string )
-	int				integer;			// atoi( string )
+	float			value;				// atof(string)
+	int				integer;			// atoi(string)
 	qboolean		validate;
 	qboolean		integral;
 	float			min, max;
@@ -1545,7 +1545,7 @@ typedef enum {
 	TR_LINEAR,
 	TR_LINEAR_STOP,
 	TR_NONLINEAR_STOP,
-	TR_SINE,					// value = base + sin( time / duration ) * delta
+	TR_SINE,					// value = base + sin(time / duration) * delta
 	TR_GRAVITY
 } trType_t;
 
@@ -1863,15 +1863,15 @@ String ID Tables
 
 ========================================================================
 */
-#define ENUM2STRING(arg)   { #arg, arg }
+#define ENUM2STRING(arg)   {#arg, arg}
 typedef struct stringID_table_s
 {
 	const char	*name;
 	int		id;
 } stringID_table_t;
 
-int GetIDForString ( stringID_table_t *table, const char *string );
-const char *GetStringForID( stringID_table_t *table, int id );
+int GetIDForString (stringID_table_t *table, const char *string);
+const char *GetStringForID(stringID_table_t *table, int id);
 
 
 // stuff to help out during development process, force reloading/uncacheing of certain filetypes...
@@ -1894,13 +1894,13 @@ enum {
 	FONT_SMALL2
 };
 
-void NET_AddrToString( char *out, size_t size, void *addr );
+void NET_AddrToString(char *out, size_t size, void *addr);
 
-qboolean Q_InBitflags( const uint32_t *bits, int index, uint32_t bitsPerByte );
-void Q_AddToBitflags( uint32_t *bits, int index, uint32_t bitsPerByte );
-void Q_RemoveFromBitflags( uint32_t *bits, int index, uint32_t bitsPerByte );
+qboolean Q_InBitflags(const uint32_t *bits, int index, uint32_t bitsPerByte);
+void Q_AddToBitflags(uint32_t *bits, int index, uint32_t bitsPerByte);
+void Q_RemoveFromBitflags(uint32_t *bits, int index, uint32_t bitsPerByte);
 
-typedef int( *cmpFunc_t )(const void *a, const void *b);
+typedef int(*cmpFunc_t)(const void *a, const void *b);
 
-void *Q_LinearSearch( const void *key, const void *ptr, size_t count,
-	size_t size, cmpFunc_t cmp );
+void *Q_LinearSearch(const void *key, const void *ptr, size_t count,
+	size_t size, cmpFunc_t cmp);

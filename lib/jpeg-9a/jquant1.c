@@ -40,7 +40,7 @@
  * representative value (grid plane) for that component; this index is
  * multiplied by the array stride for component i, so that the
  * index of the colormap entry closest to a given pixel value is just
- *    sum( colorindex[component-number][pixel-component-value] )
+ *    sum(colorindex[component-number][pixel-component-value])
  * Aside from being fast, this scheme allows for variable spacing between
  * representative values with no additional lookup cost.
  *
@@ -82,22 +82,22 @@ static const UINT8 base_dither_matrix[ODITHER_SIZE][ODITHER_SIZE] = {
    * Stephen Hawley's article "Ordered Dithering" in Graphics Gems I.
    * The values in this array must range from 0 to ODITHER_CELLS-1.
    */
-  {   0,192, 48,240, 12,204, 60,252,  3,195, 51,243, 15,207, 63,255 },
-  { 128, 64,176,112,140, 76,188,124,131, 67,179,115,143, 79,191,127 },
-  {  32,224, 16,208, 44,236, 28,220, 35,227, 19,211, 47,239, 31,223 },
-  { 160, 96,144, 80,172,108,156, 92,163, 99,147, 83,175,111,159, 95 },
-  {   8,200, 56,248,  4,196, 52,244, 11,203, 59,251,  7,199, 55,247 },
-  { 136, 72,184,120,132, 68,180,116,139, 75,187,123,135, 71,183,119 },
-  {  40,232, 24,216, 36,228, 20,212, 43,235, 27,219, 39,231, 23,215 },
-  { 168,104,152, 88,164,100,148, 84,171,107,155, 91,167,103,151, 87 },
-  {   2,194, 50,242, 14,206, 62,254,  1,193, 49,241, 13,205, 61,253 },
-  { 130, 66,178,114,142, 78,190,126,129, 65,177,113,141, 77,189,125 },
-  {  34,226, 18,210, 46,238, 30,222, 33,225, 17,209, 45,237, 29,221 },
-  { 162, 98,146, 82,174,110,158, 94,161, 97,145, 81,173,109,157, 93 },
-  {  10,202, 58,250,  6,198, 54,246,  9,201, 57,249,  5,197, 53,245 },
-  { 138, 74,186,122,134, 70,182,118,137, 73,185,121,133, 69,181,117 },
-  {  42,234, 26,218, 38,230, 22,214, 41,233, 25,217, 37,229, 21,213 },
-  { 170,106,154, 90,166,102,150, 86,169,105,153, 89,165,101,149, 85 }
+  {  0,192, 48,240, 12,204, 60,252,  3,195, 51,243, 15,207, 63,255},
+  {128, 64,176,112,140, 76,188,124,131, 67,179,115,143, 79,191,127},
+  { 32,224, 16,208, 44,236, 28,220, 35,227, 19,211, 47,239, 31,223},
+  {160, 96,144, 80,172,108,156, 92,163, 99,147, 83,175,111,159, 95},
+  {  8,200, 56,248,  4,196, 52,244, 11,203, 59,251,  7,199, 55,247},
+  {136, 72,184,120,132, 68,180,116,139, 75,187,123,135, 71,183,119},
+  { 40,232, 24,216, 36,228, 20,212, 43,235, 27,219, 39,231, 23,215},
+  {168,104,152, 88,164,100,148, 84,171,107,155, 91,167,103,151, 87},
+  {  2,194, 50,242, 14,206, 62,254,  1,193, 49,241, 13,205, 61,253},
+  {130, 66,178,114,142, 78,190,126,129, 65,177,113,141, 77,189,125},
+  { 34,226, 18,210, 46,238, 30,222, 33,225, 17,209, 45,237, 29,221},
+  {162, 98,146, 82,174,110,158, 94,161, 97,145, 81,173,109,157, 93},
+  { 10,202, 58,250,  6,198, 54,246,  9,201, 57,249,  5,197, 53,245},
+  {138, 74,186,122,134, 70,182,118,137, 73,185,121,133, 69,181,117},
+  { 42,234, 26,218, 38,230, 22,214, 41,233, 25,217, 37,229, 21,213},
+  {170,106,154, 90,166,102,150, 86,169,105,153, 89,165,101,149, 85}
 };
 
 
@@ -194,7 +194,7 @@ select_ncolors (j_decompress_ptr cinfo, int Ncolors[])
   int total_colors, iroot, i, j;
   boolean changed;
   long temp;
-  static const int RGB_order[3] = { RGB_GREEN, RGB_RED, RGB_BLUE };
+  static const int RGB_order[3] = {RGB_GREEN, RGB_RED, RGB_BLUE};
 
   /* We can allocate at least the nc'th root of max_colors per component. */
   /* Compute floor(nc'th root of max_colors). */
@@ -204,7 +204,7 @@ select_ncolors (j_decompress_ptr cinfo, int Ncolors[])
     temp = iroot;		/* set temp = iroot ** nc */
     for (i = 1; i < nc; i++)
       temp *= iroot;
-  } while (temp <= (long) max_colors); /* repeat till iroot exceeds root */
+ } while (temp <= (long) max_colors); /* repeat till iroot exceeds root */
   iroot--;			/* now iroot = floor(root) */
 
   /* Must have at least 2 color values per component */
@@ -216,7 +216,7 @@ select_ncolors (j_decompress_ptr cinfo, int Ncolors[])
   for (i = 0; i < nc; i++) {
     Ncolors[i] = iroot;
     total_colors *= iroot;
-  }
+ }
   /* We may be able to increment the count for one or more components without
    * exceeding max_colors, though we know not all can be incremented.
    * Sometimes, the first component can be incremented more than once!
@@ -235,8 +235,8 @@ select_ncolors (j_decompress_ptr cinfo, int Ncolors[])
       Ncolors[j]++;		/* OK, apply the increment */
       total_colors = (int) temp;
       changed = TRUE;
-    }
-  } while (changed);
+   }
+ } while (changed);
 
   return total_colors;
 }
@@ -313,10 +313,10 @@ create_colormap (j_decompress_ptr cinfo)
 	/* fill in blksize entries beginning at ptr */
 	for (k = 0; k < blksize; k++)
 	  colormap[i][ptr+k] = (JSAMPLE) val;
-      }
-    }
+     }
+   }
     blkdist = blksize;		/* blksize of this color is blkdist of next */
-  }
+ }
 
   /* Save the colormap in private storage,
    * where it will survive color quantization mode changes.
@@ -345,10 +345,10 @@ create_colorindex (j_decompress_ptr cinfo)
   if (cinfo->dither_mode == JDITHER_ORDERED) {
     pad = MAXJSAMPLE*2;
     cquantize->is_padded = TRUE;
-  } else {
+ } else {
     pad = 0;
     cquantize->is_padded = FALSE;
-  }
+ }
 
   cquantize->colorindex = (*cinfo->mem->alloc_sarray)
     ((j_common_ptr) cinfo, JPOOL_IMAGE,
@@ -377,14 +377,14 @@ create_colorindex (j_decompress_ptr cinfo)
 	k = largest_input_value(cinfo, i, ++val, nci-1);
       /* premultiply so that no multiplication needed in main processing */
       indexptr[j] = (JSAMPLE) (val * blksize);
-    }
+   }
     /* Pad at both ends if necessary */
     if (pad)
       for (j = 1; j <= MAXJSAMPLE; j++) {
 	indexptr[-j] = indexptr[0];
 	indexptr[MAXJSAMPLE+j] = indexptr[MAXJSAMPLE];
-      }
-  }
+     }
+ }
 }
 
 
@@ -417,8 +417,8 @@ make_odither_array (j_decompress_ptr cinfo, int ncolors)
        * about rounding negative values in integer division...
        */
       odither[j][k] = (int) (num<0 ? -((-num)/den) : num/den);
-    }
-  }
+   }
+ }
   return odither;
 }
 
@@ -443,12 +443,12 @@ create_odither_tables (j_decompress_ptr cinfo)
       if (nci == cquantize->Ncolors[j]) {
 	odither = cquantize->odither[j];
 	break;
-      }
-    }
+     }
+   }
     if (odither == NULL)	/* need a new table? */
       odither = make_odither_array(cinfo, nci);
     cquantize->odither[i] = odither;
-  }
+ }
 }
 
 
@@ -477,10 +477,10 @@ color_quantize (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
       pixcode = 0;
       for (ci = 0; ci < nc; ci++) {
 	pixcode += GETJSAMPLE(colorindex[ci][GETJSAMPLE(*ptrin++)]);
-      }
+     }
       *ptrout++ = (JSAMPLE) pixcode;
-    }
-  }
+   }
+ }
 }
 
 
@@ -507,8 +507,8 @@ color_quantize3 (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
       pixcode += GETJSAMPLE(colorindex1[GETJSAMPLE(*ptrin++)]);
       pixcode += GETJSAMPLE(colorindex2[GETJSAMPLE(*ptrin++)]);
       *ptrout++ = (JSAMPLE) pixcode;
-    }
-  }
+   }
+ }
 }
 
 
@@ -553,12 +553,12 @@ quantize_ord_dither (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
 	input_ptr += nc;
 	output_ptr++;
 	col_index = (col_index + 1) & ODITHER_MASK;
-      }
-    }
+     }
+   }
     /* Advance row index for next row */
     row_index = (row_index + 1) & ODITHER_MASK;
     cquantize->row_index = row_index;
-  }
+ }
 }
 
 
@@ -600,10 +600,10 @@ quantize3_ord_dither (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
 					dither2[col_index]]);
       *output_ptr++ = (JSAMPLE) pixcode;
       col_index = (col_index + 1) & ODITHER_MASK;
-    }
+   }
     row_index = (row_index + 1) & ODITHER_MASK;
     cquantize->row_index = row_index;
-  }
+ }
 }
 
 
@@ -648,12 +648,12 @@ quantize_fs_dither (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
 	dir = -1;
 	dirnc = -nc;
 	errorptr = cquantize->fserrors[ci] + (width+1); /* => entry after last column */
-      } else {
+     } else {
 	/* work left to right in this row */
 	dir = 1;
 	dirnc = nc;
 	errorptr = cquantize->fserrors[ci]; /* => entry before first column */
-      }
+     }
       colorindex_ci = cquantize->colorindex[ci];
       colormap_ci = cquantize->sv_colormap[ci];
       /* Preset error values: no error propagated to first pixel from left */
@@ -703,15 +703,15 @@ quantize_fs_dither (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
 	input_ptr += dirnc;	/* advance input ptr to next column */
 	output_ptr += dir;	/* advance output ptr to next column */
 	errorptr += dir;	/* advance errorptr to current column */
-      }
+     }
       /* Post-loop cleanup: we must unload the final error value into the
        * final fserrors[] entry.  Note we need not unload belowerr because
        * it is for the dummy column before or after the actual array.
        */
       errorptr[0] = (FSERROR) bpreverr; /* unload prev err into array */
-    }
+   }
     cquantize->on_odd_row = (cquantize->on_odd_row ? FALSE : TRUE);
-  }
+ }
 }
 
 
@@ -730,7 +730,7 @@ alloc_fs_workspace (j_decompress_ptr cinfo)
   for (i = 0; i < cinfo->out_color_components; i++) {
     cquantize->fserrors[i] = (FSERRPTR)
       (*cinfo->mem->alloc_large)((j_common_ptr) cinfo, JPOOL_IMAGE, arraysize);
-  }
+ }
 }
 
 
@@ -787,7 +787,7 @@ start_pass_1_quant (j_decompress_ptr cinfo, boolean is_pre_scan)
   default:
     ERREXIT(cinfo, JERR_NOT_COMPILED);
     break;
-  }
+ }
 }
 
 

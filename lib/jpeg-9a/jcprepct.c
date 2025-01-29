@@ -111,7 +111,7 @@ expand_bottom_edge (JSAMPARRAY image_data, JDIMENSION num_cols,
   for (row = input_rows; row < output_rows; row++) {
     jcopy_sample_rows(image_data, input_rows-1, image_data, row,
 		      1, num_cols);
-  }
+ }
 }
 
 
@@ -155,9 +155,9 @@ pre_process_data (j_compress_ptr cinfo,
       for (ci = 0; ci < cinfo->num_components; ci++) {
 	expand_bottom_edge(prep->color_buf[ci], cinfo->image_width,
 			   prep->next_buf_row, cinfo->max_v_samp_factor);
-      }
+     }
       prep->next_buf_row = cinfo->max_v_samp_factor;
-    }
+   }
     /* If we've filled the conversion buffer, empty it. */
     if (prep->next_buf_row == cinfo->max_v_samp_factor) {
       (*cinfo->downsample->downsample) (cinfo,
@@ -165,7 +165,7 @@ pre_process_data (j_compress_ptr cinfo,
 					output_buf, *out_row_group_ctr);
       prep->next_buf_row = 0;
       (*out_row_group_ctr)++;
-    }
+   }
     /* If at bottom of image, pad the output to a full iMCU height.
      * Note we assume the caller is providing a one-iMCU-height output buffer!
      */
@@ -179,11 +179,11 @@ pre_process_data (j_compress_ptr cinfo,
 			   compptr->width_in_blocks * compptr->DCT_h_scaled_size,
 			   (int) (*out_row_group_ctr * numrows),
 			   (int) (out_row_groups_avail * numrows));
-      }
+     }
       *out_row_group_ctr = out_row_groups_avail;
       break;			/* can exit outer loop without test */
-    }
-  }
+   }
+ }
 }
 
 
@@ -223,13 +223,13 @@ pre_process_context (j_compress_ptr cinfo,
 	    jcopy_sample_rows(prep->color_buf[ci], 0,
 			      prep->color_buf[ci], -row,
 			      1, cinfo->image_width);
-	  }
+	 }
 	}
-      }
+     }
       *in_row_ctr += numrows;
       prep->next_buf_row += numrows;
       prep->rows_to_go -= numrows;
-    } else {
+   } else {
       /* Return for more data, unless we are at the bottom of the image. */
       if (prep->rows_to_go != 0)
 	break;
@@ -240,8 +240,8 @@ pre_process_context (j_compress_ptr cinfo,
 			     prep->next_buf_row, prep->next_buf_stop);
 	}
 	prep->next_buf_row = prep->next_buf_stop;
-      }
-    }
+     }
+   }
     /* If we've gotten enough data, downsample a row group. */
     if (prep->next_buf_row == prep->next_buf_stop) {
       (*cinfo->downsample->downsample) (cinfo,
@@ -256,8 +256,8 @@ pre_process_context (j_compress_ptr cinfo,
       if (prep->next_buf_row >= buf_height)
 	prep->next_buf_row = 0;
       prep->next_buf_stop = prep->next_buf_row + cinfo->max_v_samp_factor;
-    }
-  }
+   }
+ }
 }
 
 
@@ -301,10 +301,10 @@ create_context_buffer (j_compress_ptr cinfo)
     for (i = 0; i < rgroup_height; i++) {
       fake_buffer[i] = true_buffer[2 * rgroup_height + i];
       fake_buffer[4 * rgroup_height + i] = true_buffer[i];
-    }
+   }
     prep->color_buf[ci] = fake_buffer + rgroup_height;
     fake_buffer += 5 * rgroup_height; /* point to space for next component */
-  }
+ }
 }
 
 #endif /* CONTEXT_ROWS_SUPPORTED */
@@ -342,7 +342,7 @@ jinit_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 #else
     ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
-  } else {
+ } else {
     /* No context, just make it tall enough for one row group */
     prep->pub.pre_process_data = pre_process_data;
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
@@ -353,6 +353,6 @@ jinit_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 			cinfo->min_DCT_h_scaled_size *
 			cinfo->max_h_samp_factor) / compptr->h_samp_factor),
 	 (JDIMENSION) cinfo->max_v_samp_factor);
-    }
-  }
+   }
+ }
 }

@@ -86,7 +86,7 @@ void CG_RunLightStyles (void)
 			ls->value[3] = 255; //ls->map[ofs%ls->length][3];
 		}
 		const byteAlias_t *ba = (byteAlias_t *)&ls->value;
-		trap_R_SetLightStyle( i, ba->i );
+		trap_R_SetLightStyle(i, ba->i);
 	}
 }
 
@@ -95,7 +95,7 @@ void CG_SetLightstyle (int i)
 	const char	*s;
 	int			j, k;
 
-	s = CG_ConfigString( i+CS_LIGHT_STYLES );
+	s = CG_ConfigString(i+CS_LIGHT_STYLES);
 	j = strlen (s);
 	if (j >= MAX_QPATH)
 	{

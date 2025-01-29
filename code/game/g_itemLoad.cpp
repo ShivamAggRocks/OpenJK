@@ -28,9 +28,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define PICKUPSOUND "sound/weapons/w_pkup.wav"
 
-//qboolean COM_ParseInt( char **data, int *i );
-//qboolean COM_ParseString( char **data, char **s );
-//qboolean COM_ParseFloat( char **data, float *f );
+//qboolean COM_ParseInt(char **data, int *i);
+//qboolean COM_ParseString(char **data, char **s);
+//qboolean COM_ParseFloat(char **data, float *f);
 
 extern gitem_t	bg_itemlist[];
 
@@ -63,16 +63,16 @@ typedef struct
 
 itemParms_t ItemParms[IT_PARM_MAX] =
 {
-	{ "itemname",			IT_Name },
-	{ "classname",			IT_ClassName },
-	{ "count",				IT_Count },
-	{ "icon",				IT_Icon },
-	{ "min",				IT_Min },
-	{ "max",				IT_Max },
-	{ "pickupsound",		IT_PickupSound },
-	{ "tag",				IT_Tag },
-	{ "type",				IT_Type },
-	{ "worldmodel",			IT_WorldModel },
+	{"itemname",			IT_Name},
+	{"classname",			IT_ClassName},
+	{"count",				IT_Count},
+	{"icon",				IT_Icon},
+	{"min",				IT_Min},
+	{"max",				IT_Max},
+	{"pickupsound",		IT_PickupSound},
+	{"tag",				IT_Tag},
+	{"type",				IT_Type},
+	{"worldmodel",			IT_WorldModel},
 };
 
 static void IT_SetDefaults()
@@ -556,13 +556,13 @@ static void IT_Count(const char **holdBuf)
 {
 	int		tokenInt;
 
-	if ( COM_ParseInt(holdBuf,&tokenInt))
+	if (COM_ParseInt(holdBuf,&tokenInt))
 	{
 		SkipRestOfLine(holdBuf);
 		return;
 	}
 
-	if ((tokenInt < 0) || (tokenInt > 1000 )) // FIXME :What are the right values?
+	if ((tokenInt < 0) || (tokenInt > 1000)) // FIXME :What are the right values?
 	{
 		gi.Printf("WARNING: bad Count in external item data '%d'\n", tokenInt);
 		return;
@@ -579,7 +579,7 @@ static void IT_Min(const char **holdBuf)
 
 	for (i=0;i<3;++i)
 	{
-		if ( COM_ParseInt(holdBuf,&tokenInt))
+		if (COM_ParseInt(holdBuf,&tokenInt))
 		{
 			SkipRestOfLine(holdBuf);
 			return;
@@ -597,7 +597,7 @@ static void IT_Max(const char **holdBuf)
 
 	for (i=0;i<3;++i)
 	{
-		if ( COM_ParseInt(holdBuf,&tokenInt))
+		if (COM_ParseInt(holdBuf,&tokenInt))
 		{
 			SkipRestOfLine(holdBuf);
 			return;
@@ -637,9 +637,9 @@ static void IT_ParseWeaponParms(const char **holdBuf)
 
 	while (holdBuf)
 	{
-		token = COM_ParseExt( holdBuf, qtrue );
+		token = COM_ParseExt(holdBuf, qtrue);
 
-		if (!Q_stricmp( token, "}" ))	// End of data for this weapon
+		if (!Q_stricmp(token, "}"))	// End of data for this weapon
 			break;
 
 		// Loop through possible parameters
@@ -672,18 +672,18 @@ static void IT_ParseParms(const char *buffer)
 	holdBuf = buffer;
 	COM_BeginParseSession();
 
-	while ( holdBuf )
+	while (holdBuf)
 	{
-		token = COM_ParseExt( &holdBuf, qtrue );
+		token = COM_ParseExt(&holdBuf, qtrue);
 
-		if ( !Q_stricmp( token, "{" ) )
+		if (!Q_stricmp(token, "{"))
 		{
 			IT_ParseWeaponParms(&holdBuf);
 		}
 
 	}
 
-	COM_EndParseSession(  );
+	COM_EndParseSession();
 
 //	--bg_numItems;
 
@@ -698,6 +698,6 @@ void IT_LoadItemParms (void)
 
 	IT_ParseParms(buffer);
 
-	gi.FS_FreeFile( buffer );	//let go of the buffer
+	gi.FS_FreeFile(buffer);	//let go of the buffer
 }
 

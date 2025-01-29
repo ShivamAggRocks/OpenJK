@@ -150,7 +150,7 @@ build_ycc_rgb_table (j_decompress_ptr cinfo)
     /* Cb=>G value is scaled-up -0.344136286 * x */
     /* We also add in ONE_HALF so that need not do it in inner loop */
     cconvert->Cb_g_tab[i] = (- FIX(0.344136286)) * x + ONE_HALF;
-  }
+ }
 }
 
 
@@ -194,7 +194,7 @@ build_bg_ycc_rgb_table (j_decompress_ptr cinfo)
     /* Cb=>G value is scaled-up -0.688272572 * x */
     /* We also add in ONE_HALF so that need not do it in inner loop */
     cconvert->Cb_g_tab[i] = (- FIX(0.688272572)) * x + ONE_HALF;
-  }
+ }
 
   /* Cb and Cr portions can extend to double range in wide gamut case,
    * so we prepare an appropriate extended range limit table.
@@ -261,8 +261,8 @@ ycc_rgb_convert (j_decompress_ptr cinfo,
 						 SCALEBITS))];
       outptr[RGB_BLUE]  = range_limit[y + Cbbtab[cb]];
       outptr += RGB_PIXELSIZE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -289,7 +289,7 @@ build_rgb_y_table (j_decompress_ptr cinfo)
     rgb_y_tab[i+R_Y_OFF] = FIX(0.299) * i;
     rgb_y_tab[i+G_Y_OFF] = FIX(0.587) * i;
     rgb_y_tab[i+B_Y_OFF] = FIX(0.114) * i + ONE_HALF;
-  }
+ }
 }
 
 
@@ -324,8 +324,8 @@ rgb_gray_convert (j_decompress_ptr cinfo,
       outptr[col] = (JSAMPLE)
 		((ctab[r+R_Y_OFF] + ctab[g+G_Y_OFF] + ctab[b+B_Y_OFF])
 		 >> SCALEBITS);
-    }
-  }
+   }
+ }
 }
 
 
@@ -365,8 +365,8 @@ rgb1_rgb_convert (j_decompress_ptr cinfo,
       outptr[RGB_GREEN] = (JSAMPLE) g;
       outptr[RGB_BLUE]  = (JSAMPLE) ((b + g - CENTERJSAMPLE) & MAXJSAMPLE);
       outptr += RGB_PIXELSIZE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -407,8 +407,8 @@ rgb1_gray_convert (j_decompress_ptr cinfo,
       outptr[col] = (JSAMPLE)
 		((ctab[r+R_Y_OFF] + ctab[g+G_Y_OFF] + ctab[b+B_Y_OFF])
 		 >> SCALEBITS);
-    }
-  }
+   }
+ }
 }
 
 
@@ -439,8 +439,8 @@ rgb_convert (j_decompress_ptr cinfo,
       outptr[RGB_GREEN] = inptr1[col];
       outptr[RGB_BLUE]  = inptr2[col];
       outptr += RGB_PIXELSIZE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -468,11 +468,11 @@ null_convert (j_decompress_ptr cinfo,
       for (col = 0; col < num_cols; col++) {
 	*outptr = *inptr++;	/* needn't bother with GETJSAMPLE() here */
 	outptr += nc;
-      }
-    }
+     }
+   }
     input_row++;
     output_buf++;
-  }
+ }
 }
 
 
@@ -515,8 +515,8 @@ gray_rgb_convert (j_decompress_ptr cinfo,
       /* We can dispense with GETJSAMPLE() here */
       outptr[RGB_RED] = outptr[RGB_GREEN] = outptr[RGB_BLUE] = inptr[col];
       outptr += RGB_PIXELSIZE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -568,8 +568,8 @@ ycck_cmyk_convert (j_decompress_ptr cinfo,
       /* K passes through unchanged */
       outptr[3] = inptr3[col];	/* don't need GETJSAMPLE here */
       outptr += 4;
-    }
-  }
+   }
+ }
 }
 
 
@@ -625,7 +625,7 @@ jinit_color_deconverter (j_decompress_ptr cinfo)
     if (cinfo->num_components < 1)
       ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     break;
-  }
+ }
 
   /* Support color transform only for RGB colorspaces */
   if (cinfo->color_transform &&
@@ -660,12 +660,12 @@ jinit_color_deconverter (j_decompress_ptr cinfo)
 	break;
       default:
 	ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-      }
+     }
       build_rgb_y_table(cinfo);
       break;
     default:
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-    }
+   }
     break;
 
   case JCS_RGB:
@@ -692,11 +692,11 @@ jinit_color_deconverter (j_decompress_ptr cinfo)
 	break;
       default:
 	ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-      }
+     }
       break;
     default:
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-    }
+   }
     break;
 
   case JCS_BG_RGB:
@@ -711,8 +711,8 @@ jinit_color_deconverter (j_decompress_ptr cinfo)
 	break;
       default:
 	ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-      }
-    } else
+     }
+   } else
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     break;
 
@@ -728,7 +728,7 @@ jinit_color_deconverter (j_decompress_ptr cinfo)
       break;
     default:
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
-    }
+   }
     break;
 
   default:
@@ -736,10 +736,10 @@ jinit_color_deconverter (j_decompress_ptr cinfo)
     if (cinfo->out_color_space == cinfo->jpeg_color_space) {
       cinfo->out_color_components = cinfo->num_components;
       cconvert->pub.color_convert = null_convert;
-    } else			/* unsupported non-null conversion */
+   } else			/* unsupported non-null conversion */
       ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     break;
-  }
+ }
 
   if (cinfo->quantize_colors)
     cinfo->output_components = 1; /* single colormapped output component */

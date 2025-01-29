@@ -56,7 +56,7 @@ typedef struct {
 
 	int		dataOffset;
 	int		dataLength;
-	int		litLength;			// ( dataLength - litLength ) should be byteswapped on load
+	int		litLength;			// (dataLength - litLength) should be byteswapped on load
 	int		bssLength;			// zero filled memory appended to datalength
 } vmHeader_t;
 
@@ -125,11 +125,11 @@ typedef struct md3Tag_s {
 ** md3Surface_t
 **
 ** CHUNK			SIZE
-** header			sizeof( md3Surface_t )
-** shaders			sizeof( md3Shader_t ) * numShaders
-** triangles[0]		sizeof( md3Triangle_t ) * numTriangles
-** st				sizeof( md3St_t ) * numVerts
-** XyzNormals		sizeof( md3XyzNormal_t ) * numVerts * numFrames
+** header			sizeof(md3Surface_t)
+** shaders			sizeof(md3Shader_t) * numShaders
+** triangles[0]		sizeof(md3Triangle_t) * numTriangles
+** st				sizeof(md3St_t) * numVerts
+** XyzNormals		sizeof(md3XyzNormal_t) * numVerts * numFrames
 */
 typedef struct {
 	int		ident;				//

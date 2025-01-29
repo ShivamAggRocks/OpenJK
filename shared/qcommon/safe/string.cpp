@@ -6,31 +6,31 @@
 
 namespace Q
 {
-	Ordering stricmp( const gsl::cstring_span& lhs, const gsl::cstring_span& rhs ) NOEXCEPT
+	Ordering stricmp(const gsl::cstring_span& lhs, const gsl::cstring_span& rhs) NOEXCEPT
 	{
 		auto lIt = lhs.begin();
 		auto rIt = rhs.begin();
 		auto lEnd = lhs.end();
 		auto rEnd = rhs.end();
-		while( lIt != lEnd )
+		while(lIt != lEnd)
 		{
-			if( rIt == rEnd )
+			if(rIt == rEnd)
 			{
 				// rhs is prefix of lhs
 				return Ordering::GT;
 			}
-			if( std::tolower( *lIt ) < std::tolower( *rIt ) )
+			if(std::tolower(*lIt) < std::tolower(*rIt))
 			{
 				return Ordering::LT;
 			}
-			if( std::tolower( *lIt ) > std::tolower( *rIt ) )
+			if(std::tolower(*lIt) > std::tolower(*rIt))
 			{
 				return Ordering::GT;
 			}
 			++lIt;
 			++rIt;
 		}
-		if( rIt == rEnd )
+		if(rIt == rEnd)
 		{
 			// lhs == rhs
 			return Ordering::EQ;
@@ -39,29 +39,29 @@ namespace Q
 		return Ordering::LT;
 	}
 
-	gsl::cstring_span substr( const gsl::cstring_span& lhs, const std::string::size_type pos, const std::string::size_type count )
+	gsl::cstring_span substr(const gsl::cstring_span& lhs, const std::string::size_type pos, const std::string::size_type count)
 	{
-		if( pos > lhs.size() )
+		if(pos > lhs.size())
 		{
-			throw std::out_of_range( "Q::substr called with out-of-bounds pos parameter!" );
+			throw std::out_of_range("Q::substr called with out-of-bounds pos parameter!");
 		}
 		auto start = lhs.begin() + pos;
-		auto end = count == std::string::npos ? lhs.end() : std::min( start + count, lhs.end() );
-		gsl::cstring_span result{ start, end };
+		auto end = count == std::string::npos ? lhs.end() : std::min(start + count, lhs.end());
+		gsl::cstring_span result{start, end};
 		return result;
 	}
 
-	int svtoi( const gsl::cstring_span& view )
+	int svtoi(const gsl::cstring_span& view)
 	{
 		int result = 0;
-		Q::sscanf( view, result );
+		Q::sscanf(view, result);
 		return result;
 	}
 
-	float svtof( const gsl::cstring_span& view )
+	float svtof(const gsl::cstring_span& view)
 	{
 		float result = 0.f;
-		Q::sscanf( view, result );
+		Q::sscanf(view, result);
 		return result;
 	}
 }

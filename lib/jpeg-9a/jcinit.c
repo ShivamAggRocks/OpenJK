@@ -56,7 +56,7 @@ jinit_compress_master (j_compress_ptr cinfo)
     jinit_color_converter(cinfo);
     jinit_downsampler(cinfo);
     jinit_c_prep_controller(cinfo, FALSE /* never need full buffer here */);
-  }
+ }
   /* Forward DCT */
   jinit_forward_dct(cinfo);
   /* Entropy encoding: either Huffman or arithmetic coding. */
@@ -64,7 +64,7 @@ jinit_compress_master (j_compress_ptr cinfo)
     jinit_arith_encoder(cinfo);
   else {
     jinit_huff_encoder(cinfo);
-  }
+ }
 
   /* Need a full-image coefficient buffer in any multi-pass mode. */
   jinit_c_coef_controller(cinfo,

@@ -27,16 +27,16 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //Global navigator
 //CNavigator		navigator;
 
-extern qboolean G_EntIsUnlockedDoor( int entityNum );
-extern qboolean G_EntIsDoor( int entityNum );
-extern qboolean G_EntIsRemovableUsable( int entNum );
-extern qboolean G_FindClosestPointOnLineSegment( const vec3_t start, const vec3_t end, const vec3_t from, vec3_t result );
-extern void G_AddVoiceEvent( gentity_t *self, int event, int speakDebounceTime );
+extern qboolean G_EntIsUnlockedDoor(int entityNum);
+extern qboolean G_EntIsDoor(int entityNum);
+extern qboolean G_EntIsRemovableUsable(int entNum);
+extern qboolean G_FindClosestPointOnLineSegment(const vec3_t start, const vec3_t end, const vec3_t from, vec3_t result);
+extern void G_AddVoiceEvent(gentity_t *self, int event, int speakDebounceTime);
 //For debug graphics
-extern void CG_Line( vec3_t start, vec3_t end, vec3_t color, float alpha );
-extern void CG_Cube( vec3_t mins, vec3_t maxs, vec3_t color, float alpha );
-extern void CG_CubeOutline( vec3_t mins, vec3_t maxs, int time, unsigned int color, float alpha );
-extern qboolean FlyingCreature( gentity_t *ent );
+extern void CG_Line(vec3_t start, vec3_t end, vec3_t color, float alpha);
+extern void CG_Cube(vec3_t mins, vec3_t maxs, vec3_t color, float alpha);
+extern void CG_CubeOutline(vec3_t mins, vec3_t maxs, int time, unsigned int color, float alpha);
+extern qboolean FlyingCreature(gentity_t *ent);
 
 
 extern vec3_t NPCDEBUG_RED;
@@ -48,34 +48,34 @@ NPC_SetMoveGoal
 -------------------------
 */
 
-void NPC_SetMoveGoal( gentity_t *ent, vec3_t point, int radius, qboolean isNavGoal, int combatPoint, gentity_t *targetEnt )
+void NPC_SetMoveGoal(gentity_t *ent, vec3_t point, int radius, qboolean isNavGoal, int combatPoint, gentity_t *targetEnt)
 {
 	//Must be an NPC
-	if ( ent->NPC == NULL )
+	if (ent->NPC == NULL)
 	{
 		return;
 	}
 
-	if ( ent->NPC->tempGoal == NULL )
+	if (ent->NPC->tempGoal == NULL)
 	{//must still have a goal
 		return;
 	}
 
 	//Copy the origin
-	//VectorCopy( point, ent->NPC->goalPoint );	//FIXME: Make it use this, and this alone!
-	VectorCopy( point, ent->NPC->tempGoal->currentOrigin );
+	//VectorCopy(point, ent->NPC->goalPoint);	//FIXME: Make it use this, and this alone!
+	VectorCopy(point, ent->NPC->tempGoal->currentOrigin);
 
 	//Copy the mins and maxs to the tempGoal
-	VectorCopy( ent->mins, ent->NPC->tempGoal->mins );
-	VectorCopy( ent->mins, ent->NPC->tempGoal->maxs );
+	VectorCopy(ent->mins, ent->NPC->tempGoal->mins);
+	VectorCopy(ent->mins, ent->NPC->tempGoal->maxs);
 
 	//FIXME: TESTING let's try making sure the tempGoal isn't stuck in the ground?
-	if ( 0 )
+	if (0)
 	{
 		trace_t	trace;
 		vec3_t	bottom = {ent->NPC->tempGoal->currentOrigin[0],ent->NPC->tempGoal->currentOrigin[1],ent->NPC->tempGoal->currentOrigin[2]+ent->NPC->tempGoal->mins[2]};
-		gi.trace( &trace, ent->NPC->tempGoal->currentOrigin, vec3_origin, vec3_origin, bottom, ent->s.number, ent->clipmask, (EG2_Collision)0, 0 );
-		if ( trace.fraction < 1.0f )
+		gi.trace(&trace, ent->NPC->tempGoal->currentOrigin, vec3_origin, vec3_origin, bottom, ent->s.number, ent->clipmask, (EG2_Collision)0, 0);
+		if (trace.fraction < 1.0f)
 		{//in the ground, raise it up
 			ent->NPC->tempGoal->currentOrigin[2] -= ent->NPC->tempGoal->mins[2]*(1.0f-trace.fraction)-0.125f;
 		}
@@ -84,7 +84,7 @@ void NPC_SetMoveGoal( gentity_t *ent, vec3_t point, int radius, qboolean isNavGo
 	ent->NPC->tempGoal->target = NULL;
 	ent->NPC->tempGoal->clipmask = ent->clipmask;
 	ent->NPC->tempGoal->svFlags &= ~SVF_NAVGOAL;
-	if ( targetEnt && targetEnt->waypoint >= 0 )
+	if (targetEnt && targetEnt->waypoint >= 0)
 	{
 		ent->NPC->tempGoal->waypoint = targetEnt->waypoint;
 	}
@@ -94,7 +94,7 @@ void NPC_SetMoveGoal( gentity_t *ent, vec3_t point, int radius, qboolean isNavGo
 	}
 	ent->NPC->tempGoal->noWaypointTime = 0;
 
-	if ( isNavGoal )
+	if (isNavGoal)
 	{
 		assert(ent->NPC->tempGoal->owner);
 		ent->NPC->tempGoal->svFlags |= SVF_NAVGOAL;
@@ -107,7 +107,7 @@ void NPC_SetMoveGoal( gentity_t *ent, vec3_t point, int radius, qboolean isNavGo
 	ent->NPC->goalRadius = radius;
 	ent->NPC->aiFlags	&= ~NPCAI_STOP_AT_LOS;
 
-	gi.linkentity( ent->NPC->goalEntity );
+	gi.linkentity(ent->NPC->goalEntity);
 }
 /*
 -------------------------
@@ -115,26 +115,26 @@ waypoint_testDirection
 -------------------------
 */
 
-static float waypoint_testDirection( vec3_t origin, float yaw, float minDist )
+static float waypoint_testDirection(vec3_t origin, float yaw, float minDist)
 {
 	vec3_t	trace_dir, test_pos;
 	vec3_t	maxs, mins;
 	trace_t	tr;
 
 	//Setup the mins and max
-	VectorSet( maxs, DEFAULT_MAXS_0, DEFAULT_MAXS_1, DEFAULT_MAXS_2 );
-	VectorSet( mins, DEFAULT_MINS_0, DEFAULT_MINS_1, DEFAULT_MINS_2 + STEPSIZE );
+	VectorSet(maxs, DEFAULT_MAXS_0, DEFAULT_MAXS_1, DEFAULT_MAXS_2);
+	VectorSet(mins, DEFAULT_MINS_0, DEFAULT_MINS_1, DEFAULT_MINS_2 + STEPSIZE);
 
 	//Get our test direction
-	vec3_t	angles = { 0, yaw, 0 };
-	AngleVectors( angles, trace_dir, NULL, NULL );
+	vec3_t	angles = {0, yaw, 0};
+	AngleVectors(angles, trace_dir, NULL, NULL);
 
 	//Move ahead
-	VectorMA( origin, minDist, trace_dir, test_pos );
+	VectorMA(origin, minDist, trace_dir, test_pos);
 
-	gi.trace( &tr, origin, mins, maxs, test_pos, ENTITYNUM_NONE, ( CONTENTS_SOLID | CONTENTS_MONSTERCLIP | CONTENTS_BOTCLIP ), (EG2_Collision)0, 0 );
+	gi.trace(&tr, origin, mins, maxs, test_pos, ENTITYNUM_NONE, (CONTENTS_SOLID | CONTENTS_MONSTERCLIP | CONTENTS_BOTCLIP), (EG2_Collision)0, 0);
 
-	return ( minDist * tr.fraction );	//return actual dist completed
+	return (minDist * tr.fraction);	//return actual dist completed
 }
 
 /*
@@ -143,16 +143,16 @@ waypoint_getRadius
 -------------------------
 */
 
-static float waypoint_getRadius( gentity_t *ent )
+static float waypoint_getRadius(gentity_t *ent)
 {
 	float	minDist = MAX_RADIUS_CHECK + 1; // (unsigned int) -1;
 	float	dist;
 
-	for ( int i = 0; i < YAW_ITERATIONS; i++ )
+	for (int i = 0; i < YAW_ITERATIONS; i++)
 	{
-		dist = waypoint_testDirection( ent->currentOrigin, ((360.0f/YAW_ITERATIONS) * i), minDist );
+		dist = waypoint_testDirection(ent->currentOrigin, ((360.0f/YAW_ITERATIONS) * i), minDist);
 
-		if ( dist < minDist )
+		if (dist < minDist)
 			minDist = dist;
 	}
 
@@ -169,7 +169,7 @@ radius is automatically calculated in-world.
 "targetJump" is a special edge that only guys who can jump will cross (so basically Jedi)
 */
 extern int delayedShutDown;
-void SP_waypoint ( gentity_t *ent )
+void SP_waypoint (gentity_t *ent)
 {
 		VectorSet(ent->mins, DEFAULT_MINS_0, DEFAULT_MINS_1, DEFAULT_MINS_2);
 		VectorSet(ent->maxs, DEFAULT_MAXS_0, DEFAULT_MAXS_1, DEFAULT_MAXS_2);
@@ -177,7 +177,7 @@ void SP_waypoint ( gentity_t *ent )
 		ent->contents = CONTENTS_TRIGGER;
 		ent->clipmask = MASK_DEADSOLID;
 
-		gi.linkentity( ent );
+		gi.linkentity(ent);
 
 		ent->count = -1;
 		ent->classname = "waypoint";
@@ -187,7 +187,7 @@ void SP_waypoint ( gentity_t *ent )
 			ent->currentOrigin[2] += 128.0f;
 		}
 
-		if( !(ent->spawnflags&1) && G_CheckInSolid (ent, qtrue))
+		if(!(ent->spawnflags&1) && G_CheckInSolid (ent, qtrue))
 		{//if not SOLID_OK, and in solid
 			ent->maxs[2] = CROUCH_MAXS_2;
 			if(G_CheckInSolid (ent, qtrue))
@@ -204,7 +204,7 @@ void SP_waypoint ( gentity_t *ent )
 		}
 
 		//G_SpawnString("targetJump", "", &ent->targetJump);
-		ent->radius = waypoint_getRadius( ent );
+		ent->radius = waypoint_getRadius(ent);
 		NAV::SpawnedPoint(ent);
 
 		G_FreeEntity(ent);
@@ -223,15 +223,15 @@ void SP_waypoint_small (gentity_t *ent)
 		ent->contents = CONTENTS_TRIGGER;
 		ent->clipmask = MASK_DEADSOLID;
 
-		gi.linkentity( ent );
+		gi.linkentity(ent);
 
 		ent->count = -1;
 		ent->classname = "waypoint";
 
-		if ( !(ent->spawnflags&1) && G_CheckInSolid( ent, qtrue ) )
+		if (!(ent->spawnflags&1) && G_CheckInSolid(ent, qtrue))
 		{
 			ent->maxs[2] = CROUCH_MAXS_2;
-			if ( G_CheckInSolid( ent, qtrue ) )
+			if (G_CheckInSolid(ent, qtrue))
 			{
 				gi.Printf(S_COLOR_RED"ERROR: Waypoint_small %s at %s in solid!\n", ent->targetname, vtos(ent->currentOrigin));
 				assert(0);
@@ -273,14 +273,14 @@ radius - how far from the navgoal an ent can be before it thinks it reached it -
 
 */
 
-void SP_waypoint_navgoal( gentity_t *ent )
+void SP_waypoint_navgoal(gentity_t *ent)
 {
-	int radius = ( ent->radius ) ? (ent->radius) : 12;
+	int radius = (ent->radius) ? (ent->radius) : 12;
 
-	VectorSet( ent->mins, -16, -16, -24 );
-	VectorSet( ent->maxs, 16, 16, 32 );
+	VectorSet(ent->mins, -16, -16, -24);
+	VectorSet(ent->maxs, 16, 16, 32);
 	ent->s.origin[2] += 0.125;
-	if ( !(ent->spawnflags&1) && G_CheckInSolid( ent, qfalse ) )
+	if (!(ent->spawnflags&1) && G_CheckInSolid(ent, qfalse))
 	{
 		gi.Printf(S_COLOR_RED"ERROR: Waypoint_navgoal %s at %s in solid!\n", ent->targetname, vtos(ent->currentOrigin));
 		assert(0);
@@ -290,13 +290,13 @@ void SP_waypoint_navgoal( gentity_t *ent )
 		}
 #endif
 	}
-	TAG_Add( ent->targetname, NULL, ent->s.origin, ent->s.angles, radius, RTF_NAVGOAL );
+	TAG_Add(ent->targetname, NULL, ent->s.origin, ent->s.angles, radius, RTF_NAVGOAL);
 
 	ent->classname = "navgoal";
 
 	NAV::SpawnedPoint(ent, NAV::PT_GOALNODE);
 
-	G_FreeEntity( ent );//can't do this, they need to be found later by some functions, though those could be fixed, maybe?
+	G_FreeEntity(ent);//can't do this, they need to be found later by some functions, though those could be fixed, maybe?
 }
 
 /*
@@ -305,15 +305,15 @@ Svcmd_Nav_f
 -------------------------
 */
 
-void Svcmd_Nav_f( void )
+void Svcmd_Nav_f(void)
 {
-	const char	*cmd = gi.argv( 1 );
+	const char	*cmd = gi.argv(1);
 
-	if ( Q_stricmp( cmd, "show" ) == 0 )
+	if (Q_stricmp(cmd, "show") == 0)
 	{
-		cmd = gi.argv( 2 );
+		cmd = gi.argv(2);
 
-		if ( Q_stricmp( cmd, "all" ) == 0 )
+		if (Q_stricmp(cmd, "all") == 0)
 		{
 			NAVDEBUG_showNodes = !NAVDEBUG_showNodes;
 
@@ -322,83 +322,83 @@ void Svcmd_Nav_f( void )
 			NAVDEBUG_showCombatPoints = NAVDEBUG_showEnemyPath =
 			NAVDEBUG_showEdges = NAVDEBUG_showNearest = NAVDEBUG_showRadius = NAVDEBUG_showNodes;
 		}
-		else if ( Q_stricmp( cmd, "nodes" ) == 0 )
+		else if (Q_stricmp(cmd, "nodes") == 0)
 		{
 			NAVDEBUG_showNodes = !NAVDEBUG_showNodes;
 		}
-		else if ( Q_stricmp( cmd, "radius" ) == 0 )
+		else if (Q_stricmp(cmd, "radius") == 0)
 		{
 			NAVDEBUG_showRadius = !NAVDEBUG_showRadius;
 		}
-		else if ( Q_stricmp( cmd, "edges" ) == 0 )
+		else if (Q_stricmp(cmd, "edges") == 0)
 		{
 			NAVDEBUG_showEdges = !NAVDEBUG_showEdges;
 		}
-		else if ( Q_stricmp( cmd, "testpath" ) == 0 )
+		else if (Q_stricmp(cmd, "testpath") == 0)
 		{
 			NAVDEBUG_showTestPath = !NAVDEBUG_showTestPath;
 		}
-		else if ( Q_stricmp( cmd, "enemypath" ) == 0 )
+		else if (Q_stricmp(cmd, "enemypath") == 0)
 		{
 			NAVDEBUG_showEnemyPath = !NAVDEBUG_showEnemyPath;
 		}
-		else if ( Q_stricmp( cmd, "combatpoints" ) == 0 )
+		else if (Q_stricmp(cmd, "combatpoints") == 0)
 		{
 			NAVDEBUG_showCombatPoints = !NAVDEBUG_showCombatPoints;
 		}
-		else if ( Q_stricmp( cmd, "navgoals" ) == 0 )
+		else if (Q_stricmp(cmd, "navgoals") == 0)
 		{
 			NAVDEBUG_showNavGoals = !NAVDEBUG_showNavGoals;
 		}
-		else if ( Q_stricmp( cmd, "collision" ) == 0 )
+		else if (Q_stricmp(cmd, "collision") == 0)
 		{
 			NAVDEBUG_showCollision = !NAVDEBUG_showCollision;
 		}
-		else if ( Q_stricmp( cmd, "grid" ) == 0 )
+		else if (Q_stricmp(cmd, "grid") == 0)
 		{
 			NAVDEBUG_showGrid = !NAVDEBUG_showGrid;
 		}
-		else if ( Q_stricmp( cmd, "nearest" ) == 0 )
+		else if (Q_stricmp(cmd, "nearest") == 0)
 		{
 			NAVDEBUG_showNearest = !NAVDEBUG_showNearest;
 		}
-		else if ( Q_stricmp( cmd, "lines" ) == 0 )
+		else if (Q_stricmp(cmd, "lines") == 0)
 		{
 			NAVDEBUG_showPointLines = !NAVDEBUG_showPointLines;
 		}
 	}
-	else if ( Q_stricmp( cmd, "set" ) == 0 )
+	else if (Q_stricmp(cmd, "set") == 0)
 	{
-		cmd = gi.argv( 2 );
+		cmd = gi.argv(2);
 
-		if ( Q_stricmp( cmd, "testgoal" ) == 0 )
+		if (Q_stricmp(cmd, "testgoal") == 0)
 		{
-		//	NAVDEBUG_curGoal = navigator.GetNearestNode( &g_entities[0], g_entities[0].waypoint, NF_CLEAR_PATH, WAYPOINT_NONE );
+		//	NAVDEBUG_curGoal = navigator.GetNearestNode(&g_entities[0], g_entities[0].waypoint, NF_CLEAR_PATH, WAYPOINT_NONE);
 		}
 	}
-	else if ( Q_stricmp( cmd, "goto" ) == 0 )
+	else if (Q_stricmp(cmd, "goto") == 0)
 	{
-		cmd = gi.argv( 2 );
+		cmd = gi.argv(2);
 		NAV::TeleportTo(&(g_entities[0]), cmd);
 	}
-	else if ( Q_stricmp( cmd, "gotonum" ) == 0 )
+	else if (Q_stricmp(cmd, "gotonum") == 0)
 	{
-		cmd = gi.argv( 2 );
+		cmd = gi.argv(2);
 		NAV::TeleportTo(&(g_entities[0]), atoi(cmd));
 	}
-	else if ( Q_stricmp( cmd, "totals" ) == 0 )
+	else if (Q_stricmp(cmd, "totals") == 0)
 	{
 		NAV::ShowStats();
 	}
 	else
 	{
 		//Print the available commands
-		Com_Printf("nav - valid commands\n---\n" );
+		Com_Printf("nav - valid commands\n---\n");
 		Com_Printf("show\n - nodes\n - edges\n - testpath\n - enemypath\n - combatpoints\n - navgoals\n---\n");
-		Com_Printf("goto\n ---\n" );
-		Com_Printf("gotonum\n ---\n" );
-		Com_Printf("totals\n ---\n" );
-		Com_Printf("set\n - testgoal\n---\n" );
+		Com_Printf("goto\n ---\n");
+		Com_Printf("gotonum\n ---\n");
+		Com_Printf("totals\n ---\n");
+		Com_Printf("set\n - testgoal\n---\n");
 	}
 }
 

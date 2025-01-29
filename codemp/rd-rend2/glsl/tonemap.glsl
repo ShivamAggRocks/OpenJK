@@ -24,7 +24,7 @@ in vec2 var_TexCoords;
 
 out vec4 out_Color;
 
-vec3 LinearTosRGB( in vec3 color )
+vec3 LinearTosRGB(in vec3 color)
 {
 	vec3 lo = 12.92 * color;
 	vec3 hi = 1.055 * pow(color, vec3(0.4166666)) - 0.055;
@@ -63,7 +63,7 @@ const mat3 ACESInputMat = mat3
 // ODT_SAT => XYZ => D60_2_D65 => sRGB
 const mat3 ACESOutputMat = mat3
 (
-    vec3( 1.60475, -0.53108, -0.07367),
+    vec3(1.60475, -0.53108, -0.07367),
     vec3(-0.10208,  1.10813, -0.00605),
     vec3(-0.00327, -0.07276,  1.07602)
 );

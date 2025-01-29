@@ -33,7 +33,7 @@ serverInfo_t	cls_mplayerServers[MAX_OTHER_SERVERS];
 LAN_LoadCachedServers
 ====================
 */
-void LAN_LoadCachedServers( ) {
+void LAN_LoadCachedServers() {
 	int size;
 	fileHandle_t fileIn;
 	cls.numglobalservers = cls_nummplayerservers = cls.numfavoriteservers = 0;
@@ -60,7 +60,7 @@ void LAN_LoadCachedServers( ) {
 LAN_SaveServersToCache
 ====================
 */
-void LAN_SaveServersToCache( ) {
+void LAN_SaveServersToCache() {
 	int size;
 	fileHandle_t fileOut = FS_SV_FOpenFileWrite("servercache.dat");
 	FS_Write(&cls.numglobalservers, sizeof(int), fileOut);
@@ -135,8 +135,8 @@ int LAN_AddServer(int source, const char *name, const char *address) {
 			break;
 	}
 	if (servers && *count < max) {
-		NET_StringToAdr( address, &adr );
-		for ( i = 0; i < *count; i++ ) {
+		NET_StringToAdr(address, &adr);
+		for (i = 0; i < *count; i++) {
 			if (NET_CompareAdr(&servers[i].adr, &adr)) {
 				break;
 			}
@@ -153,24 +153,24 @@ int LAN_AddServer(int source, const char *name, const char *address) {
 	return -1;
 }
 
-int LAN_AddFavAddr( const char *address ) {
-	if ( cls.numfavoriteservers < MAX_OTHER_SERVERS ) {
+int LAN_AddFavAddr(const char *address) {
+	if (cls.numfavoriteservers < MAX_OTHER_SERVERS) {
 		netadr_t adr;
-		if ( !NET_StringToAdr( address, &adr ) ) {
+		if (!NET_StringToAdr(address, &adr)) {
 			return 2;
 		}
-		if ( adr.type == NA_BAD ) {
+		if (adr.type == NA_BAD) {
 			return 3;
 		}
 
-		for ( int i = 0; i < cls.numfavoriteservers; i++ ) {
-			if ( NET_CompareAdr( &cls.favoriteServers[i].adr, &adr ) ) {
+		for (int i = 0; i < cls.numfavoriteservers; i++) {
+			if (NET_CompareAdr(&cls.favoriteServers[i].adr, &adr)) {
 				return 0;
 			}
 		}
 		cls.favoriteServers[cls.numfavoriteservers].adr = adr;
-		Q_strncpyz( cls.favoriteServers[cls.numfavoriteservers].hostName, address,
-			sizeof(cls.favoriteServers[cls.numfavoriteservers].hostName) );
+		Q_strncpyz(cls.favoriteServers[cls.numfavoriteservers].hostName, address,
+			sizeof(cls.favoriteServers[cls.numfavoriteservers].hostName));
 		cls.favoriteServers[cls.numfavoriteservers].visible = qtrue;
 		cls.numfavoriteservers++;
 		return 1;
@@ -205,9 +205,9 @@ void LAN_RemoveServer(int source, const char *addr) {
 	}
 	if (servers) {
 		netadr_t comp;
-		NET_StringToAdr( addr, &comp );
+		NET_StringToAdr(addr, &comp);
 		for (i = 0; i < *count; i++) {
-			if (NET_CompareAdr( &comp, &servers[i].adr)) {
+			if (NET_CompareAdr(&comp, &servers[i].adr)) {
 				int j = i;
 				while (j < *count - 1) {
 					Com_Memcpy(&servers[j], &servers[j+1], sizeof(servers[j]));
@@ -226,7 +226,7 @@ void LAN_RemoveServer(int source, const char *addr) {
 LAN_GetServerCount
 ====================
 */
-int LAN_GetServerCount( int source ) {
+int LAN_GetServerCount(int source) {
 	switch (source) {
 		case AS_LOCAL :
 			return cls.numlocalservers;
@@ -247,24 +247,24 @@ int LAN_GetServerCount( int source ) {
 LAN_GetLocalServerAddressString
 ====================
 */
-void LAN_GetServerAddressString( int source, int n, char *buf, int buflen ) {
+void LAN_GetServerAddressString(int source, int n, char *buf, int buflen) {
 	switch (source) {
 		case AS_LOCAL :
 			if (n >= 0 && n < MAX_OTHER_SERVERS) {
-				Q_strncpyz(buf, NET_AdrToString( &cls.localServers[n].adr) , buflen );
+				Q_strncpyz(buf, NET_AdrToString(&cls.localServers[n].adr) , buflen);
 				return;
 			}
 			break;
 		case AS_MPLAYER:
 		case AS_GLOBAL :
 			if (n >= 0 && n < MAX_GLOBAL_SERVERS) {
-				Q_strncpyz(buf, NET_AdrToString( &cls.globalServers[n].adr) , buflen );
+				Q_strncpyz(buf, NET_AdrToString(&cls.globalServers[n].adr) , buflen);
 				return;
 			}
 			break;
 		case AS_FAVORITES :
 			if (n >= 0 && n < MAX_OTHER_SERVERS) {
-				Q_strncpyz(buf, NET_AdrToString( &cls.favoriteServers[n].adr) , buflen );
+				Q_strncpyz(buf, NET_AdrToString(&cls.favoriteServers[n].adr) , buflen);
 				return;
 			}
 			break;
@@ -277,7 +277,7 @@ void LAN_GetServerAddressString( int source, int n, char *buf, int buflen ) {
 LAN_GetServerInfo
 ====================
 */
-void LAN_GetServerInfo( int source, int n, char *buf, int buflen ) {
+void LAN_GetServerInfo(int source, int n, char *buf, int buflen) {
 	char info[MAX_STRING_CHARS];
 	serverInfo_t *server = NULL;
 	info[0] = '\0';
@@ -301,25 +301,25 @@ void LAN_GetServerInfo( int source, int n, char *buf, int buflen ) {
 	}
 	if (server && buf) {
 		buf[0] = '\0';
-		Info_SetValueForKey( info, "hostname", server->hostName);
-		Info_SetValueForKey( info, "mapname", server->mapName);
-		Info_SetValueForKey( info, "clients", va("%i",server->clients));
-		Info_SetValueForKey( info, "sv_maxclients", va("%i",server->maxClients));
-		Info_SetValueForKey( info, "ping", va("%i",server->ping));
-		Info_SetValueForKey( info, "minping", va("%i",server->minPing));
-		Info_SetValueForKey( info, "maxping", va("%i",server->maxPing));
-		Info_SetValueForKey( info, "nettype", va("%i",server->netType));
-		Info_SetValueForKey( info, "needpass", va("%i", server->needPassword ) );
-		Info_SetValueForKey( info, "truejedi", va("%i", server->trueJedi ) );
-		Info_SetValueForKey( info, "wdisable", va("%i", server->weaponDisable ) );
-		Info_SetValueForKey( info, "fdisable", va("%i", server->forceDisable ) );
-		Info_SetValueForKey( info, "game", server->game);
-		Info_SetValueForKey( info, "gametype", va("%i",server->gameType));
-		Info_SetValueForKey( info, "addr", NET_AdrToString(&server->adr));
-		Info_SetValueForKey( info, "g_humanplayers", va( "%i", server->humans ) );
-		Info_SetValueForKey( info, "bots", va( "%i", server->bots ) );
-//		Info_SetValueForKey( info, "sv_allowAnonymous", va("%i", server->allowAnonymous));
-//		Info_SetValueForKey( info, "pure", va("%i", server->pure ) );
+		Info_SetValueForKey(info, "hostname", server->hostName);
+		Info_SetValueForKey(info, "mapname", server->mapName);
+		Info_SetValueForKey(info, "clients", va("%i",server->clients));
+		Info_SetValueForKey(info, "sv_maxclients", va("%i",server->maxClients));
+		Info_SetValueForKey(info, "ping", va("%i",server->ping));
+		Info_SetValueForKey(info, "minping", va("%i",server->minPing));
+		Info_SetValueForKey(info, "maxping", va("%i",server->maxPing));
+		Info_SetValueForKey(info, "nettype", va("%i",server->netType));
+		Info_SetValueForKey(info, "needpass", va("%i", server->needPassword));
+		Info_SetValueForKey(info, "truejedi", va("%i", server->trueJedi));
+		Info_SetValueForKey(info, "wdisable", va("%i", server->weaponDisable));
+		Info_SetValueForKey(info, "fdisable", va("%i", server->forceDisable));
+		Info_SetValueForKey(info, "game", server->game);
+		Info_SetValueForKey(info, "gametype", va("%i",server->gameType));
+		Info_SetValueForKey(info, "addr", NET_AdrToString(&server->adr));
+		Info_SetValueForKey(info, "g_humanplayers", va("%i", server->humans));
+		Info_SetValueForKey(info, "bots", va("%i", server->bots));
+//		Info_SetValueForKey(info, "sv_allowAnonymous", va("%i", server->allowAnonymous));
+//		Info_SetValueForKey(info, "pure", va("%i", server->pure));
 		Q_strncpyz(buf, info, buflen);
 	} else {
 		if (buf) {
@@ -333,7 +333,7 @@ void LAN_GetServerInfo( int source, int n, char *buf, int buflen ) {
 LAN_GetServerPing
 ====================
 */
-int LAN_GetServerPing( int source, int n ) {
+int LAN_GetServerPing(int source, int n) {
 	serverInfo_t *server = NULL;
 	switch (source) {
 		case AS_LOCAL :
@@ -364,7 +364,7 @@ int LAN_GetServerPing( int source, int n ) {
 LAN_GetServerPtr
 ====================
 */
-static serverInfo_t *LAN_GetServerPtr( int source, int n ) {
+static serverInfo_t *LAN_GetServerPtr(int source, int n) {
 	switch (source) {
 		case AS_LOCAL :
 			if (n >= 0 && n < MAX_OTHER_SERVERS) {
@@ -391,7 +391,7 @@ static serverInfo_t *LAN_GetServerPtr( int source, int n ) {
 LAN_CompareServers
 ====================
 */
-int LAN_CompareServers( int source, int sortKey, int sortDir, int s1, int s2 ) {
+int LAN_CompareServers(int source, int sortKey, int sortDir, int s1, int s2) {
 	int res;
 	serverInfo_t *server1, *server2;
 
@@ -402,13 +402,13 @@ int LAN_CompareServers( int source, int sortKey, int sortDir, int s1, int s2 ) {
 	}
 
 	res = 0;
-	switch( sortKey ) {
+	switch(sortKey) {
 		case SORT_HOST:
-			res = Q_stricmp( server1->hostName, server2->hostName );
+			res = Q_stricmp(server1->hostName, server2->hostName);
 			break;
 
 		case SORT_MAP:
-			res = Q_stricmp( server1->mapName, server2->mapName );
+			res = Q_stricmp(server1->mapName, server2->mapName);
 			break;
 		case SORT_CLIENTS:
 			if (server1->clients < server2->clients) {
@@ -460,7 +460,7 @@ int LAN_CompareServers( int source, int sortKey, int sortDir, int s1, int s2 ) {
 LAN_GetPingQueueCount
 ====================
 */
-int LAN_GetPingQueueCount( void ) {
+int LAN_GetPingQueueCount(void) {
 	return (CL_GetPingQueueCount());
 }
 
@@ -469,8 +469,8 @@ int LAN_GetPingQueueCount( void ) {
 LAN_ClearPing
 ====================
 */
-void LAN_ClearPing( int n ) {
-	CL_ClearPing( n );
+void LAN_ClearPing(int n) {
+	CL_ClearPing(n);
 }
 
 /*
@@ -478,8 +478,8 @@ void LAN_ClearPing( int n ) {
 LAN_GetPing
 ====================
 */
-void LAN_GetPing( int n, char *buf, int buflen, int *pingtime ) {
-	CL_GetPing( n, buf, buflen, pingtime );
+void LAN_GetPing(int n, char *buf, int buflen, int *pingtime) {
+	CL_GetPing(n, buf, buflen, pingtime);
 }
 
 /*
@@ -487,8 +487,8 @@ void LAN_GetPing( int n, char *buf, int buflen, int *pingtime ) {
 LAN_GetPingInfo
 ====================
 */
-void LAN_GetPingInfo( int n, char *buf, int buflen ) {
-	CL_GetPingInfo( n, buf, buflen );
+void LAN_GetPingInfo(int n, char *buf, int buflen) {
+	CL_GetPingInfo(n, buf, buflen);
 }
 
 /*
@@ -496,7 +496,7 @@ void LAN_GetPingInfo( int n, char *buf, int buflen ) {
 LAN_MarkServerVisible
 ====================
 */
-void LAN_MarkServerVisible(int source, int n, qboolean visible ) {
+void LAN_MarkServerVisible(int source, int n, qboolean visible) {
 	if (n == -1) {
 		int count = MAX_OTHER_SERVERS;
 		serverInfo_t *server = NULL;
@@ -547,7 +547,7 @@ void LAN_MarkServerVisible(int source, int n, qboolean visible ) {
 LAN_ServerIsVisible
 =======================
 */
-int LAN_ServerIsVisible(int source, int n ) {
+int LAN_ServerIsVisible(int source, int n) {
 	switch (source) {
 		case AS_LOCAL :
 			if (n >= 0 && n < MAX_OTHER_SERVERS) {
@@ -574,7 +574,7 @@ int LAN_ServerIsVisible(int source, int n ) {
 LAN_UpdateVisiblePings
 =======================
 */
-qboolean LAN_UpdateVisiblePings(int source ) {
+qboolean LAN_UpdateVisiblePings(int source) {
 	return CL_UpdateVisiblePings_f(source);
 }
 
@@ -583,6 +583,6 @@ qboolean LAN_UpdateVisiblePings(int source ) {
 LAN_GetServerStatus
 ====================
 */
-int LAN_GetServerStatus( const char *serverAddress, char *serverStatus, int maxLen ) {
-	return CL_ServerStatus( serverAddress, serverStatus, maxLen );
+int LAN_GetServerStatus(const char *serverAddress, char *serverStatus, int maxLen) {
+	return CL_ServerStatus(serverAddress, serverStatus, maxLen);
 }

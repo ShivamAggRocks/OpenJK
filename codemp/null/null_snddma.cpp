@@ -50,14 +50,14 @@ void SNDDMA_Submit(void)
 {
 }
 
-sfxHandle_t S_RegisterSound( const char *name ) {
+sfxHandle_t S_RegisterSound(const char *name) {
 	return 0;
 }
 
-void S_StartLocalSound( sfxHandle_t sfxHandle, int channelNum ) {
+void S_StartLocalSound(sfxHandle_t sfxHandle, int channelNum) {
 }
 
-void S_ClearSoundBuffer( void ) {
+void S_ClearSoundBuffer(void) {
 }
 
 qboolean SND_RegisterAudio_LevelLoadEnd(qboolean bDeleteEverythingNotUsedThisLevel)

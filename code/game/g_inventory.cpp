@@ -28,9 +28,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Goodie Keys
 ================
 */
-qboolean INV_GoodieKeyGive( gentity_t *target )
+qboolean INV_GoodieKeyGive(gentity_t *target)
 {
-	if ( !target || !target->client )
+	if (!target || !target->client)
 	{
 		return (qfalse);
 	}
@@ -40,9 +40,9 @@ qboolean INV_GoodieKeyGive( gentity_t *target )
 
 }
 
-qboolean INV_GoodieKeyTake( gentity_t *target )
+qboolean INV_GoodieKeyTake(gentity_t *target)
 {
-	if ( !target || !target->client )
+	if (!target || !target->client)
 	{
 		return (qfalse);
 	}
@@ -57,14 +57,14 @@ qboolean INV_GoodieKeyTake( gentity_t *target )
 	return (qfalse);
 }
 
-int INV_GoodieKeyCheck( gentity_t *target )
+int INV_GoodieKeyCheck(gentity_t *target)
 {
-	if ( !target || !target->client )
+	if (!target || !target->client)
 	{
 		return (qfalse);
 	}
 
-	if ( target->client->ps.inventory[INV_GOODIE_KEY] )
+	if (target->client->ps.inventory[INV_GOODIE_KEY])
 	{//found a key
 		return (INV_GOODIE_KEY);
 	}
@@ -78,19 +78,19 @@ int INV_GoodieKeyCheck( gentity_t *target )
 Security Keys
 ================
 */
-qboolean INV_SecurityKeyGive( gentity_t *target, const char *keyname )
+qboolean INV_SecurityKeyGive(gentity_t *target, const char *keyname)
 {
-	if ( target == NULL || keyname == NULL || target->client == NULL )
+	if (target == NULL || keyname == NULL || target->client == NULL)
 	{
 		return qfalse;
 	}
 
-	for ( int i = 0; i < MAX_SECURITY_KEYS; i++ )
+	for (int i = 0; i < MAX_SECURITY_KEYS; i++)
 	{
-		if ( target->client->ps.security_key_message[i][0] == '\0' )
+		if (target->client->ps.security_key_message[i][0] == '\0')
 		{//fill in the first empty slot we find with this key
 			target->client->ps.inventory[INV_SECURITY_KEY]++;	// He got the key
-			Q_strncpyz( target->client->ps.security_key_message[i], keyname, MAX_SECURITY_KEY_MESSSAGE );
+			Q_strncpyz(target->client->ps.security_key_message[i], keyname, MAX_SECURITY_KEY_MESSSAGE);
 			return qtrue;
 		}
 	}
@@ -98,18 +98,18 @@ qboolean INV_SecurityKeyGive( gentity_t *target, const char *keyname )
 	return qfalse;
 }
 
-void INV_SecurityKeyTake( gentity_t *target, const char *keyname )
+void INV_SecurityKeyTake(gentity_t *target, const char *keyname)
 {
-	if ( !target || !keyname || !target->client )
+	if (!target || !keyname || !target->client)
 	{
 		return;
 	}
 
-	for ( int i = 0; i < MAX_SECURITY_KEYS; i++ )
+	for (int i = 0; i < MAX_SECURITY_KEYS; i++)
 	{
-		if ( target->client->ps.security_key_message[i][0] != '\0' )
+		if (target->client->ps.security_key_message[i][0] != '\0')
 		{
-			if ( !Q_stricmp( keyname, target->client->ps.security_key_message[i] ) )
+			if (!Q_stricmp(keyname, target->client->ps.security_key_message[i]))
 			{
 				target->client->ps.inventory[INV_SECURITY_KEY]--;	// Take the key
 				target->client->ps.security_key_message[i][0] = '\0';
@@ -126,18 +126,18 @@ void INV_SecurityKeyTake( gentity_t *target, const char *keyname )
 	}
 }
 
-qboolean INV_SecurityKeyCheck( gentity_t *target, const char *keyname )
+qboolean INV_SecurityKeyCheck(gentity_t *target, const char *keyname)
 {
-	if ( !target || !keyname || !target->client )
+	if (!target || !keyname || !target->client)
 	{
 		return (qfalse);
 	}
 
-	for ( int i = 0; i < MAX_SECURITY_KEYS; i++ )
+	for (int i = 0; i < MAX_SECURITY_KEYS; i++)
 	{
-		if ( target->client->ps.inventory[INV_SECURITY_KEY] && target->client->ps.security_key_message[i][0] != '\0' )
+		if (target->client->ps.inventory[INV_SECURITY_KEY] && target->client->ps.security_key_message[i][0] != '\0')
 		{
-			if ( !Q_stricmp( keyname, target->client->ps.security_key_message[i] ) )
+			if (!Q_stricmp(keyname, target->client->ps.security_key_message[i]))
 			{
 				return (qtrue);
 			}

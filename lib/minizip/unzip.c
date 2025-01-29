@@ -1,14 +1,14 @@
 /* unzip.c -- IO for uncompress .zip files using zlib
    Version 1.1, February 14h, 2010
-   part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
+   part of the MiniZip project - (http://www.winimage.com/zLibDll/minizip.html)
 
-         Copyright (C) 1998-2010 Gilles Vollant (minizip) ( http://www.winimage.com/zLibDll/minizip.html )
+         Copyright (C) 1998-2010 Gilles Vollant (minizip) (http://www.winimage.com/zLibDll/minizip.html)
 
          Modifications of Unzip for Zip64
          Copyright (C) 2007-2008 Even Rouault
 
          Modifications for Zip64 support on both zip and unzip
-         Copyright (C) 2009-2010 Mathias Svensson ( http://result42.com )
+         Copyright (C) 2009-2010 Mathias Svensson (http://result42.com)
 
          For more info read MiniZip_info.txt
 
@@ -224,14 +224,14 @@ local int unz64local_getByte(const zlib_filefunc64_32_def* pzlib_filefunc_def, v
     {
         *pi = (int)c;
         return UNZ_OK;
-    }
+   }
     else
     {
         if (ZERROR64(*pzlib_filefunc_def,filestream))
             return UNZ_ERRNO;
         else
             return UNZ_EOF;
-    }
+   }
 }
 
 
@@ -371,7 +371,7 @@ local int strcmpcasenosensitive_internal (const char* fileName1, const char* fil
             return -1;
         if (c1>c2)
             return 1;
-    }
+   }
 }
 
 
@@ -464,11 +464,11 @@ local ZPOS64_T unz64local_SearchCentralDir(const zlib_filefunc64_32_def* pzlib_f
             {
                 uPosFound = uReadPos+i;
                 break;
-            }
+           }
 
         if (uPosFound!=0)
             break;
-    }
+   }
     TRYFREE(buf);
     return uPosFound;
 }
@@ -532,11 +532,11 @@ local ZPOS64_T unz64local_SearchCentralDir64(const zlib_filefunc64_32_def* pzlib
             {
                 uPosFound = uReadPos+i;
                 break;
-            }
+           }
 
         if (uPosFound!=0)
             break;
-    }
+   }
     TRYFREE(buf);
     if (uPosFound == 0)
         return 0;
@@ -686,7 +686,7 @@ local unzFile unzOpenInternal (const void *path,
             err=UNZ_ERRNO;
 
         us.gi.size_comment = 0;
-    }
+   }
     else
     {
         central_pos = unz64local_SearchCentralDir(&us.z_filefunc,us.filestream);
@@ -740,7 +740,7 @@ local unzFile unzOpenInternal (const void *path,
         /* zipfile comment length */
         if (unz64local_getShort(&us.z_filefunc, us.filestream,&us.gi.size_comment)!=UNZ_OK)
             err=UNZ_ERRNO;
-    }
+   }
 
     if ((central_pos<us.offset_central_dir+us.size_central_dir) &&
         (err==UNZ_OK))
@@ -750,7 +750,7 @@ local unzFile unzOpenInternal (const void *path,
     {
         ZCLOSE64(us.z_filefunc, us.filestream);
         return NULL;
-    }
+   }
 
     us.byte_before_the_zipfile = central_pos -
                             (us.offset_central_dir+us.size_central_dir);
@@ -760,11 +760,11 @@ local unzFile unzOpenInternal (const void *path,
 
 
     s=(unz64_s*)ALLOC(sizeof(unz64_s));
-    if( s != NULL)
+    if(s != NULL)
     {
         *s=us;
         unzGoToFirstFile((unzFile)s);
-    }
+   }
     return (unzFile)s;
 }
 
@@ -777,7 +777,7 @@ extern unzFile ZEXPORT unzOpen2 (const char *path,
         zlib_filefunc64_32_def zlib_filefunc64_32_def_fill;
         fill_zlib_filefunc64_32_def_from_filefunc32(&zlib_filefunc64_32_def_fill,pzlib_filefunc32_def);
         return unzOpenInternal(path, &zlib_filefunc64_32_def_fill, 0);
-    }
+   }
     else
         return unzOpenInternal(path, NULL, 0);
 }
@@ -792,7 +792,7 @@ extern unzFile ZEXPORT unzOpen2_64 (const void *path,
         zlib_filefunc64_32_def_fill.ztell32_file = NULL;
         zlib_filefunc64_32_def_fill.zseek32_file = NULL;
         return unzOpenInternal(path, &zlib_filefunc64_32_def_fill, 1);
-    }
+   }
     else
         return unzOpenInternal(path, NULL, 1);
 }
@@ -918,7 +918,7 @@ local int unz64local_GetCurrentFileInfoInternal (unzFile file,
             err=UNZ_ERRNO;
         else if (uMagic!=0x02014b50)
             err=UNZ_BADZIPFILE;
-    }
+   }
 
     if (unz64local_getShort(&s->z_filefunc, s->filestream,&file_info.version) != UNZ_OK)
         err=UNZ_ERRNO;
@@ -979,7 +979,7 @@ local int unz64local_GetCurrentFileInfoInternal (unzFile file,
         {
             *(szFileName+file_info.size_filename)='\0';
             uSizeRead = file_info.size_filename;
-        }
+       }
         else
             uSizeRead = fileNameBufferSize;
 
@@ -987,7 +987,7 @@ local int unz64local_GetCurrentFileInfoInternal (unzFile file,
             if (ZREAD64(s->z_filefunc, s->filestream,szFileName,uSizeRead)!=uSizeRead)
                 err=UNZ_ERRNO;
         lSeek -= uSizeRead;
-    }
+   }
 
     // Read extrafield
     if ((err==UNZ_OK) && (extraField!=NULL))
@@ -1004,14 +1004,14 @@ local int unz64local_GetCurrentFileInfoInternal (unzFile file,
                 lSeek=0;
             else
                 err=UNZ_ERRNO;
-        }
+       }
 
         if ((file_info.size_file_extra>0) && (extraFieldBufferSize>0))
             if (ZREAD64(s->z_filefunc, s->filestream,extraField,(uLong)uSizeRead)!=uSizeRead)
                 err=UNZ_ERRNO;
 
         lSeek += file_info.size_file_extra - (uLong)uSizeRead;
-    }
+   }
     else
         lSeek += file_info.size_file_extra;
 
@@ -1029,7 +1029,7 @@ local int unz64local_GetCurrentFileInfoInternal (unzFile file,
                 lSeek=0;
             else
                 err=UNZ_ERRNO;
-        }
+       }
 
         while(acc < file_info.size_file_extra)
         {
@@ -1051,38 +1051,38 @@ local int unz64local_GetCurrentFileInfoInternal (unzFile file,
                                                                 {
                                                                         if (unz64local_getLong64(&s->z_filefunc, s->filestream,&file_info.uncompressed_size) != UNZ_OK)
                                                                                         err=UNZ_ERRNO;
-                                                                }
+                                                               }
 
                                                                 if(file_info.compressed_size == MAXU32)
                                                                 {
                                                                         if (unz64local_getLong64(&s->z_filefunc, s->filestream,&file_info.compressed_size) != UNZ_OK)
                                                                                   err=UNZ_ERRNO;
-                                                                }
+                                                               }
 
                                                                 if(file_info_internal.offset_curfile == MAXU32)
                                                                 {
                                                                         /* Relative Header offset */
                                                                         if (unz64local_getLong64(&s->z_filefunc, s->filestream,&file_info_internal.offset_curfile) != UNZ_OK)
                                                                                 err=UNZ_ERRNO;
-                                                                }
+                                                               }
 
                                                                 if(file_info.disk_num_start == MAXU32)
                                                                 {
                                                                         /* Disk Start Number */
                                                                         if (unz64local_getLong(&s->z_filefunc, s->filestream,&uL) != UNZ_OK)
                                                                                 err=UNZ_ERRNO;
-                                                                }
+                                                               }
 
-            }
+           }
             else
             {
                 if (ZSEEK64(s->z_filefunc, s->filestream,dataSize,ZLIB_FILEFUNC_SEEK_CUR)!=0)
                     err=UNZ_ERRNO;
-            }
+           }
 
             acc += 2 + 2 + dataSize;
-        }
-    }
+       }
+   }
 
     if ((err==UNZ_OK) && (szComment!=NULL))
     {
@@ -1091,7 +1091,7 @@ local int unz64local_GetCurrentFileInfoInternal (unzFile file,
         {
             *(szComment+file_info.size_file_comment)='\0';
             uSizeRead = file_info.size_file_comment;
-        }
+       }
         else
             uSizeRead = commentBufferSize;
 
@@ -1101,13 +1101,13 @@ local int unz64local_GetCurrentFileInfoInternal (unzFile file,
                 lSeek=0;
             else
                 err=UNZ_ERRNO;
-        }
+       }
 
         if ((file_info.size_file_comment>0) && (commentBufferSize>0))
             if (ZREAD64(s->z_filefunc, s->filestream,szComment,uSizeRead)!=uSizeRead)
                 err=UNZ_ERRNO;
         lSeek+=file_info.size_file_comment - uSizeRead;
-    }
+   }
     else
         lSeek+=file_info.size_file_comment;
 
@@ -1175,7 +1175,7 @@ extern int ZEXPORT unzGetCurrentFileInfo (unzFile file,
         pfile_info->compressed_size = (uLong)file_info64.compressed_size;
         pfile_info->uncompressed_size = (uLong)file_info64.uncompressed_size;
 
-    }
+   }
     return err;
 }
 /*
@@ -1280,8 +1280,8 @@ extern int ZEXPORT unzLocateFile (unzFile file, const char *szFileName, int iCas
                                             szFileName,iCaseSensitivity)==0)
                 return UNZ_OK;
             err = unzGoToNextFile(file);
-        }
-    }
+       }
+   }
 
     /* We failed, so restore the state of the 'current file' to where we
      * were.
@@ -1338,7 +1338,7 @@ extern int ZEXPORT unzGetFilePos(
     {
         file_pos->pos_in_zip_directory = (uLong)file_pos64.pos_in_zip_directory;
         file_pos->num_of_file = (uLong)file_pos64.num_of_file;
-    }
+   }
     return err;
 }
 
@@ -1413,7 +1413,7 @@ local int unz64local_CheckCurrentFileCoherencyHeader (unz64_s* s, uInt* piSizeVa
             err=UNZ_ERRNO;
         else if (uMagic!=0x04034b50)
             err=UNZ_BADZIPFILE;
-    }
+   }
 
     if (unz64local_getShort(&s->z_filefunc, s->filestream,&uData) != UNZ_OK)
         err=UNZ_ERRNO;
@@ -1518,7 +1518,7 @@ extern int ZEXPORT unzOpenCurrentFile3 (unzFile file, int* method,
     {
         TRYFREE(pfile_in_zip_read_info);
         return UNZ_INTERNALERROR;
-    }
+   }
 
     pfile_in_zip_read_info->stream_initialised=0;
 
@@ -1533,8 +1533,8 @@ extern int ZEXPORT unzOpenCurrentFile3 (unzFile file, int* method,
           case 6 : *level = 1; break;
           case 4 : *level = 2; break;
           case 2 : *level = 9; break;
-        }
-    }
+       }
+   }
 
     if ((s->cur_file_info.compression_method!=0) &&
 /* #ifdef HAVE_BZIP2 */
@@ -1575,11 +1575,11 @@ extern int ZEXPORT unzOpenCurrentFile3 (unzFile file, int* method,
       {
         TRYFREE(pfile_in_zip_read_info);
         return err;
-      }
+     }
 #else
       pfile_in_zip_read_info->raw=1;
 #endif
-    }
+   }
     else if ((s->cur_file_info.compression_method==Z_DEFLATED) && (!raw))
     {
       pfile_in_zip_read_info->stream.zalloc = (alloc_func)0;
@@ -1595,7 +1595,7 @@ extern int ZEXPORT unzOpenCurrentFile3 (unzFile file, int* method,
       {
         TRYFREE(pfile_in_zip_read_info);
         return err;
-      }
+     }
         /* windowBits is passed < 0 to tell that there is no zlib header.
          * Note that in this case inflate *requires* an extra "dummy" byte
          * after the compressed stream in order to complete decompression and
@@ -1603,7 +1603,7 @@ extern int ZEXPORT unzOpenCurrentFile3 (unzFile file, int* method,
          * In unzip, i don't wait absolutely Z_STREAM_END because I known the
          * size of both compressed and uncompressed data
          */
-    }
+   }
     pfile_in_zip_read_info->rest_read_compressed =
             s->cur_file_info.compressed_size ;
     pfile_in_zip_read_info->rest_read_uncompressed =
@@ -1638,7 +1638,7 @@ extern int ZEXPORT unzOpenCurrentFile3 (unzFile file, int* method,
 
         s->pfile_in_zip_read->pos_in_zipfile+=12;
         s->encrypted=1;
-    }
+   }
 #    endif
 
 
@@ -1662,7 +1662,7 @@ extern int ZEXPORT unzOpenCurrentFile2 (unzFile file, int* method, int* level, i
 
 /** Addition for GDAL : START */
 
-extern ZPOS64_T ZEXPORT unzGetCurrentFileZStreamPos64( unzFile file)
+extern ZPOS64_T ZEXPORT unzGetCurrentFileZStreamPos64(unzFile file)
 {
     unz64_s* s;
     file_in_zip64_read_info_s* pfile_in_zip_read_info;
@@ -1755,7 +1755,7 @@ extern int ZEXPORT unzReadCurrentFile  (unzFile file, voidp buf, unsigned len)
                   pfile_in_zip_read_info->read_buffer[i] =
                       zdecode(s->keys,s->pcrc_32_tab,
                               pfile_in_zip_read_info->read_buffer[i]);
-            }
+           }
 #            endif
 
 
@@ -1766,7 +1766,7 @@ extern int ZEXPORT unzReadCurrentFile  (unzFile file, voidp buf, unsigned len)
             pfile_in_zip_read_info->stream.next_in =
                 (Bytef*)pfile_in_zip_read_info->read_buffer;
             pfile_in_zip_read_info->stream.avail_in = (uInt)uReadThis;
-        }
+       }
 
         if ((pfile_in_zip_read_info->compression_method==0) || (pfile_in_zip_read_info->raw))
         {
@@ -1798,7 +1798,7 @@ extern int ZEXPORT unzReadCurrentFile  (unzFile file, voidp buf, unsigned len)
             pfile_in_zip_read_info->stream.next_in += uDoCopy;
             pfile_in_zip_read_info->stream.total_out += uDoCopy;
             iRead += uDoCopy;
-        }
+       }
         else if (pfile_in_zip_read_info->compression_method==Z_BZIP2ED)
         {
 #ifdef HAVE_BZIP2
@@ -1841,7 +1841,7 @@ extern int ZEXPORT unzReadCurrentFile  (unzFile file, voidp buf, unsigned len)
             if (err!=BZ_OK)
               break;
 #endif
-        } // end Z_BZIP2ED
+       } // end Z_BZIP2ED
         else
         {
             ZPOS64_T uTotalOutBefore,uTotalOutAfter;
@@ -1881,8 +1881,8 @@ extern int ZEXPORT unzReadCurrentFile  (unzFile file, voidp buf, unsigned len)
                 return (iRead==0) ? UNZ_EOF : iRead;
             if (err!=Z_OK)
                 break;
-        }
-    }
+       }
+   }
 
     if (err==Z_OK)
         return iRead;
@@ -2028,7 +2028,7 @@ extern int ZEXPORT unzCloseCurrentFile (unzFile file)
     {
         if (pfile_in_zip_read_info->crc32 != pfile_in_zip_read_info->crc32_wait)
             err=UNZ_CRCERROR;
-    }
+   }
 
 
     TRYFREE(pfile_in_zip_read_info->read_buffer);
@@ -2075,7 +2075,7 @@ extern int ZEXPORT unzGetGlobalComment (unzFile file, char * szComment, uLong uS
       *szComment='\0';
       if (ZREAD64(s->z_filefunc,s->filestream,szComment,uReadThis)!=uReadThis)
         return UNZ_ERRNO;
-    }
+   }
 
     if ((szComment != NULL) && (uSizeBuf > s->gi.size_comment))
         *(szComment+s->gi.size_comment)='\0';

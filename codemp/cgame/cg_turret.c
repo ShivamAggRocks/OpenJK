@@ -150,20 +150,20 @@ void TurretClientRun(centity_t *ent)
 	{
 		weaponInfo_t	*weaponInfo;
 
-		trap->G2API_InitGhoul2Model(&ent->ghoul2, CG_ConfigString( CS_MODELS+ent->currentState.modelindex ), 0, 0, 0, 0, 0);
+		trap->G2API_InitGhoul2Model(&ent->ghoul2, CG_ConfigString(CS_MODELS+ent->currentState.modelindex), 0, 0, 0, 0, 0);
 
 		if (!ent->ghoul2)
-		{ //bad
+		{//bad
 			return;
 		}
 
-		ent->torsoBolt = trap->G2API_AddBolt( ent->ghoul2, 0, "*flash02" );
+		ent->torsoBolt = trap->G2API_AddBolt(ent->ghoul2, 0, "*flash02");
 
-		trap->G2API_SetBoneAngles( ent->ghoul2, 0, "bone_hinge", vec3_origin, BONE_ANGLES_POSTMULT, POSITIVE_Y, POSITIVE_Z, POSITIVE_X, NULL, 100, cg.time );
-		trap->G2API_SetBoneAngles( ent->ghoul2, 0, "bone_gback", vec3_origin, BONE_ANGLES_POSTMULT, POSITIVE_Y, POSITIVE_Z, POSITIVE_X, NULL, 100, cg.time );
-		trap->G2API_SetBoneAngles( ent->ghoul2, 0, "bone_barrel", vec3_origin, BONE_ANGLES_POSTMULT, POSITIVE_Y, POSITIVE_Z, POSITIVE_X, NULL, 100, cg.time );
+		trap->G2API_SetBoneAngles(ent->ghoul2, 0, "bone_hinge", vec3_origin, BONE_ANGLES_POSTMULT, POSITIVE_Y, POSITIVE_Z, POSITIVE_X, NULL, 100, cg.time);
+		trap->G2API_SetBoneAngles(ent->ghoul2, 0, "bone_gback", vec3_origin, BONE_ANGLES_POSTMULT, POSITIVE_Y, POSITIVE_Z, POSITIVE_X, NULL, 100, cg.time);
+		trap->G2API_SetBoneAngles(ent->ghoul2, 0, "bone_barrel", vec3_origin, BONE_ANGLES_POSTMULT, POSITIVE_Y, POSITIVE_Z, POSITIVE_X, NULL, 100, cg.time);
 
-		trap->G2API_SetBoneAnim( ent->ghoul2, 0, "model_root", 0, 11, BONE_ANIM_OVERRIDE_FREEZE, 0.8f, cg.time, 0, 0 );
+		trap->G2API_SetBoneAnim(ent->ghoul2, 0, "model_root", 0, 11, BONE_ANIM_OVERRIDE_FREEZE, 0.8f, cg.time, 0, 0);
 
 		ent->turAngles[ROLL] = 0;
 		ent->turAngles[PITCH] = 90;
@@ -171,15 +171,15 @@ void TurretClientRun(centity_t *ent)
 
 		weaponInfo = &cg_weapons[WP_TURRET];
 
-		if ( !weaponInfo->registered )
+		if (!weaponInfo->registered)
 		{
 			CG_RegisterWeapon(WP_TURRET);
 		}
 	}
 
 	if (ent->currentState.fireflag == 2)
-	{ //I'm about to blow
-		trap->G2API_SetBoneAngles( ent->ghoul2, 0, "bone_hinge", ent->turAngles, BONE_ANGLES_REPLACE, NEGATIVE_Y, NEGATIVE_Z, NEGATIVE_X, NULL, 100, cg.time );
+	{//I'm about to blow
+		trap->G2API_SetBoneAngles(ent->ghoul2, 0, "bone_hinge", ent->turAngles, BONE_ANGLES_REPLACE, NEGATIVE_Y, NEGATIVE_Z, NEGATIVE_X, NULL, 100, cg.time);
 		return;
 	}
 	else if (ent->currentState.fireflag && ent->bolt4 != ent->currentState.fireflag)
@@ -201,7 +201,7 @@ void TurretClientRun(centity_t *ent)
 	}
 
 	if (ent->currentState.bolt2 != ENTITYNUM_NONE)
-	{ //turn toward the enemy
+	{//turn toward the enemy
 		centity_t *enemy = &cg_entities[ent->currentState.bolt2];
 
 		if (enemy)
@@ -257,5 +257,5 @@ void TurretClientRun(centity_t *ent)
 	}
 
 	ent->frame_minus1_refreshed = cg.time;
-	trap->G2API_SetBoneAngles( ent->ghoul2, 0, "bone_hinge", ent->turAngles, BONE_ANGLES_REPLACE, NEGATIVE_Y, NEGATIVE_Z, NEGATIVE_X, NULL, 100, cg.time );
+	trap->G2API_SetBoneAngles(ent->ghoul2, 0, "bone_hinge", ent->turAngles, BONE_ANGLES_REPLACE, NEGATIVE_Y, NEGATIVE_Z, NEGATIVE_X, NULL, 100, cg.time);
 }

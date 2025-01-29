@@ -49,7 +49,7 @@
  */
 
 typedef enum
-  { GRAYSCALE, MAPPEDGRAY, PSEUDOCOLOR, TRUECOLOR, DIRECTCOLOR } rle_kind;
+  {GRAYSCALE, MAPPEDGRAY, PSEUDOCOLOR, TRUECOLOR, DIRECTCOLOR} rle_kind;
 
 
 /*
@@ -108,7 +108,7 @@ start_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   default:
     ERREXIT(cinfo, JERR_RLE_BADERROR);
     break;
-  }
+ }
 
   /* Figure out what we have, set private vars and return values accordingly */
   
@@ -124,31 +124,31 @@ start_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   if (source->header.ncolors == 1 && source->header.ncmap == 0) {
     source->visual     = GRAYSCALE;
     TRACEMS2(cinfo, 1, JTRC_RLE_GRAY, width, height);
-  } else if (source->header.ncolors == 1 && source->header.ncmap == 1) {
+ } else if (source->header.ncolors == 1 && source->header.ncmap == 1) {
     source->visual     = MAPPEDGRAY;
     TRACEMS3(cinfo, 1, JTRC_RLE_MAPGRAY, width, height,
              1 << source->header.cmaplen);
-  } else if (source->header.ncolors == 1 && source->header.ncmap == 3) {
+ } else if (source->header.ncolors == 1 && source->header.ncmap == 3) {
     source->visual     = PSEUDOCOLOR;
     TRACEMS3(cinfo, 1, JTRC_RLE_MAPPED, width, height,
 	     1 << source->header.cmaplen);
-  } else if (source->header.ncolors == 3 && source->header.ncmap == 3) {
+ } else if (source->header.ncolors == 3 && source->header.ncmap == 3) {
     source->visual     = TRUECOLOR;
     TRACEMS3(cinfo, 1, JTRC_RLE_FULLMAP, width, height,
 	     1 << source->header.cmaplen);
-  } else if (source->header.ncolors == 3 && source->header.ncmap == 0) {
+ } else if (source->header.ncolors == 3 && source->header.ncmap == 0) {
     source->visual     = DIRECTCOLOR;
     TRACEMS2(cinfo, 1, JTRC_RLE, width, height);
-  } else
+ } else
     ERREXIT(cinfo, JERR_RLE_UNSUPPORTED);
   
   if (source->visual == GRAYSCALE || source->visual == MAPPEDGRAY) {
     cinfo->in_color_space   = JCS_GRAYSCALE;
     cinfo->input_components = 1;
-  } else {
+ } else {
     cinfo->in_color_space   = JCS_RGB;
     cinfo->input_components = 3;
-  }
+ }
 
   /*
    * A place to hold each scanline while it's converted.
@@ -158,7 +158,7 @@ start_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     source->rle_row = (rle_pixel**) (*cinfo->mem->alloc_sarray)
       ((j_common_ptr) cinfo, JPOOL_IMAGE,
        (JDIMENSION) width, (JDIMENSION) cinfo->input_components);
-  }
+ }
 
   /* request a virtual array to hold the image */
   source->image = (*cinfo->mem->request_virt_sarray)
@@ -170,7 +170,7 @@ start_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   if (progress != NULL) {
     /* count file input as separate pass */
     progress->total_extra_passes++;
-  }
+ }
 #endif
 
   source->pub.buffer_height = 1;
@@ -221,7 +221,7 @@ get_pseudocolor_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     *dest_row++ = (JSAMPLE) (colormap[val      ] >> 8);
     *dest_row++ = (JSAMPLE) (colormap[val + 256] >> 8);
     *dest_row++ = (JSAMPLE) (colormap[val + 512] >> 8);
-  }
+ }
 
   return 1;
 }
@@ -264,7 +264,7 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
     progress->pub.pass_limit = cinfo->image_height;
     progress->pub.pass_counter = 0;
     (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-  }
+ }
 #endif
 
   switch (source->visual) {
@@ -279,9 +279,9 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
       if (progress != NULL) {
         progress->pub.pass_counter++;
         (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-      }
+     }
 #endif
-    }
+   }
     break;
 
   case MAPPEDGRAY:
@@ -296,16 +296,16 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
         for (channel = 0; channel < source->header.ncolors; channel++) {
           *scanline++ = (JSAMPLE)
             (colormap[GETJSAMPLE(rle_row[channel][col]) + 256 * channel] >> 8);
-        }
-      }
+       }
+     }
 
 #ifdef PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
         (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-      }
+     }
 #endif
-    }
+   }
     break;
 
   case DIRECTCOLOR:
@@ -322,16 +322,16 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
         *scanline++ = *red_ptr++;
         *scanline++ = *green_ptr++;
         *scanline++ = *blue_ptr++;
-      }
+     }
 
 #ifdef PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
         (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
-      }
+     }
 #endif
-    }
-  }
+   }
+ }
 
 #ifdef PROGRESS_REPORT
   if (progress != NULL)
@@ -342,9 +342,9 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   if (source->visual == PSEUDOCOLOR) {
     source->pub.buffer = source->rle_row;
     source->pub.get_pixel_rows = get_pseudocolor_row;
-  } else {
+ } else {
     source->pub.get_pixel_rows = get_rle_row;
-  }
+ }
   source->row = cinfo->image_height;
 
   /* And fetch the topmost (bottommost) row */

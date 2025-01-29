@@ -87,13 +87,13 @@ start_pass_dpost (j_decompress_ptr cinfo, J_BUF_MODE pass_mode)
 	post->buffer = (*cinfo->mem->access_virt_sarray)
 	  ((j_common_ptr) cinfo, post->whole_image,
 	   (JDIMENSION) 0, post->strip_height, TRUE);
-      }
-    } else {
+     }
+   } else {
       /* For single-pass processing without color quantization,
        * I have no work to do; just call the upsampler directly.
        */
       post->pub.post_process_data = cinfo->upsample->upsample;
-    }
+   }
     break;
 #ifdef QUANT_2PASS_SUPPORTED
   case JBUF_SAVE_AND_PASS:
@@ -112,7 +112,7 @@ start_pass_dpost (j_decompress_ptr cinfo, J_BUF_MODE pass_mode)
   default:
     ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     break;
-  }
+ }
   post->starting_row = post->next_row = 0;
 }
 
@@ -169,7 +169,7 @@ post_process_prepass (j_decompress_ptr cinfo,
     post->buffer = (*cinfo->mem->access_virt_sarray)
 	((j_common_ptr) cinfo, post->whole_image,
 	 post->starting_row, post->strip_height, TRUE);
-  }
+ }
 
   /* Upsample some data (up to a strip height's worth). */
   old_next_row = post->next_row;
@@ -184,13 +184,13 @@ post_process_prepass (j_decompress_ptr cinfo,
     (*cinfo->cquantize->color_quantize) (cinfo, post->buffer + old_next_row,
 					 (JSAMPARRAY) NULL, (int) num_rows);
     *out_row_ctr += num_rows;
-  }
+ }
 
   /* Advance if we filled the strip. */
   if (post->next_row >= post->strip_height) {
     post->starting_row += post->strip_height;
     post->next_row = 0;
-  }
+ }
 }
 
 
@@ -213,7 +213,7 @@ post_process_2pass (j_decompress_ptr cinfo,
     post->buffer = (*cinfo->mem->access_virt_sarray)
 	((j_common_ptr) cinfo, post->whole_image,
 	 post->starting_row, post->strip_height, FALSE);
-  }
+ }
 
   /* Determine number of rows to emit. */
   num_rows = post->strip_height - post->next_row; /* available in strip */
@@ -236,7 +236,7 @@ post_process_2pass (j_decompress_ptr cinfo,
   if (post->next_row >= post->strip_height) {
     post->starting_row += post->strip_height;
     post->next_row = 0;
-  }
+ }
 }
 
 #endif /* QUANT_2PASS_SUPPORTED */
@@ -279,12 +279,12 @@ jinit_d_post_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
 #else
       ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 #endif /* QUANT_2PASS_SUPPORTED */
-    } else {
+   } else {
       /* One-pass color quantization: just make a strip buffer. */
       post->buffer = (*cinfo->mem->alloc_sarray)
 	((j_common_ptr) cinfo, JPOOL_IMAGE,
 	 cinfo->output_width * cinfo->out_color_components,
 	 post->strip_height);
-    }
-  }
+   }
+ }
 }

@@ -25,122 +25,122 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "ui_local.h"
 
-float trap_Cvar_VariableValue( const char *var_name )
+float trap_Cvar_VariableValue(const char *var_name)
 {
-	return Cvar_VariableValue( var_name );
+	return Cvar_VariableValue(var_name);
 }
 
 
-void trap_R_ClearScene( void )
+void trap_R_ClearScene(void)
 {
 	ui.R_ClearScene();
 }
 
-void trap_R_AddRefEntityToScene( const refEntity_t *re )
+void trap_R_AddRefEntityToScene(const refEntity_t *re)
 {
 	ui.R_AddRefEntityToScene(re);
 }
 
-void trap_R_RenderScene( const refdef_t *fd )
+void trap_R_RenderScene(const refdef_t *fd)
 {
-//	syscall( UI_R_RENDERSCENE, fd );
+//	syscall(UI_R_RENDERSCENE, fd);
 	ui.R_RenderScene(fd);
 }
 
-void trap_R_SetColor( const float *rgba )
+void trap_R_SetColor(const float *rgba)
 {
-//	syscall( UI_R_SETCOLOR, rgba );
-//	re.SetColor( rgba );
+//	syscall(UI_R_SETCOLOR, rgba);
+//	re.SetColor(rgba);
 	ui.R_SetColor(rgba);
 }
 
-void trap_R_DrawStretchPic( float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader )
+void trap_R_DrawStretchPic(float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader)
 {
-//	syscall( UI_R_DRAWSTRETCHPIC, PASSFLOAT(x), PASSFLOAT(y), PASSFLOAT(w), PASSFLOAT(h), PASSFLOAT(s1), PASSFLOAT(t1), PASSFLOAT(s2), PASSFLOAT(t2), hShader );
-//	re.DrawStretchPic( x, y, w, h, s1, t1, s2, t2, hShader  );
+//	syscall(UI_R_DRAWSTRETCHPIC, PASSFLOAT(x), PASSFLOAT(y), PASSFLOAT(w), PASSFLOAT(h), PASSFLOAT(s1), PASSFLOAT(t1), PASSFLOAT(s2), PASSFLOAT(t2), hShader);
+//	re.DrawStretchPic(x, y, w, h, s1, t1, s2, t2, hShader );
 
-	ui.R_DrawStretchPic( x, y, w, h, s1, t1, s2, t2, hShader );
+	ui.R_DrawStretchPic(x, y, w, h, s1, t1, s2, t2, hShader);
 
 }
 
-void	trap_R_ModelBounds( clipHandle_t model, vec3_t mins, vec3_t maxs )
+void	trap_R_ModelBounds(clipHandle_t model, vec3_t mins, vec3_t maxs)
 {
-//	syscall( UI_R_MODELBOUNDS, model, mins, maxs );
+//	syscall(UI_R_MODELBOUNDS, model, mins, maxs);
 	ui.R_ModelBounds(model, mins, maxs);
 }
 
-void trap_S_StartLocalSound( sfxHandle_t sfx, int channelNum )
+void trap_S_StartLocalSound(sfxHandle_t sfx, int channelNum)
 {
-//	syscall( UI_S_STARTLOCALSOUND, sfx, channelNum );
-	S_StartLocalSound( sfx, channelNum );
+//	syscall(UI_S_STARTLOCALSOUND, sfx, channelNum);
+	S_StartLocalSound(sfx, channelNum);
 }
 
 
-void trap_S_StopSounds( void )
+void trap_S_StopSounds(void)
 {
-	S_StopSounds( );
+	S_StopSounds();
 }
 
-sfxHandle_t	trap_S_RegisterSound( const char *sample, qboolean compressed )
+sfxHandle_t	trap_S_RegisterSound(const char *sample, qboolean compressed)
 {
 	return S_RegisterSound(sample);
 }
 
-void trap_Key_SetBinding( int keynum, const char *binding )
+void trap_Key_SetBinding(int keynum, const char *binding)
 {
-	Key_SetBinding( keynum, binding);
+	Key_SetBinding(keynum, binding);
 }
 
-qboolean trap_Key_GetOverstrikeMode( void )
+qboolean trap_Key_GetOverstrikeMode(void)
 {
 	return Key_GetOverstrikeMode();
 }
 
-void trap_Key_SetOverstrikeMode( qboolean state )
+void trap_Key_SetOverstrikeMode(qboolean state)
 {
-	Key_SetOverstrikeMode( state );
+	Key_SetOverstrikeMode(state);
 }
 
-void trap_Key_ClearStates( void )
+void trap_Key_ClearStates(void)
 {
 	Key_ClearStates();
 }
 
-int Key_GetCatcher( void );
+int Key_GetCatcher(void);
 
-int trap_Key_GetCatcher( void )
+int trap_Key_GetCatcher(void)
 {
 	return Key_GetCatcher();
 }
 
-void Key_SetCatcher( int catcher );
+void Key_SetCatcher(int catcher);
 
-void trap_Key_SetCatcher( int catcher )
+void trap_Key_SetCatcher(int catcher)
 {
-	Key_SetCatcher( catcher );
+	Key_SetCatcher(catcher);
 }
 /*
-void trap_GetClipboardData( char *buf, int bufsize ) {
-	syscall( UI_GETCLIPBOARDDATA, buf, bufsize );
+void trap_GetClipboardData(char *buf, int bufsize) {
+	syscall(UI_GETCLIPBOARDDATA, buf, bufsize);
 }
 
-void trap_GetClientState( uiClientState_t *state ) {
-	syscall( UI_GETCLIENTSTATE, state );
+void trap_GetClientState(uiClientState_t *state) {
+	syscall(UI_GETCLIENTSTATE, state);
 }
 */
 
-void CL_GetGlconfig( glconfig_t *glconfig );
+void CL_GetGlconfig(glconfig_t *glconfig);
 
-void trap_GetGlconfig( glconfig_t *glconfig )
+void trap_GetGlconfig(glconfig_t *glconfig)
 {
-//	syscall( UI_GETGLCONFIG, glconfig );
-	CL_GetGlconfig( glconfig );
+//	syscall(UI_GETGLCONFIG, glconfig);
+	CL_GetGlconfig(glconfig);
 }
 
 // this returns a handle.  arg0 is the name in the format "idlogo.roq", set arg1 to NULL, alteredstates to qfalse (do not alter gamestate)
-int trap_CIN_PlayCinematic( const char *arg0, int xpos, int ypos, int width, int height, int bits, const char *psAudioFile) {
+int trap_CIN_PlayCinematic(const char *arg0, int xpos, int ypos, int width, int height, int bits, const char *psAudioFile) {
 //  return syscall(UI_CIN_PLAYCINEMATIC, arg0, xpos, ypos, width, height, bits, psAudioFile);
-	return CIN_PlayCinematic( arg0, xpos, ypos, width, height, bits, psAudioFile );
+	return CIN_PlayCinematic(arg0, xpos, ypos, width, height, bits, psAudioFile);
 }
 
 // stops playing the cinematic and ends it.  should always return FMV_EOF

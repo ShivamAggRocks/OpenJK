@@ -54,7 +54,7 @@ winding_t	*BaseWindingForPlane (vec3_t normal, vec_t dist);
 void	FreeWinding (winding_t *w);
 void	WindingBounds (winding_t *w, vec3_t mins, vec3_t maxs);
 
-void	AddWindingToConvexHull( winding_t *w, winding_t **hull, vec3_t normal );
+void	AddWindingToConvexHull(winding_t *w, winding_t **hull, vec3_t normal);
 
 void	ChopWindingInPlace (winding_t **w, vec3_t normal, vec_t dist, vec_t epsilon);
 // frees the original if clipped

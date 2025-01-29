@@ -19,7 +19,7 @@ template<>
 class SavedGameClassArchiver<cplane_t>
 {
 public:
-	enum { is_implemented = true };
+	enum {is_implemented = true};
 
 	static void sg_export(
 		SavedGameHelper& saved_game,

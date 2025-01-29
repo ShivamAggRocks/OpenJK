@@ -109,8 +109,8 @@ void sbt16_dual_L3(float *sample, short *pcm, int ch)
 		   sample += 32;
 		   pMP3Stream->vb_ptr = (pMP3Stream->vb_ptr - 16) & 255;
 		   pcm += 32;
-	   }
-   }
+	  }
+  }
    else
    {
 	   for (i = 0; i < 18; i++)
@@ -120,8 +120,8 @@ void sbt16_dual_L3(float *sample, short *pcm, int ch)
 		   sample += 32;
 		   pMP3Stream->vb2_ptr = (pMP3Stream->vb2_ptr - 16) & 255;
 		   pcm += 32;
-	   }
-   }
+	  }
+  }
 }
 /*------------------------------------------------------------*/
 /*---------------- 8 pt sbt's  -------------------------------*/

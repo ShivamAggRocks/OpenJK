@@ -37,7 +37,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 	#include "ui/ui_local.h"
 #endif
 
-extern saberInfo_t *BG_MySaber( int clientNum, int saberNum );
+extern saberInfo_t *BG_MySaber(int clientNum, int saberNum);
 /*
 ==============================================================================
 BEGIN: Animation utility functions (sequence checking)
@@ -49,9 +49,9 @@ BEGIN: Animation utility functions (sequence checking)
 // need multiple copies of this, but it's much easier (and less likely to
 // break in the future) if I keep separate namespace versions now.
 
-qboolean BG_SaberStanceAnim( int anim )
+qboolean BG_SaberStanceAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_STAND1://not really a saberstance anim, actually... "saber off" stance
 	case BOTH_STAND2://single-saber, medium style
@@ -65,9 +65,9 @@ qboolean BG_SaberStanceAnim( int anim )
 	return qfalse;
 }
 
-qboolean BG_CrouchAnim( int anim )
+qboolean BG_CrouchAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_SIT1:				//# Normal chair sit.
 	case BOTH_SIT2:				//# Lotus position.
@@ -87,9 +87,9 @@ qboolean BG_CrouchAnim( int anim )
 	return qfalse;
 }
 
-qboolean BG_InSpecialJump( int anim )
+qboolean BG_InSpecialJump(int anim)
 {
-	switch ( (anim) )
+	switch ((anim))
 	{
 	case BOTH_WALL_RUN_RIGHT:
 	case BOTH_WALL_RUN_RIGHT_STOP:
@@ -131,28 +131,28 @@ qboolean BG_InSpecialJump( int anim )
 	case BOTH_A7_SOULCAL:
 		return qtrue;
 	}
-	if ( BG_InReboundJump( anim ) )
+	if (BG_InReboundJump(anim))
 	{
 		return qtrue;
 	}
-	if ( BG_InReboundHold( anim ) )
+	if (BG_InReboundHold(anim))
 	{
 		return qtrue;
 	}
-	if ( BG_InReboundRelease( anim ) )
+	if (BG_InReboundRelease(anim))
 	{
 		return qtrue;
 	}
-	if ( BG_InBackFlip( anim ) )
+	if (BG_InBackFlip(anim))
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean BG_InSaberStandAnim( int anim )
+qboolean BG_InSaberStandAnim(int anim)
 {
-	switch ( (anim) )
+	switch ((anim))
 	{
 	case BOTH_SABERFAST_STANCE:
 	case BOTH_STAND2:
@@ -165,9 +165,9 @@ qboolean BG_InSaberStandAnim( int anim )
 	}
 }
 
-qboolean BG_InReboundJump( int anim )
+qboolean BG_InReboundJump(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_FORCEWALLREBOUND_FORWARD:
 	case BOTH_FORCEWALLREBOUND_LEFT:
@@ -179,9 +179,9 @@ qboolean BG_InReboundJump( int anim )
 	return qfalse;
 }
 
-qboolean BG_InReboundHold( int anim )
+qboolean BG_InReboundHold(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_FORCEWALLHOLD_FORWARD:
 	case BOTH_FORCEWALLHOLD_LEFT:
@@ -193,9 +193,9 @@ qboolean BG_InReboundHold( int anim )
 	return qfalse;
 }
 
-qboolean BG_InReboundRelease( int anim )
+qboolean BG_InReboundRelease(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_FORCEWALLRELEASE_FORWARD:
 	case BOTH_FORCEWALLRELEASE_LEFT:
@@ -207,9 +207,9 @@ qboolean BG_InReboundRelease( int anim )
 	return qfalse;
 }
 
-qboolean BG_InBackFlip( int anim )
+qboolean BG_InBackFlip(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_FLIP_BACK1:
 	case BOTH_FLIP_BACK2:
@@ -220,9 +220,9 @@ qboolean BG_InBackFlip( int anim )
 	return qfalse;
 }
 
-qboolean BG_DirectFlippingAnim( int anim )
+qboolean BG_DirectFlippingAnim(int anim)
 {
-	switch ( (anim) )
+	switch ((anim))
 	{
 	case BOTH_FLIP_F:			//# Flip forward
 	case BOTH_FLIP_B:			//# Flip backwards
@@ -235,21 +235,21 @@ qboolean BG_DirectFlippingAnim( int anim )
 	return qfalse;
 }
 
-qboolean BG_SaberInAttackPure( int move )
+qboolean BG_SaberInAttackPure(int move)
 {
-	if ( move >= LS_A_TL2BR && move <= LS_A_T2B )
+	if (move >= LS_A_TL2BR && move <= LS_A_T2B)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
-qboolean BG_SaberInAttack( int move )
+qboolean BG_SaberInAttack(int move)
 {
-	if ( move >= LS_A_TL2BR && move <= LS_A_T2B )
+	if (move >= LS_A_TL2BR && move <= LS_A_T2B)
 	{
 		return qtrue;
 	}
-	switch ( move )
+	switch (move)
 	{
 	case LS_A_BACK:
 	case LS_A_BACK_CR:
@@ -308,9 +308,9 @@ qboolean BG_SaberInAttack( int move )
 	return qfalse;
 }
 
-qboolean BG_SaberInKata( int saberMove )
+qboolean BG_SaberInKata(int saberMove)
 {
-	switch ( saberMove )
+	switch (saberMove)
 	{
 	case LS_A1_SPECIAL:
 	case LS_A2_SPECIAL:
@@ -336,9 +336,9 @@ qboolean BG_InKataAnim(int anim)
 	return qfalse;
 }
 
-qboolean BG_SaberInSpecial( int move )
+qboolean BG_SaberInSpecial(int move)
 {
-	switch( move )
+	switch(move)
 	{
 	case LS_A_BACK:
 	case LS_A_BACK_CR:
@@ -396,9 +396,9 @@ qboolean BG_SaberInSpecial( int move )
 	return qfalse;
 }
 
-qboolean BG_KickMove( int move )
+qboolean BG_KickMove(int move)
 {
-	switch( move )
+	switch(move)
 	{
 	case LS_KICK_F:
 	case LS_KICK_B:
@@ -417,9 +417,9 @@ qboolean BG_KickMove( int move )
 	return qfalse;
 }
 
-qboolean BG_SaberInIdle( int move )
+qboolean BG_SaberInIdle(int move)
 {
-	switch ( move )
+	switch (move)
 	{
 	case LS_NONE:
 	case LS_READY:
@@ -431,9 +431,9 @@ qboolean BG_SaberInIdle( int move )
 	return qfalse;
 }
 
-qboolean BG_InExtraDefenseSaberMove( int move )
+qboolean BG_InExtraDefenseSaberMove(int move)
 {
-	switch ( move )
+	switch (move)
 	{
 	case LS_SPINATTACK_DUAL:
 	case LS_SPINATTACK:
@@ -449,9 +449,9 @@ qboolean BG_InExtraDefenseSaberMove( int move )
 	return qfalse;
 }
 
-qboolean BG_FlippingAnim( int anim )
+qboolean BG_FlippingAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_FLIP_F:			//# Flip forward
 	case BOTH_FLIP_B:			//# Flip backwards
@@ -495,9 +495,9 @@ qboolean BG_FlippingAnim( int anim )
 	return qfalse;
 }
 
-qboolean BG_SpinningSaberAnim( int anim )
+qboolean BG_SpinningSaberAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	//level 1 - FIXME: level 1 will have *no* spins
 	case BOTH_T1_BR_BL:
@@ -603,9 +603,9 @@ qboolean BG_SpinningSaberAnim( int anim )
 	return qfalse;
 }
 
-qboolean BG_SaberInSpecialAttack( int anim )
+qboolean BG_SaberInSpecialAttack(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_A2_STABBACK1:
 	case BOTH_ATTACK_BACK:
@@ -661,9 +661,9 @@ qboolean BG_SaberInSpecialAttack( int anim )
 	return qfalse;
 }
 
-qboolean BG_KickingAnim( int anim )
+qboolean BG_KickingAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_A7_KICK_F:
 	case BOTH_A7_KICK_B:
@@ -708,12 +708,12 @@ int BG_InGrappleMove(int anim)
 	return 0;
 }
 
-int BG_BrokenParryForAttack( int move )
+int BG_BrokenParryForAttack(int move)
 {
 	//Our attack was knocked away by a knockaway parry
 	//FIXME: need actual anims for this
 	//FIXME: need to know which side of the saber was hit!  For now, we presume the saber gets knocked away from the center
-	switch ( saberMoveData[move].startQuad )
+	switch (saberMoveData[move].startQuad)
 	{
 	case Q_B:
 		return LS_V1_B_;
@@ -743,15 +743,15 @@ int BG_BrokenParryForAttack( int move )
 	return LS_NONE;
 }
 
-int BG_BrokenParryForParry( int move )
+int BG_BrokenParryForParry(int move)
 {
 	//FIXME: need actual anims for this
 	//FIXME: need to know which side of the saber was hit!  For now, we presume the saber gets knocked away from the center
-	switch ( move )
+	switch (move)
 	{
 	case LS_PARRY_UP:
 		//Hmm... since we don't know what dir the hit came from, randomly pick knock down or knock back
-		if ( Q_irand( 0, 1 ) )
+		if (Q_irand(0, 1))
 		{
 			return LS_H1_B_;
 		}
@@ -779,11 +779,11 @@ int BG_BrokenParryForParry( int move )
 	return LS_NONE;
 }
 
-int BG_KnockawayForParry( int move )
+int BG_KnockawayForParry(int move)
 {
 	//FIXME: need actual anims for this
 	//FIXME: need to know which side of the saber was hit!  For now, we presume the saber gets knocked away from the center
-	switch ( move )
+	switch (move)
 	{
 	case BLOCKED_TOP://LS_PARRY_UP:
 		return LS_K1_T_;//push up
@@ -805,9 +805,9 @@ int BG_KnockawayForParry( int move )
 	//return LS_NONE;
 }
 
-qboolean BG_InRoll( playerState_t *ps, int anim )
+qboolean BG_InRoll(playerState_t *ps, int anim)
 {
-	switch ( (anim) )
+	switch ((anim))
 	{
 	case BOTH_GETUP_BROLL_B:
 	case BOTH_GETUP_BROLL_F:
@@ -821,7 +821,7 @@ qboolean BG_InRoll( playerState_t *ps, int anim )
 	case BOTH_ROLL_B:
 	case BOTH_ROLL_R:
 	case BOTH_ROLL_L:
-		if ( ps->legsTimer > 0 )
+		if (ps->legsTimer > 0)
 		{
 			return qtrue;
 		}
@@ -830,9 +830,9 @@ qboolean BG_InRoll( playerState_t *ps, int anim )
 	return qfalse;
 }
 
-qboolean BG_InSpecialDeathAnim( int anim )
+qboolean BG_InSpecialDeathAnim(int anim)
 {
-	switch( anim )
+	switch(anim)
 	{
 	case BOTH_DEATH_ROLL:		//# Death anim from a roll
 	case BOTH_DEATH_FLIP:		//# Death anim from a flip
@@ -852,9 +852,9 @@ qboolean BG_InSpecialDeathAnim( int anim )
 	}
 }
 
-qboolean BG_InDeathAnim ( int anim )
+qboolean BG_InDeathAnim (int anim)
 {//Purposely does not cover stumbledeath and falldeath...
-	switch( anim )
+	switch(anim)
 	{
 	case BOTH_DEATH1:		//# First Death anim
 	case BOTH_DEATH2:			//# Second Death anim
@@ -941,14 +941,14 @@ qboolean BG_InDeathAnim ( int anim )
 		return qtrue;
 		break;
 	default:
-		return BG_InSpecialDeathAnim( anim );
+		return BG_InSpecialDeathAnim(anim);
 		break;
 	}
 }
 
-qboolean BG_InKnockDownOnly( int anim )
+qboolean BG_InKnockDownOnly(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_KNOCKDOWN1:
 	case BOTH_KNOCKDOWN2:
@@ -960,9 +960,9 @@ qboolean BG_InKnockDownOnly( int anim )
 	return qfalse;
 }
 
-qboolean BG_InSaberLockOld( int anim )
+qboolean BG_InSaberLockOld(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_BF2LOCK:
 	case BOTH_BF1LOCK:
@@ -973,9 +973,9 @@ qboolean BG_InSaberLockOld( int anim )
 	return qfalse;
 }
 
-qboolean BG_InSaberLock( int anim )
+qboolean BG_InSaberLock(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_LK_S_DL_S_L_1:		//lock if I'm using single vs. a dual
 	case BOTH_LK_S_DL_T_L_1:		//lock if I'm using single vs. a dual
@@ -1004,16 +1004,16 @@ qboolean BG_InSaberLock( int anim )
 		return qtrue;
 		break;
 	default:
-		return BG_InSaberLockOld( anim );
+		return BG_InSaberLockOld(anim);
 		break;
 	}
 	//return qfalse;
 }
 
 //Called only where pm is valid (not all require pm, but some do):
-qboolean PM_InCartwheel( int anim )
+qboolean PM_InCartwheel(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_ARIAL_LEFT:
 	case BOTH_ARIAL_RIGHT:
@@ -1026,9 +1026,9 @@ qboolean PM_InCartwheel( int anim )
 	return qfalse;
 }
 
-qboolean BG_InKnockDownOnGround( playerState_t *ps )
+qboolean BG_InKnockDownOnGround(playerState_t *ps)
 {
-	switch ( ps->legsAnim )
+	switch (ps->legsAnim)
 	{
 	case BOTH_KNOCKDOWN1:
 	case BOTH_KNOCKDOWN2:
@@ -1036,7 +1036,7 @@ qboolean BG_InKnockDownOnGround( playerState_t *ps )
 	case BOTH_KNOCKDOWN4:
 	case BOTH_KNOCKDOWN5:
 	case BOTH_RELEASED:
-		//if ( PM_AnimLength( g_entities[ps->clientNum].client->clientInfo.animFileIndex, (animNumber_t)ps->legsAnim ) - ps->legsAnimTimer > 300 )
+		//if (PM_AnimLength(g_entities[ps->clientNum].client->clientInfo.animFileIndex, (animNumber_t)ps->legsAnim) - ps->legsAnimTimer > 300)
 		{//at end of fall down anim
 			return qtrue;
 		}
@@ -1056,7 +1056,7 @@ qboolean BG_InKnockDownOnGround( playerState_t *ps )
 	case BOTH_FORCE_GETUP_B4:
 	case BOTH_FORCE_GETUP_B5:
 	case BOTH_FORCE_GETUP_B6:
-		if ( BG_AnimLength( 0, (animNumber_t)ps->legsAnim ) - ps->legsTimer < 500 )
+		if (BG_AnimLength(0, (animNumber_t)ps->legsAnim) - ps->legsTimer < 500)
 		{//at beginning of getup anim
 			return qtrue;
 		}
@@ -1069,19 +1069,19 @@ qboolean BG_InKnockDownOnGround( playerState_t *ps )
 	case BOTH_GETUP_FROLL_F:
 	case BOTH_GETUP_FROLL_L:
 	case BOTH_GETUP_FROLL_R:
-		if ( BG_AnimLength( 0, (animNumber_t)ps->legsAnim ) - ps->legsTimer < 500 )
+		if (BG_AnimLength(0, (animNumber_t)ps->legsAnim) - ps->legsTimer < 500)
 		{//at beginning of getup anim
 			return qtrue;
 		}
 		break;
 	case BOTH_LK_DL_ST_T_SB_1_L:
-		if ( ps->legsTimer < 1000 )
+		if (ps->legsTimer < 1000)
 		{
 			return qtrue;
 		}
 		break;
 	case BOTH_PLAYER_PA_3_FLY:
-		if ( ps->legsTimer < 300 )
+		if (ps->legsTimer < 300)
 		{
 			return qtrue;
 		}
@@ -1090,9 +1090,9 @@ qboolean BG_InKnockDownOnGround( playerState_t *ps )
 	return qfalse;
 }
 
-qboolean BG_StabDownAnim( int anim )
+qboolean BG_StabDownAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_STABDOWN:
 	case BOTH_STABDOWN_STAFF:
@@ -1102,9 +1102,9 @@ qboolean BG_StabDownAnim( int anim )
 	return qfalse;
 }
 
-int PM_SaberBounceForAttack( int move )
+int PM_SaberBounceForAttack(int move)
 {
-	switch ( saberMoveData[move].startQuad )
+	switch (saberMoveData[move].startQuad)
 	{
 	case Q_B:
 	case Q_BR:
@@ -1132,9 +1132,9 @@ int PM_SaberBounceForAttack( int move )
 	return LS_NONE;
 }
 
-int PM_SaberDeflectionForQuad( int quad )
+int PM_SaberDeflectionForQuad(int quad)
 {
-	switch ( quad )
+	switch (quad)
 	{
 	case Q_B:
 		return LS_D1_B_;
@@ -1164,77 +1164,77 @@ int PM_SaberDeflectionForQuad( int quad )
 	return LS_NONE;
 }
 
-qboolean PM_SaberInDeflect( int move )
+qboolean PM_SaberInDeflect(int move)
 {
-	if ( move >= LS_D1_BR && move <= LS_D1_B_ )
+	if (move >= LS_D1_BR && move <= LS_D1_B_)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean PM_SaberInParry( int move )
+qboolean PM_SaberInParry(int move)
 {
-	if ( move >= LS_PARRY_UP && move <= LS_PARRY_LL )
+	if (move >= LS_PARRY_UP && move <= LS_PARRY_LL)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean PM_SaberInKnockaway( int move )
+qboolean PM_SaberInKnockaway(int move)
 {
-	if ( move >= LS_K1_T_ && move <= LS_K1_BL )
+	if (move >= LS_K1_T_ && move <= LS_K1_BL)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean PM_SaberInReflect( int move )
+qboolean PM_SaberInReflect(int move)
 {
-	if ( move >= LS_REFLECT_UP && move <= LS_REFLECT_LL )
+	if (move >= LS_REFLECT_UP && move <= LS_REFLECT_LL)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean PM_SaberInStart( int move )
+qboolean PM_SaberInStart(int move)
 {
-	if ( move >= LS_S_TL2BR && move <= LS_S_T2B )
+	if (move >= LS_S_TL2BR && move <= LS_S_T2B)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean PM_SaberInReturn( int move )
+qboolean PM_SaberInReturn(int move)
 {
-	if ( move >= LS_R_TL2BR && move <= LS_R_T2B )
+	if (move >= LS_R_TL2BR && move <= LS_R_T2B)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean BG_SaberInReturn( int move )
+qboolean BG_SaberInReturn(int move)
 {
-	return PM_SaberInReturn( move );
+	return PM_SaberInReturn(move);
 }
 
-qboolean PM_InSaberAnim( int anim )
+qboolean PM_InSaberAnim(int anim)
 {
-	if ( (anim) >= BOTH_A1_T__B_ && (anim) <= BOTH_H1_S1_BR )
+	if ((anim) >= BOTH_A1_T__B_ && (anim) <= BOTH_H1_S1_BR)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean PM_InKnockDown( playerState_t *ps )
+qboolean PM_InKnockDown(playerState_t *ps)
 {
-	switch ( (ps->legsAnim) )
+	switch ((ps->legsAnim))
 	{
 	case BOTH_KNOCKDOWN1:
 	case BOTH_KNOCKDOWN2:
@@ -1263,7 +1263,7 @@ qboolean PM_InKnockDown( playerState_t *ps )
 	case BOTH_GETUP_FROLL_F:
 	case BOTH_GETUP_FROLL_L:
 	case BOTH_GETUP_FROLL_R:
-		if ( ps->legsTimer )
+		if (ps->legsTimer)
 		{
 			return qtrue;
 		}
@@ -1272,9 +1272,9 @@ qboolean PM_InKnockDown( playerState_t *ps )
 	return qfalse;
 }
 
-qboolean PM_PainAnim( int anim )
+qboolean PM_PainAnim(int anim)
 {
-	switch ( (anim) )
+	switch ((anim))
 	{
 		case BOTH_PAIN1:				//# First take pain anim
 		case BOTH_PAIN2:				//# Second take pain anim
@@ -1300,9 +1300,9 @@ qboolean PM_PainAnim( int anim )
 	return qfalse;
 }
 
-qboolean PM_JumpingAnim( int anim )
+qboolean PM_JumpingAnim(int anim)
 {
-	switch ( (anim) )
+	switch ((anim))
 	{
 		case BOTH_JUMP1:				//# Jump - wind-up and leave ground
 		case BOTH_INAIR1:			//# In air loop (from jump)
@@ -1335,9 +1335,9 @@ qboolean PM_JumpingAnim( int anim )
 	return qfalse;
 }
 
-qboolean PM_LandingAnim( int anim )
+qboolean PM_LandingAnim(int anim)
 {
-	switch ( (anim) )
+	switch ((anim))
 	{
 		case BOTH_LAND1:				//# Landing (from in air loop)
 		case BOTH_LAND2:				//# Landing Hard (from a great height)
@@ -1354,22 +1354,22 @@ qboolean PM_LandingAnim( int anim )
 	return qfalse;
 }
 
-qboolean PM_SpinningAnim( int anim )
+qboolean PM_SpinningAnim(int anim)
 {
 	/*
-	switch ( anim )
+	switch (anim)
 	{
 	//FIXME: list any other spinning anims
 	default:
 		break;
 	}
 	*/
-	return BG_SpinningSaberAnim( anim );
+	return BG_SpinningSaberAnim(anim);
 }
 
-qboolean PM_InOnGroundAnim ( int anim )
+qboolean PM_InOnGroundAnim (int anim)
 {
-	switch( anim )
+	switch(anim)
 	{
 	case BOTH_DEAD1:
 	case BOTH_DEAD2:
@@ -1418,15 +1418,15 @@ qboolean PM_InOnGroundAnim ( int anim )
 	return qfalse;
 }
 
-qboolean PM_InRollComplete( playerState_t *ps, int anim )
+qboolean PM_InRollComplete(playerState_t *ps, int anim)
 {
-	switch ( (anim) )
+	switch ((anim))
 	{
 	case BOTH_ROLL_F:
 	case BOTH_ROLL_B:
 	case BOTH_ROLL_R:
 	case BOTH_ROLL_L:
-		if ( ps->legsTimer < 1 )
+		if (ps->legsTimer < 1)
 		{
 			return qtrue;
 		}
@@ -1435,20 +1435,20 @@ qboolean PM_InRollComplete( playerState_t *ps, int anim )
 	return qfalse;
 }
 
-qboolean PM_CanRollFromSoulCal( playerState_t *ps )
+qboolean PM_CanRollFromSoulCal(playerState_t *ps)
 {
-	if ( ps->legsAnim == BOTH_A7_SOULCAL
+	if (ps->legsAnim == BOTH_A7_SOULCAL
 		&& ps->legsTimer < 700
-		&& ps->legsTimer > 250 )
+		&& ps->legsTimer > 250)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean BG_SuperBreakLoseAnim( int anim )
+qboolean BG_SuperBreakLoseAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_LK_S_DL_S_SB_1_L:	//super break I lost
 	case BOTH_LK_S_DL_T_SB_1_L:	//super break I lost
@@ -1474,9 +1474,9 @@ qboolean BG_SuperBreakLoseAnim( int anim )
 	return qfalse;
 }
 
-qboolean BG_SuperBreakWinAnim( int anim )
+qboolean BG_SuperBreakWinAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_LK_S_DL_S_SB_1_W:	//super break I won
 	case BOTH_LK_S_DL_T_SB_1_W:	//super break I won
@@ -1503,9 +1503,9 @@ qboolean BG_SuperBreakWinAnim( int anim )
 }
 
 
-qboolean BG_SaberLockBreakAnim( int anim )
+qboolean BG_SaberLockBreakAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_BF1BREAK:
 	case BOTH_BF2BREAK:
@@ -1554,9 +1554,9 @@ qboolean BG_SaberLockBreakAnim( int anim )
 }
 
 
-qboolean BG_FullBodyTauntAnim( int anim )
+qboolean BG_FullBodyTauntAnim(int anim)
 {
-	switch ( anim )
+	switch (anim)
 	{
 	case BOTH_GESTURE1:
 	case BOTH_DUAL_TAUNT:
@@ -1589,21 +1589,21 @@ and anim number. Obviously does not take things like the length of the
 anim while force speeding (as an example) and whatnot into account.
 =============
 */
-int BG_AnimLength( int index, animNumber_t anim ) {
-	if ( (int)anim < 0 || anim >= MAX_ANIMATIONS ) {
+int BG_AnimLength(int index, animNumber_t anim) {
+	if ((int)anim < 0 || anim >= MAX_ANIMATIONS) {
 		return 0;
 	}
 
-	return bgAllAnims[index].anims[anim].numFrames * fabs( (float)(bgAllAnims[index].anims[anim].frameLerp) );
+	return bgAllAnims[index].anims[anim].numFrames * fabs((float)(bgAllAnims[index].anims[anim].frameLerp));
 }
 
 //just use whatever pm->animations is
-int PM_AnimLength( int index, animNumber_t anim ) {
-	if ( !pm->animations || (int)anim < 0 || anim >= MAX_ANIMATIONS ) {
+int PM_AnimLength(int index, animNumber_t anim) {
+	if (!pm->animations || (int)anim < 0 || anim >= MAX_ANIMATIONS) {
 		return 0;
 	}
 
-	return pm->animations[anim].numFrames * fabs( (float)(pm->animations[anim].frameLerp) );
+	return pm->animations[anim].numFrames * fabs((float)(pm->animations[anim].frameLerp));
 }
 
 void PM_DebugLegsAnim(int anim)
@@ -1619,26 +1619,26 @@ void PM_DebugLegsAnim(int anim)
 	}
 }
 
-qboolean PM_SaberInTransition( int move )
+qboolean PM_SaberInTransition(int move)
 {
-	if ( move >= LS_T1_BR__R && move <= LS_T1_BL__L )
+	if (move >= LS_T1_BR__R && move <= LS_T1_BL__L)
 	{
 		return qtrue;
 	}
 	return qfalse;
 }
 
-qboolean BG_SaberInTransitionAny( int move )
+qboolean BG_SaberInTransitionAny(int move)
 {
-	if ( PM_SaberInStart( move ) )
+	if (PM_SaberInStart(move))
 	{
 		return qtrue;
 	}
-	else if ( PM_SaberInTransition( move ) )
+	else if (PM_SaberInTransition(move))
 	{
 		return qtrue;
 	}
-	else if ( PM_SaberInReturn( move ) )
+	else if (PM_SaberInReturn(move))
 	{
 		return qtrue;
 	}
@@ -1746,7 +1746,7 @@ stringID_table_t animEventTypeTable[MAX_ANIM_EVENTS+1] =
 	ENUM2STRING(AEV_SABER_SWING),	//# animID AEV_SABER_SWING framenum CHANNEL randomlow randomhi chancetoplay
 	ENUM2STRING(AEV_SABER_SPIN),	//# animID AEV_SABER_SPIN framenum CHANNEL chancetoplay
 	//must be terminated
-	{ NULL,-1 }
+	{NULL,-1}
 };
 
 stringID_table_t footstepTypeTable[NUM_FOOTSTEP_TYPES+1] =
@@ -1756,18 +1756,18 @@ stringID_table_t footstepTypeTable[NUM_FOOTSTEP_TYPES+1] =
 	ENUM2STRING(FOOTSTEP_HEAVY_R),
 	ENUM2STRING(FOOTSTEP_HEAVY_L),
 	//must be terminated
-	{ NULL,-1 }
+	{NULL,-1}
 };
 
-int CheckAnimFrameForEventType( animevent_t *animEvents, int keyFrame, animEventType_t eventType )
+int CheckAnimFrameForEventType(animevent_t *animEvents, int keyFrame, animEventType_t eventType)
 {
 	int i;
 
-	for ( i = 0; i < MAX_ANIM_EVENTS; i++ )
+	for (i = 0; i < MAX_ANIM_EVENTS; i++)
 	{
-		if ( animEvents[i].keyFrame == keyFrame )
+		if (animEvents[i].keyFrame == keyFrame)
 		{//there is an animevent on this frame already
-			if ( animEvents[i].eventType == eventType )
+			if (animEvents[i].eventType == eventType)
 			{//and it is of the same type
 				return i;
 			}
@@ -1787,8 +1787,8 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 	// get past starting bracket
 	while(1)
 	{
-		token = COM_Parse( text_p );
-		if ( !Q_stricmp( token, "{" ) )
+		token = COM_Parse(text_p);
+		if (!Q_stricmp(token, "{"))
 		{
 			break;
 		}
@@ -1799,21 +1799,21 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 	//			has an event of that type, it stomps it
 
 	// read information for each frame
-	while ( 1 )
+	while (1)
 	{
-		if ( lastAnimEvent >= MAX_ANIM_EVENTS )
+		if (lastAnimEvent >= MAX_ANIM_EVENTS)
 		{
-			Com_Error( ERR_DROP, "ParseAnimationEvtBlock: number events in animEvent file %s > MAX_ANIM_EVENTS(%i)", aeb_filename, MAX_ANIM_EVENTS );
+			Com_Error(ERR_DROP, "ParseAnimationEvtBlock: number events in animEvent file %s > MAX_ANIM_EVENTS(%i)", aeb_filename, MAX_ANIM_EVENTS);
 			return;
 		}
 		// Get base frame of sequence
-		token = COM_Parse( text_p );
-		if ( !token || !token[0])
+		token = COM_Parse(text_p);
+		if (!token || !token[0])
 		{
 			break;
 		}
 
-		if ( !Q_stricmp( token, "}" ) )		// At end of block
+		if (!Q_stricmp(token, "}"))		// At end of block
 		{
 			break;
 		}
@@ -1826,43 +1826,43 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 		animNum = GetIDForString(animTable, token);
 		if(animNum == -1)
 		{//Unrecognized ANIM ENUM name, or we're skipping this line, keep going till you get a good one
-			Com_Printf(S_COLOR_YELLOW"WARNING: Unknown token %s in animEvent file %s\n", token, aeb_filename );
+			Com_Printf(S_COLOR_YELLOW"WARNING: Unknown token %s in animEvent file %s\n", token, aeb_filename);
 			while (token[0])
 			{
-				token = COM_ParseExt( text_p, qfalse );	//returns empty string when next token is EOL
+				token = COM_ParseExt(text_p, qfalse);	//returns empty string when next token is EOL
 			}
 			continue;
 		}
 
-		if ( animations[animNum].numFrames == 0 )
+		if (animations[animNum].numFrames == 0)
 		{//we don't use this anim
 			Com_Printf(S_COLOR_YELLOW"WARNING: %s animevents.cfg: anim %s not used by this model\n", aeb_filename, token);
 			//skip this entry
-			SkipRestOfLine( text_p );
+			SkipRestOfLine(text_p);
 			continue;
 		}
 
-		token = COM_Parse( text_p );
+		token = COM_Parse(text_p);
 		eventType = (animEventType_t)GetIDForString(animEventTypeTable, token);
-		if ( eventType == AEV_NONE || eventType == (animEventType_t)-1 )
+		if (eventType == AEV_NONE || eventType == (animEventType_t)-1)
 		{//Unrecognized ANIM EVENT TYOE, or we're skipping this line, keep going till you get a good one
-			//Com_Printf(S_COLOR_YELLOW"WARNING: Unknown token %s in animEvent file %s\n", token, aeb_filename );
+			//Com_Printf(S_COLOR_YELLOW"WARNING: Unknown token %s in animEvent file %s\n", token, aeb_filename);
 			continue;
 		}
 
 		//set our start frame
 		keyFrame = animations[animNum].firstFrame;
 		// Get offset to frame within sequence
-		token = COM_Parse( text_p );
-		if ( !token )
+		token = COM_Parse(text_p);
+		if (!token)
 		{
 			break;
 		}
-		keyFrame += atoi( token );
+		keyFrame += atoi(token);
 
 		//see if this frame already has an event of this type on it, if so, overwrite it
-		curAnimEvent = CheckAnimFrameForEventType( animEvents, keyFrame, eventType );
-		if ( curAnimEvent == -1 )
+		curAnimEvent = CheckAnimFrameForEventType(animEvents, keyFrame, eventType);
+		if (curAnimEvent == -1)
 		{//this anim frame doesn't already have an event of this type on it
 			curAnimEvent = lastAnimEvent;
 		}
@@ -1872,24 +1872,24 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 		animEvents[curAnimEvent].keyFrame = keyFrame;
 
 		//now read out the proper data based on the type
-		switch ( animEvents[curAnimEvent].eventType )
+		switch (animEvents[curAnimEvent].eventType)
 		{
 		case AEV_SOUNDCHAN:		//# animID AEV_SOUNDCHAN framenum CHANNEL soundpath randomlow randomhi chancetoplay
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 				break;
 
-				 if ( !Q_stricmp( token, "CHAN_VOICE_ATTEN" ) )
+				 if (!Q_stricmp(token, "CHAN_VOICE_ATTEN"))
 				animEvents[curAnimEvent].eventData[AED_SOUNDCHANNEL] = CHAN_VOICE_ATTEN;
-			else if ( !Q_stricmp( token, "CHAN_VOICE_GLOBAL" ) )
+			else if (!Q_stricmp(token, "CHAN_VOICE_GLOBAL"))
 				animEvents[curAnimEvent].eventData[AED_SOUNDCHANNEL] = CHAN_VOICE_GLOBAL;
-			else if ( !Q_stricmp( token, "CHAN_ANNOUNCER" ) )
+			else if (!Q_stricmp(token, "CHAN_ANNOUNCER"))
 				animEvents[curAnimEvent].eventData[AED_SOUNDCHANNEL] = CHAN_ANNOUNCER;
-			else if ( !Q_stricmp( token, "CHAN_BODY" ) )
+			else if (!Q_stricmp(token, "CHAN_BODY"))
 				animEvents[curAnimEvent].eventData[AED_SOUNDCHANNEL] = CHAN_BODY;
-			else if ( !Q_stricmp( token, "CHAN_WEAPON" ) )
+			else if (!Q_stricmp(token, "CHAN_WEAPON"))
 				animEvents[curAnimEvent].eventData[AED_SOUNDCHANNEL] = CHAN_WEAPON;
-			else if ( !Q_stricmp( token, "CHAN_VOICE" ) )
+			else if (!Q_stricmp(token, "CHAN_VOICE"))
 				animEvents[curAnimEvent].eventData[AED_SOUNDCHANNEL] = CHAN_VOICE;
 			else
 				animEvents[curAnimEvent].eventData[AED_SOUNDCHANNEL] = CHAN_AUTO;
@@ -1897,26 +1897,26 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 			//fall through to normal sound
 		case AEV_SOUND:			//# animID AEV_SOUND framenum soundpath randomlow randomhi chancetoplay
 			//get soundstring
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{
 				break;
 			}
 			strcpy(stringData, token);
 			//get lowest value
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			lowestVal = atoi( token );
+			lowestVal = atoi(token);
 			//get highest value
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			highestVal = atoi( token );
+			highestVal = atoi(token);
 			//Now precache all the sounds
 			//NOTE: If we can be assured sequential handles, we can store sound indices
 			//		instead of strings, unfortunately, if these sounds were previously
@@ -1928,15 +1928,15 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 				{
 					highestVal = lowestVal + (MAX_RANDOM_ANIM_SOUNDS-1);
 				}
-				for ( n = lowestVal, num = AED_SOUNDINDEX_START; n <= highestVal && num <= AED_SOUNDINDEX_END; n++, num++ )
+				for (n = lowestVal, num = AED_SOUNDINDEX_START; n <= highestVal && num <= AED_SOUNDINDEX_END; n++, num++)
 				{
 					if (stringData[0] == '*')
-					{ //FIXME? Would be nice to make custom sounds work with animEvents.
+					{//FIXME? Would be nice to make custom sounds work with animEvents.
 						animEvents[curAnimEvent].eventData[num] = 0;
 					}
 					else
 					{
-						animEvents[curAnimEvent].eventData[num] = trap->S_RegisterSound( va( stringData, n ) );
+						animEvents[curAnimEvent].eventData[num] = trap->S_RegisterSound(va(stringData, n));
 					}
 				}
 				animEvents[curAnimEvent].eventData[AED_SOUND_NUMRANDOMSNDS] = num - 1;
@@ -1944,41 +1944,41 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 			else
 			{
 				if (stringData[0] == '*')
-				{ //FIXME? Would be nice to make custom sounds work with animEvents.
+				{//FIXME? Would be nice to make custom sounds work with animEvents.
 					animEvents[curAnimEvent].eventData[AED_SOUNDINDEX_START] = 0;
 				}
 				else
 				{
-					animEvents[curAnimEvent].eventData[AED_SOUNDINDEX_START] = trap->S_RegisterSound( stringData );
+					animEvents[curAnimEvent].eventData[AED_SOUNDINDEX_START] = trap->S_RegisterSound(stringData);
 				}
 #ifndef FINAL_BUILD
-				if ( !animEvents[curAnimEvent].eventData[AED_SOUNDINDEX_START] &&
+				if (!animEvents[curAnimEvent].eventData[AED_SOUNDINDEX_START] &&
 					 stringData[0] != '*')
 				{//couldn't register it - file not found
-					Com_Printf( S_COLOR_RED "ParseAnimationSndBlock: sound %s does not exist (animevents.cfg %s)!\n", stringData, aeb_filename );
+					Com_Printf(S_COLOR_RED "ParseAnimationSndBlock: sound %s does not exist (animevents.cfg %s)!\n", stringData, aeb_filename);
 				}
 #endif
 				animEvents[curAnimEvent].eventData[AED_SOUND_NUMRANDOMSNDS] = 0;
 			}
 			//get probability
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_SOUND_PROBABILITY] = atoi( token );
+			animEvents[curAnimEvent].eventData[AED_SOUND_PROBABILITY] = atoi(token);
 
 			//last part - cheat and check and see if it's a special overridable saber sound we know of...
-			if ( !Q_stricmpn( "sound/weapons/saber/saberhup", stringData, 28 ) )
+			if (!Q_stricmpn("sound/weapons/saber/saberhup", stringData, 28))
 			{//a saber swing
 				animEvents[curAnimEvent].eventType = AEV_SABER_SWING;
 				animEvents[curAnimEvent].eventData[AED_SABER_SWING_SABERNUM] = 0;//since we don't know which one they meant if we're hacking this, always use first saber
 				animEvents[curAnimEvent].eventData[AED_SABER_SWING_PROBABILITY] = animEvents[curAnimEvent].eventData[AED_SOUND_PROBABILITY];
-				if ( lowestVal < 4 )
+				if (lowestVal < 4)
 				{//fast swing
 					animEvents[curAnimEvent].eventData[AED_SABER_SWING_TYPE] = 0;//SWING_FAST;
 				}
-				else if ( lowestVal < 7 )
+				else if (lowestVal < 7)
 				{//medium swing
 					animEvents[curAnimEvent].eventData[AED_SABER_SWING_TYPE] = 1;//SWING_MEDIUM;
 				}
@@ -1987,28 +1987,28 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 					animEvents[curAnimEvent].eventData[AED_SABER_SWING_TYPE] = 2;//SWING_STRONG;
 				}
 			}
-			else if ( !Q_stricmpn( "sound/weapons/saber/saberspin", stringData, 29 ) )
+			else if (!Q_stricmpn("sound/weapons/saber/saberspin", stringData, 29))
 			{//a saber spin
 				animEvents[curAnimEvent].eventType = AEV_SABER_SPIN;
 				animEvents[curAnimEvent].eventData[AED_SABER_SPIN_SABERNUM] = 0;//since we don't know which one they meant if we're hacking this, always use first saber
 				animEvents[curAnimEvent].eventData[AED_SABER_SPIN_PROBABILITY] = animEvents[curAnimEvent].eventData[AED_SOUND_PROBABILITY];
-				if ( stringData[29] == 'o' )
+				if (stringData[29] == 'o')
 				{//saberspinoff
 					animEvents[curAnimEvent].eventData[AED_SABER_SPIN_TYPE] = 0;
 				}
-				else if ( stringData[29] == '1' )
+				else if (stringData[29] == '1')
 				{//saberspin1
 					animEvents[curAnimEvent].eventData[AED_SABER_SPIN_TYPE] = 2;
 				}
-				else if ( stringData[29] == '2' )
+				else if (stringData[29] == '2')
 				{//saberspin2
 					animEvents[curAnimEvent].eventData[AED_SABER_SPIN_TYPE] = 3;
 				}
-				else if ( stringData[29] == '3' )
+				else if (stringData[29] == '3')
 				{//saberspin3
 					animEvents[curAnimEvent].eventData[AED_SABER_SPIN_TYPE] = 4;
 				}
-				else if ( stringData[29] == '%' )
+				else if (stringData[29] == '%')
 				{//saberspin%d
 					animEvents[curAnimEvent].eventData[AED_SABER_SPIN_TYPE] = 5;
 				}
@@ -2020,98 +2020,98 @@ void ParseAnimationEvtBlock(const char *aeb_filename, animevent_t *animEvents, a
 			break;
 		case AEV_FOOTSTEP:		//# animID AEV_FOOTSTEP framenum footstepType
 			//get footstep type
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{
 				break;
 			}
 			animEvents[curAnimEvent].eventData[AED_FOOTSTEP_TYPE] = GetIDForString(footstepTypeTable, token);
 			//get probability
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_FOOTSTEP_PROBABILITY] = atoi( token );
+			animEvents[curAnimEvent].eventData[AED_FOOTSTEP_PROBABILITY] = atoi(token);
 			break;
 		case AEV_EFFECT:		//# animID AEV_EFFECT framenum effectpath boltName
 			//get effect index
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_EFFECTINDEX] = trap->FX_RegisterEffect( token );
+			animEvents[curAnimEvent].eventData[AED_EFFECTINDEX] = trap->FX_RegisterEffect(token);
 			//get bolt index
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{
 				break;
 			}
-			if ( Q_stricmp( "none", token ) != 0 && Q_stricmp( "NULL", token ) != 0 )
+			if (Q_stricmp("none", token) != 0 && Q_stricmp("NULL", token) != 0)
 			{//actually are specifying a bolt to use
 				if (!animEvents[curAnimEvent].stringData)
-				{ //eh, whatever. no dynamic stuff, so this will do.
+				{//eh, whatever. no dynamic stuff, so this will do.
 					animEvents[curAnimEvent].stringData = (char *) BG_Alloc(2048);
 				}
 				strcpy(animEvents[curAnimEvent].stringData, token);
 			}
 			//NOTE: this string will later be used to add a bolt and store the index, as below:
-			//animEvent->eventData[AED_BOLTINDEX] = trap->G2API_AddBolt( &cent->gent->ghoul2[cent->gent->playerModel], animEvent->stringData );
+			//animEvent->eventData[AED_BOLTINDEX] = trap->G2API_AddBolt(&cent->gent->ghoul2[cent->gent->playerModel], animEvent->stringData);
 			//get probability
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_EFFECT_PROBABILITY] = atoi( token );
+			animEvents[curAnimEvent].eventData[AED_EFFECT_PROBABILITY] = atoi(token);
 			break;
 		case AEV_FIRE:			//# animID AEV_FIRE framenum altfire chancetofire
 			//get altfire
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_FIRE_ALT] = atoi( token );
+			animEvents[curAnimEvent].eventData[AED_FIRE_ALT] = atoi(token);
 			//get probability
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_FIRE_PROBABILITY] = atoi( token );
+			animEvents[curAnimEvent].eventData[AED_FIRE_PROBABILITY] = atoi(token);
 			break;
 		case AEV_MOVE:			//# animID AEV_MOVE framenum forwardpush rightpush uppush
 			//get forward push
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_MOVE_FWD] = atoi( token );
+			animEvents[curAnimEvent].eventData[AED_MOVE_FWD] = atoi(token);
 			//get right push
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_MOVE_RT] = atoi( token );
+			animEvents[curAnimEvent].eventData[AED_MOVE_RT] = atoi(token);
 			//get upwards push
-			token = COM_Parse( text_p );
-			if ( !token )
+			token = COM_Parse(text_p);
+			if (!token)
 			{//WARNING!  BAD TABLE!
 				break;
 			}
-			animEvents[curAnimEvent].eventData[AED_MOVE_UP] = atoi( token );
+			animEvents[curAnimEvent].eventData[AED_MOVE_UP] = atoi(token);
 			break;
 		default:				//unknown?
-			SkipRestOfLine( text_p );
+			SkipRestOfLine(text_p);
 			continue;
 			break;
 		}
 
-		if ( curAnimEvent == lastAnimEvent )
+		if (curAnimEvent == lastAnimEvent)
 		{
 			lastAnimEvent++;
 		}
@@ -2132,7 +2132,7 @@ This file's presence is not required
 bgLoadedEvents_t bgAllEvents[MAX_ANIM_FILES];
 int bgNumAnimEvents = 1;
 static int bg_animParseIncluding = 0;
-int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int eventFileIndex )
+int BG_ParseAnimationEvtFile(const char *as_filename, int animFileIndex, int eventFileIndex)
 {
 	const char	*text_p;
 	int			len;
@@ -2160,8 +2160,8 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 	}
 
 	if (bg_animParseIncluding <= 0)
-	{ //if we should be parsing an included file, skip this part
-		if ( bgAllEvents[forcedIndex].eventsParsed )
+	{//if we should be parsing an included file, skip this part
+		if (bgAllEvents[forcedIndex].eventsParsed)
 		{//already cached this one
 			return forcedIndex;
 		}
@@ -2172,13 +2172,13 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 	animations = bgAllAnims[animFileIndex].anims;
 
 	if (bg_animParseIncluding <= 0)
-	{ //if we should be parsing an included file, skip this part
+	{//if we should be parsing an included file, skip this part
 		//Go through and see if this filename is already in the table.
 		i = 0;
 		while (i < bgNumAnimEvents && forcedIndex != 0)
 		{
 			if (!Q_stricmp(as_filename, bgAllEvents[i].filename))
-			{ //looks like we have it already.
+			{//looks like we have it already.
 				return i;
 			}
 			i++;
@@ -2186,12 +2186,12 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 	}
 
 	// Load and parse animevents.cfg file
-	Com_sprintf( sfilename, sizeof( sfilename ), "%sanimevents.cfg", as_filename );
+	Com_sprintf(sfilename, sizeof(sfilename), "%sanimevents.cfg", as_filename);
 
 	if (bg_animParseIncluding <= 0)
-	{ //should already be done if we're including
+	{//should already be done if we're including
 		//initialize anim event array
-		for( i = 0; i < MAX_ANIM_EVENTS; i++ )
+		for(i = 0; i < MAX_ANIM_EVENTS; i++)
 		{
 			//Type of event
 			torsoAnimEvents[i].eventType = AEV_NONE;
@@ -2203,7 +2203,7 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 			torsoAnimEvents[i].stringData = NULL;
 			legsAnimEvents[i].stringData = NULL;
 			//Unique IDs, can be soundIndex of sound file to play OR effect index or footstep type, etc.
-			for ( j = 0; j < AED_ARRAY_SIZE; j++ )
+			for (j = 0; j < AED_ARRAY_SIZE; j++)
 			{
 				torsoAnimEvents[i].eventData[j] = -1;
 				legsAnimEvents[i].eventData[j] = -1;
@@ -2212,25 +2212,25 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 	}
 
 	// load the file
-	len = trap->FS_Open( sfilename, &f, FS_READ );
-	if ( len <= 0 )
+	len = trap->FS_Open(sfilename, &f, FS_READ);
+	if (len <= 0)
 	{//no file
 		goto fin;
 	}
-	if ( len >= sizeof( text ) - 1 )
+	if (len >= sizeof(text) - 1)
 	{
 		trap->FS_Close(f);
 #ifndef FINAL_BUILD
-		Com_Error(ERR_DROP, "File %s too long\n", sfilename );
+		Com_Error(ERR_DROP, "File %s too long\n", sfilename);
 #else
-		Com_Printf( "File %s too long\n", sfilename );
+		Com_Printf("File %s too long\n", sfilename);
 #endif
 		goto fin;
 	}
 
-	trap->FS_Read( text, len, f );
+	trap->FS_Read(text, len, f);
 	text[len] = 0;
-	trap->FS_Close( f );
+	trap->FS_Close(f);
 
 	// parse the text
 	text_p = text;
@@ -2240,36 +2240,36 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 	COM_BeginParseSession ("BG_ParseAnimationEvtFile");
 
 	// read information for batches of sounds (UPPER or LOWER)
-	while ( 1 )
+	while (1)
 	{
 		// Get base frame of sequence
-		token = COM_Parse( &text_p );
-		if ( !token || !token[0] )
+		token = COM_Parse(&text_p);
+		if (!token || !token[0])
 		{
 			break;
 		}
 
-		if ( !Q_stricmp(token,"include") )	// grab from another animevents.cfg
+		if (!Q_stricmp(token,"include"))	// grab from another animevents.cfg
 		{//NOTE: you REALLY should NOT do this after the main block of UPPERSOUNDS and LOWERSOUNDS
-			const char	*include_filename = COM_Parse( &text_p );
-			if ( include_filename != NULL )
+			const char	*include_filename = COM_Parse(&text_p);
+			if (include_filename != NULL)
 			{
 				char fullIPath[MAX_QPATH];
 				strcpy(fullIPath, va("models/players/%s/", include_filename));
 				bg_animParseIncluding++;
-				BG_ParseAnimationEvtFile( fullIPath, animFileIndex, forcedIndex );
+				BG_ParseAnimationEvtFile(fullIPath, animFileIndex, forcedIndex);
 				bg_animParseIncluding--;
 			}
 		}
 
-		if ( !Q_stricmp(token,"UPPEREVENTS") )	// A batch of upper sounds
+		if (!Q_stricmp(token,"UPPEREVENTS"))	// A batch of upper sounds
 		{
-			ParseAnimationEvtBlock( as_filename, torsoAnimEvents, animations, &upper_i, &text_p );
+			ParseAnimationEvtBlock(as_filename, torsoAnimEvents, animations, &upper_i, &text_p);
 		}
 
-		else if ( !Q_stricmp(token,"LOWEREVENTS") )	// A batch of lower sounds
+		else if (!Q_stricmp(token,"LOWEREVENTS"))	// A batch of lower sounds
 		{
-			ParseAnimationEvtBlock( as_filename, legsAnimEvents, animations, &lower_i, &text_p );
+			ParseAnimationEvtBlock(as_filename, legsAnimEvents, animations, &lower_i, &text_p);
 		}
 	}
 
@@ -2277,7 +2277,7 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 fin:
 	//Mark this anim set so that we know we tried to load he sounds, don't care if the load failed
 	if (bg_animParseIncluding <= 0)
-	{ //if we should be parsing an included file, skip this part
+	{//if we should be parsing an included file, skip this part
 		bgAllEvents[forcedIndex].eventsParsed = qtrue;
 		strcpy(bgAllEvents[forcedIndex].filename, as_filename);
 		if (forcedIndex)
@@ -2320,7 +2320,7 @@ int BG_ParseAnimationFile(const char *filename, animation_t *animset, qboolean i
 	{
 		i = 0;
 		while (i < bgNumAllAnims)
-		{ //see if it's been loaded already
+		{//see if it's been loaded already
 			if (!Q_stricmp(bgAllAnims[i].filename, filename))
 			{
 				animset = bgAllAnims[i].anims;
@@ -2333,12 +2333,12 @@ int BG_ParseAnimationFile(const char *filename, animation_t *animset, qboolean i
 		if (!animset)
 		{
 			if (strstr(filename, "players/_humanoid/"))
-			{ //then use the static humanoid set.
+			{//then use the static humanoid set.
 				animset = bgHumanoidAnimations;
 				nextIndex = 0;
 			}
 			else if (strstr(filename, "players/rockettrooper/"))
-			{ //rockettrooper always index 1
+			{//rockettrooper always index 1
 				nextIndex = 1;
 				animset = BG_AnimsetAlloc();
 				dynAlloc = qtrue; //so we know to free this memory in case we have to return early. Don't want any leaks.
@@ -2371,11 +2371,11 @@ int BG_ParseAnimationFile(const char *filename, animation_t *animset, qboolean i
 
 	// load the file
 	if (!BGPAFtextLoaded || !isHumanoid)
-	{ //rww - We are always using the same animation config now. So only load it once.
-		len = trap->FS_Open( filename, &f, FS_READ );
-		if ( (len <= 0) || (len >= sizeof( BGPAFtext ) - 1) )
+	{//rww - We are always using the same animation config now. So only load it once.
+		len = trap->FS_Open(filename, &f, FS_READ);
+		if ((len <= 0) || (len >= sizeof(BGPAFtext) - 1))
 		{
-			trap->FS_Close( f );
+			trap->FS_Close(f);
 			if (dynAlloc)
 			{
 				BG_AnimsetFree(animset);
@@ -2387,10 +2387,10 @@ int BG_ParseAnimationFile(const char *filename, animation_t *animset, qboolean i
 			return -1;
 		}
 
-		trap->FS_Read( BGPAFtext, len, f );
+		trap->FS_Read(BGPAFtext, len, f);
 
 		BGPAFtext[len] = 0;
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 	}
 	else
 	{
@@ -2419,9 +2419,9 @@ int BG_ParseAnimationFile(const char *filename, animation_t *animset, qboolean i
 	// read information for each frame
 	while(1)
 	{
-		token = COM_Parse( (const char **)(&text_p) );
+		token = COM_Parse((const char **)(&text_p));
 
-		if ( !token || !token[0])
+		if (!token || !token[0])
 		{
 			break;
 		}
@@ -2437,44 +2437,44 @@ int BG_ParseAnimationFile(const char *filename, animation_t *animset, qboolean i
 			}
 			while (token[0])
 			{
-				token = COM_ParseExt( (const char **) &text_p, qfalse );	//returns empty string when next token is EOL
+				token = COM_ParseExt((const char **) &text_p, qfalse);	//returns empty string when next token is EOL
 			}
 #endif
 			continue;
 		}
 
-		token = COM_Parse( (const char **)(&text_p) );
-		if ( !token )
+		token = COM_Parse((const char **)(&text_p));
+		if (!token)
 		{
 			break;
 		}
-		animset[animNum].firstFrame = atoi( token );
+		animset[animNum].firstFrame = atoi(token);
 
-		token = COM_Parse( (const char **)(&text_p) );
-		if ( !token )
+		token = COM_Parse((const char **)(&text_p));
+		if (!token)
 		{
 			break;
 		}
-		animset[animNum].numFrames = atoi( token );
+		animset[animNum].numFrames = atoi(token);
 
-		token = COM_Parse( (const char **)(&text_p) );
-		if ( !token )
+		token = COM_Parse((const char **)(&text_p));
+		if (!token)
 		{
 			break;
 		}
-		animset[animNum].loopFrames = atoi( token );
+		animset[animNum].loopFrames = atoi(token);
 
-		token = COM_Parse( (const char **)(&text_p) );
-		if ( !token )
+		token = COM_Parse((const char **)(&text_p));
+		if (!token)
 		{
 			break;
 		}
-		fps = atof( token );
-		if ( fps == 0 )
+		fps = atof(token);
+		if (fps == 0)
 		{
 			fps = 1;//Don't allow divide by zero error
 		}
-		if ( fps < 0 )
+		if (fps < 0)
 		{//backwards
 			animset[animNum].frameLerp = floor(1000.0f / fps);
 		}
@@ -2520,7 +2520,7 @@ int BG_ParseAnimationFile(const char *filename, animation_t *animset, qboolean i
 		usedIndex = bgNumAllAnims;
 
 		if (nextIndex > 1)
-		{ //don't bother increasing the number if this ended up as a humanoid/rockettrooper load.
+		{//don't bother increasing the number if this ended up as a humanoid/rockettrooper load.
 			bgNumAllAnims++;
 		}
 		else
@@ -2532,7 +2532,7 @@ int BG_ParseAnimationFile(const char *filename, animation_t *animset, qboolean i
 
 	/*
 	if (!wasLoaded && BGPAFtextLoaded)
-	{ //just loaded humanoid skel - we always want the rockettrooper to be after it, in slot 1
+	{//just loaded humanoid skel - we always want the rockettrooper to be after it, in slot 1
 #ifdef _DEBUG
 		assert(BG_ParseAnimationFile("models/players/rockettrooper/animation.cfg", NULL, qfalse) == 1);
 #else
@@ -2550,9 +2550,9 @@ LEGS Animations
 Base animation for overall body
 ===================
 */
-static void BG_StartLegsAnim( playerState_t *ps, int anim )
+static void BG_StartLegsAnim(playerState_t *ps, int anim)
 {
-	if ( ps->pm_type >= PM_DEAD )
+	if (ps->pm_type >= PM_DEAD)
 	{
 		//vehicles are allowed to do this.. IF it's a vehicle death anim
 		if (ps->clientNum < MAX_CLIENTS || anim != BOTH_VT_DEATH1)
@@ -2560,7 +2560,7 @@ static void BG_StartLegsAnim( playerState_t *ps, int anim )
 			return;
 		}
 	}
-	if ( ps->legsTimer > 0 )
+	if (ps->legsTimer > 0)
 	{
 		return;		// a high priority animation is running
 	}
@@ -2571,7 +2571,7 @@ static void BG_StartLegsAnim( playerState_t *ps, int anim )
 	}
 #ifdef _GAME
 	else if (g_entities[ps->clientNum].s.legsAnim == anim)
-	{ //toggled anim to one anim then back to the one we were at previously in
+	{//toggled anim to one anim then back to the one we were at previously in
 		//one frame, indicating that anim should be restarted.
 		BG_FlipPart(ps, SETANIM_LEGS);
 	}
@@ -2579,24 +2579,24 @@ static void BG_StartLegsAnim( playerState_t *ps, int anim )
 	ps->legsAnim = anim;
 
 	/*
-	if ( pm->debugLevel ) {
+	if (pm->debugLevel) {
 		Com_Printf("%d:  StartLegsAnim %d, on client#%d\n", pm->cmd.serverTime, anim, pm->ps->clientNum);
 	}
 	*/
 }
 
-void PM_ContinueLegsAnim( int anim ) {
-	if ( ( pm->ps->legsAnim ) == anim ) {
+void PM_ContinueLegsAnim(int anim) {
+	if ((pm->ps->legsAnim) == anim) {
 		return;
 	}
-	if ( pm->ps->legsTimer > 0 ) {
+	if (pm->ps->legsTimer > 0) {
 		return;		// a high priority animation is running
 	}
 
-	BG_StartLegsAnim( pm->ps, anim );
+	BG_StartLegsAnim(pm->ps, anim);
 }
 
-void PM_ForceLegsAnim( int anim) {
+void PM_ForceLegsAnim(int anim) {
 	if (BG_InSpecialJump(pm->ps->legsAnim) &&
 		pm->ps->legsTimer > 0 &&
 		!BG_InSpecialJump(anim))
@@ -2612,7 +2612,7 @@ void PM_ForceLegsAnim( int anim) {
 	}
 
 	pm->ps->legsTimer = 0;
-	BG_StartLegsAnim( pm->ps, anim );
+	BG_StartLegsAnim(pm->ps, anim);
 }
 
 
@@ -2623,9 +2623,9 @@ TORSO Animations
 Override animations for upper body
 ===================
 */
-void BG_StartTorsoAnim( playerState_t *ps, int anim )
+void BG_StartTorsoAnim(playerState_t *ps, int anim)
 {
-	if ( ps->pm_type >= PM_DEAD )
+	if (ps->pm_type >= PM_DEAD)
 	{
 		return;
 	}
@@ -2636,7 +2636,7 @@ void BG_StartTorsoAnim( playerState_t *ps, int anim )
 	}
 #ifdef _GAME
 	else if (g_entities[ps->clientNum].s.torsoAnim == anim)
-	{ //toggled anim to one anim then back to the one we were at previously in
+	{//toggled anim to one anim then back to the one we were at previously in
 		//one frame, indicating that anim should be restarted.
 		BG_FlipPart(ps, SETANIM_TORSO);
 	}
@@ -2644,7 +2644,7 @@ void BG_StartTorsoAnim( playerState_t *ps, int anim )
 	ps->torsoAnim = anim;
 }
 
-void PM_StartTorsoAnim( int anim )
+void PM_StartTorsoAnim(int anim)
 {
     BG_StartTorsoAnim(pm->ps, anim);
 }
@@ -2659,7 +2659,7 @@ void BG_SetLegsAnimTimer(playerState_t *ps, int time)
 {
 	ps->legsTimer = time;
 
-	if (ps->legsTimer < 0 && time != -1 )
+	if (ps->legsTimer < 0 && time != -1)
 	{//Cap timer to 0 if was counting down, but let it be -1 if that was intentional.  NOTENOTE Yeah this seems dumb, but it mirrors SP.
 		ps->legsTimer = 0;
 	}
@@ -2675,54 +2675,54 @@ void PM_SetLegsAnimTimer(int time)
 PM_SetTorsoAnimTimer
 -------------------------
 */
-void BG_SetTorsoAnimTimer(playerState_t *ps, int time )
+void BG_SetTorsoAnimTimer(playerState_t *ps, int time)
 {
 	ps->torsoTimer = time;
 
-	if (ps->torsoTimer < 0 && time != -1 )
+	if (ps->torsoTimer < 0 && time != -1)
 	{//Cap timer to 0 if was counting down, but let it be -1 if that was intentional.  NOTENOTE Yeah this seems dumb, but it mirrors SP.
 		ps->torsoTimer = 0;
 	}
 }
 
-void PM_SetTorsoAnimTimer(int time )
+void PM_SetTorsoAnimTimer(int time)
 {
 	BG_SetTorsoAnimTimer(pm->ps, time);
 }
 
-void BG_SaberStartTransAnim( int clientNum, int saberAnimLevel, int weapon, int anim, float *animSpeed, int broken )
+void BG_SaberStartTransAnim(int clientNum, int saberAnimLevel, int weapon, int anim, float *animSpeed, int broken)
 {
-	if ( anim >= BOTH_A1_T__B_ && anim <= BOTH_ROLL_STAB )
+	if (anim >= BOTH_A1_T__B_ && anim <= BOTH_ROLL_STAB)
 	{
-		if ( weapon == WP_SABER )
+		if (weapon == WP_SABER)
 		{
-			saberInfo_t *saber = BG_MySaber( clientNum, 0 );
-			if ( saber
-				&& saber->animSpeedScale != 1.0f )
+			saberInfo_t *saber = BG_MySaber(clientNum, 0);
+			if (saber
+				&& saber->animSpeedScale != 1.0f)
 			{
 				*animSpeed *= saber->animSpeedScale;
 			}
-			saber = BG_MySaber( clientNum, 1 );
-			if ( saber
-				&& saber->animSpeedScale != 1.0f )
+			saber = BG_MySaber(clientNum, 1);
+			if (saber
+				&& saber->animSpeedScale != 1.0f)
 			{
 				*animSpeed *= saber->animSpeedScale;
 			}
 		}
 	}
 
-	if ( ( (anim) >= BOTH_T1_BR__R &&
-		(anim) <= BOTH_T1_BL_TL ) ||
-		( (anim) >= BOTH_T2_BR__R &&
-		(anim) <= BOTH_T2_BL_TL ) ||
-		( (anim) >= BOTH_T3_BR__R &&
-		(anim) <= BOTH_T3_BL_TL ) )
+	if (((anim) >= BOTH_T1_BR__R &&
+		(anim) <= BOTH_T1_BL_TL) ||
+		((anim) >= BOTH_T2_BR__R &&
+		(anim) <= BOTH_T2_BL_TL) ||
+		((anim) >= BOTH_T3_BR__R &&
+		(anim) <= BOTH_T3_BL_TL))
 	{
-		if ( saberAnimLevel == FORCE_LEVEL_1 )
+		if (saberAnimLevel == FORCE_LEVEL_1)
 		{
 			*animSpeed *= 1.5f;
 		}
-		else if ( saberAnimLevel == FORCE_LEVEL_3 )
+		else if (saberAnimLevel == FORCE_LEVEL_3)
 		{
 			*animSpeed *= 0.75f;
 		}
@@ -2754,8 +2754,8 @@ void BG_SaberStartTransAnim( int clientNum, int saberAnimLevel, int weapon, int 
 PM_SetAnimFinal
 -------------------------
 */
-qboolean PM_RunningAnim( int anim );
-qboolean PM_WalkingAnim( int anim );
+qboolean PM_RunningAnim(int anim);
+qboolean PM_WalkingAnim(int anim);
 
 void BG_SetAnimFinal(playerState_t *ps, animation_t *animations,
 					 int setAnimParts,int anim,int setAnimFlags)
@@ -2776,12 +2776,12 @@ void BG_SetAnimFinal(playerState_t *ps, animation_t *animations,
 	if (setAnimParts & SETANIM_TORSO)
 	{
 		// Don't reset if it's already running the anim
-		if( !(setAnimFlags & SETANIM_FLAG_RESTART) && (ps->torsoAnim) == anim )
+		if(!(setAnimFlags & SETANIM_FLAG_RESTART) && (ps->torsoAnim) == anim)
 		{
 			goto setAnimLegs;
 		}
 		// or if a more important anim is running
-		if( !(setAnimFlags & SETANIM_FLAG_OVERRIDE) && ((ps->torsoTimer > 0)||(ps->torsoTimer == -1)) )
+		if(!(setAnimFlags & SETANIM_FLAG_OVERRIDE) && ((ps->torsoTimer > 0)||(ps->torsoTimer == -1)))
 		{
 			goto setAnimLegs;
 		}
@@ -2809,7 +2809,7 @@ void BG_SetAnimFinal(playerState_t *ps, animation_t *animations,
 			}
 			else
 			{
-				ps->torsoTimer = ((animations[anim].numFrames ) * fabs((float)(animations[anim].frameLerp)));
+				ps->torsoTimer = ((animations[anim].numFrames) * fabs((float)(animations[anim].frameLerp)));
 			}
 
 			if (ps->fd.forcePowersActive & (1 << FP_RAGE))
@@ -2824,12 +2824,12 @@ setAnimLegs:
 	if (setAnimParts & SETANIM_LEGS)
 	{
 		// Don't reset if it's already running the anim
-		if( !(setAnimFlags & SETANIM_FLAG_RESTART) && (ps->legsAnim) == anim )
+		if(!(setAnimFlags & SETANIM_FLAG_RESTART) && (ps->legsAnim) == anim)
 		{
 			goto setAnimDone;
 		}
 		// or if a more important anim is running
-		if( !(setAnimFlags & SETANIM_FLAG_OVERRIDE) && ((ps->legsTimer > 0)||(ps->legsTimer == -1)) )
+		if(!(setAnimFlags & SETANIM_FLAG_OVERRIDE) && ((ps->legsTimer > 0)||(ps->legsTimer == -1)))
 		{
 			goto setAnimDone;
 		}
@@ -2857,7 +2857,7 @@ setAnimLegs:
 			}
 			else
 			{
-				ps->legsTimer = ((animations[anim].numFrames ) * fabs((float)(animations[anim].frameLerp)));
+				ps->legsTimer = ((animations[anim].numFrames) * fabs((float)(animations[anim].frameLerp)));
 			}
 
 			if (PM_RunningAnim(anim) ||
@@ -2890,26 +2890,26 @@ qboolean BG_HasAnimation(int animIndex, int animation)
 	animation_t *animations;
 
 	//must be a valid anim number
-	if ( animation < 0 || animation >= MAX_ANIMATIONS )
+	if (animation < 0 || animation >= MAX_ANIMATIONS)
 	{
 		return qfalse;
 	}
 
 	//Must have a file index entry
-	if( animIndex < 0 || animIndex > bgNumAllAnims )
+	if(animIndex < 0 || animIndex > bgNumAllAnims)
 		return qfalse;
 
 	animations = bgAllAnims[animIndex].anims;
 
 	//No frames, no anim
-	if ( animations[animation].numFrames == 0 )
+	if (animations[animation].numFrames == 0)
 		return qfalse;
 
 	//Has the sequence
 	return qtrue;
 }
 
-int BG_PickAnim( int animIndex, int minAnim, int maxAnim )
+int BG_PickAnim(int animIndex, int minAnim, int maxAnim)
 {
 	int anim;
 	int count = 0;
@@ -2919,10 +2919,10 @@ int BG_PickAnim( int animIndex, int minAnim, int maxAnim )
 		anim = Q_irand(minAnim, maxAnim);
 		count++;
 	}
-	while ( !BG_HasAnimation( animIndex, anim ) && count < 1000 );
+	while (!BG_HasAnimation(animIndex, anim) && count < 1000);
 
 	if (count == 1000)
-	{ //guess we just don't have a death anim then.
+	{//guess we just don't have a death anim then.
 		return -1;
 	}
 
@@ -2945,12 +2945,12 @@ void BG_SetAnim(playerState_t *ps, animation_t *animations, int setAnimParts,int
 		if (anim == BOTH_RUNBACK1 ||
 			anim == BOTH_WALKBACK1 ||
 			anim == BOTH_RUN1)
-		{ //hack for droids
+		{//hack for droids
 			anim = BOTH_WALK2;
 		}
 
 		if (animations[anim].firstFrame == 0 && animations[anim].numFrames == 0)
-		{ //still? Just return then I guess.
+		{//still? Just return then I guess.
 			return;
 		}
 	}
@@ -2964,7 +2964,7 @@ void BG_SetAnim(playerState_t *ps, animation_t *animations, int setAnimParts,int
 	//Don't know why I put this here originally but it's messing stuff up now and it isn't needed.
 
 //	if (BG_InRoll(ps, ps->legsAnim))
-//	{ //never interrupt a roll
+//	{//never interrupt a roll
 //		return;
 //	}
 
@@ -2972,14 +2972,14 @@ void BG_SetAnim(playerState_t *ps, animation_t *animations, int setAnimParts,int
 	{
 		if (setAnimParts & SETANIM_TORSO)
 		{
-			if( (setAnimFlags & SETANIM_FLAG_RESTART) || (ps->torsoAnim) != anim )
+			if((setAnimFlags & SETANIM_FLAG_RESTART) || (ps->torsoAnim) != anim)
 			{
 				BG_SetTorsoAnimTimer(ps, 0);
 			}
 		}
 		if (setAnimParts & SETANIM_LEGS)
 		{
-			if( (setAnimFlags & SETANIM_FLAG_RESTART) || (ps->legsAnim) != anim )
+			if((setAnimFlags & SETANIM_FLAG_RESTART) || (ps->legsAnim) != anim)
 			{
 				BG_SetLegsAnimTimer(ps, 0);
 			}

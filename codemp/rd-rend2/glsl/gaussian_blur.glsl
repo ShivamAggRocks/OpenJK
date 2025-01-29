@@ -43,10 +43,10 @@ void main()
 	color += texture (u_TextureMap, vec2 (-3.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[0];
 	color += texture (u_TextureMap, vec2 (-2.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[1];
 	color += texture (u_TextureMap, vec2 (-1.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[2];
-	color += texture (u_TextureMap, vec2 ( 0.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[3];
-	color += texture (u_TextureMap, vec2 ( 1.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[2];
-	color += texture (u_TextureMap, vec2 ( 2.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[1];
-	color += texture (u_TextureMap, vec2 ( 3.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[0];
+	color += texture (u_TextureMap, vec2 (0.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[3];
+	color += texture (u_TextureMap, vec2 (1.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[2];
+	color += texture (u_TextureMap, vec2 (2.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[1];
+	color += texture (u_TextureMap, vec2 (3.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[0];
 #else
 	color += texture (u_TextureMap, vec2 (0.0, -3.0) * u_InvTexRes + var_TexCoords) * weights[0];
 	color += texture (u_TextureMap, vec2 (0.0, -2.0) * u_InvTexRes + var_TexCoords) * weights[1];
@@ -61,8 +61,8 @@ void main()
 
 #if defined(BLUR_X)
 	color += texture (u_TextureMap, vec2 (-1.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[0];
-	color += texture (u_TextureMap, vec2 ( 0.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[1];
-	color += texture (u_TextureMap, vec2 ( 1.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[0];
+	color += texture (u_TextureMap, vec2 (0.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[1];
+	color += texture (u_TextureMap, vec2 (1.0, 0.0) * u_InvTexRes + var_TexCoords) * weights[0];
 #else
 	color += texture (u_TextureMap, vec2 (0.0, -1.0) * u_InvTexRes + var_TexCoords) * weights[0];
 	color += texture (u_TextureMap, vec2 (0.0,  0.0) * u_InvTexRes + var_TexCoords) * weights[1];

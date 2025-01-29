@@ -88,12 +88,12 @@ start_iMCU_row (j_decompress_ptr cinfo)
    */
   if (cinfo->comps_in_scan > 1) {
     coef->MCU_rows_per_iMCU_row = 1;
-  } else {
+ } else {
     if (cinfo->input_iMCU_row < (cinfo->total_iMCU_rows-1))
       coef->MCU_rows_per_iMCU_row = cinfo->cur_comp_info[0]->v_samp_factor;
     else
       coef->MCU_rows_per_iMCU_row = cinfo->cur_comp_info[0]->last_row_height;
-  }
+ }
 
   coef->MCU_ctr = 0;
   coef->MCU_vert_offset = 0;
@@ -128,7 +128,7 @@ start_output_pass (j_decompress_ptr cinfo)
       coef->pub.decompress_data = decompress_smooth_data;
     else
       coef->pub.decompress_data = decompress_data;
-  }
+ }
 #endif
   cinfo->output_iMCU_row = 0;
 }
@@ -171,7 +171,7 @@ decompress_onepass (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	coef->MCU_vert_offset = yoffset;
 	coef->MCU_ctr = MCU_col_num;
 	return JPEG_SUSPENDED;
-      }
+     }
       /* Determine where data should go in output_buf and do the IDCT thing.
        * We skip dummy blocks at the right and bottom edges (but blkn gets
        * incremented past them!).  Note the inner loop relies on having
@@ -200,22 +200,22 @@ decompress_onepass (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 			      (JCOEFPTR) coef->MCU_buffer[blkn+xindex],
 			      output_ptr, output_col);
 	      output_col += compptr->DCT_h_scaled_size;
-	    }
-	  }
+	   }
+	 }
 	  blkn += compptr->MCU_width;
 	  output_ptr += compptr->DCT_v_scaled_size;
 	}
-      }
-    }
+     }
+   }
     /* Completed an MCU row, but perhaps not an iMCU row */
     coef->MCU_ctr = 0;
-  }
+ }
   /* Completed the iMCU row, advance counters for next one */
   cinfo->output_iMCU_row++;
   if (++(cinfo->input_iMCU_row) < cinfo->total_iMCU_rows) {
     start_iMCU_row(cinfo);
     return JPEG_ROW_COMPLETED;
-  }
+ }
   /* Completed the scan */
   (*cinfo->inputctl->finish_input_pass) (cinfo);
   return JPEG_SCAN_COMPLETED;
@@ -264,7 +264,7 @@ consume_data (j_decompress_ptr cinfo)
      * but this is handled automatically by the memory manager
      * because we requested a pre-zeroed array.
      */
-  }
+ }
 
   /* Loop to process one whole iMCU row */
   for (yoffset = coef->MCU_vert_offset; yoffset < coef->MCU_rows_per_iMCU_row;
@@ -280,25 +280,25 @@ consume_data (j_decompress_ptr cinfo)
 	  buffer_ptr = buffer[ci][yindex+yoffset] + start_col;
 	  for (xindex = 0; xindex < compptr->MCU_width; xindex++) {
 	    coef->MCU_buffer[blkn++] = buffer_ptr++;
-	  }
+	 }
 	}
-      }
+     }
       /* Try to fetch the MCU. */
       if (! (*cinfo->entropy->decode_mcu) (cinfo, coef->MCU_buffer)) {
 	/* Suspension forced; update state counters and exit */
 	coef->MCU_vert_offset = yoffset;
 	coef->MCU_ctr = MCU_col_num;
 	return JPEG_SUSPENDED;
-      }
-    }
+     }
+   }
     /* Completed an MCU row, but perhaps not an iMCU row */
     coef->MCU_ctr = 0;
-  }
+ }
   /* Completed the iMCU row, advance counters for next one */
   if (++(cinfo->input_iMCU_row) < cinfo->total_iMCU_rows) {
     start_iMCU_row(cinfo);
     return JPEG_ROW_COMPLETED;
-  }
+ }
   /* Completed the scan */
   (*cinfo->inputctl->finish_input_pass) (cinfo);
   return JPEG_SCAN_COMPLETED;
@@ -333,7 +333,7 @@ decompress_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	  cinfo->input_iMCU_row <= cinfo->output_iMCU_row)) {
     if ((*cinfo->inputctl->consume_input)(cinfo) == JPEG_SUSPENDED)
       return JPEG_SUSPENDED;
-  }
+ }
 
   /* OK, output from the virtual arrays. */
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
@@ -353,7 +353,7 @@ decompress_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
       /* NB: can't use last_row_height here; it is input-side-dependent! */
       block_rows = (int) (compptr->height_in_blocks % compptr->v_samp_factor);
       if (block_rows == 0) block_rows = compptr->v_samp_factor;
-    }
+   }
     inverse_DCT = cinfo->idct->inverse_DCT[ci];
     output_ptr = output_buf[ci];
     /* Loop over all DCT blocks to be processed. */
@@ -365,10 +365,10 @@ decompress_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 			output_ptr, output_col);
 	buffer_ptr++;
 	output_col += compptr->DCT_h_scaled_size;
-      }
+     }
       output_ptr += compptr->DCT_v_scaled_size;
-    }
-  }
+   }
+ }
 
   if (++(cinfo->output_iMCU_row) < cinfo->total_iMCU_rows)
     return JPEG_ROW_COMPLETED;
@@ -447,9 +447,9 @@ smoothing_ok (j_decompress_ptr cinfo)
       coef_bits_latch[coefi] = coef_bits[coefi];
       if (coef_bits[coefi] != 0)
 	smoothing_useful = TRUE;
-    }
+   }
     coef_bits_latch += SAVED_COEFS;
-  }
+ }
 
   return smoothing_useful;
 }
@@ -492,10 +492,10 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
       JDIMENSION delta = (cinfo->Ss == 0) ? 1 : 0;
       if (cinfo->input_iMCU_row > cinfo->output_iMCU_row+delta)
 	break;
-    }
+   }
     if ((*cinfo->inputctl->consume_input)(cinfo) == JPEG_SUSPENDED)
       return JPEG_SUSPENDED;
-  }
+ }
 
   /* OK, output from the virtual arrays. */
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
@@ -508,13 +508,13 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
       block_rows = compptr->v_samp_factor;
       access_rows = block_rows * 2; /* this and next iMCU row */
       last_row = FALSE;
-    } else {
+   } else {
       /* NB: can't use last_row_height here; it is input-side-dependent! */
       block_rows = (int) (compptr->height_in_blocks % compptr->v_samp_factor);
       if (block_rows == 0) block_rows = compptr->v_samp_factor;
       access_rows = block_rows; /* this iMCU row only */
       last_row = TRUE;
-    }
+   }
     /* Align the virtual buffer for this component. */
     if (cinfo->output_iMCU_row > 0) {
       access_rows += compptr->v_samp_factor; /* prior iMCU row too */
@@ -524,12 +524,12 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	 (JDIMENSION) access_rows, FALSE);
       buffer += compptr->v_samp_factor;	/* point to current iMCU row */
       first_row = FALSE;
-    } else {
+   } else {
       buffer = (*cinfo->mem->access_virt_barray)
 	((j_common_ptr) cinfo, coef->whole_image[ci],
 	 (JDIMENSION) 0, (JDIMENSION) access_rows, FALSE);
       first_row = TRUE;
-    }
+   }
     /* Fetch component-dependent info */
     coef_bits = coef->coef_bits_latch + (ci * SAVED_COEFS);
     quanttbl = compptr->quant_table;
@@ -580,12 +580,12 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	    pred = (int) (((Q01<<7) + num) / (Q01<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
-	  } else {
+	 } else {
 	    pred = (int) (((Q01<<7) - num) / (Q01<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
 	    pred = -pred;
-	  }
+	 }
 	  workspace[1] = (JCOEF) pred;
 	}
 	/* AC10 */
@@ -595,12 +595,12 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	    pred = (int) (((Q10<<7) + num) / (Q10<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
-	  } else {
+	 } else {
 	    pred = (int) (((Q10<<7) - num) / (Q10<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
 	    pred = -pred;
-	  }
+	 }
 	  workspace[8] = (JCOEF) pred;
 	}
 	/* AC20 */
@@ -610,12 +610,12 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	    pred = (int) (((Q20<<7) + num) / (Q20<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
-	  } else {
+	 } else {
 	    pred = (int) (((Q20<<7) - num) / (Q20<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
 	    pred = -pred;
-	  }
+	 }
 	  workspace[16] = (JCOEF) pred;
 	}
 	/* AC11 */
@@ -625,12 +625,12 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	    pred = (int) (((Q11<<7) + num) / (Q11<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
-	  } else {
+	 } else {
 	    pred = (int) (((Q11<<7) - num) / (Q11<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
 	    pred = -pred;
-	  }
+	 }
 	  workspace[9] = (JCOEF) pred;
 	}
 	/* AC02 */
@@ -640,12 +640,12 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	    pred = (int) (((Q02<<7) + num) / (Q02<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
-	  } else {
+	 } else {
 	    pred = (int) (((Q02<<7) - num) / (Q02<<8));
 	    if (Al > 0 && pred >= (1<<Al))
 	      pred = (1<<Al)-1;
 	    pred = -pred;
-	  }
+	 }
 	  workspace[2] = (JCOEF) pred;
 	}
 	/* OK, do the IDCT */
@@ -657,10 +657,10 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
 	DC7 = DC8; DC8 = DC9;
 	buffer_ptr++, prev_block_row++, next_block_row++;
 	output_col += compptr->DCT_h_scaled_size;
-      }
+     }
       output_ptr += compptr->DCT_v_scaled_size;
-    }
-  }
+   }
+ }
 
   if (++(cinfo->output_iMCU_row) < cinfo->total_iMCU_rows)
     return JPEG_ROW_COMPLETED;
@@ -713,14 +713,14 @@ jinit_d_coef_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
 	 (JDIMENSION) jround_up((long) compptr->height_in_blocks,
 				(long) compptr->v_samp_factor),
 	 (JDIMENSION) access_rows);
-    }
+   }
     coef->pub.consume_data = consume_data;
     coef->pub.decompress_data = decompress_data;
     coef->pub.coef_arrays = coef->whole_image; /* link to virtual arrays */
 #else
     ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
-  } else {
+ } else {
     /* We only need a single-MCU buffer. */
     JBLOCKROW buffer;
     int i;
@@ -730,12 +730,12 @@ jinit_d_coef_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
 				  D_MAX_BLOCKS_IN_MCU * SIZEOF(JBLOCK));
     for (i = 0; i < D_MAX_BLOCKS_IN_MCU; i++) {
       coef->MCU_buffer[i] = buffer + i;
-    }
+   }
     if (cinfo->lim_Se == 0)	/* DC only case: want to bypass later */
       FMEMZERO((void FAR *) buffer,
 	       (size_t) (D_MAX_BLOCKS_IN_MCU * SIZEOF(JBLOCK)));
     coef->pub.consume_data = dummy_consume_data;
     coef->pub.decompress_data = decompress_onepass;
     coef->pub.coef_arrays = NULL; /* flag for no virtual arrays */
-  }
+ }
 }

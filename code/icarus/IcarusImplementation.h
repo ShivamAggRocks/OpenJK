@@ -101,7 +101,7 @@ public:
 	int Update(int icarusID);
 
 	int IsRunning(int icarusID);
-	void Completed( int icarusID, int taskID );
+	void Completed(int icarusID, int taskID);
 	void Precache(char* buffer, long length);
 
 protected:
@@ -110,8 +110,8 @@ protected:
 
 public:
 	CSequence* GetSequence(int id);
-	void DeleteSequence( CSequence *sequence );
-	int AllocateSequences( int numSequences, int *idTable );
+	void DeleteSequence(CSequence *sequence);
+	int AllocateSequences(int numSequences, int *idTable);
 	CSequencer* FindSequencer(int sequencerID);
 	CSequence* GetSequence();
 
@@ -127,21 +127,21 @@ protected:
 	int LoadSequencers();
 
 public:
-	void Signal( const char *identifier );
-	bool CheckSignal( const char *identifier );
-	void ClearSignal( const char *identifier );
+	void Signal(const char *identifier);
+	bool CheckSignal(const char *identifier);
+	void ClearSignal(const char *identifier);
 
 	// Overloaded new operator.
-	inline void *operator new( size_t size )
+	inline void *operator new(size_t size)
 	{
-		return IGameInterface::GetGame()->Malloc( size );
+		return IGameInterface::GetGame()->Malloc(size);
 	}
 
 	// Overloaded delete operator.
-	inline void operator delete( void *pRawData )
+	inline void operator delete(void *pRawData)
 	{
 		// Free the Memory.
-		IGameInterface::GetGame()->Free( pRawData );
+		IGameInterface::GetGame()->Free(pRawData);
 	}
 
 public:
@@ -249,7 +249,7 @@ public:
 	};
 
 	// Used by the new Icarus Save code.
-	enum { MAX_BUFFER_SIZE = 100000 };
+	enum {MAX_BUFFER_SIZE = 100000};
 	unsigned long m_ulBufferCurPos;
 	unsigned long m_ulBytesRead;
 	unsigned char *m_byBuffer;
@@ -260,9 +260,9 @@ public:
 	// Reset the buffer completely.
 	void ResetBuffer();
 	// Write to a buffer.
-	void BufferWrite( void *pSrcData, unsigned long ulNumBytesToWrite );
+	void BufferWrite(void *pSrcData, unsigned long ulNumBytesToWrite);
 	// Read from a buffer.
-	void BufferRead( void *pDstBuff, unsigned long ulNumBytesToRead );
+	void BufferRead(void *pDstBuff, unsigned long ulNumBytesToRead);
 };
 
 #endif

@@ -113,29 +113,29 @@ void unpack_sf_sub_MPEG1(SCALEFACT sf[],
 	    sf[0].s[0][sfb] = bitget(slen0);
 	    sf[0].s[1][sfb] = bitget(slen0);
 	    sf[0].s[2][sfb] = bitget(slen0);
-	 }
+	}
 	 for (sfb = 6; sfb < 12; sfb++)
 	 {
 	    sf[0].s[0][sfb] = bitget(slen1);
 	    sf[0].s[1][sfb] = bitget(slen1);
 	    sf[0].s[2][sfb] = bitget(slen1);
-	 }
+	}
 	 return;
-      }
+     }
       for (sfb = 0; sfb < 6; sfb++)
       {
 	 sf[0].s[0][sfb] = bitget(slen0);
 	 sf[0].s[1][sfb] = bitget(slen0);
 	 sf[0].s[2][sfb] = bitget(slen0);
-      }
+     }
       for (; sfb < 12; sfb++)
       {
 	 sf[0].s[0][sfb] = bitget(slen1);
 	 sf[0].s[1][sfb] = bitget(slen1);
 	 sf[0].s[2][sfb] = bitget(slen1);
-      }
+     }
       return;
-   }
+  }
 
 /* long blocks types 0 1 3, first granule */
    if (gr == 0)
@@ -145,7 +145,7 @@ void unpack_sf_sub_MPEG1(SCALEFACT sf[],
       for (; sfb < 21; sfb++)
 	 sf[0].l[sfb] = bitget(slen1);
       return;
-   }
+  }
 
 /* long blocks 0, 1, 3, second granule */
    sfb = 0;
@@ -208,7 +208,7 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	 slen3 = slen4 >> 2;
 	 slen4 = slen4 & 3;
 	 k = 0;
-      }
+     }
       else if (scalefac_compress < 500)
       {
 	 scalefac_compress -= 400;
@@ -218,7 +218,7 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	 slen3 = scalefac_compress & 3;
 	 slen4 = 0;
 	 k = 1;
-      }
+     }
       else
       {
 	 scalefac_compress -= 500;
@@ -229,11 +229,11 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	 {
 	    slen3 = slen2;	/* adjust for long/short mix logic */
 	    slen2 = slen1;
-	 }
+	}
 	 preflag = 1;
 	 k = 2;
-      }
-   }
+     }
+  }
    else
    {				/* intensity stereo ch = 1 (right) */
       intensity_scale = scalefac_compress & 1;
@@ -246,7 +246,7 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	 slen2 = slen2 / 6;
 	 slen4 = 0;
 	 k = 3 + 0;
-      }
+     }
       else if (scalefac_compress < 244)
       {
 	 scalefac_compress -= 180;
@@ -256,7 +256,7 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	 slen1 = scalefac_compress >> 2;
 	 slen4 = 0;
 	 k = 3 + 1;
-      }
+     }
       else
       {
 	 scalefac_compress -= 244;
@@ -264,8 +264,8 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	 slen2 = scalefac_compress % 3;
 	 slen3 = slen4 = 0;
 	 k = 3 + 2;
-      }
-   }
+     }
+  }
 
    i = 0;
    if (block_type == 2)
@@ -286,7 +286,7 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
       sf_info->slen[1] = slen2;
       sf_info->slen[2] = slen3;
       sf_info->intensity_scale = intensity_scale;
-   }
+  }
    grdat->preflag = preflag;	/* return preflag */
 
 /*--------------------------------------*/
@@ -301,7 +301,7 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	    for (sfb = 0; sfb < 6; sfb++)
 	       sf[0].l[sfb] = 0;
 	 sfb = 3;		/* start sfb for short */
-      }
+     }
       else
       {				/* all short, initial short blocks */
 	 sfb = 0;
@@ -311,15 +311,15 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	       sf[0].s[0][sfb] = bitget(slen1);
 	       sf[0].s[1][sfb] = bitget(slen1);
 	       sf[0].s[2][sfb] = bitget(slen1);
-	    }
+	   }
 	 else
 	    for (i = 0; i < nr1; i++, sfb++)
 	    {
 	       sf[0].s[0][sfb] = 0;
 	       sf[0].s[1][sfb] = 0;
 	       sf[0].s[2][sfb] = 0;
-	    }
-      }
+	   }
+     }
 /* remaining short blocks */
       if (slen2 != 0)
 	 for (i = 0; i < nr2; i++, sfb++)
@@ -327,44 +327,44 @@ void unpack_sf_sub_MPEG2(SCALEFACT sf[],
 	    sf[0].s[0][sfb] = bitget(slen2);
 	    sf[0].s[1][sfb] = bitget(slen2);
 	    sf[0].s[2][sfb] = bitget(slen2);
-	 }
+	}
       else
 	 for (i = 0; i < nr2; i++, sfb++)
 	 {
 	    sf[0].s[0][sfb] = 0;
 	    sf[0].s[1][sfb] = 0;
 	    sf[0].s[2][sfb] = 0;
-	 }
+	}
       if (slen3 != 0)
 	 for (i = 0; i < nr3; i++, sfb++)
 	 {
 	    sf[0].s[0][sfb] = bitget(slen3);
 	    sf[0].s[1][sfb] = bitget(slen3);
 	    sf[0].s[2][sfb] = bitget(slen3);
-	 }
+	}
       else
 	 for (i = 0; i < nr3; i++, sfb++)
 	 {
 	    sf[0].s[0][sfb] = 0;
 	    sf[0].s[1][sfb] = 0;
 	    sf[0].s[2][sfb] = 0;
-	 }
+	}
       if (slen4 != 0)
 	 for (i = 0; i < nr4; i++, sfb++)
 	 {
 	    sf[0].s[0][sfb] = bitget(slen4);
 	    sf[0].s[1][sfb] = bitget(slen4);
 	    sf[0].s[2][sfb] = bitget(slen4);
-	 }
+	}
       else
 	 for (i = 0; i < nr4; i++, sfb++)
 	 {
 	    sf[0].s[0][sfb] = 0;
 	    sf[0].s[1][sfb] = 0;
 	    sf[0].s[2][sfb] = 0;
-	 }
+	}
       return;
-   }
+  }
 
 
 /* long blocks types 0 1 3 */

@@ -107,7 +107,7 @@ private:
 		{
 			if (right(i)<mPush)
 			{
-				return ( (mData[right(i)] < mData[left(i)]) ? (left(i)) : (right(i)) );
+				return ((mData[right(i)] < mData[left(i)]) ? (left(i)) : (right(i)));
 			}
 			return left(i);	// Node i only has a left child, so by default it is the biggest
 		}

@@ -60,7 +60,7 @@ png_set_packing(png_structrp png_ptr)
 #     ifdef PNG_WRITE_SUPPORTED
          png_ptr->usr_bit_depth = 8;
 #     endif
-   }
+  }
 }
 #endif
 
@@ -104,7 +104,7 @@ png_set_interlace_handling(png_structrp png_ptr)
    {
       png_ptr->transformations |= PNG_INTERLACE;
       return (7);
-   }
+  }
 
    return (1);
 }
@@ -144,7 +144,7 @@ png_set_filler(png_structrp png_ptr, png_uint_32 filler, int filler_loc)
          PNG_UNUSED(filler) /* not used in the write case */
          return;
 #     endif
-   }
+  }
 
    else /* write */
    {
@@ -163,7 +163,7 @@ png_set_filler(png_structrp png_ptr, png_uint_32 filler, int filler_loc)
                {
                   png_ptr->usr_channels = 2;
                   break;
-               }
+              }
 
                else
                {
@@ -174,18 +174,18 @@ png_set_filler(png_structrp png_ptr, png_uint_32 filler, int filler_loc)
                   png_app_error(png_ptr,
                      "png_set_filler is invalid for low bit depth gray output");
                   return;
-               }
+              }
 
             default:
                png_app_error(png_ptr,
                   "png_set_filler: inappropriate color type");
                return;
-         }
+        }
 #     else
          png_app_error(png_ptr, "png_set_filler not supported on write");
          return;
 #     endif
-   }
+  }
 
    /* Here on success - libpng supports the operation, set the transformation
     * and the flag to say where the filler channel is.
@@ -275,8 +275,8 @@ png_do_invert(png_row_infop row_info, png_bytep row)
       {
          *rp = (png_byte)(~(*rp));
          rp++;
-      }
-   }
+     }
+  }
 
    else if (row_info->color_type == PNG_COLOR_TYPE_GRAY_ALPHA &&
       row_info->bit_depth == 8)
@@ -289,8 +289,8 @@ png_do_invert(png_row_infop row_info, png_bytep row)
       {
          *rp = (png_byte)(~(*rp));
          rp += 2;
-      }
-   }
+     }
+  }
 
 #ifdef PNG_16BIT_SUPPORTED
    else if (row_info->color_type == PNG_COLOR_TYPE_GRAY_ALPHA &&
@@ -305,8 +305,8 @@ png_do_invert(png_row_infop row_info, png_bytep row)
          *rp = (png_byte)(~(*rp));
          *(rp + 1) = (png_byte)(~(*(rp + 1)));
          rp += 4;
-      }
-   }
+     }
+  }
 #endif
 }
 #endif
@@ -337,8 +337,8 @@ png_do_swap(png_row_infop row_info, png_bytep row)
          *rp = *(rp + 1);
          *(rp + 1) = t;
 #endif
-      }
-   }
+     }
+  }
 }
 #endif
 #endif
@@ -476,7 +476,7 @@ png_do_packswap(png_row_infop row_info, png_bytep row)
 
       for (rp = row; rp < end; rp++)
          *rp = table[*rp];
-   }
+  }
 }
 #endif /* PACKSWAP || WRITE_PACKSWAP */
 
@@ -520,7 +520,7 @@ png_do_strip_channel(png_row_infop row_info, png_bytep row, int at_start)
             *dp++ = *sp, sp += 2;
 
          row_info->pixel_depth = 8;
-      }
+     }
 
       else if (row_info->bit_depth == 16)
       {
@@ -533,7 +533,7 @@ png_do_strip_channel(png_row_infop row_info, png_bytep row, int at_start)
             *dp++ = *sp++, *dp++ = *sp, sp += 3;
 
          row_info->pixel_depth = 16;
-      }
+     }
 
       else
          return; /* bad bit depth */
@@ -543,7 +543,7 @@ png_do_strip_channel(png_row_infop row_info, png_bytep row, int at_start)
       /* Finally fix the color type if it records an alpha channel */
       if (row_info->color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
          row_info->color_type = PNG_COLOR_TYPE_GRAY;
-   }
+  }
 
    /* RGBA, RGBX, XRGB cases */
    else if (row_info->channels == 4)
@@ -560,7 +560,7 @@ png_do_strip_channel(png_row_infop row_info, png_bytep row, int at_start)
             *dp++ = *sp++, *dp++ = *sp++, *dp++ = *sp, sp += 2;
 
          row_info->pixel_depth = 24;
-      }
+     }
 
       else if (row_info->bit_depth == 16)
       {
@@ -575,10 +575,10 @@ png_do_strip_channel(png_row_infop row_info, png_bytep row, int at_start)
             *dp++ = *sp++, *dp++ = *sp++;
             *dp++ = *sp++, *dp++ = *sp++;
             *dp++ = *sp++, *dp++ = *sp, sp += 3;
-         }
+        }
 
          row_info->pixel_depth = 48;
-      }
+     }
 
       else
          return; /* bad bit depth */
@@ -588,7 +588,7 @@ png_do_strip_channel(png_row_infop row_info, png_bytep row, int at_start)
       /* Finally fix the color type if it records an alpha channel */
       if (row_info->color_type == PNG_COLOR_TYPE_RGB_ALPHA)
          row_info->color_type = PNG_COLOR_TYPE_RGB;
-   }
+  }
 
    else
       return; /* The filler channel has gone already */
@@ -620,8 +620,8 @@ png_do_bgr(png_row_infop row_info, png_bytep row)
                png_byte save = *rp;
                *rp = *(rp + 2);
                *(rp + 2) = save;
-            }
-         }
+           }
+        }
 
          else if (row_info->color_type == PNG_COLOR_TYPE_RGB_ALPHA)
          {
@@ -633,9 +633,9 @@ png_do_bgr(png_row_infop row_info, png_bytep row)
                png_byte save = *rp;
                *rp = *(rp + 2);
                *(rp + 2) = save;
-            }
-         }
-      }
+           }
+        }
+     }
 
 #ifdef PNG_16BIT_SUPPORTED
       else if (row_info->bit_depth == 16)
@@ -653,8 +653,8 @@ png_do_bgr(png_row_infop row_info, png_bytep row)
                save = *(rp + 1);
                *(rp + 1) = *(rp + 5);
                *(rp + 5) = save;
-            }
-         }
+           }
+        }
 
          else if (row_info->color_type == PNG_COLOR_TYPE_RGB_ALPHA)
          {
@@ -669,11 +669,11 @@ png_do_bgr(png_row_infop row_info, png_bytep row)
                save = *(rp + 1);
                *(rp + 1) = *(rp + 5);
                *(rp + 5) = save;
-            }
-         }
-      }
+           }
+        }
+     }
 #endif
-   }
+  }
 }
 #endif /* READ_BGR || WRITE_BGR */
 
@@ -707,10 +707,10 @@ png_do_check_palette_indexes(png_structrp png_ptr, png_row_infop row_info)
               if (*rp >> padding != 0)
                  png_ptr->num_palette_max = 1;
               padding = 0;
-            }
+           }
 
             break;
-         }
+        }
 
          case 2:
          {
@@ -737,10 +737,10 @@ png_do_check_palette_indexes(png_structrp png_ptr, png_row_infop row_info)
                  png_ptr->num_palette_max = i;
 
               padding = 0;
-            }
+           }
 
             break;
-         }
+        }
 
          case 4:
          {
@@ -757,10 +757,10 @@ png_do_check_palette_indexes(png_structrp png_ptr, png_row_infop row_info)
                  png_ptr->num_palette_max = i;
 
               padding = 0;
-            }
+           }
 
             break;
-         }
+        }
 
          case 8:
          {
@@ -768,15 +768,15 @@ png_do_check_palette_indexes(png_structrp png_ptr, png_row_infop row_info)
             {
                if (*rp > png_ptr->num_palette_max)
                   png_ptr->num_palette_max = (int) *rp;
-            }
+           }
 
             break;
-         }
+        }
 
          default:
             break;
-      }
-   }
+     }
+  }
 }
 #endif /* CHECK_FOR_INVALID_INDEX */
 
@@ -799,7 +799,7 @@ png_set_user_transform_info(png_structrp png_ptr, png_voidp
       png_app_error(png_ptr,
             "info change after png_start_read_image or png_read_update_info");
       return;
-   }
+  }
 #endif
 
    png_ptr->user_transform_ptr = user_transform_ptr;

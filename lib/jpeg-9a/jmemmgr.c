@@ -94,7 +94,7 @@ typedef union small_pool_struct {
     small_pool_ptr next;	/* next in list of pools */
     size_t bytes_used;		/* how many bytes already used within pool */
     size_t bytes_left;		/* bytes still available in this pool */
-  } hdr;
+ } hdr;
   ALIGN_TYPE dummy;		/* included in union to ensure alignment */
 } small_pool_hdr;
 
@@ -105,7 +105,7 @@ typedef union large_pool_struct {
     large_pool_ptr next;	/* next in list of pools */
     size_t bytes_used;		/* how many bytes already used within pool */
     size_t bytes_left;		/* bytes still available in this pool */
-  } hdr;
+ } hdr;
   ALIGN_TYPE dummy;		/* included in union to ensure alignment */
 } large_pool_hdr;
 
@@ -201,14 +201,14 @@ print_mem_stats (j_common_ptr cinfo, int pool_id)
        lhdr_ptr = lhdr_ptr->hdr.next) {
     fprintf(stderr, "  Large chunk used %ld\n",
 	    (long) lhdr_ptr->hdr.bytes_used);
-  }
+ }
 
   for (shdr_ptr = mem->small_list[pool_id]; shdr_ptr != NULL;
        shdr_ptr = shdr_ptr->hdr.next) {
     fprintf(stderr, "  Small chunk used %ld free %ld\n",
 	    (long) shdr_ptr->hdr.bytes_used,
 	    (long) shdr_ptr->hdr.bytes_left);
-  }
+ }
 }
 
 #endif /* MEM_STATS */
@@ -282,7 +282,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
       break;			/* found pool with enough space */
     prev_hdr_ptr = hdr_ptr;
     hdr_ptr = hdr_ptr->hdr.next;
-  }
+ }
 
   /* Time to make a new pool? */
   if (hdr_ptr == NULL) {
@@ -303,7 +303,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
       slop /= 2;
       if (slop < MIN_SLOP)	/* give up when it gets real small */
 	out_of_memory(cinfo, 2); /* jpeg_get_small failed */
-    }
+   }
     mem->total_space_allocated += min_request + slop;
     /* Success, initialize the new pool header and add to end of list */
     hdr_ptr->hdr.next = NULL;
@@ -313,7 +313,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
       mem->small_list[pool_id] = hdr_ptr;
     else
       prev_hdr_ptr->hdr.next = hdr_ptr;
-  }
+ }
 
   /* OK, allocate the object from the current pool */
   data_ptr = (char *) (hdr_ptr + 1); /* point to first data byte in pool */
@@ -428,8 +428,8 @@ alloc_sarray (j_common_ptr cinfo, int pool_id,
     for (i = rowsperchunk; i > 0; i--) {
       result[currow++] = workspace;
       workspace += samplesperrow;
-    }
-  }
+   }
+ }
 
   return result;
 }
@@ -476,8 +476,8 @@ alloc_barray (j_common_ptr cinfo, int pool_id,
     for (i = rowsperchunk; i > 0; i--) {
       result[currow++] = workspace;
       workspace += blocksperrow;
-    }
-  }
+   }
+ }
 
   return result;
 }
@@ -597,21 +597,21 @@ realize_virt_arrays (j_common_ptr cinfo)
   space_per_minheight = 0;
   maximum_space = 0;
   for (sptr = mem->virt_sarray_list; sptr != NULL; sptr = sptr->next) {
-    if (sptr->mem_buffer == NULL) { /* if not realized yet */
+    if (sptr->mem_buffer == NULL) {/* if not realized yet */
       space_per_minheight += (long) sptr->maxaccess *
 			     (long) sptr->samplesperrow * SIZEOF(JSAMPLE);
       maximum_space += (long) sptr->rows_in_array *
 		       (long) sptr->samplesperrow * SIZEOF(JSAMPLE);
-    }
-  }
+   }
+ }
   for (bptr = mem->virt_barray_list; bptr != NULL; bptr = bptr->next) {
-    if (bptr->mem_buffer == NULL) { /* if not realized yet */
+    if (bptr->mem_buffer == NULL) {/* if not realized yet */
       space_per_minheight += (long) bptr->maxaccess *
 			     (long) bptr->blocksperrow * SIZEOF(JBLOCK);
       maximum_space += (long) bptr->rows_in_array *
 		       (long) bptr->blocksperrow * SIZEOF(JBLOCK);
-    }
-  }
+   }
+ }
 
   if (space_per_minheight <= 0)
     return;			/* no unrealized arrays, no work */
@@ -633,17 +633,17 @@ realize_virt_arrays (j_common_ptr cinfo)
      */
     if (max_minheights <= 0)
       max_minheights = 1;
-  }
+ }
 
   /* Allocate the in-memory buffers and initialize backing store as needed. */
 
   for (sptr = mem->virt_sarray_list; sptr != NULL; sptr = sptr->next) {
-    if (sptr->mem_buffer == NULL) { /* if not realized yet */
+    if (sptr->mem_buffer == NULL) {/* if not realized yet */
       minheights = ((long) sptr->rows_in_array - 1L) / sptr->maxaccess + 1L;
       if (minheights <= max_minheights) {
 	/* This buffer fits in memory */
 	sptr->rows_in_mem = sptr->rows_in_array;
-      } else {
+     } else {
 	/* It doesn't fit in memory, create backing store. */
 	sptr->rows_in_mem = (JDIMENSION) (max_minheights * sptr->maxaccess);
 	jpeg_open_backing_store(cinfo, & sptr->b_s_info,
@@ -651,23 +651,23 @@ realize_virt_arrays (j_common_ptr cinfo)
 				(long) sptr->samplesperrow *
 				(long) SIZEOF(JSAMPLE));
 	sptr->b_s_open = TRUE;
-      }
+     }
       sptr->mem_buffer = alloc_sarray(cinfo, JPOOL_IMAGE,
 				      sptr->samplesperrow, sptr->rows_in_mem);
       sptr->rowsperchunk = mem->last_rowsperchunk;
       sptr->cur_start_row = 0;
       sptr->first_undef_row = 0;
       sptr->dirty = FALSE;
-    }
-  }
+   }
+ }
 
   for (bptr = mem->virt_barray_list; bptr != NULL; bptr = bptr->next) {
-    if (bptr->mem_buffer == NULL) { /* if not realized yet */
+    if (bptr->mem_buffer == NULL) {/* if not realized yet */
       minheights = ((long) bptr->rows_in_array - 1L) / bptr->maxaccess + 1L;
       if (minheights <= max_minheights) {
 	/* This buffer fits in memory */
 	bptr->rows_in_mem = bptr->rows_in_array;
-      } else {
+     } else {
 	/* It doesn't fit in memory, create backing store. */
 	bptr->rows_in_mem = (JDIMENSION) (max_minheights * bptr->maxaccess);
 	jpeg_open_backing_store(cinfo, & bptr->b_s_info,
@@ -675,15 +675,15 @@ realize_virt_arrays (j_common_ptr cinfo)
 				(long) bptr->blocksperrow *
 				(long) SIZEOF(JBLOCK));
 	bptr->b_s_open = TRUE;
-      }
+     }
       bptr->mem_buffer = alloc_barray(cinfo, JPOOL_IMAGE,
 				      bptr->blocksperrow, bptr->rows_in_mem);
       bptr->rowsperchunk = mem->last_rowsperchunk;
       bptr->cur_start_row = 0;
       bptr->first_undef_row = 0;
       bptr->dirty = FALSE;
-    }
-  }
+   }
+ }
 }
 
 
@@ -716,7 +716,7 @@ do_sarray_io (j_common_ptr cinfo, jvirt_sarray_ptr ptr, boolean writing)
 					   (void FAR *) ptr->mem_buffer[i],
 					   file_offset, byte_count);
     file_offset += byte_count;
-  }
+ }
 }
 
 
@@ -749,7 +749,7 @@ do_barray_io (j_common_ptr cinfo, jvirt_barray_ptr ptr, boolean writing)
 					   (void FAR *) ptr->mem_buffer[i],
 					   file_offset, byte_count);
     file_offset += byte_count;
-  }
+ }
 }
 
 
@@ -778,7 +778,7 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
     if (ptr->dirty) {
       do_sarray_io(cinfo, ptr, TRUE);
       ptr->dirty = FALSE;
-    }
+   }
     /* Decide what part of virtual array to access.
      * Algorithm: if target address > current window, assume forward scan,
      * load starting at target address.  If target address < current window,
@@ -788,7 +788,7 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
      */
     if (start_row > ptr->cur_start_row) {
       ptr->cur_start_row = start_row;
-    } else {
+   } else {
       /* use long arithmetic here to avoid overflow & unsigned problems */
       long ltemp;
 
@@ -796,13 +796,13 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
       if (ltemp < 0)
 	ltemp = 0;		/* don't fall off front end of file */
       ptr->cur_start_row = (JDIMENSION) ltemp;
-    }
+   }
     /* Read in the selected part of the array.
      * During the initial write pass, we will do no actual read
      * because the selected part is all undefined.
      */
     do_sarray_io(cinfo, ptr, FALSE);
-  }
+ }
   /* Ensure the accessed part of the array is defined; prezero if needed.
    * To improve locality of access, we only prezero the part of the array
    * that the caller is about to access, not the entire in-memory array.
@@ -812,9 +812,9 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
       if (writable)		/* writer skipped over a section of array */
 	ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
       undef_row = start_row;	/* but reader is allowed to read ahead */
-    } else {
+   } else {
       undef_row = ptr->first_undef_row;
-    }
+   }
     if (writable)
       ptr->first_undef_row = end_row;
     if (ptr->pre_zero) {
@@ -824,12 +824,12 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
       while (undef_row < end_row) {
 	FMEMZERO((void FAR *) ptr->mem_buffer[undef_row], bytesperrow);
 	undef_row++;
-      }
-    } else {
+     }
+   } else {
       if (! writable)		/* reader looking at undefined data */
 	ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
-    }
-  }
+   }
+ }
   /* Flag the buffer dirty if caller will write in it */
   if (writable)
     ptr->dirty = TRUE;
@@ -863,7 +863,7 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
     if (ptr->dirty) {
       do_barray_io(cinfo, ptr, TRUE);
       ptr->dirty = FALSE;
-    }
+   }
     /* Decide what part of virtual array to access.
      * Algorithm: if target address > current window, assume forward scan,
      * load starting at target address.  If target address < current window,
@@ -873,7 +873,7 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
      */
     if (start_row > ptr->cur_start_row) {
       ptr->cur_start_row = start_row;
-    } else {
+   } else {
       /* use long arithmetic here to avoid overflow & unsigned problems */
       long ltemp;
 
@@ -881,13 +881,13 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
       if (ltemp < 0)
 	ltemp = 0;		/* don't fall off front end of file */
       ptr->cur_start_row = (JDIMENSION) ltemp;
-    }
+   }
     /* Read in the selected part of the array.
      * During the initial write pass, we will do no actual read
      * because the selected part is all undefined.
      */
     do_barray_io(cinfo, ptr, FALSE);
-  }
+ }
   /* Ensure the accessed part of the array is defined; prezero if needed.
    * To improve locality of access, we only prezero the part of the array
    * that the caller is about to access, not the entire in-memory array.
@@ -897,9 +897,9 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
       if (writable)		/* writer skipped over a section of array */
 	ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
       undef_row = start_row;	/* but reader is allowed to read ahead */
-    } else {
+   } else {
       undef_row = ptr->first_undef_row;
-    }
+   }
     if (writable)
       ptr->first_undef_row = end_row;
     if (ptr->pre_zero) {
@@ -909,12 +909,12 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
       while (undef_row < end_row) {
 	FMEMZERO((void FAR *) ptr->mem_buffer[undef_row], bytesperrow);
 	undef_row++;
-      }
-    } else {
+     }
+   } else {
       if (! writable)		/* reader looking at undefined data */
 	ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
-    }
-  }
+   }
+ }
   /* Flag the buffer dirty if caller will write in it */
   if (writable)
     ptr->dirty = TRUE;
@@ -952,17 +952,17 @@ free_pool (j_common_ptr cinfo, int pool_id)
       if (sptr->b_s_open) {	/* there may be no backing store */
 	sptr->b_s_open = FALSE;	/* prevent recursive close if error */
 	(*sptr->b_s_info.close_backing_store) (cinfo, & sptr->b_s_info);
-      }
-    }
+     }
+   }
     mem->virt_sarray_list = NULL;
     for (bptr = mem->virt_barray_list; bptr != NULL; bptr = bptr->next) {
       if (bptr->b_s_open) {	/* there may be no backing store */
 	bptr->b_s_open = FALSE;	/* prevent recursive close if error */
 	(*bptr->b_s_info.close_backing_store) (cinfo, & bptr->b_s_info);
-      }
-    }
+     }
+   }
     mem->virt_barray_list = NULL;
-  }
+ }
 
   /* Release large objects */
   lhdr_ptr = mem->large_list[pool_id];
@@ -976,7 +976,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
     jpeg_free_large(cinfo, (void FAR *) lhdr_ptr, space_freed);
     mem->total_space_allocated -= space_freed;
     lhdr_ptr = next_lhdr_ptr;
-  }
+ }
 
   /* Release small objects */
   shdr_ptr = mem->small_list[pool_id];
@@ -990,7 +990,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
     jpeg_free_small(cinfo, (void *) shdr_ptr, space_freed);
     mem->total_space_allocated -= space_freed;
     shdr_ptr = next_shdr_ptr;
-  }
+ }
 }
 
 
@@ -1010,7 +1010,7 @@ self_destruct (j_common_ptr cinfo)
    */
   for (pool = JPOOL_NUMPOOLS-1; pool >= JPOOL_PERMANENT; pool--) {
     free_pool(cinfo, pool);
-  }
+ }
 
   /* Release the memory manager control block too. */
   jpeg_free_small(cinfo, (void *) cinfo->mem, SIZEOF(my_memory_mgr));
@@ -1062,7 +1062,7 @@ jinit_memory_mgr (j_common_ptr cinfo)
   if (mem == NULL) {
     jpeg_mem_term(cinfo);	/* system-dependent cleanup */
     ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 0);
-  }
+ }
 
   /* OK, fill in the method pointers */
   mem->pub.alloc_small = alloc_small;
@@ -1086,7 +1086,7 @@ jinit_memory_mgr (j_common_ptr cinfo)
   for (pool = JPOOL_NUMPOOLS-1; pool >= JPOOL_PERMANENT; pool--) {
     mem->small_list[pool] = NULL;
     mem->large_list[pool] = NULL;
-  }
+ }
   mem->virt_sarray_list = NULL;
   mem->virt_barray_list = NULL;
 
@@ -1102,7 +1102,7 @@ jinit_memory_mgr (j_common_ptr cinfo)
    * this feature.
    */
 #ifndef NO_GETENV
-  { char * memenv;
+  {char * memenv;
 
     if ((memenv = getenv("JPEGMEM")) != NULL) {
       char ch = 'x';
@@ -1111,9 +1111,9 @@ jinit_memory_mgr (j_common_ptr cinfo)
 	if (ch == 'm' || ch == 'M')
 	  max_to_use *= 1000L;
 	mem->pub.max_memory_to_use = max_to_use * 1000L;
-      }
-    }
-  }
+     }
+   }
+ }
 #endif
 
 }

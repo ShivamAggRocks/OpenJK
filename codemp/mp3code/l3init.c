@@ -109,9 +109,9 @@ int L3table_init()
 		 {
 			ls[scalefact_scale][preemp][scalefac] =
 			   (float) pow(2.0, -0.5 * (1 + scalefact_scale) * (scalefac + preemp));
+		}
 		 }
-		  }
-	   }
+	  }
 
 	/*--- iSample**(4/3) lookup, -32<=i<=31 ---*/
 	   x = quant_init_pow_addr();
@@ -119,7 +119,7 @@ int L3table_init()
 	   {
 		  tmp = i - 32;
 		  x[i] = (float) (tmp * pow(fabs(tmp), (1.0 / 3.0)));
-	   }
+	  }
 
 
 	/*-- pow(2.0, -0.25*8.0*subblock_gain)  3 bits --*/
@@ -127,7 +127,7 @@ int L3table_init()
 	   for (i = 0; i < 8; i++)
 	   {
 		  x[i] = (float) pow(2.0, 0.25 * -8.0 * i);
-	   }
+	  }
 
 	/*-------------------------*/
 	// quant_init_sf_band(sr_index);   replaced by code in sup.c
@@ -140,8 +140,8 @@ int L3table_init()
 	   {
 		  csa[i][0] = (float) (1.0 / sqrt(1.0 + Ci[i] * Ci[i]));
 		  csa[i][1] = (float) (Ci[i] / sqrt(1.0 + Ci[i] * Ci[i]));
-	   }
-   }
+	  }
+  }
 
    // these 4 are iOnceOnly-protected inside...
 
@@ -213,12 +213,12 @@ void hwin_init()
 		 continue;
 		  for (i = 9; i < 36; i++)
 		 win[j][i] = -win[j][i];
-	   }
+	  }
 
 	/*-- invert signs for short blocks --*/
 	   for (i = 3; i < 12; i++)
 		  win[2][i] = -win[2][i];
-   }
+  }
 }
 /*=============================================================*/
 typedef float ARRAY4[4];
@@ -258,7 +258,7 @@ void imdct_init()
 	   {
 		  for (p = 0; p < 4; p++)
 		 coef[k][p] = (float) cos(t * (2 * k) * (2 * p + 1));
-	   }
+	  }
 
 	/*--- 6 point */
 	   addr = imdct_init_addr_6();
@@ -284,7 +284,7 @@ void imdct_init()
 		  v[p] = v[p] / 2.0f;
 	   *coef87 = (float) (2.0 *(*coef87));
 
-   }
+  }
 }
 /*===============================================================*/
 typedef float ARRAY8_2[8][2];
@@ -318,7 +318,7 @@ void msis_init()
 		/* ms_mode = 1 */
 		  lr[1][i][0] = (float) (sqrt(2.0) * (s / (s + c)));
 		  lr[1][i][1] = (float) (sqrt(2.0) * (c / (s + c)));
-	   }
+	  }
 	/* sf = 7 */
 	/* ms_mode = 0 */
 	   lr[0][i][0] = 1.0f;
@@ -334,7 +334,7 @@ void msis_init()
 	for(i=0;i<12;i++) nBand[1][i] =
 				sfBandTable[sr_index].s[i+1] - sfBandTable[sr_index].s[i];
 	-------------*/
-   }
+  }
 }
 /*-------------------------------------------------------------*/
 /*===============================================================*/
@@ -378,19 +378,19 @@ void msis_init_MPEG2()
 			   {
 			  lr2[intensity_scale][ms_mode][k][0] = ms_factor[ms_mode] * 1.0f;
 			  lr2[intensity_scale][ms_mode][k][1] = ms_factor[ms_mode] * 1.0f;
-			   }
+			  }
 			   else if ((sf & 1))
 			   {
 			  lr2[intensity_scale][ms_mode][k][0] =
 				 (float) (ms_factor[ms_mode] * pow(t, (sf + 1) / 2));
 			  lr2[intensity_scale][ms_mode][k][1] = ms_factor[ms_mode] * 1.0f;
-			   }
+			  }
 			   else
 			   {
 			  lr2[intensity_scale][ms_mode][k][0] = ms_factor[ms_mode] * 1.0f;
 			  lr2[intensity_scale][ms_mode][k][1] =
 				 (float) (ms_factor[ms_mode] * pow(t, sf / 2));
-			   }
+			  }
 			}
 
 		  /* illegal is_pos used to do ms processing */
@@ -407,10 +407,10 @@ void msis_init_MPEG2()
 			}
 			k++;
 			n = n + n;
+		}
 		 }
-		  }
-	   }
-   }
+	  }
+  }
 
 }
 /*-------------------------------------------------------------*/

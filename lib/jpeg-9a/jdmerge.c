@@ -115,7 +115,7 @@ build_ycc_rgb_table (j_decompress_ptr cinfo)
     /* Cb=>G value is scaled-up -0.344136286 * x */
     /* We also add in ONE_HALF so that need not do it in inner loop */
     upsample->Cb_g_tab[i] = (- FIX(0.344136286)) * x + ONE_HALF;
-  }
+ }
 }
 
 
@@ -159,7 +159,7 @@ merged_2v_upsample (j_decompress_ptr cinfo,
 		      1, upsample->out_row_width);
     num_rows = 1;
     upsample->spare_full = FALSE;
-  } else {
+ } else {
     /* Figure number of rows to return to caller. */
     num_rows = 2;
     /* Not more than the distance to the end of the image. */
@@ -173,13 +173,13 @@ merged_2v_upsample (j_decompress_ptr cinfo,
     work_ptrs[0] = output_buf[*out_row_ctr];
     if (num_rows > 1) {
       work_ptrs[1] = output_buf[*out_row_ctr + 1];
-    } else {
+   } else {
       work_ptrs[1] = upsample->spare_row;
       upsample->spare_full = TRUE;
-    }
+   }
     /* Now do the upsampling. */
     (*upsample->upmethod) (cinfo, input_buf, *in_row_group_ctr, work_ptrs);
-  }
+ }
 
   /* Adjust counts */
   *out_row_ctr += num_rows;
@@ -265,7 +265,7 @@ h2v1_merged_upsample (j_decompress_ptr cinfo,
     outptr[RGB_GREEN] = range_limit[y + cgreen];
     outptr[RGB_BLUE] =  range_limit[y + cblue];
     outptr += RGB_PIXELSIZE;
-  }
+ }
   /* If image width is odd, do the last output column separately */
   if (cinfo->output_width & 1) {
     cb = GETJSAMPLE(*inptr1);
@@ -277,7 +277,7 @@ h2v1_merged_upsample (j_decompress_ptr cinfo,
     outptr[RGB_RED] =   range_limit[y + cred];
     outptr[RGB_GREEN] = range_limit[y + cgreen];
     outptr[RGB_BLUE] =  range_limit[y + cblue];
-  }
+ }
 }
 
 
@@ -339,7 +339,7 @@ h2v2_merged_upsample (j_decompress_ptr cinfo,
     outptr1[RGB_GREEN] = range_limit[y + cgreen];
     outptr1[RGB_BLUE] =  range_limit[y + cblue];
     outptr1 += RGB_PIXELSIZE;
-  }
+ }
   /* If image width is odd, do the last output column separately */
   if (cinfo->output_width & 1) {
     cb = GETJSAMPLE(*inptr1);
@@ -355,7 +355,7 @@ h2v2_merged_upsample (j_decompress_ptr cinfo,
     outptr1[RGB_RED] =   range_limit[y + cred];
     outptr1[RGB_GREEN] = range_limit[y + cgreen];
     outptr1[RGB_BLUE] =  range_limit[y + cblue];
-  }
+ }
 }
 
 
@@ -388,12 +388,12 @@ jinit_merged_upsampler (j_decompress_ptr cinfo)
     upsample->spare_row = (JSAMPROW)
       (*cinfo->mem->alloc_large) ((j_common_ptr) cinfo, JPOOL_IMAGE,
 		(size_t) (upsample->out_row_width * SIZEOF(JSAMPLE)));
-  } else {
+ } else {
     upsample->pub.upsample = merged_1v_upsample;
     upsample->upmethod = h2v1_merged_upsample;
     /* No spare row needed */
     upsample->spare_row = NULL;
-  }
+ }
 
   build_ycc_rgb_table(cinfo);
 }

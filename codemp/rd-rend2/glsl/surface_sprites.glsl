@@ -73,13 +73,13 @@ void main()
 	float halfWidth = width * 0.5;
 	vec3 offsets[] = vec3[](
 #if defined(FACE_UP)
-		vec3( halfWidth, -halfWidth, 0.0),
-		vec3( halfWidth,  halfWidth, 0.0),
+		vec3(halfWidth, -halfWidth, 0.0),
+		vec3(halfWidth,  halfWidth, 0.0),
 		vec3(-halfWidth,  halfWidth, 0.0),
 		vec3(-halfWidth, -halfWidth, 0.0)
 #else
-		vec3( halfWidth, 0.0, 0.0),
-		vec3( halfWidth, 0.0, height),
+		vec3(halfWidth, 0.0, 0.0),
+		vec3(halfWidth, 0.0, height),
 		vec3(-halfWidth, 0.0, height),
 		vec3(-halfWidth, 0.0, 0.0)
 #endif

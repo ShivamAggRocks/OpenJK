@@ -435,7 +435,7 @@ struct jpeg_compress_struct {
 
   int block_size;		/* the basic DCT block size: 1..16 */
   const int * natural_order;	/* natural-order position array */
-  int lim_Se;			/* min( Se, DCTSIZE2-1 ) */
+  int lim_Se;			/* min(Se, DCTSIZE2-1) */
 
   /*
    * Links to compression subobjects (methods and private variables of modules)
@@ -664,7 +664,7 @@ struct jpeg_decompress_struct {
    */
   int block_size;		/* the basic DCT block size: 1..16 */
   const int * natural_order; /* natural-order position array for entropy decode */
-  int lim_Se;			/* min( Se, DCTSIZE2-1 ) for entropy decode */
+  int lim_Se;			/* min(Se, DCTSIZE2-1) for entropy decode */
 
   /* This field is shared between entropy decoder and marker parser.
    * It is either zero or the code of a JPEG marker that has been
@@ -720,7 +720,7 @@ struct jpeg_error_mgr {
   union {
     int i[8];
     char s[JMSG_STR_PARM_MAX];
-  } msg_parm;
+ } msg_parm;
   
   /* Standard state variables for error facility */
   
@@ -1133,28 +1133,28 @@ EXTERN(boolean) jpeg_resync_to_restart JPP((j_decompress_ptr cinfo,
 
 #ifdef INCOMPLETE_TYPES_BROKEN
 #ifndef JPEG_INTERNALS		/* will be defined in jpegint.h */
-struct jvirt_sarray_control { long dummy; };
-struct jvirt_barray_control { long dummy; };
-struct jpeg_comp_master { long dummy; };
-struct jpeg_c_main_controller { long dummy; };
-struct jpeg_c_prep_controller { long dummy; };
-struct jpeg_c_coef_controller { long dummy; };
-struct jpeg_marker_writer { long dummy; };
-struct jpeg_color_converter { long dummy; };
-struct jpeg_downsampler { long dummy; };
-struct jpeg_forward_dct { long dummy; };
-struct jpeg_entropy_encoder { long dummy; };
-struct jpeg_decomp_master { long dummy; };
-struct jpeg_d_main_controller { long dummy; };
-struct jpeg_d_coef_controller { long dummy; };
-struct jpeg_d_post_controller { long dummy; };
-struct jpeg_input_controller { long dummy; };
-struct jpeg_marker_reader { long dummy; };
-struct jpeg_entropy_decoder { long dummy; };
-struct jpeg_inverse_dct { long dummy; };
-struct jpeg_upsampler { long dummy; };
-struct jpeg_color_deconverter { long dummy; };
-struct jpeg_color_quantizer { long dummy; };
+struct jvirt_sarray_control {long dummy;};
+struct jvirt_barray_control {long dummy;};
+struct jpeg_comp_master {long dummy;};
+struct jpeg_c_main_controller {long dummy;};
+struct jpeg_c_prep_controller {long dummy;};
+struct jpeg_c_coef_controller {long dummy;};
+struct jpeg_marker_writer {long dummy;};
+struct jpeg_color_converter {long dummy;};
+struct jpeg_downsampler {long dummy;};
+struct jpeg_forward_dct {long dummy;};
+struct jpeg_entropy_encoder {long dummy;};
+struct jpeg_decomp_master {long dummy;};
+struct jpeg_d_main_controller {long dummy;};
+struct jpeg_d_coef_controller {long dummy;};
+struct jpeg_d_post_controller {long dummy;};
+struct jpeg_input_controller {long dummy;};
+struct jpeg_marker_reader {long dummy;};
+struct jpeg_entropy_decoder {long dummy;};
+struct jpeg_inverse_dct {long dummy;};
+struct jpeg_upsampler {long dummy;};
+struct jpeg_color_deconverter {long dummy;};
+struct jpeg_color_quantizer {long dummy;};
 #endif /* JPEG_INTERNALS */
 #endif /* INCOMPLETE_TYPES_BROKEN */
 

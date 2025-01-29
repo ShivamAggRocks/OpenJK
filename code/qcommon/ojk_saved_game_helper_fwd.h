@@ -166,16 +166,16 @@ private:
 
 
 	// Tags for dispatching.
-	class BooleanTag { public: };
-	class NumericTag { public: };
-	class PointerTag { public: };
-	class ClassTag { public: };
-	class Array1dTag { public: };
-	class Array2dTag { public: };
-	class InplaceTag { public: };
-	class CastTag { public: };
-	class InternalTag { public: };
-	class ExternalTag { public: };
+	class BooleanTag {public:};
+	class NumericTag {public:};
+	class PointerTag {public:};
+	class ClassTag {public:};
+	class Array1dTag {public:};
+	class Array2dTag {public:};
+	class InplaceTag {public:};
+	class CastTag {public:};
+	class InternalTag {public:};
+	class ExternalTag {public:};
 
 
 	template<typename TSrc, typename TDst>
@@ -290,7 +290,7 @@ template<typename T>
 class SavedGameClassArchiver
 {
 public:
-	enum { is_implemented = false };
+	enum {is_implemented = false};
 
 	static void sg_export(
 		SavedGameHelper& saved_game,

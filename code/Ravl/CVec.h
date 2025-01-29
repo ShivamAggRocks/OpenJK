@@ -82,8 +82,8 @@ template <class T> T	Max(const T& a, const T& b)	{return (b<a)?(a):(b);}
 #define		RAVL_VEC_PI						(3.1415926535f)						// Pi
 #define		RAVL_VEC_DEGTORADCONST			(0.0174532925f)						// (RAVL_VEC_PI / 180.0f)
 #define		RAVL_VEC_RADTODEGCONST			(57.295779514f)						// (180.0f / RAVL_VEC_PI)
-#define		RAVL_VEC_DEGTORAD( a )			( (a) * RAVL_VEC_DEGTORADCONST )	// Quick Macro For Degrees -> Radians
-#define		RAVL_VEC_RADTODEG( a )			( (a) * RAVL_VEC_RADTODEGCONST )	// Quick Macro For Radians -> Degrees
+#define		RAVL_VEC_DEGTORAD(a)			((a) * RAVL_VEC_DEGTORADCONST)	// Quick Macro For Degrees -> Radians
+#define		RAVL_VEC_RADTODEG(a)			((a) * RAVL_VEC_RADTODEGCONST)	// Quick Macro For Radians -> Degrees
 
 
 
@@ -144,7 +144,7 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////
 	// Equality / Inequality Operators
     ////////////////////////////////////////////////////////////////////////////////////
-	bool operator!  () const												{return	!(v[0]         && v[1]         && v[2]         && v[3]        );}
+	bool operator!  () const												{return	!(v[0]         && v[1]         && v[2]         && v[3]       );}
 	bool operator== (const CVec4& t) const									{return	 (v[0]==t.v[0] && v[1]==t.v[1] && v[2]==t.v[2] && v[3]==t.v[3]);}
 	bool operator!= (const CVec4& t) const									{return !(v[0]==t.v[0] && v[1]==t.v[1] && v[2]==t.v[2] && v[3]==t.v[3]);}
 	bool operator<  (const CVec4& t) const									{return	 (v[0]< t.v[0] && v[1]< t.v[1] && v[2]< t.v[2] && v[3]< t.v[3]);}
@@ -183,7 +183,7 @@ public:
 	float	Len2() const													{return (v[0]*v[0]+v[1]*v[1]+v[2]*v[2]+v[3]*v[3]);}
 
 	float	Dist(const CVec4& t) const;
-	float	Dist2(const CVec4& t) const										{return ((t.v[0]-v[0])*(t.v[0]-v[0]) + (t.v[1]-v[1])*(t.v[1]-v[1]) + (t.v[2]-v[2])*(t.v[2]-v[2]) + (t.v[3]-v[3])*(t.v[3]-v[3]) );}
+	float	Dist2(const CVec4& t) const										{return ((t.v[0]-v[0])*(t.v[0]-v[0]) + (t.v[1]-v[1])*(t.v[1]-v[1]) + (t.v[2]-v[2])*(t.v[2]-v[2]) + (t.v[3]-v[3])*(t.v[3]-v[3]));}
 
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -396,7 +396,7 @@ public:
 	// for the left right test (see below)
 	//
 	//
-	//               ___---( ... )
+	//               ___---(...)
 	//        (A)---/        /
 	//        /             /
 	//       /             /
@@ -409,7 +409,7 @@ public:
 	{
 		return ((A.v[0]*B.v[1] - A.v[1]*B.v[0]) +
 			    (B.v[0]*  v[1] -   v[0]*B.v[1]) +
-				(  v[0]*A.v[1] - A.v[0]*  v[1]));
+				( v[0]*A.v[1] - A.v[0]*  v[1]));
 	}
 
 
@@ -618,7 +618,7 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////
 	// Equality / Inequality Operators
     ////////////////////////////////////////////////////////////////////////////////////
-	bool operator!  () const												{return	!(v[0]         && v[1]         && v[2]        );}
+	bool operator!  () const												{return	!(v[0]         && v[1]         && v[2]       );}
 	bool operator== (const CVec3& t) const									{return	 (v[0]==t.v[0] && v[1]==t.v[1] && v[2]==t.v[2]);}
 	bool operator!= (const CVec3& t) const									{return !(v[0]==t.v[0] && v[1]==t.v[1] && v[2]==t.v[2]);}
 	bool operator<  (const CVec3& t) const									{return	 (v[0]< t.v[0] && v[1]< t.v[1] && v[2]< t.v[2]);}
@@ -867,7 +867,7 @@ public:
 	// for the left right test (see below)
 	//
 	//
-	//               ___---( ... )
+	//               ___---(...)
 	//        (A)---/        /
 	//        /             /
 	//       /             /
@@ -880,7 +880,7 @@ public:
 	{
 		return ((A.v[0]*B.v[1] - A.v[1]*B.v[0]) +
 			    (B.v[0]*  v[1] -   v[0]*B.v[1]) +
-				(  v[0]*A.v[1] - A.v[0]*  v[1]));
+				( v[0]*A.v[1] - A.v[0]*  v[1]));
 	}
 
 

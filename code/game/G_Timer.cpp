@@ -64,7 +64,7 @@ timer from the list and put it on the free list
 Doesn't do much error checking, only called below
 -------------------------
 */
-static void TIMER_RemoveHelper( int num, gtimer_t *timer )
+static void TIMER_RemoveHelper(int num, gtimer_t *timer)
 {
 	gtimer_t *p = g_timers[num];
 
@@ -99,7 +99,7 @@ TIMER_Clear
 -------------------------
 */
 
-void TIMER_Clear( void )
+void TIMER_Clear(void)
 {
 	int i;
 	for (i = 0; i < MAX_GENTITIES; i++)
@@ -121,10 +121,10 @@ TIMER_Clear
 -------------------------
 */
 
-void TIMER_Clear( int idx )
+void TIMER_Clear(int idx)
 {
 	// rudimentary safety checks, might be other things to check?
-	if ( idx >= 0 && idx < MAX_GENTITIES )
+	if (idx >= 0 && idx < MAX_GENTITIES)
 	{
 		gtimer_t *p = g_timers[idx];
 
@@ -155,7 +155,7 @@ TIMER_Save
 -------------------------
 */
 
-void TIMER_Save( void )
+void TIMER_Save(void)
 {
 	int			j;
 	gentity_t	*ent;
@@ -163,15 +163,15 @@ void TIMER_Save( void )
 	ojk::SavedGameHelper saved_game(
 		::gi.saved_game);
 
-	for ( j = 0, ent = &g_entities[0]; j < MAX_GENTITIES; j++, ent++ )
+	for (j = 0, ent = &g_entities[0]; j < MAX_GENTITIES; j++, ent++)
 	{
 		unsigned char numTimers = TIMER_GetCount(j);
 
-		if ( !ent->inuse && numTimers)
+		if (!ent->inuse && numTimers)
 		{
-//			Com_Printf( "WARNING: ent with timers not inuse\n" );
+//			Com_Printf("WARNING: ent with timers not inuse\n");
 			assert(numTimers);
-			TIMER_Clear( j );
+			TIMER_Clear(j);
 			numTimers = 0;
 		}
 
@@ -189,7 +189,7 @@ void TIMER_Save( void )
 			const int	length = strlen(timerID) + 1;
 			const int	time = p->time - level.time;	//convert this back to delta so we can use SET after loading
 
-			assert( length < 1024 );//This will cause problems when loading the timer if longer
+			assert(length < 1024);//This will cause problems when loading the timer if longer
 
 			//Write out the id string
 			saved_game.write_chunk(
@@ -213,7 +213,7 @@ TIMER_Load
 -------------------------
 */
 
-void TIMER_Load( void )
+void TIMER_Load(void)
 {
 	int j;
 	gentity_t	*ent;
@@ -221,7 +221,7 @@ void TIMER_Load( void )
 	ojk::SavedGameHelper saved_game(
 		::gi.saved_game);
 
-	for ( j = 0, ent = &g_entities[0]; j < MAX_GENTITIES; j++, ent++ )
+	for (j = 0, ent = &g_entities[0]; j < MAX_GENTITIES; j++, ent++)
 	{
 		unsigned char numTimers = 0;
 
@@ -230,12 +230,12 @@ void TIMER_Load( void )
 			numTimers);
 
 		//Read back all entries
-		for ( int i = 0; i < numTimers; i++ )
+		for (int i = 0; i < numTimers; i++)
 		{
 			int		time = 0;
 			char	tempBuffer[1024];	// Still ugly. Setting ourselves up for 007 AUF all over again. =)
 
-			assert (sizeof(g_timers[0]->time) == sizeof(time) );//make sure we're reading the same size as we wrote
+			assert (sizeof(g_timers[0]->time) == sizeof(time));//make sure we're reading the same size as we wrote
 
 			//Read the id string and time
 			saved_game.read_chunk(
@@ -281,7 +281,7 @@ static gtimer_t *TIMER_GetNew(int num, const char *identifier)
 	while (p)
 	{
 		if (p->id == identifier)
-		{ // Found it
+		{// Found it
 			return p;
 		}
 
@@ -310,7 +310,7 @@ gtimer_t *TIMER_GetExisting(int num, const char *identifier)
 	while (p)
 	{
 		if (p->id == identifier)
-		{ // Found it
+		{// Found it
 			return p;
 		}
 
@@ -328,7 +328,7 @@ TIMER_Set
 -------------------------
 */
 
-void TIMER_Set( gentity_t *ent, const char *identifier, int duration )
+void TIMER_Set(gentity_t *ent, const char *identifier, int duration)
 {
 	assert(ent->inuse);
 	gtimer_t *timer = TIMER_GetNew(ent->s.number, identifier);
@@ -346,7 +346,7 @@ TIMER_Get
 -------------------------
 */
 
-int	TIMER_Get( gentity_t *ent, const char *identifier )
+int	TIMER_Get(gentity_t *ent, const char *identifier)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 
@@ -364,7 +364,7 @@ TIMER_Done
 -------------------------
 */
 
-qboolean TIMER_Done( gentity_t *ent, const char *identifier )
+qboolean TIMER_Done(gentity_t *ent, const char *identifier)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 
@@ -386,7 +386,7 @@ timer was never started
 -------------------------
 */
 
-qboolean TIMER_Done2( gentity_t *ent, const char *identifier, qboolean remove )
+qboolean TIMER_Done2(gentity_t *ent, const char *identifier, qboolean remove)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 	qboolean res;
@@ -412,7 +412,7 @@ qboolean TIMER_Done2( gentity_t *ent, const char *identifier, qboolean remove )
 TIMER_Exists
 -------------------------
 */
-qboolean TIMER_Exists( gentity_t *ent, const char *identifier )
+qboolean TIMER_Exists(gentity_t *ent, const char *identifier)
 {
 	return (qboolean)(TIMER_GetExisting(ent->s.number, identifier) != NULL);
 }
@@ -425,7 +425,7 @@ TIMER_Remove
 Utility to get rid of any timer
 -------------------------
 */
-void TIMER_Remove( gentity_t *ent, const char *identifier )
+void TIMER_Remove(gentity_t *ent, const char *identifier)
 {
 	gtimer_t *timer = TIMER_GetExisting(ent->s.number, identifier);
 
@@ -444,11 +444,11 @@ TIMER_Start
 -------------------------
 */
 
-qboolean TIMER_Start( gentity_t *self, const char *identifier, int duration )
+qboolean TIMER_Start(gentity_t *self, const char *identifier, int duration)
 {
-	if ( TIMER_Done( self, identifier ) )
+	if (TIMER_Done(self, identifier))
 	{
-		TIMER_Set( self, identifier, duration );
+		TIMER_Set(self, identifier, duration);
 		return qtrue;
 	}
 	return qfalse;

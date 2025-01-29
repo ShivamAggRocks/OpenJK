@@ -17,16 +17,16 @@ vec4_t		colorLtBlue	= {0.367f, 0.261f, 0.722f, 1};
 vec4_t		colorDkBlue	= {0.199f, 0.0f,   0.398f, 1};
 
 vec4_t g_color_table[Q_COLOR_BITS+1] = {
-	{ 0.0, 0.0, 0.0, 1.0 },	// black
-	{ 1.0, 0.0, 0.0, 1.0 },	// red
-	{ 0.0, 1.0, 0.0, 1.0 },	// green
-	{ 1.0, 1.0, 0.0, 1.0 },	// yellow
-	{ 0.0, 0.0, 1.0, 1.0 },	// blue
-	{ 0.0, 1.0, 1.0, 1.0 },	// cyan
-	{ 1.0, 0.0, 1.0, 1.0 },	// magenta
-	{ 1.0, 1.0, 1.0, 1.0 },	// white
-	{ 1.0, 0.5, 0.0, 1.0 }, // orange
-	{ 0.5, 0.5, 0.5, 1.0 },	// md.grey
+	{0.0, 0.0, 0.0, 1.0},	// black
+	{1.0, 0.0, 0.0, 1.0},	// red
+	{0.0, 1.0, 0.0, 1.0},	// green
+	{1.0, 1.0, 0.0, 1.0},	// yellow
+	{0.0, 0.0, 1.0, 1.0},	// blue
+	{0.0, 1.0, 1.0, 1.0},	// cyan
+	{1.0, 0.0, 1.0, 1.0},	// magenta
+	{1.0, 1.0, 1.0, 1.0},	// white
+	{1.0, 0.5, 0.0, 1.0}, // orange
+	{0.5, 0.5, 0.5, 1.0},	// md.grey
 };
 
 vec4_t colorTable[CT_MAX] =
@@ -101,25 +101,25 @@ vec4_t colorTable[CT_MAX] =
 	{0.435f, 0.193f, 0.187f, 1},	// CT_DKPINK
 	{	  0,    .5f,    .5f, 1},	// CT_LTCYAN
 	{	  0,   .25f,   .25f, 1},	// CT_DKCYAN
-	{   .179f, .51f,   .92f, 1},	// CT_LTBLUE3
-	{   .199f, .71f,   .92f, 1},	// CT_LTBLUE3
-	{   .5f,   .05f,    .4f, 1},	// CT_DKBLUE3
+	{  .179f, .51f,   .92f, 1},	// CT_LTBLUE3
+	{  .199f, .71f,   .92f, 1},	// CT_LTBLUE3
+	{  .5f,   .05f,    .4f, 1},	// CT_DKBLUE3
 
-	{   0.0f,   .613f,  .097f, 1},	// CT_HUD_GREEN
-	{   0.835f, .015f,  .015f, 1},	// CT_HUD_RED
+	{  0.0f,   .613f,  .097f, 1},	// CT_HUD_GREEN
+	{  0.835f, .015f,  .015f, 1},	// CT_HUD_RED
 	{	.567f,	.685f,	1.0f,	.75f},	// CT_ICON_BLUE
 	{	.515f,	.406f,	.507f,	1},	// CT_NO_AMMO_RED
 
-	{   1.0f,   .658f,  .062f, 1},	// CT_HUD_ORANGE
+	{  1.0f,   .658f,  .062f, 1},	// CT_HUD_ORANGE
 	{	0.549f, .854f,  1.0f,  1.0f},	//	CT_TITLE
 };
 
 unsigned ColorBytes3 (float r, float g, float b) {
 	unsigned i;
 
-	( (byte *)&i )[0] = (byte)(r * 255);
-	( (byte *)&i )[1] = (byte)(g * 255);
-	( (byte *)&i )[2] = (byte)(b * 255);
+	((byte *)&i)[0] = (byte)(r * 255);
+	((byte *)&i)[1] = (byte)(g * 255);
+	((byte *)&i)[2] = (byte)(b * 255);
 
 	return i;
 }
@@ -127,27 +127,27 @@ unsigned ColorBytes3 (float r, float g, float b) {
 unsigned ColorBytes4 (float r, float g, float b, float a) {
 	unsigned i;
 
-	( (byte *)&i )[0] = (byte)(r * 255);
-	( (byte *)&i )[1] = (byte)(g * 255);
-	( (byte *)&i )[2] = (byte)(b * 255);
-	( (byte *)&i )[3] = (byte)(a * 255);
+	((byte *)&i)[0] = (byte)(r * 255);
+	((byte *)&i)[1] = (byte)(g * 255);
+	((byte *)&i)[2] = (byte)(b * 255);
+	((byte *)&i)[3] = (byte)(a * 255);
 
 	return i;
 }
 
-float NormalizeColor( const vec3_t in, vec3_t out ) {
+float NormalizeColor(const vec3_t in, vec3_t out) {
 	float	max;
 
 	max = in[0];
-	if ( in[1] > max ) {
+	if (in[1] > max) {
 		max = in[1];
 	}
-	if ( in[2] > max ) {
+	if (in[2] > max) {
 		max = in[2];
 	}
 
-	if ( !max ) {
-		VectorClear( out );
+	if (!max) {
+		VectorClear(out);
 	} else {
 		out[0] = in[0] / max;
 		out[1] = in[1] / max;

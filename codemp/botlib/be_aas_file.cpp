@@ -318,7 +318,7 @@ char *AAS_LoadAASLump(fileHandle_t fp, int offset, int length, int *lastoffset, 
 	//read the data
 	if (length)
 	{
-		botimport.FS_Read(buf, length, fp );
+		botimport.FS_Read(buf, length, fp);
 		*lastoffset += length;
 	} //end if
 	return buf;
@@ -355,14 +355,14 @@ int AAS_LoadAASFile(char *filename)
 	//dump current loaded aas file
 	AAS_DumpAASData();
 	//open the file
-	botimport.FS_FOpenFile( filename, &fp, FS_READ );
+	botimport.FS_FOpenFile(filename, &fp, FS_READ);
 	if (!fp)
 	{
 		AAS_Error("can't open %s\n", filename);
 		return BLERR_CANNOTOPENAASFILE;
 	} //end if
 	//read the header
-	botimport.FS_Read(&header, sizeof(aas_header_t), fp );
+	botimport.FS_Read(&header, sizeof(aas_header_t), fp);
 	lastoffset = sizeof(aas_header_t);
 	//check header identification
 	header.ident = LittleLong(header.ident);
@@ -387,7 +387,7 @@ int AAS_LoadAASFile(char *filename)
 		AAS_DData((unsigned char *) &header + 8, sizeof(aas_header_t) - 8);
 	} //end if
 	//
-	aasworld.bspchecksum = atoi(LibVarGetString( "sv_mapChecksum"));
+	aasworld.bspchecksum = atoi(LibVarGetString("sv_mapChecksum"));
 	if (LittleLong(header.bspchecksum) != aasworld.bspchecksum)
 	{
 		AAS_Error("aas file %s is out of date\n", filename);
@@ -511,7 +511,7 @@ int AAS_WriteAASLump(fileHandle_t fp, aas_header_t *h, int lumpnum, void *data, 
 
 	if (length > 0)
 	{
-		botimport.FS_Write(data, length, fp );
+		botimport.FS_Write(data, length, fp);
 	} //end if
 
 	AAS_WriteAASLump_offset += length;
@@ -539,7 +539,7 @@ qboolean AAS_WriteAASFile(char *filename)
 	header.version = LittleLong(AASVERSION);
 	header.bspchecksum = LittleLong(aasworld.bspchecksum);
 	//open a new file
-	botimport.FS_FOpenFile( filename, &fp, FS_WRITE );
+	botimport.FS_FOpenFile(filename, &fp, FS_WRITE);
 	if (!fp)
 	{
 		botimport.Print(PRT_ERROR, "error opening %s\n", filename);

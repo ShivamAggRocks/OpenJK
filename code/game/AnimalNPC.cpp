@@ -92,7 +92,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #ifdef QAGAME //we only want a few of these functions for BG
 
-extern float DotToSpot( vec3_t spot, vec3_t from, vec3_t fromAngles );
+extern float DotToSpot(vec3_t spot, vec3_t from, vec3_t fromAngles);
 extern vmCvar_t	cg_thirdPersonAlpha;
 extern vec3_t playerMins;
 extern vec3_t playerMaxs;
@@ -102,28 +102,28 @@ extern cvar_t	*g_speederControlScheme;
 #include "../namespace_begin.h"
 #endif
 extern void PM_SetAnim(pmove_t	*pm,int setAnimParts,int anim,int setAnimFlags, int blendTime);
-extern int PM_AnimLength( int index, animNumber_t anim );
+extern int PM_AnimLength(int index, animNumber_t anim);
 #ifdef _JK2MP
 #include "../namespace_end.h"
 #endif
 
 #ifndef	_JK2MP
-extern void CG_ChangeWeapon( int num );
+extern void CG_ChangeWeapon(int num);
 #endif
 
 extern void Vehicle_SetAnim(gentity_t *ent,int setAnimParts,int anim,int setAnimFlags, int iBlend);
-extern void G_Knockdown( gentity_t *self, gentity_t *attacker, const vec3_t pushDir, float strength, qboolean breakSaberLock );
-extern void G_VehicleTrace( trace_t *results, const vec3_t start, const vec3_t tMins, const vec3_t tMaxs, const vec3_t end, int passEntityNum, int contentmask );
+extern void G_Knockdown(gentity_t *self, gentity_t *attacker, const vec3_t pushDir, float strength, qboolean breakSaberLock);
+extern void G_VehicleTrace(trace_t *results, const vec3_t start, const vec3_t tMins, const vec3_t tMaxs, const vec3_t end, int passEntityNum, int contentmask);
 
 // Update death sequence.
-static void DeathUpdate( Vehicle_t *pVeh )
+static void DeathUpdate(Vehicle_t *pVeh)
 {
-	if ( level.time >= pVeh->m_iDieTime )
+	if (level.time >= pVeh->m_iDieTime)
 	{
 		// If the vehicle is not empty.
-		if ( pVeh->m_pVehicleInfo->Inhabited( pVeh ) )
+		if (pVeh->m_pVehicleInfo->Inhabited(pVeh))
 		{
-			pVeh->m_pVehicleInfo->EjectAll( pVeh );
+			pVeh->m_pVehicleInfo->EjectAll(pVeh);
 		}
 		else
 		{
@@ -136,31 +136,31 @@ static void DeathUpdate( Vehicle_t *pVeh )
 			vec3_t	mins, maxs, bottom;
 			trace_t	trace;
 
-			if ( pVeh->m_pVehicleInfo->explodeFX )
+			if (pVeh->m_pVehicleInfo->explodeFX)
 			{
-				G_PlayEffect( pVeh->m_pVehicleInfo->explodeFX, parent->currentOrigin );
+				G_PlayEffect(pVeh->m_pVehicleInfo->explodeFX, parent->currentOrigin);
 				//trace down and place mark
-				VectorCopy( parent->currentOrigin, bottom );
+				VectorCopy(parent->currentOrigin, bottom);
 				bottom[2] -= 80;
-				gi.trace( &trace, parent->currentOrigin, vec3_origin, vec3_origin, bottom, parent->s.number, CONTENTS_SOLID );
-				if ( trace.fraction < 1.0f )
+				gi.trace(&trace, parent->currentOrigin, vec3_origin, vec3_origin, bottom, parent->s.number, CONTENTS_SOLID);
+				if (trace.fraction < 1.0f)
 				{
-					VectorCopy( trace.endpos, bottom );
+					VectorCopy(trace.endpos, bottom);
 					bottom[2] += 2;
-					G_PlayEffect( "ships/ship_explosion_mark", trace.endpos );
+					G_PlayEffect("ships/ship_explosion_mark", trace.endpos);
 				}
 			}
 
 			parent->takedamage = qfalse;//so we don't recursively damage ourselves
-			if ( pVeh->m_pVehicleInfo->explosionRadius > 0 && pVeh->m_pVehicleInfo->explosionDamage > 0 )
+			if (pVeh->m_pVehicleInfo->explosionRadius > 0 && pVeh->m_pVehicleInfo->explosionDamage > 0)
 			{
-				VectorCopy( parent->mins, mins );
+				VectorCopy(parent->mins, mins);
 				mins[2] = -4;//to keep it off the ground a *little*
-				VectorCopy( parent->maxs, maxs );
-				VectorCopy( parent->currentOrigin, bottom );
+				VectorCopy(parent->maxs, maxs);
+				VectorCopy(parent->currentOrigin, bottom);
 				bottom[2] += parent->mins[2] - 32;
-				gi.trace( &trace, parent->currentOrigin, mins, maxs, bottom, parent->s.number, CONTENTS_SOLID );
-				G_RadiusDamage( trace.endpos, NULL, pVeh->m_pVehicleInfo->explosionDamage, pVeh->m_pVehicleInfo->explosionRadius, NULL, MOD_EXPLOSIVE );//FIXME: extern damage and radius or base on fuel
+				gi.trace(&trace, parent->currentOrigin, mins, maxs, bottom, parent->s.number, CONTENTS_SOLID);
+				G_RadiusDamage(trace.endpos, NULL, pVeh->m_pVehicleInfo->explosionDamage, pVeh->m_pVehicleInfo->explosionRadius, NULL, MOD_EXPLOSIVE);//FIXME: extern damage and radius or base on fuel
 			}
 
 			parent->e_ThinkFunc = thinkF_G_FreeEntity;
@@ -170,9 +170,9 @@ static void DeathUpdate( Vehicle_t *pVeh )
 }
 
 // Like a think or move command, this updates various vehicle properties.
-static bool Update( Vehicle_t *pVeh, const usercmd_t *pUcmd )
+static bool Update(Vehicle_t *pVeh, const usercmd_t *pUcmd)
 {
-	return g_vehicleInfo[VEHICLE_BASE].Update( pVeh, pUcmd );
+	return g_vehicleInfo[VEHICLE_BASE].Update(pVeh, pUcmd);
 }
 #endif //QAGAME
 
@@ -187,7 +187,7 @@ static bool Update( Vehicle_t *pVeh, const usercmd_t *pUcmd )
 //as a gentity, but the MP-compatible access restrictions are based
 //on the bgEntity structure in the MP codebase) -rww
 // ProcessMoveCommands the Vehicle.
-static void ProcessMoveCommands( Vehicle_t *pVeh )
+static void ProcessMoveCommands(Vehicle_t *pVeh)
 {
 	/************************************************************************************/
 	/*	BEGIN	Here is where we move the vehicle (forward or back or whatever). BEGIN	*/
@@ -216,7 +216,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 
 #ifndef _JK2MP //bad for prediction - fixme
 	// Bucking so we can't do anything.
-	if ( pVeh->m_ulFlags & VEH_BUCKING || pVeh->m_ulFlags & VEH_FLYING || pVeh->m_ulFlags & VEH_CRASHING )
+	if (pVeh->m_ulFlags & VEH_BUCKING || pVeh->m_ulFlags & VEH_FLYING || pVeh->m_ulFlags & VEH_CRASHING)
 	{
 //#ifdef QAGAME //this was in Update above
 //		((gentity_t *)parent)->client->ps.speed = 0;
@@ -234,8 +234,8 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 
 
 
-	if ( pVeh->m_pPilot /*&& (pilotPS->weapon == WP_NONE || pilotPS->weapon == WP_MELEE )*/ &&
-		(pVeh->m_ucmd.buttons & BUTTON_ALT_ATTACK) && pVeh->m_pVehicleInfo->turboSpeed )
+	if (pVeh->m_pPilot /*&& (pilotPS->weapon == WP_NONE || pilotPS->weapon == WP_MELEE)*/ &&
+		(pVeh->m_ucmd.buttons & BUTTON_ALT_ATTACK) && pVeh->m_pVehicleInfo->turboSpeed)
 	{
 		if ((curTime - pVeh->m_iTurboTime)>pVeh->m_pVehicleInfo->turboRecharge)
 		{
@@ -250,7 +250,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 		}
 	}
 
-	if ( curTime < pVeh->m_iTurboTime )
+	if (curTime < pVeh->m_iTurboTime)
 	{
 		speedMax = pVeh->m_pVehicleInfo->turboSpeed;
 	}
@@ -260,13 +260,13 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 	}
 
 #ifdef _JK2MP
-	if ( !parentPS->m_iVehicleNum  )
+	if (!parentPS->m_iVehicleNum )
 #else
-	if ( !pVeh->m_pVehicleInfo->Inhabited( pVeh ) )
+	if (!pVeh->m_pVehicleInfo->Inhabited(pVeh))
 #endif
 	{//drifts to a stop
 		speedInc = speedIdle * pVeh->m_fTimeModifier;
-		VectorClear( parentPS->moveDir );
+		VectorClear(parentPS->moveDir);
 		//m_ucmd.forwardmove = 127;
 		parentPS->speed = 0;
 	}
@@ -275,37 +275,37 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 		speedInc = pVeh->m_pVehicleInfo->acceleration * pVeh->m_fTimeModifier;
 	}
 
-	if ( parentPS->speed || parentPS->groundEntityNum == ENTITYNUM_NONE  ||
-		 pVeh->m_ucmd.forwardmove || pVeh->m_ucmd.upmove > 0 )
+	if (parentPS->speed || parentPS->groundEntityNum == ENTITYNUM_NONE  ||
+		 pVeh->m_ucmd.forwardmove || pVeh->m_ucmd.upmove > 0)
 	{
-		if ( pVeh->m_ucmd.forwardmove > 0 && speedInc )
+		if (pVeh->m_ucmd.forwardmove > 0 && speedInc)
 		{
 			parentPS->speed += speedInc;
 		}
-		else if ( pVeh->m_ucmd.forwardmove < 0 )
+		else if (pVeh->m_ucmd.forwardmove < 0)
 		{
-			if ( parentPS->speed > speedIdle )
+			if (parentPS->speed > speedIdle)
 			{
 				parentPS->speed -= speedInc;
 			}
-			else if ( parentPS->speed > speedMin )
+			else if (parentPS->speed > speedMin)
 			{
 				parentPS->speed -= speedIdleDec;
 			}
 		}
 		// No input, so coast to stop.
-		else if ( parentPS->speed > 0.0f )
+		else if (parentPS->speed > 0.0f)
 		{
 			parentPS->speed -= speedIdleDec;
-			if ( parentPS->speed < 0.0f )
+			if (parentPS->speed < 0.0f)
 			{
 				parentPS->speed = 0.0f;
 			}
 		}
-		else if ( parentPS->speed < 0.0f )
+		else if (parentPS->speed < 0.0f)
 		{
 			parentPS->speed += speedIdleDec;
-			if ( parentPS->speed > 0.0f )
+			if (parentPS->speed > 0.0f)
 			{
 				parentPS->speed = 0.0f;
 			}
@@ -313,34 +313,34 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 	}
 	else
 	{
-		if ( pVeh->m_ucmd.forwardmove < 0 )
+		if (pVeh->m_ucmd.forwardmove < 0)
 		{
 			pVeh->m_ucmd.forwardmove = 0;
 		}
-		if ( pVeh->m_ucmd.upmove < 0 )
+		if (pVeh->m_ucmd.upmove < 0)
 		{
 			pVeh->m_ucmd.upmove = 0;
 		}
 
 		//pVeh->m_ucmd.rightmove = 0;
 
-		/*if ( !pVeh->m_pVehicleInfo->strafePerc
-			|| (!g_speederControlScheme->value && !parent->s.number) )
+		/*if (!pVeh->m_pVehicleInfo->strafePerc
+			|| (!g_speederControlScheme->value && !parent->s.number))
 		{//if in a strafe-capable vehicle, clear strafing unless using alternate control scheme
 			pVeh->m_ucmd.rightmove = 0;
 		}*/
 	}
 
 	fWalkSpeedMax = speedMax * 0.275f;
-	if ( curTime>pVeh->m_iTurboTime && (pVeh->m_ucmd.buttons & BUTTON_WALKING) && parentPS->speed > fWalkSpeedMax )
+	if (curTime>pVeh->m_iTurboTime && (pVeh->m_ucmd.buttons & BUTTON_WALKING) && parentPS->speed > fWalkSpeedMax)
 	{
 		parentPS->speed = fWalkSpeedMax;
 	}
-	else if ( parentPS->speed > speedMax )
+	else if (parentPS->speed > speedMax)
 	{
 		parentPS->speed = speedMax;
 	}
-	else if ( parentPS->speed < speedMin )
+	else if (parentPS->speed < speedMin)
 	{
 		parentPS->speed = speedMin;
 	}
@@ -357,7 +357,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 //as a gentity, but the MP-compatible access restrictions are based
 //on the bgEntity structure in the MP codebase) -rww
 // ProcessOrientCommands the Vehicle.
-static void ProcessOrientCommands( Vehicle_t *pVeh )
+static void ProcessOrientCommands(Vehicle_t *pVeh)
 {
 	/********************************************************************************/
 	/*	BEGIN	Here is where make sure the vehicle is properly oriented.	BEGIN	*/
@@ -377,16 +377,16 @@ static void ProcessOrientCommands( Vehicle_t *pVeh )
 
 	// Bucking so we can't do anything.
 #ifndef _JK2MP //bad for prediction - fixme
-	if ( pVeh->m_ulFlags & VEH_BUCKING || pVeh->m_ulFlags & VEH_FLYING || pVeh->m_ulFlags & VEH_CRASHING )
+	if (pVeh->m_ulFlags & VEH_BUCKING || pVeh->m_ulFlags & VEH_FLYING || pVeh->m_ulFlags & VEH_CRASHING)
 	{
 		return;
 	}
 #endif
 
 #ifdef _JK2MP
-	if ( !rider )
+	if (!rider)
 #else
-	if ( !rider || !rider->client )
+	if (!rider || !rider->client)
 #endif
 	{
 		rider = parent;
@@ -431,18 +431,18 @@ static void ProcessOrientCommands( Vehicle_t *pVeh )
 	}
 
 
-/*	speed = VectorLength( parentPS->velocity );
+/*	speed = VectorLength(parentPS->velocity);
 
 	// If the player is the rider...
-	if ( rider->s.number < MAX_CLIENTS )
+	if (rider->s.number < MAX_CLIENTS)
 	{//FIXME: use the vehicle's turning stat in this calc
 		pVeh->m_vOrientation[YAW] = riderPS->viewangles[YAW];
 	}
 	else
 	{
 		float turnSpeed = pVeh->m_pVehicleInfo->turningSpeed;
-		if ( !pVeh->m_pVehicleInfo->turnWhenStopped
-			&& !parentPS->speed )//FIXME: or !pVeh->m_ucmd.forwardmove?
+		if (!pVeh->m_pVehicleInfo->turnWhenStopped
+			&& !parentPS->speed)//FIXME: or !pVeh->m_ucmd.forwardmove?
 		{//can't turn when not moving
 			//FIXME: or ramp up to max turnSpeed?
 			turnSpeed = 0.0f;
@@ -450,14 +450,14 @@ static void ProcessOrientCommands( Vehicle_t *pVeh )
 #ifdef _JK2MP
 		if (rider->s.eType == ET_NPC)
 #else
-		if ( !rider || rider->NPC )
+		if (!rider || rider->NPC)
 #endif
 		{//help NPCs out some
 			turnSpeed *= 2.0f;
 #ifdef _JK2MP
 			if (parentPS->speed > 200.0f)
 #else
-			if ( parent->client->ps.speed > 200.0f )
+			if (parent->client->ps.speed > 200.0f)
 #endif
 			{
 				turnSpeed += turnSpeed * parentPS->speed/200.0f*0.05f;
@@ -466,16 +466,16 @@ static void ProcessOrientCommands( Vehicle_t *pVeh )
 		turnSpeed *= pVeh->m_fTimeModifier;
 
 		//default control scheme: strafing turns, mouselook aims
-		if ( pVeh->m_ucmd.rightmove < 0 )
+		if (pVeh->m_ucmd.rightmove < 0)
 		{
 			pVeh->m_vOrientation[YAW] += turnSpeed;
 		}
-		else if ( pVeh->m_ucmd.rightmove > 0 )
+		else if (pVeh->m_ucmd.rightmove > 0)
 		{
 			pVeh->m_vOrientation[YAW] -= turnSpeed;
 		}
 
-		if ( pVeh->m_pVehicleInfo->malfunctionArmorLevel && pVeh->m_iArmor <= pVeh->m_pVehicleInfo->malfunctionArmorLevel )
+		if (pVeh->m_pVehicleInfo->malfunctionArmorLevel && pVeh->m_iArmor <= pVeh->m_pVehicleInfo->malfunctionArmorLevel)
 		{//damaged badly
 		}
 	}*/
@@ -509,68 +509,68 @@ static void AnimalTailSwipe(Vehicle_t* pVeh, gentity_t *parent, gentity_t *pilot
 	VectorSet(lMins, parent->mins[0]-1, parent->mins[1]-1, 0);
 	VectorSet(lMaxs, parent->maxs[0]+1, parent->maxs[1]+1, 1);
 #ifdef _JK2MP
-	iRootBone = trap_G2API_AddBolt( parent->ghoul2, 0, "tail_01" );
-	iRootTail = trap_G2API_AddBolt( parent->ghoul2, 0, "tail_04" );
+	iRootBone = trap_G2API_AddBolt(parent->ghoul2, 0, "tail_01");
+	iRootTail = trap_G2API_AddBolt(parent->ghoul2, 0, "tail_04");
 
 	// Get the positions of the root of the tail and the tail end of it.
-	trap_G2API_GetBoltMatrix( parent->ghoul2, 0, iRootBone,
+	trap_G2API_GetBoltMatrix(parent->ghoul2, 0, iRootBone,
 				&boltMatrix, angles, parent->currentOrigin, level.time,
-				NULL, parent->modelScale );
-	BG_GiveMeVectorFromMatrix( &boltMatrix, ORIGIN, vRoot );
+				NULL, parent->modelScale);
+	BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, vRoot);
 
-	trap_G2API_GetBoltMatrix( parent->ghoul2, 0, iRootTail,
+	trap_G2API_GetBoltMatrix(parent->ghoul2, 0, iRootTail,
 				&boltMatrix, angles, parent->currentOrigin, level.time,
-				NULL, parent->modelScale );
-	BG_GiveMeVectorFromMatrix( &boltMatrix, ORIGIN, vTail );
+				NULL, parent->modelScale);
+	BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, vTail);
 #else
-	iRootBone = gi.G2API_GetBoneIndex( &parent->ghoul2[parent->playerModel], "tail_01", qtrue );
-	iRootTail = gi.G2API_GetBoneIndex( &parent->ghoul2[parent->playerModel], "tail_04", qtrue );
+	iRootBone = gi.G2API_GetBoneIndex(&parent->ghoul2[parent->playerModel], "tail_01", qtrue);
+	iRootTail = gi.G2API_GetBoneIndex(&parent->ghoul2[parent->playerModel], "tail_04", qtrue);
 
 	// Get the positions of the root of the tail and the tail end of it.
-	gi.G2API_GetBoltMatrix( parent->ghoul2, parent->playerModel, iRootBone,
+	gi.G2API_GetBoltMatrix(parent->ghoul2, parent->playerModel, iRootBone,
 				&boltMatrix, angles, parent->currentOrigin, (cg.time?cg.time:level.time),
-				NULL, parent->s.modelScale );
-	gi.G2API_GiveMeVectorFromMatrix( boltMatrix, ORIGIN, vRoot );
+				NULL, parent->s.modelScale);
+	gi.G2API_GiveMeVectorFromMatrix(boltMatrix, ORIGIN, vRoot);
 
-	gi.G2API_GetBoltMatrix( parent->ghoul2, parent->playerModel, iRootTail,
+	gi.G2API_GetBoltMatrix(parent->ghoul2, parent->playerModel, iRootTail,
 				&boltMatrix, angles, parent->currentOrigin, (cg.time?cg.time:level.time),
-				NULL, parent->s.modelScale );
-	gi.G2API_GiveMeVectorFromMatrix( boltMatrix, ORIGIN, vTail );
+				NULL, parent->s.modelScale);
+	gi.G2API_GiveMeVectorFromMatrix(boltMatrix, ORIGIN, vTail);
 #endif
 
 	// Trace from the root of the tail to the very end.
-	G_VehicleTrace( &trace, vRoot, lMins, lMaxs, vTail, parent->s.number, MASK_NPCSOLID );
-	if ( trace.fraction < 1.0f )
+	G_VehicleTrace(&trace, vRoot, lMins, lMaxs, vTail, parent->s.number, MASK_NPCSOLID);
+	if (trace.fraction < 1.0f)
 	{
-		if ( ENTITYNUM_NONE != trace.entityNum && g_entities[trace.entityNum].client &&
+		if (ENTITYNUM_NONE != trace.entityNum && g_entities[trace.entityNum].client &&
 #ifndef _JK2MP //no rancor in jk2mp (at least not currently)
 			g_entities[trace.entityNum].client->NPC_class != CLASS_RANCOR &&
 #else //and in mp want to check inuse
 			g_entities[trace.entityNum].inuse &&
 #endif
-			g_entities[trace.entityNum].client->NPC_class != CLASS_VEHICLE )
+			g_entities[trace.entityNum].client->NPC_class != CLASS_VEHICLE)
 		{
 			vec3_t pushDir;
 			vec3_t angs;
 			int iDamage = 10;
 			// Get the direction we're facing.
-			VectorCopy( parent->client->ps.viewangles, angs );
+			VectorCopy(parent->client->ps.viewangles, angs);
 			// Add some fudge.
-			angs[YAW] += Q_flrand( 5, 15 );
-			angs[PITCH] = Q_flrand( -20, -10 );
-			AngleVectors( angs, pushDir, NULL, NULL );
+			angs[YAW] += Q_flrand(5, 15);
+			angs[PITCH] = Q_flrand(-20, -10);
+			AngleVectors(angs, pushDir, NULL, NULL);
 			// Reverse direction.
 			pushDir[YAW] = -pushDir[YAW];
 
 			// Smack this ho down.
 #ifdef _JK2MP
-			G_Sound( &g_entities[trace.entityNum], CHAN_AUTO, G_SoundIndex( "sound/chars/rancor/swipehit.wav" ) );
+			G_Sound(&g_entities[trace.entityNum], CHAN_AUTO, G_SoundIndex("sound/chars/rancor/swipehit.wav"));
 #else
-			G_Sound( &g_entities[trace.entityNum], G_SoundIndex( "sound/chars/rancor/swipehit.wav" ) );
+			G_Sound(&g_entities[trace.entityNum], G_SoundIndex("sound/chars/rancor/swipehit.wav"));
 #endif
-			G_Throw( &g_entities[trace.entityNum], pushDir, 50 );
+			G_Throw(&g_entities[trace.entityNum], pushDir, 50);
 
-			if ( g_entities[trace.entityNum].health > 0 )
+			if (g_entities[trace.entityNum].health > 0)
 			{
 				// Knock down and dish out some hurt.
 				gentity_t *hit = &g_entities[trace.entityNum];
@@ -590,16 +590,16 @@ static void AnimalTailSwipe(Vehicle_t* pVeh, gentity_t *parent, gentity_t *pilot
 					hit->client->ps.velocity[2] = 100;
 				}
 #else
-				G_Knockdown( hit, parent, pushDir, 300, qtrue );
+				G_Knockdown(hit, parent, pushDir, 300, qtrue);
 #endif
-				G_Damage( hit, parent, parent, NULL, NULL, iDamage, DAMAGE_NO_KNOCKBACK | DAMAGE_IGNORE_TEAM, MOD_MELEE );
-				//G_PlayEffect( pVeh->m_pVehicleInfo->explodeFX, parent->currentOrigin );
+				G_Damage(hit, parent, parent, NULL, NULL, iDamage, DAMAGE_NO_KNOCKBACK | DAMAGE_IGNORE_TEAM, MOD_MELEE);
+				//G_PlayEffect(pVeh->m_pVehicleInfo->explodeFX, parent->currentOrigin);
 			}// Not Dead
 		}// Not Rancor & In USe
 	}// Trace Hit Anything?
 }
 */
-static void AnimateVehicle( Vehicle_t *pVeh )
+static void AnimateVehicle(Vehicle_t *pVeh)
 {
 	animNumber_t	Anim = BOTH_VT_IDLE;
 	int				iFlags = SETANIM_FLAG_NORMAL, iBlend = 300;
@@ -618,24 +618,24 @@ static void AnimateVehicle( Vehicle_t *pVeh )
 #endif
 
 	// We're dead (boarding is reused here so I don't have to make another variable :-).
-	if ( parent->health <= 0 )
+	if (parent->health <= 0)
 	{
-		if ( pVeh->m_iBoarding != -999 )	// Animate the death just once!
+		if (pVeh->m_iBoarding != -999)	// Animate the death just once!
 		{
 			pVeh->m_iBoarding = -999;
 			iFlags = SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD;
 
 			// FIXME! Why do you keep repeating over and over!!?!?!? Bastard!
-			//Vehicle_SetAnim( parent, SETANIM_LEGS, BOTH_VT_DEATH1, iFlags, iBlend );
+			//Vehicle_SetAnim(parent, SETANIM_LEGS, BOTH_VT_DEATH1, iFlags, iBlend);
 		}
 		return;
 	}
 
 	// If they're bucking, play the animation and leave...
-	if ( parent->client->ps.legsAnim == BOTH_VT_BUCK )
+	if (parent->client->ps.legsAnim == BOTH_VT_BUCK)
 	{
 		// Done with animation? Erase the flag.
-		if ( parent->client->ps.legsAnimTimer <= 0 )
+		if (parent->client->ps.legsAnimTimer <= 0)
 		{
 			pVeh->m_ulFlags &= ~VEH_BUCKING;
 		}
@@ -644,33 +644,33 @@ static void AnimateVehicle( Vehicle_t *pVeh )
 			return;
 		}
 	}
-	else if ( pVeh->m_ulFlags & VEH_BUCKING )
+	else if (pVeh->m_ulFlags & VEH_BUCKING)
 	{
 		iFlags = SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD;
 		Anim = BOTH_VT_BUCK;
 		iBlend = 500;
-		Vehicle_SetAnim( parent, SETANIM_LEGS, BOTH_VT_BUCK, iFlags, iBlend );
+		Vehicle_SetAnim(parent, SETANIM_LEGS, BOTH_VT_BUCK, iFlags, iBlend);
 		return;
 	}
 
 	// Boarding animation.
-	if ( pVeh->m_iBoarding != 0 )
+	if (pVeh->m_iBoarding != 0)
 	{
 		// We've just started boarding, set the amount of time it will take to finish boarding.
-		if ( pVeh->m_iBoarding < 0 )
+		if (pVeh->m_iBoarding < 0)
 		{
 			int iAnimLen;
 
 			// Boarding from left...
-			if ( pVeh->m_iBoarding == -1 )
+			if (pVeh->m_iBoarding == -1)
 			{
 				Anim = BOTH_VT_MOUNT_L;
 			}
-			else if ( pVeh->m_iBoarding == -2 )
+			else if (pVeh->m_iBoarding == -2)
 			{
 				Anim = BOTH_VT_MOUNT_R;
 			}
-			else if ( pVeh->m_iBoarding == -3 )
+			else if (pVeh->m_iBoarding == -3)
 			{
 				Anim = BOTH_VT_MOUNT_B;
 			}
@@ -678,9 +678,9 @@ static void AnimateVehicle( Vehicle_t *pVeh )
 			// Set the delay time (which happens to be the time it takes for the animation to complete).
 			// NOTE: Here I made it so the delay is actually 70% (0.7f) of the animation time.
 #ifdef _JK2MP
-			iAnimLen = BG_AnimLength( parent->localAnimIndex, Anim ) * 0.7f;
+			iAnimLen = BG_AnimLength(parent->localAnimIndex, Anim) * 0.7f;
 #else
-			iAnimLen = PM_AnimLength( parent->client->clientInfo.animFileIndex, Anim ) * 0.7f;
+			iAnimLen = PM_AnimLength(parent->client->clientInfo.animFileIndex, Anim) * 0.7f;
 #endif
 			pVeh->m_iBoarding = level.time + iAnimLen;
 
@@ -688,27 +688,27 @@ static void AnimateVehicle( Vehicle_t *pVeh )
 			// TODO: But what if he's killed? Should the animation remain persistant???
 			iFlags = SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD;
 
-			Vehicle_SetAnim( parent, SETANIM_LEGS, Anim, iFlags, iBlend );
+			Vehicle_SetAnim(parent, SETANIM_LEGS, Anim, iFlags, iBlend);
 			if (pilot)
 			{
-				Vehicle_SetAnim(pilot, SETANIM_BOTH, Anim, iFlags, iBlend );
+				Vehicle_SetAnim(pilot, SETANIM_BOTH, Anim, iFlags, iBlend);
 			}
 			return;
 		}
 		// Otherwise we're done.
-		else if ( pVeh->m_iBoarding <= level.time )
+		else if (pVeh->m_iBoarding <= level.time)
 		{
 			pVeh->m_iBoarding = 0;
 		}
 	}
 
 	// Percentage of maximum speed relative to current speed.
-	//float fSpeed = VectorLength( client->ps.velocity );
+	//float fSpeed = VectorLength(client->ps.velocity);
 	fSpeedPercToMax = parent->client->ps.speed / pVeh->m_pVehicleInfo->speedMax;
 
 
 	// Going in reverse...
-	if ( fSpeedPercToMax < -0.01f )
+	if (fSpeedPercToMax < -0.01f)
 	{
 		Anim = BOTH_VT_WALK_REV;
 		iBlend = 600;
@@ -734,16 +734,16 @@ static void AnimateVehicle( Vehicle_t *pVeh )
 		{// No Special Moves
 			iBlend	= 300;
  			iFlags	= SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLDLESS;
-			Anim	= (Walking)?(BOTH_VT_WALK_FWD  ):((Running)?(BOTH_VT_RUN_FWD  ):(BOTH_VT_IDLE1));
+			Anim	= (Walking)?(BOTH_VT_WALK_FWD ):((Running)?(BOTH_VT_RUN_FWD ):(BOTH_VT_IDLE1));
 		}
 	}
-	Vehicle_SetAnim( parent, SETANIM_LEGS, Anim, iFlags, iBlend );
+	Vehicle_SetAnim(parent, SETANIM_LEGS, Anim, iFlags, iBlend);
 }
 
 //rwwFIXMEFIXME: This is all going to have to be predicted I think, or it will feel awful
 //and lagged
 // This function makes sure that the rider's in this vehicle are properly animated.
-static void AnimateRiders( Vehicle_t *pVeh )
+static void AnimateRiders(Vehicle_t *pVeh)
 {
 	animNumber_t Anim = BOTH_VT_IDLE;
 	int iFlags = SETANIM_FLAG_NORMAL, iBlend = 500;
@@ -762,7 +762,7 @@ static void AnimateRiders( Vehicle_t *pVeh )
 #endif
 
 	// Boarding animation.
-	if ( pVeh->m_iBoarding != 0 )
+	if (pVeh->m_iBoarding != 0)
 	{
 		return;
 	}
@@ -774,7 +774,7 @@ static void AnimateRiders( Vehicle_t *pVeh )
 #ifdef _JK2MP //handled in pmove in mp
 	if (0)
 #else
-	if ( fSpeedPercToMax < -0.01f )
+	if (fSpeedPercToMax < -0.01f)
 #endif
 	{
 		Anim = BOTH_VT_WALK_REV;
@@ -856,7 +856,7 @@ static void AnimateRiders( Vehicle_t *pVeh )
 		}
 		else if (pilotPS->weapon==WP_SABER)
 		{
-			if ( (pVeh->m_ulFlags&VEH_SABERINLEFTHAND) && pilotPS->torsoAnim==BOTH_VT_ATL_TO_R_S)
+			if ((pVeh->m_ulFlags&VEH_SABERINLEFTHAND) && pilotPS->torsoAnim==BOTH_VT_ATL_TO_R_S)
 			{
 				pVeh->m_ulFlags	&= ~VEH_SABERINLEFTHAND;
 			}
@@ -985,16 +985,16 @@ static void AnimateRiders( Vehicle_t *pVeh )
 		}// No Special Moves
 	}
 
-	Vehicle_SetAnim( pilot, SETANIM_BOTH, Anim, iFlags, iBlend );
+	Vehicle_SetAnim(pilot, SETANIM_BOTH, Anim, iFlags, iBlend);
 }
 #endif //QAGAME
 
 #ifndef QAGAME
-void AttachRidersGeneric( Vehicle_t *pVeh );
+void AttachRidersGeneric(Vehicle_t *pVeh);
 #endif
 
 //on the client this function will only set up the process command funcs
-void G_SetAnimalVehicleFunctions( vehicleInfo_t *pVehInfo )
+void G_SetAnimalVehicleFunctions(vehicleInfo_t *pVehInfo)
 {
 #ifdef QAGAME
 	pVehInfo->AnimateVehicle			=		AnimateVehicle;
@@ -1041,7 +1041,7 @@ extern void G_AllocateVehicleObject(Vehicle_t **pVeh);
 
 // Create/Allocate a new Animal Vehicle (initializing it as well).
 //this is a BG function too in MP so don't un-bg-compatibilify it -rww
-void G_CreateAnimalNPC( Vehicle_t **pVeh, const char *strAnimalType )
+void G_CreateAnimalNPC(Vehicle_t **pVeh, const char *strAnimalType)
 {
 	// Allocate the Vehicle.
 #ifdef _JK2MP
@@ -1052,15 +1052,15 @@ void G_CreateAnimalNPC( Vehicle_t **pVeh, const char *strAnimalType )
     G_AllocateVehicleObject(pVeh);
 #else
 	if (!*pVeh)
-	{ //only allocate a new one if we really have to
-		(*pVeh) = (Vehicle_t *) BG_Alloc( sizeof(Vehicle_t) );
+	{//only allocate a new one if we really have to
+		(*pVeh) = (Vehicle_t *) BG_Alloc(sizeof(Vehicle_t));
 	}
 #endif
 	memset(*pVeh, 0, sizeof(Vehicle_t));
-	(*pVeh)->m_pVehicleInfo = &g_vehicleInfo[BG_VehicleGetIndex( strAnimalType )];
+	(*pVeh)->m_pVehicleInfo = &g_vehicleInfo[BG_VehicleGetIndex(strAnimalType)];
 #else
-	(*pVeh) = (Vehicle_t *) gi.Malloc( sizeof(Vehicle_t), TAG_G_ALLOC, qtrue );
-	(*pVeh)->m_pVehicleInfo = &g_vehicleInfo[BG_VehicleGetIndex( strAnimalType )];
+	(*pVeh) = (Vehicle_t *) gi.Malloc(sizeof(Vehicle_t), TAG_G_ALLOC, qtrue);
+	(*pVeh)->m_pVehicleInfo = &g_vehicleInfo[BG_VehicleGetIndex(strAnimalType)];
 #endif
 }
 

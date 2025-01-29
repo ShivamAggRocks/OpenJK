@@ -188,11 +188,11 @@ void BG_SiegeStripTabs(char *buf)
 	while (buf[i])
 	{
 		if (buf[i] != SIEGECHAR_TAB)
-		{ //not a tab, just stick it in
+		{//not a tab, just stick it in
 			buf[i_r] = buf[i];
 		}
 		else
-		{ //If it's a tab, convert it to a space.
+		{//If it's a tab, convert it to a space.
 			buf[i_r] = ' ';
 		}
 
@@ -214,23 +214,23 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 	while (buf[i])
 	{
 		if (buf[i] != ' ' && buf[i] != '{' && buf[i] != '}' && buf[i] != '\n' && buf[i] != '\r' && buf[i] != SIEGECHAR_TAB)
-		{ //we're on a valid character
+		{//we're on a valid character
 			if (buf[i] == '/' &&
 				buf[i+1] == '/')
-			{ //this is a comment, so skip over it
+			{//this is a comment, so skip over it
 				while (buf[i] && buf[i] != '\n' && buf[i] != '\r' && buf[i] != SIEGECHAR_TAB)
 				{
 					i++;
 				}
 			}
 			else
-			{ //parse to the next space/endline/eos and check this value against our group value.
+			{//parse to the next space/endline/eos and check this value against our group value.
 				j = 0;
 
 				while (buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\r' && buf[i] != SIEGECHAR_TAB && buf[i] != '{' && buf[i])
 				{
 					if (buf[i] == '/' && buf[i+1] == '/')
-					{ //hit a comment, break out.
+					{//hit a comment, break out.
 						break;
 					}
 
@@ -242,7 +242,7 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 
 				//Make sure this is a group as opposed to a globally defined value.
 				if (buf[i] == '/' && buf[i+1] == '/')
-				{ //stopped on a comment, so first parse to the end of it.
+				{//stopped on a comment, so first parse to the end of it.
                     while (buf[i] && buf[i] != '\n' && buf[i] != '\r')
 					{
 						i++;
@@ -260,26 +260,26 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 
 				isGroup = qfalse;
 
-				while ( buf[i] && (buf[i] == ' ' || buf[i] == SIEGECHAR_TAB || buf[i] == '\n' || buf[i] == '\r') )
-				{ //parse to the next valid character
+				while (buf[i] && (buf[i] == ' ' || buf[i] == SIEGECHAR_TAB || buf[i] == '\n' || buf[i] == '\r'))
+				{//parse to the next valid character
 					i++;
 				}
 
 				if (buf[i] == '{')
-				{ //if the next valid character is an opening bracket, then this is indeed a group
+				{//if the next valid character is an opening bracket, then this is indeed a group
 					isGroup = qtrue;
 				}
 
 				//Is this the one we want?
 				if (isGroup && !Q_stricmp(checkGroup, group))
-				{ //guess so. Parse until we hit the { indicating the beginning of the group.
+				{//guess so. Parse until we hit the {indicating the beginning of the group.
 					while (buf[i] != '{' && buf[i])
 					{
 						i++;
 					}
 
 					if (buf[i])
-					{ //We're at the start of the group now, so parse to the closing bracket.
+					{//We're at the start of the group now, so parse to the closing bracket.
 						j = 0;
 
 						parseGroups = 0;
@@ -287,28 +287,28 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 						while ((buf[i] != '}' || parseGroups) && buf[i])
 						{
 							if (buf[i] == '{')
-							{ //increment for the opening bracket.
+							{//increment for the opening bracket.
 								parseGroups++;
 							}
 							else if (buf[i] == '}')
-							{ //decrement for the closing bracket
+							{//decrement for the closing bracket
 								parseGroups--;
 							}
 
 							if (parseGroups < 0)
-							{ //Syntax error, I guess.
+							{//Syntax error, I guess.
 								Com_Error(ERR_DROP, "Found a closing bracket without an opening bracket while looking for group '%s'", group);
 							}
 
 							if ((buf[i] != '{' || parseGroups > 1) &&
 								(buf[i] != '}' || parseGroups > 0))
-							{ //don't put the start and end brackets for this group into the output buffer
+							{//don't put the start and end brackets for this group into the output buffer
 								outbuf[j] = buf[i];
 								j++;
 							}
 
 							if (buf[i] == '}' && !parseGroups)
-							{ //Alright, we can break out now.
+							{//Alright, we can break out now.
 								break;
 							}
 
@@ -333,14 +333,14 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 					}
 				}
 				else if (!isGroup)
-				{ //if it wasn't a group, parse to the end of the line
+				{//if it wasn't a group, parse to the end of the line
 					while (buf[i] && buf[i] != '\n' && buf[i] != '\r')
 					{
 						i++;
 					}
 				}
 				else
-				{ //this was a group but we not the one we wanted to find, so parse by it.
+				{//this was a group but we not the one we wanted to find, so parse by it.
 					parseGroups = 0;
 
 					while (buf[i] && (buf[i] != '}' || parseGroups))
@@ -355,12 +355,12 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 						}
 
 						if (parseGroups < 0)
-						{ //Syntax error, I guess.
+						{//Syntax error, I guess.
 							Com_Error(ERR_DROP, "Found a closing bracket without an opening bracket while looking for group '%s'", group);
 						}
 
 						if (buf[i] == '}' && !parseGroups)
-						{ //Alright, we can break out now.
+						{//Alright, we can break out now.
 							break;
 						}
 
@@ -377,7 +377,7 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 			}
 		}
 		else if (buf[i] == '{')
-		{ //we're in a group that isn't the one we want, so parse to the end.
+		{//we're in a group that isn't the one we want, so parse to the end.
 			parseGroups = 0;
 
 			while (buf[i] && (buf[i] != '}' || parseGroups))
@@ -392,12 +392,12 @@ int BG_SiegeGetValueGroup(char *buf, char *group, char *outbuf)
 				}
 
 				if (parseGroups < 0)
-				{ //Syntax error, I guess.
+				{//Syntax error, I guess.
 					Com_Error(ERR_DROP, "Found a closing bracket without an opening bracket while looking for group '%s'", group);
 				}
 
 				if (buf[i] == '}' && !parseGroups)
-				{ //Alright, we can break out now.
+				{//Alright, we can break out now.
 					break;
 				}
 
@@ -430,23 +430,23 @@ int BG_SiegeGetPairedValue(char *buf, char *key, char *outbuf)
 	while (buf[i])
 	{
 		if (buf[i] != ' ' && buf[i] != '{' && buf[i] != '}' && buf[i] != '\n' && buf[i] != '\r')
-		{ //we're on a valid character
+		{//we're on a valid character
 			if (buf[i] == '/' &&
 				buf[i+1] == '/')
-			{ //this is a comment, so skip over it
+			{//this is a comment, so skip over it
 				while (buf[i] && buf[i] != '\n' && buf[i] != '\r')
 				{
 					i++;
 				}
 			}
 			else
-			{ //parse to the next space/endline/eos and check this value against our key value.
+			{//parse to the next space/endline/eos and check this value against our key value.
 				j = 0;
 
 				while (buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\r' && buf[i] != SIEGECHAR_TAB && buf[i])
 				{
 					if (buf[i] == '/' && buf[i+1] == '/')
-					{ //hit a comment, break out.
+					{//hit a comment, break out.
 						break;
 					}
 
@@ -464,7 +464,7 @@ int BG_SiegeGetPairedValue(char *buf, char *key, char *outbuf)
 				}
 
 				if (buf[k] == '{')
-				{ //this is not the start of a value but rather of a group. We don't want to look in subgroups so skip over the whole thing.
+				{//this is not the start of a value but rather of a group. We don't want to look in subgroups so skip over the whole thing.
 					int openB = 0;
 
 					while (buf[i] && (buf[i] != '}' || openB))
@@ -484,7 +484,7 @@ int BG_SiegeGetPairedValue(char *buf, char *key, char *outbuf)
 						}
 
 						if (buf[i] == '}' && !openB)
-						{ //this is the end of the group
+						{//this is the end of the group
 							break;
 						}
 						i++;
@@ -499,30 +499,30 @@ int BG_SiegeGetPairedValue(char *buf, char *key, char *outbuf)
 				{
 					//Is this the one we want?
 					if (buf[i] != '/' || buf[i+1] != '/')
-					{ //make sure we didn't stop on a comment, if we did then this is considered an error in the file.
+					{//make sure we didn't stop on a comment, if we did then this is considered an error in the file.
 						if (!Q_stricmp(checkKey, key))
-						{ //guess so. Parse along to the next valid character, then put that into the output buffer and return 1.
+						{//guess so. Parse along to the next valid character, then put that into the output buffer and return 1.
 							while ((buf[i] == ' ' || buf[i] == '\n' || buf[i] == '\r' || buf[i] == SIEGECHAR_TAB) && buf[i])
 							{
 								i++;
 							}
 
 							if (buf[i])
-							{ //We're at the start of the value now.
+							{//We're at the start of the value now.
 								qboolean parseToQuote = qfalse;
 
 								if (buf[i] == '\"')
-								{ //if the value is in quotes, then stop at the next quote instead of ' '
+								{//if the value is in quotes, then stop at the next quote instead of ' '
 									i++;
 									parseToQuote = qtrue;
 								}
 
 								j = 0;
-								while ( ((!parseToQuote && buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\r') || (parseToQuote && buf[i] != '\"')) )
+								while (((!parseToQuote && buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\r') || (parseToQuote && buf[i] != '\"')))
 								{
 									if (buf[i] == '/' &&
 										buf[i+1] == '/')
-									{ //hit a comment after the value? This isn't an ideal way to be writing things, but we'll support it anyway.
+									{//hit a comment after the value? This isn't an ideal way to be writing things, but we'll support it anyway.
 										break;
 									}
 									outbuf[j] = buf[i];
@@ -551,7 +551,7 @@ int BG_SiegeGetPairedValue(char *buf, char *key, char *outbuf)
 							}
 						}
 						else
-						{ //if that wasn't the desired key, then make sure we parse to the end of the line, so we don't mistake a value for a key
+						{//if that wasn't the desired key, then make sure we parse to the end of the line, so we don't mistake a value for a key
 							while (buf[i] && buf[i] != '\n')
 							{
 								i++;
@@ -596,12 +596,12 @@ void BG_SiegeTranslateForcePowers(char *buf, siegeClass_t *siegeClass)
 	qboolean noPowers = qfalse;
 
 	if (!Q_stricmp(buf, "FP_ALL"))
-	{ //this is a special case, just give us all the powers on level 3
+	{//this is a special case, just give us all the powers on level 3
 		allPowers = qtrue;
 	}
 
 	if (buf[0] == '0' && !buf[1])
-	{ //no powers then
+	{//no powers then
 		noPowers = qtrue;
 	}
 
@@ -620,13 +620,13 @@ void BG_SiegeTranslateForcePowers(char *buf, siegeClass_t *siegeClass)
 	}
 
 	if (allPowers || noPowers)
-	{ //we're done now then.
+	{//we're done now then.
 		return;
 	}
 
 	i = 0;
 	while (buf[i])
-	{ //parse through the list which is seperated by |, and add all the weapons into a bitflag
+	{//parse through the list which is seperated by |, and add all the weapons into a bitflag
 		if (buf[i] != ' ' && buf[i] != '|')
 		{
 			j = 0;
@@ -640,7 +640,7 @@ void BG_SiegeTranslateForcePowers(char *buf, siegeClass_t *siegeClass)
 			checkPower[j] = 0;
 
 			if (buf[i] == ',')
-			{ //parse the power level
+			{//parse the power level
 				i++;
 				l = 0;
 				while (buf[i] && buf[i] != ' ' && buf[i] != '|')
@@ -663,23 +663,23 @@ void BG_SiegeTranslateForcePowers(char *buf, siegeClass_t *siegeClass)
 				}
 			}
 			else
-			{ //if it's not there, assume level 3 I guess.
+			{//if it's not there, assume level 3 I guess.
 				parsedLevel = 3;
 			}
 
 			if (checkPower[0])
-			{ //Got the name, compare it against the weapon table strings.
+			{//Got the name, compare it against the weapon table strings.
 				k = 0;
 
 				if (!Q_stricmp(checkPower, "FP_JUMP"))
-				{ //haqery
+				{//haqery
 					Q_strncpyz(checkPower, "FP_LEVITATION", sizeof(checkPower));
 				}
 
 				while (FPTable[k].id != -1 && FPTable[k].name[0])
 				{
 					if (!Q_stricmp(checkPower, FPTable[k].name))
-					{ //found it, add the weapon into the weapons value
+					{//found it, add the weapon into the weapons value
 						siegeClass->forcePowerLevels[k] = parsedLevel;
 						break;
 					}
@@ -709,12 +709,12 @@ int BG_SiegeTranslateGenericTable(char *buf, stringID_table_t *table, qboolean b
 	int k = 0;
 
 	if (buf[0] == '0' && !buf[1])
-	{ //special case, no items.
+	{//special case, no items.
 		return 0;
 	}
 
 	while (buf[i])
-	{ //Using basically the same parsing method as we do for weapons and forcepowers.
+	{//Using basically the same parsing method as we do for weapons and forcepowers.
 		if (buf[i] != ' ' && buf[i] != '|')
 		{
 			j = 0;
@@ -732,15 +732,15 @@ int BG_SiegeTranslateGenericTable(char *buf, stringID_table_t *table, qboolean b
 				k = 0;
 
                 while (table[k].name && table[k].name[0])
-				{ //go through the list and check the parsed flag name against the hardcoded names
+				{//go through the list and check the parsed flag name against the hardcoded names
 					if (!Q_stricmp(checkItem, table[k].name))
-					{ //Got it, so add the value into our items value.
+					{//Got it, so add the value into our items value.
 						if (bitflag)
 						{
 							items |= (1 << table[k].id);
 						}
 						else
-						{ //return the value directly then.
+						{//return the value directly then.
 							return table[k].id;
 						}
 						break;
@@ -778,19 +778,19 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 	char classInfo[4096];
 	char parseBuf[4096];
 
-	len = trap->FS_Open( filename, &f, FS_READ );
+	len = trap->FS_Open(filename, &f, FS_READ);
 
 	if (!f) {
 		return;
 	}
 	if (len >= 4096) {
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 		return;
 	}
 
-	trap->FS_Read( classInfo, len, f );
+	trap->FS_Read(classInfo, len, f);
 
-	trap->FS_Close( f );
+	trap->FS_Close(f);
 
 	classInfo[len] = 0;
 
@@ -825,7 +825,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		Q_strncpyz(bgSiegeClasses[bgNumSiegeClasses].forcedModel, parseBuf, sizeof(bgSiegeClasses[0].forcedModel));
 	}
 	else
-	{ //It's ok if there isn't one, it's optional.
+	{//It's ok if there isn't one, it's optional.
 		bgSiegeClasses[bgNumSiegeClasses].forcedModel[0] = 0;
 	}
 
@@ -835,7 +835,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		Q_strncpyz(bgSiegeClasses[bgNumSiegeClasses].forcedSkin, parseBuf, sizeof(bgSiegeClasses[0].forcedSkin));
 	}
 	else
-	{ //It's ok if there isn't one, it's optional.
+	{//It's ok if there isn't one, it's optional.
 		bgSiegeClasses[bgNumSiegeClasses].forcedSkin[0] = 0;
 	}
 
@@ -845,7 +845,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		Q_strncpyz(bgSiegeClasses[bgNumSiegeClasses].saber1, parseBuf, sizeof(bgSiegeClasses[0].saber1));
 	}
 	else
-	{ //It's ok if there isn't one, it's optional.
+	{//It's ok if there isn't one, it's optional.
 		bgSiegeClasses[bgNumSiegeClasses].saber1[0] = 0;
 	}
 
@@ -855,7 +855,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		Q_strncpyz(bgSiegeClasses[bgNumSiegeClasses].saber2, parseBuf, sizeof(bgSiegeClasses[0].saber2));
 	}
 	else
-	{ //It's ok if there isn't one, it's optional.
+	{//It's ok if there isn't one, it's optional.
 		bgSiegeClasses[bgNumSiegeClasses].saber2[0] = 0;
 	}
 
@@ -865,7 +865,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].saberStance = BG_SiegeTranslateGenericTable(parseBuf, StanceTable, qtrue);
 	}
 	else
-	{ //It's ok if there isn't one, it's optional.
+	{//It's ok if there isn't one, it's optional.
 		bgSiegeClasses[bgNumSiegeClasses].saberStance = 0;
 	}
 
@@ -876,7 +876,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].hasForcedSaberColor = qtrue;
 	}
 	else
-	{ //It's ok if there isn't one, it's optional.
+	{//It's ok if there isn't one, it's optional.
 		bgSiegeClasses[bgNumSiegeClasses].hasForcedSaberColor = qfalse;
 	}
 
@@ -887,7 +887,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].hasForcedSaber2Color = qtrue;
 	}
 	else
-	{ //It's ok if there isn't one, it's optional.
+	{//It's ok if there isn't one, it's optional.
 		bgSiegeClasses[bgNumSiegeClasses].hasForcedSaber2Color = qfalse;
 	}
 
@@ -902,7 +902,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 	}
 
 	if (!(bgSiegeClasses[bgNumSiegeClasses].weapons & (1 << WP_SABER)))
-	{ //make sure it has melee if there's no saber
+	{//make sure it has melee if there's no saber
 		bgSiegeClasses[bgNumSiegeClasses].weapons |= (1 << WP_MELEE);
 
 		//always give them this too if they are not a saber user
@@ -915,7 +915,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		BG_SiegeTranslateForcePowers(parseBuf, &bgSiegeClasses[bgNumSiegeClasses]);
 	}
 	else
-	{ //fine, clear out the powers.
+	{//fine, clear out the powers.
 		i = 0;
 		while (i < NUM_FORCE_POWERS)
 		{
@@ -930,7 +930,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].classflags = BG_SiegeTranslateGenericTable(parseBuf, bgSiegeClassFlagNames, qtrue);
 	}
 	else
-	{ //fine, we'll 0 it.
+	{//fine, we'll 0 it.
 		bgSiegeClasses[bgNumSiegeClasses].classflags = 0;
 	}
 
@@ -940,7 +940,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].maxhealth = atoi(parseBuf);
 	}
 	else
-	{ //It's alright, just default to 100 then.
+	{//It's alright, just default to 100 then.
 		bgSiegeClasses[bgNumSiegeClasses].maxhealth = 100;
 	}
 
@@ -950,7 +950,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].starthealth = atoi(parseBuf);
 	}
 	else
-	{ //It's alright, just default to 100 then.
+	{//It's alright, just default to 100 then.
 		bgSiegeClasses[bgNumSiegeClasses].starthealth = bgSiegeClasses[bgNumSiegeClasses].maxhealth;
 	}
 
@@ -961,7 +961,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].maxarmor = atoi(parseBuf);
 	}
 	else
-	{ //It's alright, just default to 0 then.
+	{//It's alright, just default to 0 then.
 		bgSiegeClasses[bgNumSiegeClasses].maxarmor = 0;
 	}
 
@@ -970,12 +970,12 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 	{
 		bgSiegeClasses[bgNumSiegeClasses].startarmor = atoi(parseBuf);
 		if (!bgSiegeClasses[bgNumSiegeClasses].maxarmor)
-		{ //if they didn't specify a damn max armor then use this.
+		{//if they didn't specify a damn max armor then use this.
 			bgSiegeClasses[bgNumSiegeClasses].maxarmor = bgSiegeClasses[bgNumSiegeClasses].startarmor;
 		}
 	}
 	else
-	{ //default to maxarmor.
+	{//default to maxarmor.
 		bgSiegeClasses[bgNumSiegeClasses].startarmor = bgSiegeClasses[bgNumSiegeClasses].maxarmor;
 	}
 
@@ -985,7 +985,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].speed = atof(parseBuf);
 	}
 	else
-	{ //It's alright, just default to 1 then.
+	{//It's alright, just default to 1 then.
 		bgSiegeClasses[bgNumSiegeClasses].speed = 1.0f;
 	}
 
@@ -1004,7 +1004,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		#endif
 	}
 	else
-	{ //I guess this is an essential.. we don't want to render bad shaders or anything.
+	{//I guess this is an essential.. we don't want to render bad shaders or anything.
 		Com_Error(ERR_DROP, "Siege class without uishader entry");
 	}
 
@@ -1019,11 +1019,11 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		#elif defined(UI_BUILD)
 			bgSiegeClasses[bgNumSiegeClasses].classShader = trap->R_RegisterShaderNoMip(parseBuf);
 		#endif
-		assert( bgSiegeClasses[bgNumSiegeClasses].classShader );
-		if ( !bgSiegeClasses[bgNumSiegeClasses].classShader )
+		assert(bgSiegeClasses[bgNumSiegeClasses].classShader);
+		if (!bgSiegeClasses[bgNumSiegeClasses].classShader)
 		{
-			//Com_Error( ERR_DROP, "ERROR: could not find class_shader %s for class %s\n", parseBuf, bgSiegeClasses[bgNumSiegeClasses].name );
-			Com_Printf( "ERROR: could not find class_shader %s for class %s\n", parseBuf, bgSiegeClasses[bgNumSiegeClasses].name );
+			//Com_Error(ERR_DROP, "ERROR: could not find class_shader %s for class %s\n", parseBuf, bgSiegeClasses[bgNumSiegeClasses].name);
+			Com_Printf("ERROR: could not find class_shader %s for class %s\n", parseBuf, bgSiegeClasses[bgNumSiegeClasses].name);
 		}
 		// A very hacky way to determine class . . .
 		else
@@ -1043,7 +1043,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 					break;
 				}
 
-				holdBuf = parseBuf + ( titleLength - arrayTitleLength);
+				holdBuf = parseBuf + (titleLength - arrayTitleLength);
 				if (!strcmp(holdBuf,classTitles[i]))
 				{
 					bgSiegeClasses[bgNumSiegeClasses].playerClass = i;
@@ -1059,9 +1059,9 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		}
 	}
 	else
-	{ //No entry!  Bad bad bad
-		//Com_Error( ERR_DROP, "ERROR: no class_shader defined for class %s\n", bgSiegeClasses[bgNumSiegeClasses].name );
-		Com_Printf( "ERROR: no class_shader defined for class %s\n", bgSiegeClasses[bgNumSiegeClasses].name );
+	{//No entry!  Bad bad bad
+		//Com_Error(ERR_DROP, "ERROR: no class_shader defined for class %s\n", bgSiegeClasses[bgNumSiegeClasses].name);
+		Com_Printf("ERROR: no class_shader defined for class %s\n", bgSiegeClasses[bgNumSiegeClasses].name);
 	}
 
 	//Parse holdable items to use
@@ -1070,7 +1070,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].invenItems = BG_SiegeTranslateGenericTable(parseBuf, HoldableTable, qtrue);
 	}
 	else
-	{ //Just don't start out with any then.
+	{//Just don't start out with any then.
 		bgSiegeClasses[bgNumSiegeClasses].invenItems = 0;
 	}
 
@@ -1080,7 +1080,7 @@ void BG_SiegeParseClassFile(const char *filename, siegeClassDesc_t *descBuffer)
 		bgSiegeClasses[bgNumSiegeClasses].powerups = BG_SiegeTranslateGenericTable(parseBuf, PowerupTable, qtrue);
 	}
 	else
-	{ //Just don't start out with any then.
+	{//Just don't start out with any then.
 		bgSiegeClasses[bgNumSiegeClasses].powerups = 0;
 	}
 
@@ -1210,7 +1210,7 @@ void BG_SiegeLoadClasses(siegeClassDesc_t *descBuffer)
 
 	bgNumSiegeClasses = 0;
 
-	numFiles = trap->FS_GetFileList("ext_data/Siege/Classes", ".scl", filelist, sizeof( filelist ) );
+	numFiles = trap->FS_GetFileList("ext_data/Siege/Classes", ".scl", filelist, sizeof(filelist));
 
 	fileptr = filelist;
 
@@ -1245,7 +1245,7 @@ siegeClass_t *BG_SiegeFindClassByName(const char *classname)
 	while (i < bgNumSiegeClasses)
 	{
 		if (!Q_stricmp(bgSiegeClasses[i].name, classname))
-		{ //found it
+		{//found it
 			return &bgSiegeClasses[i];
 		}
 		i++;
@@ -1270,12 +1270,12 @@ void BG_SiegeParseTeamFile(const char *filename)
 		return;
 	}
 	if (len >= 2048) {
-		trap->FS_Close( f );
+		trap->FS_Close(f);
 		return;
 	}
 
-	trap->FS_Read( teamInfo, len, f );
-	trap->FS_Close( f );
+	trap->FS_Read(teamInfo, len, f);
+	trap->FS_Close(f);
 
 	teamInfo[len] = 0;
 
@@ -1301,7 +1301,7 @@ void BG_SiegeParseTeamFile(const char *filename)
 	if (BG_SiegeGetValueGroup(teamInfo, "Classes", teamInfo))
 	{
 		while (success && i < MAX_SIEGE_CLASSES)
-		{ //keep checking for group values named class# up to MAX_SIEGE_CLASSES until we can't find one.
+		{//keep checking for group values named class# up to MAX_SIEGE_CLASSES until we can't find one.
 			Q_strncpyz(lookString, va("class%i", i), sizeof(lookString));
 
 			success = BG_SiegeGetPairedValue(teamInfo, lookString, parseBuf);
@@ -1315,7 +1315,7 @@ void BG_SiegeParseTeamFile(const char *filename)
 
 			if (!bgSiegeTeams[bgNumSiegeTeams].classes[bgSiegeTeams[bgNumSiegeTeams].numClasses])
 			{
-				Com_Printf( "Invalid class specified: '%s'\n", parseBuf);
+				Com_Printf("Invalid class specified: '%s'\n", parseBuf);
 			}
 
 			bgSiegeTeams[bgNumSiegeTeams].numClasses++;
@@ -1344,7 +1344,7 @@ void BG_SiegeLoadTeams(void)
 
 	bgNumSiegeTeams = 0;
 
-	numFiles = trap->FS_GetFileList("ext_data/Siege/Teams", ".team", filelist, sizeof( filelist ) );
+	numFiles = trap->FS_GetFileList("ext_data/Siege/Teams", ".team", filelist, sizeof(filelist));
 
 	fileptr = filelist;
 
@@ -1380,7 +1380,7 @@ siegeTeam_t *BG_SiegeFindThemeForTeam(int team)
 
 #if defined(_GAME) || defined(_CGAME) //only for game/cgame
 //precache all the sabers for the active classes for the team
-extern qboolean WP_SaberParseParms( const char *saberName, saberInfo_t *saber ); //bg_saberLoad.cpp
+extern qboolean WP_SaberParseParms(const char *saberName, saberInfo_t *saber); //bg_saberLoad.cpp
 extern int BG_ModelCache(const char *modelName, const char *skinName); //bg_misc.c
 
 void BG_PrecacheSabersForSiegeTeam(int team)
@@ -1419,7 +1419,7 @@ void BG_PrecacheSabersForSiegeTeam(int team)
 				{
 					WP_SaberParseParms(saberName, &saber);
 					if (!Q_stricmp(saberName, saber.name))
-					{ //found the matching saber
+					{//found the matching saber
 						if (saber.model[0])
 						{
 							BG_ModelCache(saber.model, NULL);
@@ -1450,12 +1450,12 @@ qboolean BG_SiegeCheckClassLegality(int team, char *classname)
 		teamPtr = &team2Theme;
 	}
 	else
-	{ //spectator? Whatever, you're legal then.
+	{//spectator? Whatever, you're legal then.
 		return qtrue;
 	}
 
 	if (!teamPtr || !(*teamPtr))
-	{ //Well, guess the class is ok, seeing as there is no team theme to begin with.
+	{//Well, guess the class is ok, seeing as there is no team theme to begin with.
 		return qtrue;
 	}
 
@@ -1463,7 +1463,7 @@ qboolean BG_SiegeCheckClassLegality(int team, char *classname)
 	while (i < (*teamPtr)->numClasses)
 	{
 		if (!Q_stricmp(classname, (*teamPtr)->classes[i]->name))
-		{ //found it, so it's alright
+		{//found it, so it's alright
 			return qtrue;
 		}
 		i++;
@@ -1483,7 +1483,7 @@ siegeTeam_t *BG_SiegeFindTeamForTheme(char *themeName)
 	{
 		if (bgSiegeTeams[i].name[0] &&
 			!Q_stricmp(bgSiegeTeams[i].name, themeName))
-		{ //this is what we're looking for
+		{//this is what we're looking for
 			return &bgSiegeTeams[i];
 		}
 
@@ -1516,7 +1516,7 @@ int BG_SiegeFindClassIndexByName(const char *classname)
 	while (i < bgNumSiegeClasses)
 	{
 		if (!Q_stricmp(bgSiegeClasses[i].name, classname))
-		{ //found it
+		{//found it
 			return i;
 		}
 		i++;

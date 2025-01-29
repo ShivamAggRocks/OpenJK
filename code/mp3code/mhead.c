@@ -80,12 +80,12 @@ int head_info(unsigned char *buf, unsigned int n, MPEG_HEAD * h)
    {
       mpeg25_flag = 0;		// mpeg 1 & 2
 
-   }
+  }
    else if ((buf[0] == 0xFF) && ((buf[0+1] & 0xF0) == 0xE0))
    {
       mpeg25_flag = 1;		// mpeg 2.5
 
-   }
+  }
    else
       return 0;			// sync fail
 
@@ -108,8 +108,8 @@ int head_info(unsigned char *buf, unsigned int n, MPEG_HEAD * h)
    h->emphasis = (buf[0+3] & 0x03);
 
 
-// if( mpeg25_flag ) {
- //    if( h->sr_index == 2 ) return 0;   // fail 8khz
+// if(mpeg25_flag) {
+ //    if(h->sr_index == 2) return 0;   // fail 8khz
  //}
 
 
@@ -129,13 +129,13 @@ int head_info(unsigned char *buf, unsigned int n, MPEG_HEAD * h)
 	    240 * mp_br_tableL1[h->id][h->br_index]
 	    / mp_sr20_table[h->id][h->sr_index];
 	 framebytes = 4 * framebytes;
-      }
+     }
       else if (h->option == 2)
       {				/* layer II */
 	 framebytes =
 	    2880 * mp_br_table[h->id][h->br_index]
 	    / mp_sr20_table[h->id][h->sr_index];
-      }
+     }
       else if (h->option == 1)
       {				/* layer III */
 	 if (h->id)
@@ -144,7 +144,7 @@ int head_info(unsigned char *buf, unsigned int n, MPEG_HEAD * h)
 	    framebytes =
 	       2880 * mp_br_tableL3[h->id][h->br_index]
 	       / mp_sr20_table[h->id][h->sr_index];
-	 }
+	}
 	 else
 	 {			// mpeg2
 
@@ -154,16 +154,16 @@ int head_info(unsigned char *buf, unsigned int n, MPEG_HEAD * h)
 	       framebytes =
 		  2880 * mp_br_tableL3[h->id][h->br_index]
 		  / mp_sr20_table[h->id][h->sr_index];
-	    }
+	   }
 	    else
 	    {
 	       framebytes =
 		  1440 * mp_br_tableL3[h->id][h->br_index]
 		  / mp_sr20_table[h->id][h->sr_index];
-	    }
-	 }
-      }
-   }
+	   }
+	}
+     }
+  }
    else
       framebytes = find_sync(buf, n);	/* free format */
 
@@ -178,7 +178,7 @@ int head_info3(unsigned char *buf, unsigned int n, MPEG_HEAD *h, int *br, unsign
           ((buf[pBuf+1] & 0xF0) == 0xF0 || (buf[pBuf+1] & 0xF0) == 0xE0)))
    {
 		pBuf++;
-   }
+  }
 
    if (pBuf == n) return 0;
 
@@ -274,7 +274,7 @@ static int find_sync(unsigned char *buf, int n)
    {
       padbytes = 4;
       i0 = 24;			/* for shorter layer I frames */
-   }
+  }
 
    pad = (buf[2] & 0x02) >> 1;
 
@@ -290,7 +290,7 @@ static int find_sync(unsigned char *buf, int n)
       nmatch = sync_test(buf, n, isync, padbytes);
       if (nmatch > 0)
 	 return isync;
-   }
+  }
 
    return 0;
 }
@@ -323,6 +323,6 @@ static int sync_test(unsigned char *buf, int n, int isync, int padbytes)
       if (!compare(buf, buf + i))
 	 return -nmatch;
       nmatch++;
-   }
+  }
    return nmatch;
 }

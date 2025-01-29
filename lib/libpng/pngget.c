@@ -124,7 +124,7 @@ png_get_x_pixels_per_meter(png_const_structrp png_ptr, png_const_inforp
 
          if (info_ptr->phys_unit_type == PNG_RESOLUTION_METER)
             return (info_ptr->x_pixels_per_unit);
-      }
+     }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -146,7 +146,7 @@ png_get_y_pixels_per_meter(png_const_structrp png_ptr, png_const_inforp
 
       if (info_ptr->phys_unit_type == PNG_RESOLUTION_METER)
          return (info_ptr->y_pixels_per_unit);
-   }
+  }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -167,7 +167,7 @@ png_get_pixels_per_meter(png_const_structrp png_ptr, png_const_inforp info_ptr)
       if (info_ptr->phys_unit_type == PNG_RESOLUTION_METER &&
           info_ptr->x_pixels_per_unit == info_ptr->y_pixels_per_unit)
          return (info_ptr->x_pixels_per_unit);
-   }
+  }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -190,7 +190,7 @@ png_get_pixel_aspect_ratio(png_const_structrp png_ptr, png_const_inforp
       if (info_ptr->x_pixels_per_unit != 0)
          return ((float)((float)info_ptr->y_pixels_per_unit
              /(float)info_ptr->x_pixels_per_unit));
-   }
+  }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -222,7 +222,7 @@ png_get_pixel_aspect_ratio_fixed(png_const_structrp png_ptr,
       if (png_muldiv(&res, (png_int_32)info_ptr->y_pixels_per_unit, PNG_FP_1,
           (png_int_32)info_ptr->x_pixels_per_unit) != 0)
          return res;
-   }
+  }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -243,7 +243,7 @@ png_get_x_offset_microns(png_const_structrp png_ptr, png_const_inforp info_ptr)
 
       if (info_ptr->offset_unit_type == PNG_OFFSET_MICROMETER)
          return (info_ptr->x_offset);
-   }
+  }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -263,7 +263,7 @@ png_get_y_offset_microns(png_const_structrp png_ptr, png_const_inforp info_ptr)
 
       if (info_ptr->offset_unit_type == PNG_OFFSET_MICROMETER)
          return (info_ptr->y_offset);
-   }
+  }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -283,7 +283,7 @@ png_get_x_offset_pixels(png_const_structrp png_ptr, png_const_inforp info_ptr)
 
       if (info_ptr->offset_unit_type == PNG_OFFSET_PIXEL)
          return (info_ptr->x_offset);
-   }
+  }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -303,7 +303,7 @@ png_get_y_offset_pixels(png_const_structrp png_ptr, png_const_inforp info_ptr)
 
       if (info_ptr->offset_unit_type == PNG_OFFSET_PIXEL)
          return (info_ptr->y_offset);
-   }
+  }
 #else
    PNG_UNUSED(png_ptr)
    PNG_UNUSED(info_ptr)
@@ -432,13 +432,13 @@ png_get_pHYs_dpi(png_const_structrp png_ptr, png_const_inforp info_ptr,
       {
          *res_x = info_ptr->x_pixels_per_unit;
          retval |= PNG_INFO_pHYs;
-      }
+     }
 
       if (res_y != NULL)
       {
          *res_y = info_ptr->y_pixels_per_unit;
          retval |= PNG_INFO_pHYs;
-      }
+     }
 
       if (unit_type != NULL)
       {
@@ -449,9 +449,9 @@ png_get_pHYs_dpi(png_const_structrp png_ptr, png_const_inforp info_ptr,
          {
             if (res_x != NULL) *res_x = (png_uint_32)(*res_x * .0254 + .50);
             if (res_y != NULL) *res_y = (png_uint_32)(*res_y * .0254 + .50);
-         }
-      }
-   }
+        }
+     }
+  }
 
    return (retval);
 }
@@ -496,7 +496,7 @@ png_get_bKGD(png_const_structrp png_ptr, png_inforp info_ptr,
 
       *background = &(info_ptr->background);
       return (PNG_INFO_bKGD);
-   }
+  }
 
    return (0);
 }
@@ -549,7 +549,7 @@ png_get_cHRM(png_const_structrp png_ptr, png_const_inforp info_ptr,
          *blue_y = png_float(png_ptr, info_ptr->colorspace.end_points_xy.bluey,
             "cHRM blue Y");
       return (PNG_INFO_cHRM);
-   }
+  }
 
    return (0);
 }
@@ -593,7 +593,7 @@ png_get_cHRM_XYZ(png_const_structrp png_ptr, png_const_inforp info_ptr,
          *blue_Z = png_float(png_ptr,
             info_ptr->colorspace.end_points_XYZ.blue_Z, "cHRM blue Z");
       return (PNG_INFO_cHRM);
-   }
+  }
 
    return (0);
 }
@@ -632,7 +632,7 @@ png_get_cHRM_XYZ_fixed(png_const_structrp png_ptr, png_const_inforp info_ptr,
       if (int_blue_Z != NULL)
          *int_blue_Z = info_ptr->colorspace.end_points_XYZ.blue_Z;
       return (PNG_INFO_cHRM);
-   }
+  }
 
    return (0);
 }
@@ -665,7 +665,7 @@ png_get_cHRM_fixed(png_const_structrp png_ptr, png_const_inforp info_ptr,
       if (blue_y != NULL)
          *blue_y = info_ptr->colorspace.end_points_xy.bluey;
       return (PNG_INFO_cHRM);
-   }
+  }
 
    return (0);
 }
@@ -686,7 +686,7 @@ png_get_gAMA_fixed(png_const_structrp png_ptr, png_const_inforp info_ptr,
    {
       *file_gamma = info_ptr->colorspace.gamma;
       return (PNG_INFO_gAMA);
-   }
+  }
 
    return (0);
 }
@@ -706,7 +706,7 @@ png_get_gAMA(png_const_structrp png_ptr, png_const_inforp info_ptr,
       *file_gamma = png_float(png_ptr, info_ptr->colorspace.gamma,
          "png_get_gAMA");
       return (PNG_INFO_gAMA);
-   }
+  }
 
    return (0);
 }
@@ -725,7 +725,7 @@ png_get_sRGB(png_const_structrp png_ptr, png_const_inforp info_ptr,
    {
       *file_srgb_intent = info_ptr->colorspace.rendering_intent;
       return (PNG_INFO_sRGB);
-   }
+  }
 
    return (0);
 }
@@ -752,7 +752,7 @@ png_get_iCCP(png_const_structrp png_ptr, png_inforp info_ptr,
        */
       *compression_type = PNG_COMPRESSION_TYPE_BASE;
       return (PNG_INFO_iCCP);
-   }
+  }
 
    return (0);
 }
@@ -767,7 +767,7 @@ png_get_sPLT(png_const_structrp png_ptr, png_inforp info_ptr,
    {
       *spalettes = info_ptr->splt_palettes;
       return info_ptr->splt_palettes_num;
-   }
+  }
 
    return (0);
 }
@@ -785,7 +785,7 @@ png_get_hIST(png_const_structrp png_ptr, png_inforp info_ptr,
    {
       *hist = info_ptr->hist;
       return (PNG_INFO_hIST);
-   }
+  }
 
    return (0);
 }
@@ -844,7 +844,7 @@ png_get_oFFs(png_const_structrp png_ptr, png_const_inforp info_ptr,
       *offset_y = info_ptr->y_offset;
       *unit_type = (int)info_ptr->offset_unit_type;
       return (PNG_INFO_oFFs);
-   }
+  }
 
    return (0);
 }
@@ -871,7 +871,7 @@ png_get_pCAL(png_const_structrp png_ptr, png_inforp info_ptr,
       *units = info_ptr->pcal_units;
       *params = info_ptr->pcal_params;
       return (PNG_INFO_pCAL);
-   }
+  }
 
    return (0);
 }
@@ -897,7 +897,7 @@ png_get_sCAL_fixed(png_const_structrp png_ptr, png_const_inforp info_ptr,
       *height = png_fixed(png_ptr, atof(info_ptr->scal_s_height),
          "sCAL height");
       return (PNG_INFO_sCAL);
-   }
+  }
 
    return(0);
 }
@@ -915,7 +915,7 @@ png_get_sCAL(png_const_structrp png_ptr, png_const_inforp info_ptr,
       *width = atof(info_ptr->scal_s_width);
       *height = atof(info_ptr->scal_s_height);
       return (PNG_INFO_sCAL);
-   }
+  }
 
    return(0);
 }
@@ -931,7 +931,7 @@ png_get_sCAL_s(png_const_structrp png_ptr, png_const_inforp info_ptr,
       *width = info_ptr->scal_s_width;
       *height = info_ptr->scal_s_height;
       return (PNG_INFO_sCAL);
-   }
+  }
 
    return(0);
 }
@@ -953,20 +953,20 @@ png_get_pHYs(png_const_structrp png_ptr, png_const_inforp info_ptr,
       {
          *res_x = info_ptr->x_pixels_per_unit;
          retval |= PNG_INFO_pHYs;
-      }
+     }
 
       if (res_y != NULL)
       {
          *res_y = info_ptr->y_pixels_per_unit;
          retval |= PNG_INFO_pHYs;
-      }
+     }
 
       if (unit_type != NULL)
       {
          *unit_type = (int)info_ptr->phys_unit_type;
          retval |= PNG_INFO_pHYs;
-      }
-   }
+     }
+  }
 
    return (retval);
 }
@@ -985,7 +985,7 @@ png_get_PLTE(png_const_structrp png_ptr, png_inforp info_ptr,
       *num_palette = info_ptr->num_palette;
       png_debug1(3, "num_palette = %d", *num_palette);
       return (PNG_INFO_PLTE);
-   }
+  }
 
    return (0);
 }
@@ -1002,7 +1002,7 @@ png_get_sBIT(png_const_structrp png_ptr, png_inforp info_ptr,
    {
       *sig_bit = &(info_ptr->sig_bit);
       return (PNG_INFO_sBIT);
-   }
+  }
 
    return (0);
 }
@@ -1025,7 +1025,7 @@ png_get_text(png_const_structrp png_ptr, png_inforp info_ptr,
          *num_text = info_ptr->num_text;
 
       return info_ptr->num_text;
-   }
+  }
 
    if (num_text != NULL)
       *num_text = 0;
@@ -1046,7 +1046,7 @@ png_get_tIME(png_const_structrp png_ptr, png_inforp info_ptr,
    {
       *mod_time = &(info_ptr->mod_time);
       return (PNG_INFO_tIME);
-   }
+  }
 
    return (0);
 }
@@ -1069,11 +1069,11 @@ png_get_tRNS(png_const_structrp png_ptr, png_inforp info_ptr,
          {
             *trans_alpha = info_ptr->trans_alpha;
             retval |= PNG_INFO_tRNS;
-         }
+        }
 
          if (trans_color != NULL)
             *trans_color = &(info_ptr->trans_color);
-      }
+     }
 
       else /* if (info_ptr->color_type != PNG_COLOR_TYPE_PALETTE) */
       {
@@ -1081,18 +1081,18 @@ png_get_tRNS(png_const_structrp png_ptr, png_inforp info_ptr,
          {
             *trans_color = &(info_ptr->trans_color);
             retval |= PNG_INFO_tRNS;
-         }
+        }
 
          if (trans_alpha != NULL)
             *trans_alpha = NULL;
-      }
+     }
 
       if (num_trans != NULL)
       {
          *num_trans = info_ptr->num_trans;
          retval |= PNG_INFO_tRNS;
-      }
-   }
+     }
+  }
 
    return (retval);
 }
@@ -1107,7 +1107,7 @@ png_get_unknown_chunks(png_const_structrp png_ptr, png_inforp info_ptr,
    {
       *unknowns = info_ptr->unknown_chunks;
       return info_ptr->unknown_chunks_num;
-   }
+  }
 
    return (0);
 }
@@ -1144,7 +1144,7 @@ png_get_compression_buffer_size(png_const_structrp png_ptr)
 #     else
          return PNG_IDAT_READ_SIZE;
 #     endif
-   }
+  }
 
 #  ifdef PNG_WRITE_SUPPORTED
       else

@@ -49,7 +49,7 @@ jpeg_read_coefficients (j_decompress_ptr cinfo)
     /* First call: initialize active modules */
     transdecode_master_selection(cinfo);
     cinfo->global_state = DSTATE_RDCOEFS;
-  }
+ }
   if (cinfo->global_state == DSTATE_RDCOEFS) {
     /* Absorb whole file into the coef buffer */
     for (;;) {
@@ -70,11 +70,11 @@ jpeg_read_coefficients (j_decompress_ptr cinfo)
 	  /* startup underestimated number of scans; ratchet up one scan */
 	  cinfo->progress->pass_limit += (long) cinfo->total_iMCU_rows;
 	}
-      }
-    }
+     }
+   }
     /* Set state so that jpeg_finish_decompress does the right thing */
     cinfo->global_state = DSTATE_STOPPING;
-  }
+ }
   /* At this point we should be in state DSTATE_STOPPING if being used
    * standalone, or in state DSTATE_BUFIMAGE if being invoked to get access
    * to the coefficients during a full buffered-image-mode decompression.
@@ -82,7 +82,7 @@ jpeg_read_coefficients (j_decompress_ptr cinfo)
   if ((cinfo->global_state == DSTATE_STOPPING ||
        cinfo->global_state == DSTATE_BUFIMAGE) && cinfo->buffered_image) {
     return cinfo->coef->coef_arrays;
-  }
+ }
   /* Oops, improper usage */
   ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   return NULL;			/* keep compiler happy */
@@ -108,7 +108,7 @@ transdecode_master_selection (j_decompress_ptr cinfo)
     jinit_arith_decoder(cinfo);
   else {
     jinit_huff_decoder(cinfo);
-  }
+ }
 
   /* Always get a full-image coefficient buffer. */
   jinit_d_coef_controller(cinfo, TRUE);
@@ -126,15 +126,15 @@ transdecode_master_selection (j_decompress_ptr cinfo)
     if (cinfo->progressive_mode) {
       /* Arbitrarily estimate 2 interleaved DC scans + 3 AC scans/component. */
       nscans = 2 + 3 * cinfo->num_components;
-    } else if (cinfo->inputctl->has_multiple_scans) {
+   } else if (cinfo->inputctl->has_multiple_scans) {
       /* For a nonprogressive multiscan file, estimate 1 scan per component. */
       nscans = cinfo->num_components;
-    } else {
+   } else {
       nscans = 1;
-    }
+   }
     cinfo->progress->pass_counter = 0L;
     cinfo->progress->pass_limit = (long) cinfo->total_iMCU_rows * nscans;
     cinfo->progress->completed_passes = 0;
     cinfo->progress->total_passes = 1;
-  }
+ }
 }

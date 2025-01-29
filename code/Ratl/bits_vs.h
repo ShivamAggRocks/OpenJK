@@ -163,7 +163,7 @@ public:
 		// of bits this object can hold.
 		//--------------------------------------------
 		assert(i>=0 && i < SIZE);
-		return ( (this->mV[i>>this->BITS_SHIFT] & (1<<(i&this->BITS_AND)))!=0 );
+		return ((this->mV[i>>this->BITS_SHIFT] & (1<<(i&this->BITS_AND)))!=0);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////

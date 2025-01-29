@@ -27,18 +27,18 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "w_local.h"
 
 //---------------------------------------------------------
-void WP_FireTurboLaserMissile( gentity_t *ent, vec3_t start, vec3_t dir )
+void WP_FireTurboLaserMissile(gentity_t *ent, vec3_t start, vec3_t dir)
 //---------------------------------------------------------
 {
 	int velocity	= ent->mass; //FIXME: externalize
 	gentity_t *missile;
 
-	missile = CreateMissile( start, dir, velocity, 10000, ent, qfalse );
+	missile = CreateMissile(start, dir, velocity, 10000, ent, qfalse);
 
 	//use a custom shot effect
-	//missile->s.otherEntityNum2 = G_EffectIndex( "turret/turb_shot" );
+	//missile->s.otherEntityNum2 = G_EffectIndex("turret/turb_shot");
 	//use a custom impact effect
-	//missile->s.emplacedOwner = G_EffectIndex( "turret/turb_impact" );
+	//missile->s.emplacedOwner = G_EffectIndex("turret/turb_impact");
 
 	missile->classname = "turbo_proj";
 	missile->s.weapon = WP_TIE_FIGHTER;
@@ -64,15 +64,15 @@ void WP_FireTurboLaserMissile( gentity_t *ent, vec3_t start, vec3_t dir )
 
 // Emplaced Gun
 //---------------------------------------------------------
-void WP_EmplacedFire( gentity_t *ent )
+void WP_EmplacedFire(gentity_t *ent)
 //---------------------------------------------------------
 {
-	float damage = weaponData[WP_EMPLACED_GUN].damage * ( ent->NPC ? 0.1f : 1.0f );
-	float vel = EMPLACED_VEL * ( ent->NPC ? 0.4f : 1.0f );
+	float damage = weaponData[WP_EMPLACED_GUN].damage * (ent->NPC ? 0.1f : 1.0f);
+	float vel = EMPLACED_VEL * (ent->NPC ? 0.4f : 1.0f);
 
 	WP_MissileTargetHint(ent, muzzle, forwardVec);
 
-	gentity_t	*missile = CreateMissile( muzzle, forwardVec, vel, 10000, ent );
+	gentity_t	*missile = CreateMissile(muzzle, forwardVec, vel, 10000, ent);
 
 	missile->classname = "emplaced_proj";
 	missile->s.weapon = WP_EMPLACED_GUN;
@@ -83,7 +83,7 @@ void WP_EmplacedFire( gentity_t *ent )
 	missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
 
 	// do some weird switchery on who the real owner is, we do this so the projectiles don't hit the gun object
-	if ( ent && ent->client && !(ent->client->ps.eFlags&EF_LOCKED_TO_WEAPON) )
+	if (ent && ent->client && !(ent->client->ps.eFlags&EF_LOCKED_TO_WEAPON))
 	{
 		missile->owner = ent;
 	}
@@ -92,13 +92,13 @@ void WP_EmplacedFire( gentity_t *ent )
 		missile->owner = ent->owner;
 	}
 
-	if ( missile->owner->e_UseFunc == useF_eweb_use )
+	if (missile->owner->e_UseFunc == useF_eweb_use)
 	{
 		missile->alt_fire = qtrue;
 	}
 
-	VectorSet( missile->maxs, EMPLACED_SIZE, EMPLACED_SIZE, EMPLACED_SIZE );
-	VectorScale( missile->maxs, -1, missile->mins );
+	VectorSet(missile->maxs, EMPLACED_SIZE, EMPLACED_SIZE, EMPLACED_SIZE);
+	VectorScale(missile->maxs, -1, missile->mins);
 
 	// alternate muzzles
 	ent->fxID = !ent->fxID;

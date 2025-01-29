@@ -222,8 +222,8 @@ void bitget_check(int n)
       {
 	 bitdat.bitbuf = (bitdat.bitbuf << 8) | *bitdat.bs_ptr++;
 	 bitdat.bits += 8;
-      }
-   }
+     }
+  }
 }
 /*------------- get n bits from bitstream -------------*/
 unsigned int bitget(int n)
@@ -236,8 +236,8 @@ unsigned int bitget(int n)
       {
 	 bitdat.bitbuf = (bitdat.bitbuf << 8) | *bitdat.bs_ptr++;
 	 bitdat.bits += 8;
-      }
-   }
+     }
+  }
    bitdat.bits -= n;
    x = bitdat.bitbuf >> bitdat.bits;
    bitdat.bitbuf -= x << bitdat.bits;
@@ -254,8 +254,8 @@ unsigned int bitget_1bit()
       {
 	 bitdat.bitbuf = (bitdat.bitbuf << 8) | *bitdat.bs_ptr++;
 	 bitdat.bits += 8;
-      }
-   }
+     }
+  }
    bitdat.bits--;
    x = bitdat.bitbuf >> bitdat.bits;
    bitdat.bitbuf -= x << bitdat.bits;
@@ -273,7 +273,7 @@ static void Xform_mono(void *pcm, int igr)
       n1 = 0;
       if (side_info.gr[igr][0].mixed_block_flag)
 	 n1 = pMP3Stream->sfBandIndex[0][pMP3Stream->ncbl_mixed - 1];
-   }
+  }
    if (n1 > pMP3Stream->band_limit)
       n1 = pMP3Stream->band_limit;
    if (n2 > pMP3Stream->band_limit)
@@ -298,7 +298,7 @@ static void Xform_dual_right(void *pcm, int igr)
       n1 = 0;
       if (side_info.gr[igr][1].mixed_block_flag)
 	 n1 = pMP3Stream->sfBandIndex[0][pMP3Stream->ncbl_mixed - 1];
-   }
+  }
    if (n1 > pMP3Stream->band_limit)
       n1 = pMP3Stream->band_limit;
    if (n2 > pMP3Stream->band_limit)
@@ -326,7 +326,7 @@ static void Xform_dual(void *pcm, int igr)
 	 n1 = 0;
 	 if (side_info.gr[igr][ch].mixed_block_flag)
 	    n1 = pMP3Stream->sfBandIndex[0][pMP3Stream->ncbl_mixed - 1];
-      }
+     }
       if (n1 > pMP3Stream->band_limit)
 	 n1 = pMP3Stream->band_limit;
       if (n2 > pMP3Stream->band_limit)
@@ -335,7 +335,7 @@ static void Xform_dual(void *pcm, int igr)
        yout, side_info.gr[igr][ch].block_type, n1, n2, nsamp[igr_prev][ch]);
       FreqInvert(yout, nsamp[igr][ch]);
       pMP3Stream->sbt_L3(yout, pcm, ch);
-   }
+  }
 
 }
 /*--------------------------------------------------------------------*/
@@ -361,7 +361,7 @@ static void Xform_dual_mono(void *pcm, int igr)
       sum_f_bands(pMP3Stream->sample[0][igr], pMP3Stream->sample[1][igr], n2);
       n3 = nsamp[igr][0] = hybrid(pMP3Stream->sample[0][igr], pMP3Stream->sample[0][igr_prev],
 	 yout, side_info.gr[igr][0].block_type, n1, n2, nsamp[igr_prev][0]);
-   }
+  }
    else
    {				/* transform and then sum (not tested - never happens in test) */
 /*-- left chan --*/
@@ -371,7 +371,7 @@ static void Xform_dual_mono(void *pcm, int igr)
 	 n1 = 0;		/* long bands */
 	 if (side_info.gr[igr][0].mixed_block_flag)
 	    n1 = pMP3Stream->sfBandIndex[0][pMP3Stream->ncbl_mixed - 1];
-      }
+     }
       n3 = nsamp[igr][0] = hybrid(pMP3Stream->sample[0][igr], pMP3Stream->sample[0][igr_prev],
 	 yout, side_info.gr[igr][0].block_type, n1, n2, nsamp[igr_prev][0]);
 /*-- right chan --*/
@@ -381,12 +381,12 @@ static void Xform_dual_mono(void *pcm, int igr)
 	 n1 = 0;		/* long bands */
 	 if (side_info.gr[igr][1].mixed_block_flag)
 	    n1 = pMP3Stream->sfBandIndex[0][pMP3Stream->ncbl_mixed - 1];
-      }
+     }
       nsamp[igr][1] = hybrid_sum(pMP3Stream->sample[1][igr], pMP3Stream->sample[0][igr],
 			     yout, side_info.gr[igr][1].block_type, n1, n2);
       if (n3 < nsamp[igr][1])
 	 n1 = nsamp[igr][1];
-   }
+  }
 
 /*--------*/
    FreqInvert(yout, n3);
@@ -430,13 +430,13 @@ static int unpack_side_MPEG1()
    {
       bitget(20);		/* skip crc */
       pMP3Stream->crcbytes = 2;
-   }
+  }
 
    if (br_index > 0)		/* pMP3Stream->framebytes fixed for free format */
 	{
       pMP3Stream->framebytes =
 	 2880 * mp_br_tableL3[pMP3Stream->id][br_index] / mp_sr20_table[pMP3Stream->id][pMP3Stream->sr_index];
-   }
+  }
 
    side_info.main_data_begin = bitget(9);
    if (side_info.mode == 3)
@@ -446,7 +446,7 @@ static int unpack_side_MPEG1()
 //      stereo_flag = 0;
       side_bytes = (4 + 17);
 /*-- with header --*/
-   }
+  }
    else
    {
       side_info.private_bits = bitget(3);
@@ -454,7 +454,7 @@ static int unpack_side_MPEG1()
 //      stereo_flag = 1;
       side_bytes = (4 + 32);
 /*-- with header --*/
-   }
+  }
    for (ch = 0; ch < pMP3Stream->nchan; ch++)
       side_info.scfsi[ch] = bitget(4);
 /* this always 0 (both igr) for short blocks */
@@ -480,11 +480,11 @@ static int unpack_side_MPEG1()
 	    side_info.gr[igr][ch].subblock_gain[1] = bitget(3);
 	    side_info.gr[igr][ch].subblock_gain[2] = bitget(3);
 	  /* region count set in terms of long block cb's/bands */
-	  /* r1 set so r0+r1+1 = 21 (lookup produces 576 bands ) */
+	  /* r1 set so r0+r1+1 = 21 (lookup produces 576 bands) */
 	  /* if(window_switching_flag) always 36 samples in region0 */
 	    side_info.gr[igr][ch].region0_count = (8 - 1);	/* 36 samples */
 	    side_info.gr[igr][ch].region1_count = 20 - (8 - 1);
-	 }
+	}
 	 else
 	 {
 	    side_info.gr[igr][ch].mixed_block_flag = 0;
@@ -494,12 +494,12 @@ static int unpack_side_MPEG1()
 	    side_info.gr[igr][ch].table_select[2] = bitget(5);
 	    side_info.gr[igr][ch].region0_count = bitget(4);
 	    side_info.gr[igr][ch].region1_count = bitget(3);
-	 }
+	}
 	 side_info.gr[igr][ch].preflag = bitget(1);
 	 side_info.gr[igr][ch].scalefac_scale = bitget(1);
 	 side_info.gr[igr][ch].count1table_select = bitget(1);
-      }
-   }
+     }
+  }
 
 
 
@@ -541,7 +541,7 @@ static int unpack_side_MPEG2(int igr)
    {
       bitget(20);		/* skip crc */
       pMP3Stream->crcbytes = 2;
-   }
+  }
 
    if (br_index > 0)
    {				/* pMP3Stream->framebytes fixed for free format */
@@ -549,14 +549,14 @@ static int unpack_side_MPEG2(int igr)
       {
 	 pMP3Stream->framebytes =
 	    1440 * mp_br_tableL3[pMP3Stream->id][br_index] / mp_sr20_table[pMP3Stream->id][pMP3Stream->sr_index];
-      }
+     }
       else
       {
 	 pMP3Stream->framebytes =
 	    2880 * mp_br_tableL3[pMP3Stream->id][br_index] / mp_sr20_table[pMP3Stream->id][pMP3Stream->sr_index];
-       //if( pMP3Stream->sr_index == 2 ) return 0;  // fail mpeg25 8khz
-      }
-   }
+       //if(pMP3Stream->sr_index == 2) return 0;  // fail mpeg25 8khz
+     }
+  }
    side_info.main_data_begin = bitget(8);
    if (side_info.mode == 3)
    {
@@ -565,7 +565,7 @@ static int unpack_side_MPEG2(int igr)
 //      stereo_flag = 0;
       side_bytes = (4 + 9);
 /*-- with header --*/
-   }
+  }
    else
    {
       side_info.private_bits = bitget(2);
@@ -573,7 +573,7 @@ static int unpack_side_MPEG2(int igr)
 //      stereo_flag = 1;
       side_bytes = (4 + 17);
 /*-- with header --*/
-   }
+  }
    side_info.scfsi[1] = side_info.scfsi[0] = 0;
 
 
@@ -596,7 +596,7 @@ static int unpack_side_MPEG2(int igr)
 	 side_info.gr[igr][ch].subblock_gain[1] = bitget(3);
 	 side_info.gr[igr][ch].subblock_gain[2] = bitget(3);
        /* region count set in terms of long block cb's/bands  */
-       /* r1 set so r0+r1+1 = 21 (lookup produces 576 bands ) */
+       /* r1 set so r0+r1+1 = 21 (lookup produces 576 bands) */
        /* bt=1 or 3       54 samples */
        /* bt=2 mixed=0    36 samples */
        /* bt=2 mixed=1    54 (8 long sf) samples? or maybe 36 */
@@ -607,13 +607,13 @@ static int unpack_side_MPEG2(int igr)
 	 {
 	    side_info.gr[igr][ch].region0_count = (6 - 1);	/* 36 samples */
 	    side_info.gr[igr][ch].region1_count = 20 - (6 - 1);
-	 }
+	}
 	 else
 	 {			/* long block type 1 or 3 */
 	    side_info.gr[igr][ch].region0_count = (8 - 1);	/* 54 samples */
 	    side_info.gr[igr][ch].region1_count = 20 - (8 - 1);
-	 }
-      }
+	}
+     }
       else
       {
 	 side_info.gr[igr][ch].mixed_block_flag = 0;
@@ -623,11 +623,11 @@ static int unpack_side_MPEG2(int igr)
 	 side_info.gr[igr][ch].table_select[2] = bitget(5);
 	 side_info.gr[igr][ch].region0_count = bitget(4);
 	 side_info.gr[igr][ch].region1_count = bitget(3);
-      }
+     }
       side_info.gr[igr][ch].preflag = 0;
       side_info.gr[igr][ch].scalefac_scale = bitget(1);
       side_info.gr[igr][ch].count1table_select = bitget(1);
-   }
+  }
 
 /* return  bytes in header + side info */
    return side_bytes;
@@ -693,8 +693,8 @@ static void unpack_main(unsigned char *pcm, int igr)
       {				// bad data overrun
 
 	 memset(pMP3Stream->sample[ch][igr], 0, sizeof(SAMPLE) * (576));
-      }
-   }
+     }
+  }
 
 
 
@@ -705,7 +705,7 @@ static void unpack_main(unsigned char *pcm, int igr)
 	      &nsamp[igr][ch],	/* nsamp updated for shorts */
 	      &sf[igr][ch], &side_info.gr[igr][ch],
 	      &cb_info[igr][ch], pMP3Stream->ncbl_mixed);
-   }
+  }
 
 /*--- ms stereo processing  ---*/
    if (pMP3Stream->ms_mode)
@@ -715,13 +715,13 @@ static void unpack_main(unsigned char *pcm, int igr)
 	 m0 = nsamp[igr][0];	/* process to longer of left/right */
 	 if (m0 < nsamp[igr][1])
 	    m0 = nsamp[igr][1];
-      }
+     }
       else
       {				/* process to last cb in right */
 	 m0 = pMP3Stream->sfBandIndex[cb_info[igr][1].cbtype][cb_info[igr][1].cbmax];
-      }
+     }
       ms_process(pMP3Stream->sample[0][igr], m0);
-   }
+  }
 
 /*--- is stereo processing  ---*/
    if (pMP3Stream->is_mode)
@@ -733,7 +733,7 @@ static void unpack_main(unsigned char *pcm, int igr)
 	 is_process_MPEG2(pMP3Stream->sample[0][igr], &sf[igr][1],
 			  cb_info[igr], &is_sf_info,
 			  nsamp[igr][0], pMP3Stream->ms_mode);
-   }
+  }
 
 /*-- adjust ms and is modes to max of left/right */
    if (side_info.mode_ext)
@@ -742,7 +742,7 @@ static void unpack_main(unsigned char *pcm, int igr)
 	 nsamp[igr][0] = nsamp[igr][1];
       else
 	 nsamp[igr][1] = nsamp[igr][0];
-   }
+  }
 
 /*--- antialias ---*/
    for (ch = 0; ch < pMP3Stream->nchan; ch++)
@@ -759,7 +759,7 @@ static void unpack_main(unsigned char *pcm, int igr)
       n1 = 18 * n1 + 8;		/* update number of samples */
       if (n1 > nsamp[igr][ch])
 	 nsamp[igr][ch] = n1;
-   }
+  }
 
 
 
@@ -818,7 +818,7 @@ w---------------------------------------------*/
       memmove(pMP3Stream->buf, pMP3Stream->buf + pMP3Stream->buf_ptr0, side_info.main_data_begin);
       pMP3Stream->buf_ptr0 = 0;
       pMP3Stream->buf_ptr1 = side_info.main_data_begin;
-   }
+  }
    nbytes = padframebytes - side_bytes - pMP3Stream->crcbytes;
 
    // RAK: This is no bueno. :-(
@@ -826,7 +826,7 @@ w---------------------------------------------*/
 	{
 	    in_out.in_bytes = 0;
 		 return in_out;
-   }
+  }
 
 	if (bFastEstimateOnly)
 	{
@@ -845,13 +845,13 @@ w---------------------------------------------*/
       unpack_main(pcm, 0);
       unpack_main(pcm + pMP3Stream->half_outbytes, 1);
       in_out.out_bytes = pMP3Stream->outbytes;
-   }
+  }
    else
    {
       memset(pcm, pMP3Stream->zero_level_pcm, pMP3Stream->outbytes);	/* fill out skipped frames */
       in_out.out_bytes = pMP3Stream->outbytes;
 /* iframe--;  in_out.out_bytes = 0;  // test test */
-   }
+  }
 
    return in_out;
 }
@@ -876,7 +876,7 @@ IN_OUT L3audio_decode_MPEG2(unsigned char *bs, unsigned char *pcm)
    in_out.out_bytes = 0;
    sync = bitget(12);
 
-// if( sync != 0xFFF ) return in_out;       /* sync fail */
+// if(sync != 0xFFF) return in_out;       /* sync fail */
 
    pMP3Stream->mpeg25_flag = 0;
    if (sync != 0xFFF)
@@ -884,7 +884,7 @@ IN_OUT L3audio_decode_MPEG2(unsigned char *bs, unsigned char *pcm)
       pMP3Stream->mpeg25_flag = 1;		/* mpeg 2.5 sync */
       if (sync != 0xFFE)
 	 return in_out;		/* sync fail */
-   }
+  }
 /*-----------*/
 
 
@@ -899,14 +899,14 @@ IN_OUT L3audio_decode_MPEG2(unsigned char *bs, unsigned char *pcm)
       memmove(pMP3Stream->buf, pMP3Stream->buf + pMP3Stream->buf_ptr0, side_info.main_data_begin);
       pMP3Stream->buf_ptr0 = 0;
       pMP3Stream->buf_ptr1 = side_info.main_data_begin;
-   }
+  }
    nbytes = padframebytes - side_bytes - pMP3Stream->crcbytes;
    // RAK: This is no bueno. :-(
 	if (nbytes < 0 || nbytes > NBUF)
 	{
 	    in_out.in_bytes = 0;
 		 return in_out;
-   }
+  }
 
 	if (bFastEstimateOnly)
 	{
@@ -923,13 +923,13 @@ IN_OUT L3audio_decode_MPEG2(unsigned char *bs, unsigned char *pcm)
       pMP3Stream->main_pos_bit = pMP3Stream->buf_ptr0 << 3;
       unpack_main(pcm, igr);
       in_out.out_bytes = pMP3Stream->outbytes;
-   }
+  }
    else
    {
       memset(pcm, pMP3Stream->zero_level_pcm, pMP3Stream->outbytes);	/* fill out skipped frames */
       in_out.out_bytes = pMP3Stream->outbytes;
 // iframe--;  in_out.out_bytes = 0; return in_out;// test test */
-   }
+  }
 
 
 
@@ -955,67 +955,67 @@ sfBandIndexTable[3][3] =
       {
 	 {
 	    0, 6, 12, 18, 24, 30, 36, 44, 54, 66, 80, 96, 116, 140, 168, 200, 238, 284, 336, 396, 464, 522, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 4, 8, 12, 18, 24, 32, 42, 56, 74, 100, 132, 174, 192
-	 }
-      }
+	}
+     }
       ,
       {
 	 {
 	    0, 6, 12, 18, 24, 30, 36, 44, 54, 66, 80, 96, 114, 136, 162, 194, 232, 278, 332, 394, 464, 540, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 4, 8, 12, 18, 26, 36, 48, 62, 80, 104, 136, 180, 192
-	 }
-      }
+	}
+     }
       ,
       {
 	 {
 	    0, 6, 12, 18, 24, 30, 36, 44, 54, 66, 80, 96, 116, 140, 168, 200, 238, 284, 336, 396, 464, 522, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 4, 8, 12, 18, 26, 36, 48, 62, 80, 104, 134, 174, 192
-	 }
-      }
+	}
+     }
       ,
-   }
+  }
    ,
 /* mpeg-1 */
    {
       {
 	 {
 	    0, 4, 8, 12, 16, 20, 24, 30, 36, 44, 52, 62, 74, 90, 110, 134, 162, 196, 238, 288, 342, 418, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 4, 8, 12, 16, 22, 30, 40, 52, 66, 84, 106, 136, 192
-	 }
-      }
+	}
+     }
       ,
       {
 	 {
 	    0, 4, 8, 12, 16, 20, 24, 30, 36, 42, 50, 60, 72, 88, 106, 128, 156, 190, 230, 276, 330, 384, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 4, 8, 12, 16, 22, 28, 38, 50, 64, 80, 100, 126, 192
-	 }
-      }
+	}
+     }
       ,
       {
 	 {
 	    0, 4, 8, 12, 16, 20, 24, 30, 36, 44, 54, 66, 82, 102, 126, 156, 194, 240, 296, 364, 448, 550, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 4, 8, 12, 16, 22, 30, 42, 58, 78, 104, 138, 180, 192
-	 }
-      }
-   }
+	}
+     }
+  }
    ,
 
 /* mpeg-2.5, 11 & 12 KHz seem ok, 8 ok */
@@ -1023,35 +1023,35 @@ sfBandIndexTable[3][3] =
       {
 	 {
 	    0, 6, 12, 18, 24, 30, 36, 44, 54, 66, 80, 96, 116, 140, 168, 200, 238, 284, 336, 396, 464, 522, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 4, 8, 12, 18, 26, 36, 48, 62, 80, 104, 134, 174, 192
-	 }
-      }
+	}
+     }
       ,
       {
 	 {
 	    0, 6, 12, 18, 24, 30, 36, 44, 54, 66, 80, 96, 116, 140, 168, 200, 238, 284, 336, 396, 464, 522, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 4, 8, 12, 18, 26, 36, 48, 62, 80, 104, 134, 174, 192
-	 }
-      }
+	}
+     }
       ,
 // this 8khz table, and only 8khz, from mpeg123)
       {
 	 {
 	    0, 12, 24, 36, 48, 60, 72, 88, 108, 132, 160, 192, 232, 280, 336, 400, 476, 566, 568, 570, 572, 574, 576
-	 }
+	}
 	 ,
 	 {
 	    0, 8, 16, 24, 36, 52, 72, 96, 124, 160, 162, 164, 166, 192
-	 }
-      }
+	}
+     }
       ,
-   }
+  }
    ,
 };
 
@@ -1074,19 +1074,19 @@ void sbtB8_dual_L3(float *sample, unsigned char *pcm, int ch);
 
 static const SBT_FUNCTION sbt_table[2][3][2] =
 {
-{{ (SBT_FUNCTION) sbt_mono_L3,
-   (SBT_FUNCTION) sbt_dual_L3 } ,
- { (SBT_FUNCTION) sbt16_mono_L3,
-   (SBT_FUNCTION) sbt16_dual_L3 } ,
- { (SBT_FUNCTION) sbt8_mono_L3,
-   (SBT_FUNCTION) sbt8_dual_L3 }} ,
+{{(SBT_FUNCTION) sbt_mono_L3,
+   (SBT_FUNCTION) sbt_dual_L3} ,
+ {(SBT_FUNCTION) sbt16_mono_L3,
+   (SBT_FUNCTION) sbt16_dual_L3} ,
+ {(SBT_FUNCTION) sbt8_mono_L3,
+   (SBT_FUNCTION) sbt8_dual_L3}} ,
 /*-- 8 bit output -*/
-{{ (SBT_FUNCTION) sbtB_mono_L3,
-   (SBT_FUNCTION) sbtB_dual_L3 },
- { (SBT_FUNCTION) sbtB16_mono_L3,
-   (SBT_FUNCTION) sbtB16_dual_L3 },
- { (SBT_FUNCTION) sbtB8_mono_L3,
-   (SBT_FUNCTION) sbtB8_dual_L3 }}
+{{(SBT_FUNCTION) sbtB_mono_L3,
+   (SBT_FUNCTION) sbtB_dual_L3},
+ {(SBT_FUNCTION) sbtB16_mono_L3,
+   (SBT_FUNCTION) sbtB16_dual_L3},
+ {(SBT_FUNCTION) sbtB8_mono_L3,
+   (SBT_FUNCTION) sbtB8_dual_L3}}
 };
 
 
@@ -1171,12 +1171,12 @@ int L3audio_decode_init(MPEG_HEAD * h, int framebytes_arg,
    {
       pMP3Stream->band_limit12 = 3 * sfBandIndexTable[k][h->sr_index].s[13];
       pMP3Stream->band_limit = pMP3Stream->band_limit21 = sfBandIndexTable[k][h->sr_index].l[22];
-   }
+  }
    else
    {
       pMP3Stream->band_limit12 = 3 * sfBandIndexTable[k][h->sr_index].s[12];
       pMP3Stream->band_limit = pMP3Stream->band_limit21 = sfBandIndexTable[k][h->sr_index].l[21];
-   }
+  }
    pMP3Stream->band_limit += 8;		/* allow for antialias */
    if (pMP3Stream->band_limit > limit)
       pMP3Stream->band_limit = limit;
@@ -1275,9 +1275,9 @@ int L3audio_decode_init(MPEG_HEAD * h, int framebytes_arg,
 	 {
 	    pMP3Stream->sample[j][k][i].x = 0.0f;
 	    pMP3Stream->sample[j][k][i].s = 0;
-	 }
-      }
-   }
+	}
+     }
+  }
 
    if (h->id == 1)
       pMP3Stream->decode_function = L3audio_decode_MPEG1;

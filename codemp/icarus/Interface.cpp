@@ -31,7 +31,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "interface.h"
 /*
-void Interface_Init( interface_export_t *pe )
+void Interface_Init(interface_export_t *pe)
 {
 
 	//TODO: This is where you link up all your functions to the engine

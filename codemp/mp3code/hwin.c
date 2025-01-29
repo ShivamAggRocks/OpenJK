@@ -82,7 +82,7 @@ int hybrid(float xin[], float xprev[], float y[18][32],
       {
 	 y[j][i] = x0[j] + win[btype][j] * x[9 + j];
 	 y[9 + j][i] = x0[9 + j] + win[btype][9 + j] * x[17 - j];
-      }
+     }
     /* window x for next time x0 */
       for (j = 0; j < 4; j++)
       {
@@ -92,14 +92,14 @@ int hybrid(float xin[], float xprev[], float y[18][32],
 	 x[8 - j] = win[btype][(18 + 8) - j] * xa;
 	 x[9 + j] = win[btype][(18 + 9) + j] * xa;
 	 x[17 - j] = win[btype][(18 + 17) - j] * xb;
-      }
+     }
       xa = x[j];
       x[j] = win[btype][18 + j] * xa;
       x[9 + j] = win[btype][(18 + 9) + j] * xa;
 
       x += 18;
       x0 += 18;
-   }
+  }
 
 /*-- do short blocks (if any) --*/
    n = (ntot + 17) / 18;	/* number of 6 pt dct's triples to do */
@@ -116,26 +116,26 @@ int hybrid(float xin[], float xprev[], float y[18][32],
 
 	 y[12 + j][i] = x0[12 + j] + win[2][6 + j] * x[2 - j] + win[2][j] * x[(6 + 3) + j];
 	 y[15 + j][i] = x0[15 + j] + win[2][9 + j] * x[j] + win[2][3 + j] * x[(6 + 5) - j];
-      }
+     }
     /* window x for next time x0 */
       for (j = 0; j < 3; j++)
       {
 	 x[j] = win[2][6 + j] * x[(6 + 2) - j] + win[2][j] * x[(12 + 3) + j];
 	 x[3 + j] = win[2][9 + j] * x[6 + j] + win[2][3 + j] * x[(12 + 5) - j];
-      }
+     }
       for (j = 0; j < 3; j++)
       {
 	 x[6 + j] = win[2][6 + j] * x[(12 + 2) - j];
 	 x[9 + j] = win[2][9 + j] * x[12 + j];
-      }
+     }
       for (j = 0; j < 3; j++)
       {
 	 x[12 + j] = 0.0f;
 	 x[15 + j] = 0.0f;
-      }
+     }
       x += 18;
       x0 += 18;
-   }
+  }
 
 /*--- overlap prev if prev longer that current --*/
    n = (nprev + 17) / 18;
@@ -144,7 +144,7 @@ int hybrid(float xin[], float xprev[], float y[18][32],
       for (j = 0; j < 18; j++)
 	 y[j][i] = x0[j];
       x0 += 18;
-   }
+  }
    nout = 18 * i;
 
 /*--- clear remaining only to band limit --*/
@@ -152,7 +152,7 @@ int hybrid(float xin[], float xprev[], float y[18][32],
    {
       for (j = 0; j < 18; j++)
 	 y[j][i] = 0.0f;
-   }
+  }
 
    return nout;
 }
@@ -187,7 +187,7 @@ int hybrid_sum(float xin[], float xin_left[], float y[18][32],
       {
 	 y[j][i] += win[btype][j] * x[9 + j];
 	 y[9 + j][i] += win[btype][9 + j] * x[17 - j];
-      }
+     }
     /* window x for next time x0 */
       for (j = 0; j < 4; j++)
       {
@@ -197,14 +197,14 @@ int hybrid_sum(float xin[], float xin_left[], float y[18][32],
 	 x0[8 - j] += win[btype][(18 + 8) - j] * xa;
 	 x0[9 + j] += win[btype][(18 + 9) + j] * xa;
 	 x0[17 - j] += win[btype][(18 + 17) - j] * xb;
-      }
+     }
       xa = x[j];
       x0[j] += win[btype][18 + j] * xa;
       x0[9 + j] += win[btype][(18 + 9) + j] * xa;
 
       x += 18;
       x0 += 18;
-   }
+  }
 
 /*-- do short blocks (if any) --*/
    n = (ntot + 17) / 18;	/* number of 6 pt dct's triples to do */
@@ -218,21 +218,21 @@ int hybrid_sum(float xin[], float xin_left[], float y[18][32],
 
 	 y[12 + j][i] += win[2][6 + j] * x[2 - j] + win[2][j] * x[(6 + 3) + j];
 	 y[15 + j][i] += win[2][9 + j] * x[j] + win[2][3 + j] * x[(6 + 5) - j];
-      }
+     }
     /* window x for next time */
       for (j = 0; j < 3; j++)
       {
 	 x0[j] += win[2][6 + j] * x[(6 + 2) - j] + win[2][j] * x[(12 + 3) + j];
 	 x0[3 + j] += win[2][9 + j] * x[6 + j] + win[2][3 + j] * x[(12 + 5) - j];
-      }
+     }
       for (j = 0; j < 3; j++)
       {
 	 x0[6 + j] += win[2][6 + j] * x[(12 + 2) - j];
 	 x0[9 + j] += win[2][9 + j] * x[12 + j];
-      }
+     }
       x += 18;
       x0 += 18;
-   }
+  }
 
    nout = 18 * i;
 
@@ -258,7 +258,7 @@ void FreqInvert(float y[18][32], int n)
       for (i = 0; i < n; i += 2)
       {
 	 y[1 + j][1 + i] = -y[1 + j][1 + i];
-      }
-   }
+     }
+  }
 }
 /*--------------------------------------------------------------------*/

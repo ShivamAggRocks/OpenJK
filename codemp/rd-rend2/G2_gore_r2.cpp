@@ -32,9 +32,9 @@ R2GoreTextureCoordinates::R2GoreTextureCoordinates()
 
 R2GoreTextureCoordinates::~R2GoreTextureCoordinates()
 {
-	for ( int i = 0; i < MAX_LODS; i++ )
+	for (int i = 0; i < MAX_LODS; i++)
 	{
-		if ( tex[i] )
+		if (tex[i])
 		{
 			ri.Z_Free(tex[i]->verts);
 			tex[i]->verts = NULL;

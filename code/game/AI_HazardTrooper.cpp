@@ -84,89 +84,89 @@ enum
 	SPEECH_YELL,
 	SPEECH_PUSHED
 };
-extern void G_AddVoiceEvent( gentity_t *self, int event, int speakDebounceTime );
-extern void CG_DrawEdge( vec3_t start, vec3_t end, int type );
-static void HT_Speech( gentity_t *self, int speechType, float failChance )
+extern void G_AddVoiceEvent(gentity_t *self, int event, int speakDebounceTime);
+extern void CG_DrawEdge(vec3_t start, vec3_t end, int type);
+static void HT_Speech(gentity_t *self, int speechType, float failChance)
 {
-	if ( Q_flrand(0.0f, 1.0f) < failChance )
+	if (Q_flrand(0.0f, 1.0f) < failChance)
 	{
 		return;
 	}
 
-	if ( failChance >= 0 )
+	if (failChance >= 0)
 	{//a negative failChance makes it always talk
-		if ( self->NPC->group )
+		if (self->NPC->group)
 		{//group AI speech debounce timer
-			if ( self->NPC->group->speechDebounceTime > level.time )
+			if (self->NPC->group->speechDebounceTime > level.time)
 			{
 				return;
 			}
 			/*
-			else if ( !self->NPC->group->enemy )
+			else if (!self->NPC->group->enemy)
 			{
-				if ( groupSpeechDebounceTime[self->client->playerTeam] > level.time )
+				if (groupSpeechDebounceTime[self->client->playerTeam] > level.time)
 				{
 					return;
 				}
 			}
 			*/
 		}
-		else if ( !TIMER_Done( self, "chatter" ) )
+		else if (!TIMER_Done(self, "chatter"))
 		{//personal timer
 			return;
 		}
 	}
 
-	TIMER_Set( self, "chatter", Q_irand( 2000, 4000 ) );
+	TIMER_Set(self, "chatter", Q_irand(2000, 4000));
 
-	if ( self->NPC->blockedSpeechDebounceTime > level.time )
+	if (self->NPC->blockedSpeechDebounceTime > level.time)
 	{
 		return;
 	}
 
-	switch( speechType )
+	switch(speechType)
 	{
 	case SPEECH_CHASE:
-		G_AddVoiceEvent( self, Q_irand(EV_CHASE1, EV_CHASE3), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_CHASE1, EV_CHASE3), 2000);
 		break;
 	case SPEECH_CONFUSED:
-		G_AddVoiceEvent( self, Q_irand(EV_CONFUSE1, EV_CONFUSE3), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_CONFUSE1, EV_CONFUSE3), 2000);
 		break;
 	case SPEECH_COVER:
-		G_AddVoiceEvent( self, Q_irand(EV_COVER1, EV_COVER5), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_COVER1, EV_COVER5), 2000);
 		break;
 	case SPEECH_DETECTED:
-		G_AddVoiceEvent( self, Q_irand(EV_DETECTED1, EV_DETECTED5), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_DETECTED1, EV_DETECTED5), 2000);
 		break;
 	case SPEECH_GIVEUP:
-		G_AddVoiceEvent( self, Q_irand(EV_GIVEUP1, EV_GIVEUP4), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_GIVEUP1, EV_GIVEUP4), 2000);
 		break;
 	case SPEECH_LOOK:
-		G_AddVoiceEvent( self, Q_irand(EV_LOOK1, EV_LOOK2), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_LOOK1, EV_LOOK2), 2000);
 		break;
 	case SPEECH_LOST:
-		G_AddVoiceEvent( self, EV_LOST1, 2000 );
+		G_AddVoiceEvent(self, EV_LOST1, 2000);
 		break;
 	case SPEECH_OUTFLANK:
-		G_AddVoiceEvent( self, Q_irand(EV_OUTFLANK1, EV_OUTFLANK2), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_OUTFLANK1, EV_OUTFLANK2), 2000);
 		break;
 	case SPEECH_ESCAPING:
-		G_AddVoiceEvent( self, Q_irand(EV_ESCAPING1, EV_ESCAPING3), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_ESCAPING1, EV_ESCAPING3), 2000);
 		break;
 	case SPEECH_SIGHT:
-		G_AddVoiceEvent( self, Q_irand(EV_SIGHT1, EV_SIGHT3), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_SIGHT1, EV_SIGHT3), 2000);
 		break;
 	case SPEECH_SOUND:
-		G_AddVoiceEvent( self, Q_irand(EV_SOUND1, EV_SOUND3), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_SOUND1, EV_SOUND3), 2000);
 		break;
 	case SPEECH_SUSPICIOUS:
-		G_AddVoiceEvent( self, Q_irand(EV_SUSPICIOUS1, EV_SUSPICIOUS5), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_SUSPICIOUS1, EV_SUSPICIOUS5), 2000);
 		break;
 	case SPEECH_YELL:
-		G_AddVoiceEvent( self, Q_irand( EV_ANGER1, EV_ANGER3 ), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_ANGER1, EV_ANGER3), 2000);
 		break;
 	case SPEECH_PUSHED:
-		G_AddVoiceEvent( self, Q_irand( EV_PUSHED1, EV_PUSHED3 ), 2000 );
+		G_AddVoiceEvent(self, Q_irand(EV_PUSHED1, EV_PUSHED3), 2000);
 		break;
 	default:
 		break;
@@ -1497,8 +1497,8 @@ void		Trooper_Think(gentity_t* actor)
 			}
 		}
 
-		NPC_UpdateFiringAngles( qtrue, qtrue );
-		NPC_UpdateAngles( qtrue, qtrue );
+		NPC_UpdateFiringAngles(qtrue, qtrue);
+		NPC_UpdateAngles(qtrue, qtrue);
 
 		if (Trooper_Kneeling(actor))
 		{
@@ -1524,10 +1524,10 @@ NPC_BehaviorSet_Trooper
 -------------------------
 */
 ////////////////////////////////////////////////////////////////////////////////////////
-void NPC_BehaviorSet_Trooper( int bState )
+void NPC_BehaviorSet_Trooper(int bState)
 {
 	Trooper_UpdateTroop(NPC);
-	switch( bState )
+	switch(bState)
 	{
 	case BS_STAND_GUARD:
 	case BS_PATROL:
@@ -1562,7 +1562,7 @@ bool NPC_IsTrooper(gentity_t* actor)
 		actor->s.weapon &&
 		!!(actor->NPC->scriptFlags&SCF_NO_GROUPS)// &&
 //		 !(actor->NPC->scriptFlags&SCF_CHASE_ENEMIES)
-		 );
+		);
 }
 
 void NPC_LeaveTroop(gentity_t* actor)

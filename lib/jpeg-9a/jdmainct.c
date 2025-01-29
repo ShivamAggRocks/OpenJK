@@ -188,7 +188,7 @@ alloc_funny_pointers (j_decompress_ptr cinfo)
     mainp->xbuffer[0][ci] = xbuf;
     xbuf += rgroup * (M + 4);
     mainp->xbuffer[1][ci] = xbuf;
-  }
+ }
 }
 
 
@@ -217,12 +217,12 @@ make_funny_pointers (j_decompress_ptr cinfo)
     buf = mainp->buffer[ci];
     for (i = 0; i < rgroup * (M + 2); i++) {
       xbuf0[i] = xbuf1[i] = buf[i];
-    }
+   }
     /* In the second list, put the last four row groups in swapped order */
     for (i = 0; i < rgroup * 2; i++) {
       xbuf1[rgroup*(M-2) + i] = buf[rgroup*M + i];
       xbuf1[rgroup*M + i] = buf[rgroup*(M-2) + i];
-    }
+   }
     /* The wraparound pointers at top and bottom will be filled later
      * (see set_wraparound_pointers, below).  Initially we want the "above"
      * pointers to duplicate the first actual data line.  This only needs
@@ -230,8 +230,8 @@ make_funny_pointers (j_decompress_ptr cinfo)
      */
     for (i = 0; i < rgroup; i++) {
       xbuf0[i - rgroup] = xbuf0[0];
-    }
-  }
+   }
+ }
 }
 
 
@@ -258,8 +258,8 @@ set_wraparound_pointers (j_decompress_ptr cinfo)
       xbuf1[i - rgroup] = xbuf1[rgroup*(M+1) + i];
       xbuf0[rgroup*(M+2) + i] = xbuf0[i];
       xbuf1[rgroup*(M+2) + i] = xbuf1[i];
-    }
-  }
+   }
+ }
 }
 
 
@@ -288,15 +288,15 @@ set_bottom_pointers (j_decompress_ptr cinfo)
      */
     if (ci == 0) {
       mainp->rowgroups_avail = (JDIMENSION) ((rows_left-1) / rgroup + 1);
-    }
+   }
     /* Duplicate the last real sample row rgroup*2 times; this pads out the
      * last partial rowgroup and ensures at least one full rowgroup of context.
      */
     xbuf = mainp->xbuffer[mainp->whichptr][ci];
     for (i = 0; i < rgroup * 2; i++) {
       xbuf[rows_left + i] = xbuf[rows_left-1];
-    }
-  }
+   }
+ }
 }
 
 
@@ -317,10 +317,10 @@ start_pass_main (j_decompress_ptr cinfo, J_BUF_MODE pass_mode)
       mainp->whichptr = 0;	/* Read first iMCU row into xbuffer[0] */
       mainp->context_state = CTX_PREPARE_FOR_IMCU;
       mainp->iMCU_row_ctr = 0;
-    } else {
+   } else {
       /* Simple case with no context needed */
       mainp->pub.process_data = process_data_simple_main;
-    }
+   }
     mainp->buffer_full = FALSE;	/* Mark buffer empty */
     mainp->rowgroup_ctr = 0;
     break;
@@ -333,7 +333,7 @@ start_pass_main (j_decompress_ptr cinfo, J_BUF_MODE pass_mode)
   default:
     ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     break;
-  }
+ }
 }
 
 
@@ -355,7 +355,7 @@ process_data_simple_main (j_decompress_ptr cinfo,
     if (! (*cinfo->coef->decompress_data) (cinfo, mainp->buffer))
       return;			/* suspension forced, can do nothing more */
     mainp->buffer_full = TRUE;	/* OK, we have an iMCU row to work with */
-  }
+ }
 
   /* There are always min_DCT_scaled_size row groups in an iMCU row. */
   rowgroups_avail = (JDIMENSION) cinfo->min_DCT_v_scaled_size;
@@ -373,7 +373,7 @@ process_data_simple_main (j_decompress_ptr cinfo,
   if (mainp->rowgroup_ctr >= rowgroups_avail) {
     mainp->buffer_full = FALSE;
     mainp->rowgroup_ctr = 0;
-  }
+ }
 }
 
 
@@ -396,7 +396,7 @@ process_data_context_main (j_decompress_ptr cinfo,
       return;			/* suspension forced, can do nothing more */
     mainp->buffer_full = TRUE;	/* OK, we have an iMCU row to work with */
     mainp->iMCU_row_ctr++;	/* count rows received */
-  }
+ }
 
   /* Postprocessor typically will not swallow all the input data it is handed
    * in one call (due to filling the output buffer first).  Must be prepared
@@ -444,7 +444,7 @@ process_data_context_main (j_decompress_ptr cinfo,
     mainp->rowgroup_ctr = (JDIMENSION) (cinfo->min_DCT_v_scaled_size + 1);
     mainp->rowgroups_avail = (JDIMENSION) (cinfo->min_DCT_v_scaled_size + 2);
     mainp->context_state = CTX_POSTPONED_ROW;
-  }
+ }
 }
 
 
@@ -497,9 +497,9 @@ jinit_d_main_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
       ERREXIT(cinfo, JERR_NOTIMPL);
     alloc_funny_pointers(cinfo); /* Alloc space for xbuffer[] lists */
     ngroups = cinfo->min_DCT_v_scaled_size + 2;
-  } else {
+ } else {
     ngroups = cinfo->min_DCT_v_scaled_size;
-  }
+ }
 
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
        ci++, compptr++) {
@@ -509,5 +509,5 @@ jinit_d_main_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
       ((j_common_ptr) cinfo, JPOOL_IMAGE,
        compptr->width_in_blocks * ((JDIMENSION) compptr->DCT_h_scaled_size),
        (JDIMENSION) (rgroup * ngroups));
-  }
+ }
 }

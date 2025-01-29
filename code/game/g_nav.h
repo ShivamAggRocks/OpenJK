@@ -44,9 +44,9 @@ extern	int	 NAVDEBUG_curGoal;
 extern	bool NAVDEBUG_showPointLines;
 
 
-void CG_DrawNode( vec3_t origin, int type );
-void CG_DrawEdge( vec3_t start, vec3_t end, int type );
-void CG_DrawRadius( vec3_t origin, unsigned int radius, int type );
-void CG_DrawCombatPoint( vec3_t origin, int type );
+void CG_DrawNode(vec3_t origin, int type);
+void CG_DrawEdge(vec3_t start, vec3_t end, int type);
+void CG_DrawRadius(vec3_t origin, unsigned int radius, int type);
+void CG_DrawCombatPoint(vec3_t origin, int type);
 
 #endif //#ifndef __G_NAV_H__

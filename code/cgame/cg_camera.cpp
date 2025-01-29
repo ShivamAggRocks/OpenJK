@@ -34,18 +34,18 @@ extern qboolean	player_locked;
 
 extern gentity_t *G_Find (gentity_t *from, int fieldofs, const char *match);
 extern void G_UseTargets (gentity_t *ent, gentity_t *activator);
-void CGCam_FollowDisable( void );
-void CGCam_TrackDisable( void );
-void CGCam_Distance( float distance, qboolean initLerp );
-void CGCam_DistanceDisable( void );
-extern qboolean CG_CalcFOVFromX( float fov_x );
-extern void WP_SaberCatch( gentity_t *self, gentity_t *saber, qboolean switchToSaber );
+void CGCam_FollowDisable(void);
+void CGCam_TrackDisable(void);
+void CGCam_Distance(float distance, qboolean initLerp);
+void CGCam_DistanceDisable(void);
+extern qboolean CG_CalcFOVFromX(float fov_x);
+extern void WP_SaberCatch(gentity_t *self, gentity_t *saber, qboolean switchToSaber);
 
 /*
 TODO:
 CloseUp, FullShot & Longshot commands:
 
-  camera( CLOSEUP, <entity targetname>, angles(pitch yaw roll) )
+  camera(CLOSEUP, <entity targetname>, angles(pitch yaw roll))
   Will find the ent, apply angle offset to their head forward(minus pitch),
   get a preset distance away and set the FOV.  Trace to point, if less than
   1.0, put it there and open up FOV accordingly.
@@ -59,12 +59,12 @@ CGCam_Init
 -------------------------
 */
 
-void CGCam_Init( void )
+void CGCam_Init(void)
 {
 	extern qboolean qbVidRestartOccured;
 	if (!qbVidRestartOccured)
 	{
-		memset( &client_camera, 0, sizeof ( camera_t ) );
+		memset(&client_camera, 0, sizeof (camera_t));
 	}
 }
 
@@ -74,7 +74,7 @@ CGCam_Enable
 -------------------------
 */
 extern void CG_CalcVrect(void);
-void CGCam_Enable( void )
+void CGCam_Enable(void)
 {
 	client_camera.bar_alpha = 0.0f;
 	client_camera.bar_time = cg.time;
@@ -95,34 +95,34 @@ void CGCam_Enable( void )
 
 	client_camera.next_roff_time = 0;
 
-	if ( g_entities[0].inuse && g_entities[0].client )
+	if (g_entities[0].inuse && g_entities[0].client)
 	{
 		//Player zero not allowed to do anything
-		VectorClear( g_entities[0].client->ps.velocity );
+		VectorClear(g_entities[0].client->ps.velocity);
 		g_entities[0].contents = 0;
 
-		if ( cg.zoomMode )
+		if (cg.zoomMode)
 		{
 			// need to shut off some form of zooming
 			cg.zoomMode = 0;
 		}
 
-		if ( g_entities[0].client->ps.saberInFlight && g_entities[0].client->ps.saber[0].Active() )
+		if (g_entities[0].client->ps.saberInFlight && g_entities[0].client->ps.saber[0].Active())
 		{//saber is out
 			gentity_t *saberent = &g_entities[g_entities[0].client->ps.saberEntityNum];
-			if ( saberent )
+			if (saberent)
 			{
-				WP_SaberCatch( &g_entities[0], saberent, qfalse );
+				WP_SaberCatch(&g_entities[0], saberent, qfalse);
 			}
 		}
 
-		for ( int i = 0; i < NUM_FORCE_POWERS; i++ )
+		for (int i = 0; i < NUM_FORCE_POWERS; i++)
 		{//deactivate any active force powers
 			g_entities[0].client->ps.forcePowerDuration[i] = 0;
-extern void WP_ForcePowerStop( gentity_t *self, forcePowers_t forcePower );
-			if ( g_entities[0].client->ps.forcePowerDuration[i] || (g_entities[0].client->ps.forcePowersActive&( 1 << i )) )
+extern void WP_ForcePowerStop(gentity_t *self, forcePowers_t forcePower);
+			if (g_entities[0].client->ps.forcePowerDuration[i] || (g_entities[0].client->ps.forcePowersActive&(1 << i)))
 			{
-				WP_ForcePowerStop( &g_entities[0], (forcePowers_t)i );
+				WP_ForcePowerStop(&g_entities[0], (forcePowers_t)i);
 			}
 		}
 	}
@@ -133,7 +133,7 @@ CGCam_Disable
 -------------------------
 */
 
-void CGCam_Disable( void )
+void CGCam_Disable(void)
 {
 	in_camera = false;
 
@@ -148,22 +148,22 @@ void CGCam_Disable( void )
 
 	client_camera.info_state |= CAMERA_BAR_FADING;
 
-	if ( g_entities[0].inuse && g_entities[0].client )
+	if (g_entities[0].inuse && g_entities[0].client)
 	{
 		g_entities[0].contents = CONTENTS_BODY;//MASK_PLAYERSOLID;
 	}
 
-	gi.SendServerCommand( 0, "cts");
+	gi.SendServerCommand(0, "cts");
 
-	//if ( cg_skippingcin.integer )
+	//if (cg_skippingcin.integer)
 	{//We're skipping the cinematic and it's over now
 		gi.cvar_set("timescale", "1");
 		gi.cvar_set("skippingCinematic", "0");
 	}
 
 	//we just came out of camera, so update cg.refdef.vieworg out of the camera's origin so the snapshot will know our new ori
-	VectorCopy( g_entities[0].currentOrigin, cg.refdef.vieworg);
-	VectorCopy( g_entities[0].client->ps.viewangles, cg.refdefViewAngles );
+	VectorCopy(g_entities[0].currentOrigin, cg.refdef.vieworg);
+	VectorCopy(g_entities[0].client->ps.viewangles, cg.refdefViewAngles);
 }
 
 /*
@@ -172,10 +172,10 @@ CGCam_SetPosition
 -------------------------
 */
 
-void CGCam_SetPosition( vec3_t org )
+void CGCam_SetPosition(vec3_t org)
 {
-	VectorCopy( org, client_camera.origin );
-	VectorCopy( client_camera.origin, cg.refdef.vieworg );
+	VectorCopy(org, client_camera.origin);
+	VectorCopy(client_camera.origin, cg.refdef.vieworg);
 }
 
 /*
@@ -184,9 +184,9 @@ CGCam_Move
 -------------------------
 */
 
-void CGCam_Move( vec3_t dest, float duration )
+void CGCam_Move(vec3_t dest, float duration)
 {
-	if ( client_camera.info_state & CAMERA_ROFFING )
+	if (client_camera.info_state & CAMERA_ROFFING)
 	{
 		client_camera.info_state &= ~CAMERA_ROFFING;
 	}
@@ -194,16 +194,16 @@ void CGCam_Move( vec3_t dest, float duration )
 	CGCam_TrackDisable();
 	CGCam_DistanceDisable();
 
-	if ( !duration )
+	if (!duration)
 	{
 		client_camera.info_state &= ~CAMERA_MOVING;
-		CGCam_SetPosition( dest );
+		CGCam_SetPosition(dest);
 		return;
 	}
 
 	client_camera.info_state |= CAMERA_MOVING;
 
-	VectorCopy( dest, client_camera.origin2 );
+	VectorCopy(dest, client_camera.origin2);
 
 	client_camera.move_duration = duration;
 	client_camera.move_time = cg.time;
@@ -215,10 +215,10 @@ CGCam_SetAngles
 -------------------------
 */
 
-void CGCam_SetAngles( vec3_t ang )
+void CGCam_SetAngles(vec3_t ang)
 {
-	VectorCopy( ang, client_camera.angles );
-	VectorCopy(client_camera.angles, cg.refdefViewAngles );
+	VectorCopy(ang, client_camera.angles);
+	VectorCopy(client_camera.angles, cg.refdefViewAngles);
 }
 
 /*
@@ -227,7 +227,7 @@ CGCam_Pan
 -------------------------
 */
 
-void CGCam_Pan( vec3_t dest, vec3_t panDirection, float duration )
+void CGCam_Pan(vec3_t dest, vec3_t panDirection, float duration)
 {
 	//vec3_t	panDirection = {0, 0, 0};
 	int		i;
@@ -236,9 +236,9 @@ void CGCam_Pan( vec3_t dest, vec3_t panDirection, float duration )
 	CGCam_FollowDisable();
 	CGCam_DistanceDisable();
 
-	if ( !duration )
+	if (!duration)
 	{
-		CGCam_SetAngles( dest );
+		CGCam_SetAngles(dest);
 		client_camera.info_state &= ~CAMERA_PANNING;
 		return;
 	}
@@ -247,11 +247,11 @@ void CGCam_Pan( vec3_t dest, vec3_t panDirection, float duration )
 	//panDirection as well.  If a panDirection's axis value is
 	//zero, find the shortest difference for that axis.
 	//Store the delta in client_camera.angles2.
-	for( i = 0; i < 3; i++ )
+	for(i = 0; i < 3; i++)
 	{
-		dest[i] = AngleNormalize360( dest[i] );
-		delta1 = dest[i] - AngleNormalize360( client_camera.angles[i] );
-		if ( delta1 < 0 )
+		dest[i] = AngleNormalize360(dest[i]);
+		delta1 = dest[i] - AngleNormalize360(client_camera.angles[i]);
+		if (delta1 < 0)
 		{
 			delta2 = delta1 + 360;
 		}
@@ -259,9 +259,9 @@ void CGCam_Pan( vec3_t dest, vec3_t panDirection, float duration )
 		{
 			delta2 = delta1 - 360;
 		}
-		if ( !panDirection[i] )
+		if (!panDirection[i])
 		{//Didn't specify a direction, pick shortest
-			if( Q_fabs(delta1) < Q_fabs(delta2) )
+			if(Q_fabs(delta1) < Q_fabs(delta2))
 			{
 				client_camera.angles2[i] = delta1;
 			}
@@ -270,13 +270,13 @@ void CGCam_Pan( vec3_t dest, vec3_t panDirection, float duration )
 				client_camera.angles2[i] = delta2;
 			}
 		}
-		else if ( panDirection[i] < 0 )
+		else if (panDirection[i] < 0)
 		{
-			if( delta1 < 0 )
+			if(delta1 < 0)
 			{
 				client_camera.angles2[i] = delta1;
 			}
-			else if( delta1 > 0 )
+			else if(delta1 > 0)
 			{
 				client_camera.angles2[i] = delta2;
 			}
@@ -285,13 +285,13 @@ void CGCam_Pan( vec3_t dest, vec3_t panDirection, float duration )
 				client_camera.angles2[i] = 0;
 			}
 		}
-		else if ( panDirection[i] > 0 )
+		else if (panDirection[i] > 0)
 		{
-			if( delta1 > 0 )
+			if(delta1 > 0)
 			{
 				client_camera.angles2[i] = delta1;
 			}
-			else if( delta1 < 0 )
+			else if(delta1 < 0)
 			{
 				client_camera.angles2[i] = delta2;
 			}
@@ -301,7 +301,7 @@ void CGCam_Pan( vec3_t dest, vec3_t panDirection, float duration )
 			}
 		}
 	}
-	//VectorCopy( dest, client_camera.angles2 );
+	//VectorCopy(dest, client_camera.angles2);
 
 	client_camera.info_state |= CAMERA_PANNING;
 
@@ -315,7 +315,7 @@ CGCam_SetRoll
 -------------------------
 */
 
-void CGCam_SetRoll( float roll )
+void CGCam_SetRoll(float roll)
 {
 	client_camera.angles[2] = roll;
 }
@@ -326,19 +326,19 @@ CGCam_Roll
 -------------------------
 */
 
-void CGCam_Roll( float	dest, float duration )
+void CGCam_Roll(float	dest, float duration)
 {
-	if ( !duration )
+	if (!duration)
 	{
-		CGCam_SetRoll( dest );
+		CGCam_SetRoll(dest);
 		return;
 	}
 
 	//FIXME/NOTE: this will override current panning!!!
 	client_camera.info_state |= CAMERA_PANNING;
 
-	VectorCopy( client_camera.angles, client_camera.angles2 );
-	client_camera.angles2[2] = AngleDelta( dest, client_camera.angles[2] );
+	VectorCopy(client_camera.angles, client_camera.angles2);
+	client_camera.angles2[2] = AngleDelta(dest, client_camera.angles[2]);
 
 	client_camera.pan_duration = duration;
 	client_camera.pan_time = cg.time;
@@ -350,7 +350,7 @@ CGCam_SetFOV
 -------------------------
 */
 
-void CGCam_SetFOV( float FOV )
+void CGCam_SetFOV(float FOV)
 {
 	client_camera.FOV = FOV;
 }
@@ -361,11 +361,11 @@ CGCam_Zoom
 -------------------------
 */
 
-void CGCam_Zoom( float FOV, float duration )
+void CGCam_Zoom(float FOV, float duration)
 {
-	if ( !duration )
+	if (!duration)
 	{
-		CGCam_SetFOV( FOV );
+		CGCam_SetFOV(FOV);
 		return;
 	}
 	client_camera.info_state |= CAMERA_ZOOMING;
@@ -376,11 +376,11 @@ void CGCam_Zoom( float FOV, float duration )
 	client_camera.FOV_duration = duration;
 }
 
-void CGCam_Zoom2( float FOV, float FOV2, float duration )
+void CGCam_Zoom2(float FOV, float FOV2, float duration)
 {
-	if ( !duration )
+	if (!duration)
 	{
-		CGCam_SetFOV( FOV2 );
+		CGCam_SetFOV(FOV2);
 		return;
 	}
 	client_camera.info_state |= CAMERA_ZOOMING;
@@ -392,9 +392,9 @@ void CGCam_Zoom2( float FOV, float FOV2, float duration )
 	client_camera.FOV_duration = duration;
 }
 
-void CGCam_ZoomAccel( float initialFOV, float fovVelocity, float fovAccel, float duration)
+void CGCam_ZoomAccel(float initialFOV, float fovVelocity, float fovAccel, float duration)
 {
-	if ( !duration )
+	if (!duration)
 	{
 		return;
 	}
@@ -414,12 +414,12 @@ CGCam_Fade
 -------------------------
 */
 
-void CGCam_SetFade( vec4_t dest )
+void CGCam_SetFade(vec4_t dest)
 {//Instant completion
 	client_camera.info_state &= ~CAMERA_FADING;
 	client_camera.fade_duration = 0;
-	VectorCopy4( dest, client_camera.fade_source );
-	VectorCopy4( dest, client_camera.fade_color );
+	VectorCopy4(dest, client_camera.fade_source);
+	VectorCopy4(dest, client_camera.fade_color);
 }
 
 /*
@@ -428,16 +428,16 @@ CGCam_Fade
 -------------------------
 */
 
-void CGCam_Fade( vec4_t source, vec4_t dest, float duration )
+void CGCam_Fade(vec4_t source, vec4_t dest, float duration)
 {
-	if ( !duration )
+	if (!duration)
 	{
-		CGCam_SetFade( dest );
+		CGCam_SetFade(dest);
 		return;
 	}
 
-	VectorCopy4( source, client_camera.fade_source );
-	VectorCopy4( dest, client_camera.fade_dest );
+	VectorCopy4(source, client_camera.fade_source);
+	VectorCopy4(dest, client_camera.fade_dest);
 
 	client_camera.fade_duration = duration;
 	client_camera.fade_time = cg.time;
@@ -445,7 +445,7 @@ void CGCam_Fade( vec4_t source, vec4_t dest, float duration )
 	client_camera.info_state |= CAMERA_FADING;
 }
 
-void CGCam_FollowDisable( void )
+void CGCam_FollowDisable(void)
 {
 	client_camera.info_state &= ~CAMERA_FOLLOWING;
 	client_camera.cameraGroup[0] = 0;
@@ -453,13 +453,13 @@ void CGCam_FollowDisable( void )
 	client_camera.cameraGroupTag[0] = 0;
 }
 
-void CGCam_TrackDisable( void )
+void CGCam_TrackDisable(void)
 {
 	client_camera.info_state &= ~CAMERA_TRACKING;
 	client_camera.trackEntNum = ENTITYNUM_WORLD;
 }
 
-void CGCam_DistanceDisable( void )
+void CGCam_DistanceDisable(void)
 {
 	client_camera.distance = 0;
 }
@@ -469,7 +469,7 @@ CGCam_Follow
 -------------------------
 */
 
-void CGCam_Follow( const char *cameraGroup, float speed, float initLerp )
+void CGCam_Follow(const char *cameraGroup, float speed, float initLerp)
 {
 	//Clear any previous
 	CGCam_FollowDisable();
@@ -479,12 +479,12 @@ void CGCam_Follow( const char *cameraGroup, float speed, float initLerp )
 		return;
 	}
 
-	if ( Q_stricmp("none", (char *)cameraGroup) == 0 )
+	if (Q_stricmp("none", (char *)cameraGroup) == 0)
 	{//Turn off all aiming
 		return;
 	}
 
-	if ( Q_stricmp("NULL", (char *)cameraGroup) == 0 )
+	if (Q_stricmp("NULL", (char *)cameraGroup) == 0)
 	{//Turn off all aiming
 		return;
 	}
@@ -494,9 +494,9 @@ void CGCam_Follow( const char *cameraGroup, float speed, float initLerp )
 	client_camera.info_state &= ~CAMERA_PANNING;
 
 	//NULL terminate last char in case they type a name too long
-	Q_strncpyz( client_camera.cameraGroup, cameraGroup, sizeof(client_camera.cameraGroup) );
+	Q_strncpyz(client_camera.cameraGroup, cameraGroup, sizeof(client_camera.cameraGroup));
 
-	if ( speed )
+	if (speed)
 	{
 		client_camera.followSpeed = speed;
 	}
@@ -505,7 +505,7 @@ void CGCam_Follow( const char *cameraGroup, float speed, float initLerp )
 		client_camera.followSpeed = 100.0f;
 	}
 
-	if ( initLerp )
+	if (initLerp)
 	{
 		client_camera.followInitLerp = qtrue;
 	}
@@ -526,7 +526,7 @@ Q3_CameraAutoAim
 -------------------------
 */
 
-void CG_CameraAutoAim( const char *name )
+void CG_CameraAutoAim(const char *name)
 {
 	/*
 	gentity_t *aimEnt = NULL;
@@ -550,7 +550,7 @@ void CG_CameraAutoAim( const char *name )
 	//Lerp time...
 	//aimEnt->aimDebounceTime = level.time;//FIXME: over time
 	client_camera.aimEntNum = aimEnt->s.number;
-	CGCam_Follow( aimEnt->cameraGroup, aimEnt->speed, aimEnt->spawnflags&1 );
+	CGCam_Follow(aimEnt->cameraGroup, aimEnt->speed, aimEnt->spawnflags&1);
 	*/
 }
 
@@ -559,7 +559,7 @@ void CG_CameraAutoAim( const char *name )
 CGCam_Track
 -------------------------
 */
-void CGCam_Track( const char *trackName, float speed, float initLerp )
+void CGCam_Track(const char *trackName, float speed, float initLerp)
 {
 	gentity_t	*trackEnt = NULL;
 
@@ -574,7 +574,7 @@ void CGCam_Track( const char *trackName, float speed, float initLerp )
 	//This will find a path_corner now, not a misc_camera_track
 	trackEnt = G_Find(NULL, FOFS(targetname), (char *)trackName);
 
-	if ( !trackEnt )
+	if (!trackEnt)
 	{
 		gi.Printf(S_COLOR_RED"ERROR: %s camera track target not found\n", trackName);
 		return;
@@ -588,7 +588,7 @@ void CGCam_Track( const char *trackName, float speed, float initLerp )
 	client_camera.speed = speed;
 	client_camera.nextTrackEntUpdateTime = cg.time;
 
-	if ( initLerp )
+	if (initLerp)
 	{
 		client_camera.trackInitLerp = qtrue;
 	}
@@ -597,32 +597,32 @@ void CGCam_Track( const char *trackName, float speed, float initLerp )
 		client_camera.trackInitLerp = qfalse;
 	}
 	/*
-	if ( client_camera.info_state & CAMERA_FOLLOWING )
+	if (client_camera.info_state & CAMERA_FOLLOWING)
 	{//Used to snap angles?  Do what...?
 	}
 	*/
 
 	//Set a moveDir
-	VectorSubtract( trackEnt->currentOrigin, client_camera.origin, client_camera.moveDir );
+	VectorSubtract(trackEnt->currentOrigin, client_camera.origin, client_camera.moveDir);
 
-	if ( !client_camera.trackInitLerp )
+	if (!client_camera.trackInitLerp)
 	{//want to snap to first position
 		//Snap to trackEnt's origin
-		VectorCopy( trackEnt->currentOrigin, client_camera.origin );
+		VectorCopy(trackEnt->currentOrigin, client_camera.origin);
 
 		//Set new moveDir if trackEnt has a next path_corner
 		//Possible that track has no next point, in which case we won't be moving anyway
-		if ( trackEnt->target && trackEnt->target[0] )
+		if (trackEnt->target && trackEnt->target[0])
 		{
-			gentity_t *newTrackEnt = G_Find( NULL, FOFS(targetname), trackEnt->target );
-			if ( newTrackEnt )
+			gentity_t *newTrackEnt = G_Find(NULL, FOFS(targetname), trackEnt->target);
+			if (newTrackEnt)
 			{
-				VectorSubtract( newTrackEnt->currentOrigin, client_camera.origin, client_camera.moveDir );
+				VectorSubtract(newTrackEnt->currentOrigin, client_camera.origin, client_camera.moveDir);
 			}
 		}
 	}
 
-	VectorNormalize( client_camera.moveDir );
+	VectorNormalize(client_camera.moveDir);
 }
 
 /*
@@ -638,7 +638,7 @@ Q3_CameraAutoTrack
 -------------------------
 */
 
-void CG_CameraAutoTrack( const char *name )
+void CG_CameraAutoTrack(const char *name)
 {
 	/*
 	gentity_t *trackEnt = NULL;
@@ -660,9 +660,9 @@ void CG_CameraAutoTrack( const char *name )
 	}
 
 	//FIXME: last arg will be passed in
-	CGCam_Track( trackEnt->s.number, trackEnt->speed, qfalse );
+	CGCam_Track(trackEnt->s.number, trackEnt->speed, qfalse);
 	//FIXME: this will be a seperate call
-	CGCam_Distance( trackEnt->radius, qtrue);
+	CGCam_Distance(trackEnt->radius, qtrue);
 	*/
 }
 
@@ -672,11 +672,11 @@ CGCam_Distance
 -------------------------
 */
 
-void CGCam_Distance( float distance, float initLerp )
+void CGCam_Distance(float distance, float initLerp)
 {
 	client_camera.distance = distance;
 
-	if ( initLerp )
+	if (initLerp)
 	{
 		client_camera.distanceInitLerp = qtrue;
 	}
@@ -689,7 +689,7 @@ void CGCam_Distance( float distance, float initLerp )
 //========================================================================================
 
 
-void CGCam_FollowUpdate ( void )
+void CGCam_FollowUpdate (void)
 {
 	vec3_t		center, dir, cameraAngles, vec, focus[MAX_CAMERA_GROUP_SUBJECTS];//No more than 16 subjects in a cameraGroup
 	gentity_t	*from = NULL;
@@ -697,57 +697,57 @@ void CGCam_FollowUpdate ( void )
 	int			num_subjects = 0, i;
 	qboolean	focused = qfalse;
 
-	if ( client_camera.cameraGroup[0] )
+	if (client_camera.cameraGroup[0])
 	{
 		//Stay centered in my cameraGroup, if I have one
-		while( NULL != (from = G_Find(from, FOFS(cameraGroup), client_camera.cameraGroup)))
+		while(NULL != (from = G_Find(from, FOFS(cameraGroup), client_camera.cameraGroup)))
 		{
 			/*
-			if ( from->s.number == client_camera.aimEntNum )
+			if (from->s.number == client_camera.aimEntNum)
 			{//This is the misc_camera_focus, we'll be removing this ent altogether eventually
 				continue;
 			}
 			*/
 
-			if ( num_subjects >= MAX_CAMERA_GROUP_SUBJECTS )
+			if (num_subjects >= MAX_CAMERA_GROUP_SUBJECTS)
 			{
 				gi.Printf(S_COLOR_RED"ERROR: Too many subjects in shot composition %s", client_camera.cameraGroup);
 				break;
 			}
 
 			fromCent = &cg_entities[from->s.number];
-			if ( !fromCent )
+			if (!fromCent)
 			{
 				continue;
 			}
 
 			focused = qfalse;
-			if ( from->client && client_camera.cameraGroupTag[0] && fromCent->gent->ghoul2.size() )
+			if (from->client && client_camera.cameraGroupTag[0] && fromCent->gent->ghoul2.size())
 			{
-				int newBolt = gi.G2API_AddBolt( &fromCent->gent->ghoul2[from->playerModel], client_camera.cameraGroupTag );
-				if ( newBolt != -1 )
+				int newBolt = gi.G2API_AddBolt(&fromCent->gent->ghoul2[from->playerModel], client_camera.cameraGroupTag);
+				if (newBolt != -1)
 				{
 					mdxaBone_t	boltMatrix;
 					vec3_t	fromAngles = {0,from->client->ps.legsYaw,0};
 
-					gi.G2API_GetBoltMatrix( fromCent->gent->ghoul2, from->playerModel, newBolt, &boltMatrix, fromAngles, fromCent->lerpOrigin, cg.time, cgs.model_draw, fromCent->currentState.modelScale );
-					gi.G2API_GiveMeVectorFromMatrix( boltMatrix, ORIGIN, focus[num_subjects] );
+					gi.G2API_GetBoltMatrix(fromCent->gent->ghoul2, from->playerModel, newBolt, &boltMatrix, fromAngles, fromCent->lerpOrigin, cg.time, cgs.model_draw, fromCent->currentState.modelScale);
+					gi.G2API_GiveMeVectorFromMatrix(boltMatrix, ORIGIN, focus[num_subjects]);
 
 					focused = qtrue;
 				}
 			}
-			if ( !focused )
+			if (!focused)
 			{
-				if ( from->s.pos.trType != TR_STATIONARY )
-//				if ( from->s.pos.trType == TR_INTERPOLATE )
+				if (from->s.pos.trType != TR_STATIONARY)
+//				if (from->s.pos.trType == TR_INTERPOLATE)
 				{//use interpolated origin?
-					if ( !VectorCompare( vec3_origin, fromCent->lerpOrigin ) )
+					if (!VectorCompare(vec3_origin, fromCent->lerpOrigin))
 					{//hunh?  Somehow we've never seen this gentity on the client, so there is no lerpOrigin, so cheat over to the game and use the currentOrigin
-						VectorCopy( from->currentOrigin, focus[num_subjects] );
+						VectorCopy(from->currentOrigin, focus[num_subjects]);
 					}
 					else
 					{
-						VectorCopy( fromCent->lerpOrigin, focus[num_subjects] );
+						VectorCopy(fromCent->lerpOrigin, focus[num_subjects]);
 					}
 				}
 				else
@@ -755,7 +755,7 @@ void CGCam_FollowUpdate ( void )
 					VectorCopy(from->currentOrigin, focus[num_subjects]);
 				}
 				//FIXME: make a list here of their s.numbers instead so we can do other stuff with the list below
-				if ( from->client )
+				if (from->client)
 				{//Track to their eyes - FIXME: maybe go off a tag?
 					//FIXME:
 					//Based on FOV and distance to subject from camera, pick the point that
@@ -763,14 +763,14 @@ void CGCam_FollowUpdate ( void )
 					focus[num_subjects][2] += from->client->ps.viewheight;
 				}
 			}
-			if ( client_camera.cameraGroupZOfs )
+			if (client_camera.cameraGroupZOfs)
 			{
 				focus[num_subjects][2] += client_camera.cameraGroupZOfs;
 			}
 			num_subjects++;
 		}
 
-		if ( !num_subjects )	// Bad cameragroup
+		if (!num_subjects)	// Bad cameragroup
 		{
 #ifndef FINAL_BUILD
 			gi.Printf(S_COLOR_RED"ERROR: Camera Focus unable to locate cameragroup: %s\n", client_camera.cameraGroup);
@@ -779,12 +779,12 @@ void CGCam_FollowUpdate ( void )
 		}
 
 		//Now average all points
-		VectorCopy( focus[0], center );
-		for( i = 1; i < num_subjects; i++ )
+		VectorCopy(focus[0], center);
+		for(i = 1; i < num_subjects; i++)
 		{
-			VectorAdd( focus[i], center, center );
+			VectorAdd(focus[i], center, center);
 		}
-		VectorScale( center, 1.0f/((float)num_subjects), center );
+		VectorScale(center, 1.0f/((float)num_subjects), center);
 	}
 	else
 	{
@@ -794,42 +794,42 @@ void CGCam_FollowUpdate ( void )
 	//Need to set a speed to keep a distance from
 	//the subject- fixme: only do this if have a distance
 	//set
-	VectorSubtract( client_camera.subjectPos, center, vec );
-	client_camera.subjectSpeed = VectorLengthSquared( vec ) * 100.0f / cg.frametime;
+	VectorSubtract(client_camera.subjectPos, center, vec);
+	client_camera.subjectSpeed = VectorLengthSquared(vec) * 100.0f / cg.frametime;
 
 	/*
-	if ( !cg_skippingcin.integer )
+	if (!cg_skippingcin.integer)
 	{
-		Com_Printf( S_COLOR_RED"org: %s\n", vtos(center) );
+		Com_Printf(S_COLOR_RED"org: %s\n", vtos(center));
 	}
 	*/
-	VectorCopy( center, client_camera.subjectPos );
+	VectorCopy(center, client_camera.subjectPos);
 
-	VectorSubtract( center, cg.refdef.vieworg, dir );//can't use client_camera.origin because it's not updated until the end of the move.
+	VectorSubtract(center, cg.refdef.vieworg, dir);//can't use client_camera.origin because it's not updated until the end of the move.
 
 	//Get desired angle
 	vectoangles(dir, cameraAngles);
 
-	if ( client_camera.followInitLerp )
+	if (client_camera.followInitLerp)
 	{//Lerping
 		float frac = cg.frametime/100.0f * client_camera.followSpeed/100.f;
-		for( i = 0; i < 3; i++ )
+		for(i = 0; i < 3; i++)
 		{
-			cameraAngles[i] = AngleNormalize180( cameraAngles[i] );
-			cameraAngles[i] = AngleNormalize180( client_camera.angles[i] + frac * AngleNormalize180(cameraAngles[i] - client_camera.angles[i]) );
-			cameraAngles[i] = AngleNormalize180( cameraAngles[i] );
+			cameraAngles[i] = AngleNormalize180(cameraAngles[i]);
+			cameraAngles[i] = AngleNormalize180(client_camera.angles[i] + frac * AngleNormalize180(cameraAngles[i] - client_camera.angles[i]));
+			cameraAngles[i] = AngleNormalize180(cameraAngles[i]);
 		}
 #if 0
-		Com_Printf( "%s\n", vtos(cameraAngles) );
+		Com_Printf("%s\n", vtos(cameraAngles));
 #endif
 	}
 	else
 	{//Snapping, should do this first time if follow_lerp_to_start_duration is zero
 		//will lerp from this point on
 		client_camera.followInitLerp = qtrue;
-		for( i = 0; i < 3; i++ )
+		for(i = 0; i < 3; i++)
 		{//normalize so that when we start lerping, it doesn't freak out
-			cameraAngles[i] = AngleNormalize180( cameraAngles[i] );
+			cameraAngles[i] = AngleNormalize180(cameraAngles[i]);
 		}
 		//So tracker doesn't move right away thinking the first angle change
 		//is the subject moving... FIXME: shouldn't set this until lerp done OR snapped?
@@ -838,15 +838,15 @@ void CGCam_FollowUpdate ( void )
 
 	//Point camera to lerp angles
 	/*
-	if ( !cg_skippingcin.integer )
+	if (!cg_skippingcin.integer)
 	{
-		Com_Printf( "ang: %s\n", vtos(cameraAngles) );
+		Com_Printf("ang: %s\n", vtos(cameraAngles));
 	}
 	*/
-	VectorCopy( cameraAngles, client_camera.angles );
+	VectorCopy(cameraAngles, client_camera.angles);
 }
 
-void CGCam_TrackEntUpdate ( void )
+void CGCam_TrackEntUpdate (void)
 {//FIXME: only do every 100 ms
 	gentity_t	*trackEnt = NULL;
 	gentity_t	*newTrackEnt = NULL;
@@ -854,41 +854,41 @@ void CGCam_TrackEntUpdate ( void )
 	vec3_t		vec;
 	float		dist;
 
-	if ( client_camera.trackEntNum >= 0 && client_camera.trackEntNum < ENTITYNUM_WORLD )
+	if (client_camera.trackEntNum >= 0 && client_camera.trackEntNum < ENTITYNUM_WORLD)
 	{//We're already heading to a path_corner
 		trackEnt = &g_entities[client_camera.trackEntNum];
-		VectorSubtract( trackEnt->currentOrigin, client_camera.origin, vec );
-		dist = VectorLengthSquared( vec );
-		if ( dist < 256 )//16 squared
+		VectorSubtract(trackEnt->currentOrigin, client_camera.origin, vec);
+		dist = VectorLengthSquared(vec);
+		if (dist < 256)//16 squared
 		{//FIXME: who should be doing the using here?
-			G_UseTargets( trackEnt, trackEnt );
+			G_UseTargets(trackEnt, trackEnt);
 			reached = qtrue;
 		}
 	}
 
-	if ( trackEnt && reached )
+	if (trackEnt && reached)
 	{
 
-		if ( trackEnt->target && trackEnt->target[0] )
+		if (trackEnt->target && trackEnt->target[0])
 		{//Find our next path_corner
-			newTrackEnt = G_Find( NULL, FOFS(targetname), trackEnt->target );
-			if ( newTrackEnt )
+			newTrackEnt = G_Find(NULL, FOFS(targetname), trackEnt->target);
+			if (newTrackEnt)
 			{
-				if ( newTrackEnt->radius < 0 )
+				if (newTrackEnt->radius < 0)
 				{//Don't bother trying to maintain a radius
 					client_camera.distance = 0;
 					client_camera.speed = client_camera.initSpeed;
 				}
-				else if ( newTrackEnt->radius > 0 )
+				else if (newTrackEnt->radius > 0)
 				{
 					client_camera.distance = newTrackEnt->radius;
 				}
 
-				if ( newTrackEnt->speed < 0 )
+				if (newTrackEnt->speed < 0)
 				{//go back to our default speed
 					client_camera.speed = client_camera.initSpeed;
 				}
-				else if ( newTrackEnt->speed > 0 )
+				else if (newTrackEnt->speed > 0)
 				{
 					client_camera.speed = newTrackEnt->speed/10.0f;
 				}
@@ -900,71 +900,71 @@ void CGCam_TrackEntUpdate ( void )
 		}
 	}
 
-	if ( newTrackEnt )
+	if (newTrackEnt)
 	{//Update will lerp this
 		client_camera.info_state |= CAMERA_TRACKING;
 		client_camera.trackEntNum = newTrackEnt->s.number;
-		VectorCopy( newTrackEnt->currentOrigin, client_camera.trackToOrg );
+		VectorCopy(newTrackEnt->currentOrigin, client_camera.trackToOrg);
 	}
 
 	client_camera.nextTrackEntUpdateTime = cg.time + 100;
 }
 
-void CGCam_TrackUpdate ( void )
+void CGCam_TrackUpdate (void)
 {
 	vec3_t		goalVec, curVec, trackPos, vec;
 	float		goalDist, dist;
 	//qboolean	slowDown = qfalse;
 
-	if ( client_camera.nextTrackEntUpdateTime <= cg.time )
+	if (client_camera.nextTrackEntUpdateTime <= cg.time)
 	{
 		CGCam_TrackEntUpdate();
 	}
 
-	VectorSubtract( client_camera.trackToOrg, client_camera.origin, goalVec );
-	goalDist = VectorNormalize( goalVec );
-	if ( goalDist > 100 )
+	VectorSubtract(client_camera.trackToOrg, client_camera.origin, goalVec);
+	goalDist = VectorNormalize(goalVec);
+	if (goalDist > 100)
 	{
 		goalDist = 100;
 	}
-	else if ( goalDist < 10 )
+	else if (goalDist < 10)
 	{
 		goalDist = 10;
 	}
 
-	if ( client_camera.distance && client_camera.info_state & CAMERA_FOLLOWING )
+	if (client_camera.distance && client_camera.info_state & CAMERA_FOLLOWING)
 	{
 		float	adjust = 0.0f, desiredSpeed = 0.0f;
 		float	dot;
 
-		if ( !client_camera.distanceInitLerp )
+		if (!client_camera.distanceInitLerp)
 		{
-			VectorSubtract( client_camera.origin, client_camera.subjectPos, vec );
-			VectorNormalize( vec );
+			VectorSubtract(client_camera.origin, client_camera.subjectPos, vec);
+			VectorNormalize(vec);
 			//FIXME: use client_camera.moveDir here?
-			VectorMA( client_camera.subjectPos, client_camera.distance, vec, client_camera.origin );
+			VectorMA(client_camera.subjectPos, client_camera.distance, vec, client_camera.origin);
 			//Snap to first time only
 			client_camera.distanceInitLerp = qtrue;
 			return;
 		}
-		else if ( client_camera.subjectSpeed > 0.05f )
+		else if (client_camera.subjectSpeed > 0.05f)
 		{//Don't start moving until subject moves
-			VectorSubtract( client_camera.subjectPos, client_camera.origin, vec );
+			VectorSubtract(client_camera.subjectPos, client_camera.origin, vec);
 			dist = VectorNormalize(vec);
 			dot = DotProduct(goalVec, vec);
 
-			if ( dist > client_camera.distance )
+			if (dist > client_camera.distance)
 			{//too far away
-				if ( dot > 0 )
+				if (dot > 0)
 				{//Camera is moving toward the subject
 					adjust = (dist - client_camera.distance);//Speed up
 				}
-				else if ( dot < 0 )
+				else if (dot < 0)
 				{//Camera is moving away from the subject
 					adjust = (dist - client_camera.distance) * -1.0f;//Slow down
 				}
 			}
-			else if ( dist < client_camera.distance )
+			else if (dist < client_camera.distance)
 			{//too close
 				if(dot > 0)
 				{//Camera is moving toward the subject
@@ -985,15 +985,15 @@ void CGCam_TrackUpdate ( void )
 			//Don't change speeds faster than 10 every 10th of a second
 			float	max_allowed_accel = MAX_ACCEL_PER_FRAME * (cg.frametime/100.0f);
 
-			if ( !client_camera.subjectSpeed )
+			if (!client_camera.subjectSpeed)
 			{//full stop
 				client_camera.speed = desiredSpeed;
 			}
-			else if ( client_camera.speed - desiredSpeed > max_allowed_accel )
+			else if (client_camera.speed - desiredSpeed > max_allowed_accel)
 			{//new speed much slower, slow down at max accel
 				client_camera.speed -= max_allowed_accel;
 			}
-			else if ( desiredSpeed - client_camera.speed > max_allowed_accel )
+			else if (desiredSpeed - client_camera.speed > max_allowed_accel)
 			{//new speed much faster, speed up at max accel
 				client_camera.speed += max_allowed_accel;
 			}
@@ -1012,23 +1012,23 @@ void CGCam_TrackUpdate ( void )
 
 
 	//FIXME: this probably isn't right, round it out more
-	VectorScale( goalVec, cg.frametime/100.0f, goalVec );
-	VectorScale( client_camera.moveDir, (100.0f - cg.frametime)/100.0f, curVec );
-	VectorAdd( goalVec, curVec, client_camera.moveDir );
-	VectorNormalize( client_camera.moveDir );
+	VectorScale(goalVec, cg.frametime/100.0f, goalVec);
+	VectorScale(client_camera.moveDir, (100.0f - cg.frametime)/100.0f, curVec);
+	VectorAdd(goalVec, curVec, client_camera.moveDir);
+	VectorNormalize(client_camera.moveDir);
 	/*if(slowDown)
 	{
-		VectorMA( client_camera.origin, client_camera.speed * goalDist/100.0f * cg.frametime/100.0f, client_camera.moveDir, trackPos );
+		VectorMA(client_camera.origin, client_camera.speed * goalDist/100.0f * cg.frametime/100.0f, client_camera.moveDir, trackPos);
 	}
 	else*/
 	{
-		VectorMA( client_camera.origin, client_camera.speed * cg.frametime/100.0f , client_camera.moveDir, trackPos );
+		VectorMA(client_camera.origin, client_camera.speed * cg.frametime/100.0f , client_camera.moveDir, trackPos);
 	}
 
 	//FIXME: Implement
 	//Need to find point on camera's path that is closest to the desired distance from subject
 	//OR: Need to intelligently pick this desired distance based on framing...
-	VectorCopy( trackPos, client_camera.origin );
+	VectorCopy(trackPos, client_camera.origin);
 }
 
 //=========================================================================================
@@ -1039,9 +1039,9 @@ CGCam_UpdateBarFade
 -------------------------
 */
 
-void CGCam_UpdateBarFade( void )
+void CGCam_UpdateBarFade(void)
 {
-	if ( client_camera.bar_time + BAR_DURATION < cg.time )
+	if (client_camera.bar_time + BAR_DURATION < cg.time)
 	{
 		client_camera.bar_alpha = client_camera.bar_alpha_dest;
 		client_camera.info_state &= ~CAMERA_BAR_FADING;
@@ -1049,8 +1049,8 @@ void CGCam_UpdateBarFade( void )
 	}
 	else
 	{
-		client_camera.bar_alpha  = client_camera.bar_alpha_source + ( ( client_camera.bar_alpha_dest - client_camera.bar_alpha_source ) / BAR_DURATION ) * ( cg.time - client_camera.bar_time );;
-		client_camera.bar_height = client_camera.bar_height_source + ( ( client_camera.bar_height_dest - client_camera.bar_height_source ) / BAR_DURATION ) * ( cg.time - client_camera.bar_time );;
+		client_camera.bar_alpha  = client_camera.bar_alpha_source + ((client_camera.bar_alpha_dest - client_camera.bar_alpha_source) / BAR_DURATION) * (cg.time - client_camera.bar_time);;
+		client_camera.bar_height = client_camera.bar_height_source + ((client_camera.bar_height_dest - client_camera.bar_height_source) / BAR_DURATION) * (cg.time - client_camera.bar_time);;
 	}
 }
 
@@ -1060,20 +1060,20 @@ CGCam_UpdateFade
 -------------------------
 */
 
-void CGCam_UpdateFade( void )
+void CGCam_UpdateFade(void)
 {
-	if ( client_camera.info_state & CAMERA_FADING )
+	if (client_camera.info_state & CAMERA_FADING)
 	{
-		if ( client_camera.fade_time + client_camera.fade_duration < cg.time )
+		if (client_camera.fade_time + client_camera.fade_duration < cg.time)
 		{
-			VectorCopy4( client_camera.fade_dest, client_camera.fade_color );
+			VectorCopy4(client_camera.fade_dest, client_camera.fade_color);
 			client_camera.info_state &= ~CAMERA_FADING;
 		}
 		else
 		{
-			for ( int i = 0; i < 4; i++ )
+			for (int i = 0; i < 4; i++)
 			{
-				client_camera.fade_color[i] = client_camera.fade_source[i] + (( ( client_camera.fade_dest[i] - client_camera.fade_source[i] ) ) / client_camera.fade_duration ) * ( cg.time - client_camera.fade_time );
+				client_camera.fade_color[i] = client_camera.fade_source[i] + (((client_camera.fade_dest[i] - client_camera.fade_source[i])) / client_camera.fade_duration) * (cg.time - client_camera.fade_time);
 			}
 		}
 	}
@@ -1083,16 +1083,16 @@ void CGCam_UpdateFade( void )
 CGCam_Update
 -------------------------
 */
-static void CGCam_Roff( void );
+static void CGCam_Roff(void);
 
-void CGCam_Update( void )
+void CGCam_Update(void)
 {
 	int	i;
 	qboolean	checkFollow = qfalse;
 	qboolean	checkTrack = qfalse;
 
 	// Apply new roff data to the camera as needed
-	if ( client_camera.info_state & CAMERA_ROFFING )
+	if (client_camera.info_state & CAMERA_ROFFING)
 	{
 		CGCam_Roff();
 	}
@@ -1112,7 +1112,7 @@ void CGCam_Update( void )
 			fovDuration = cg_roffval4.integer;
 		}
 #endif
-		if ( client_camera.FOV_time + fovDuration < cg.time )
+		if (client_camera.FOV_time + fovDuration < cg.time)
 		{
 			client_camera.info_state &= ~CAMERA_ACCEL;
 		}
@@ -1160,76 +1160,76 @@ void CGCam_Update( void )
 			}
 			client_camera.FOV = actualFOV_X;
 		}
-		CG_CalcFOVFromX( actualFOV_X );
+		CG_CalcFOVFromX(actualFOV_X);
 	}
-	else if ( client_camera.info_state & CAMERA_ZOOMING )
+	else if (client_camera.info_state & CAMERA_ZOOMING)
 	{
 		float	actualFOV_X;
 
-		if ( client_camera.FOV_time + client_camera.FOV_duration < cg.time )
+		if (client_camera.FOV_time + client_camera.FOV_duration < cg.time)
 		{
 			actualFOV_X = client_camera.FOV = client_camera.FOV2;
 			client_camera.info_state &= ~CAMERA_ZOOMING;
 		}
 		else
 		{
-			actualFOV_X = client_camera.FOV + (( ( client_camera.FOV2 - client_camera.FOV ) ) / client_camera.FOV_duration ) * ( cg.time - client_camera.FOV_time );
+			actualFOV_X = client_camera.FOV + (((client_camera.FOV2 - client_camera.FOV)) / client_camera.FOV_duration) * (cg.time - client_camera.FOV_time);
 		}
-		CG_CalcFOVFromX( actualFOV_X );
+		CG_CalcFOVFromX(actualFOV_X);
 	}
 	else
 	{
-		CG_CalcFOVFromX( client_camera.FOV );
+		CG_CalcFOVFromX(client_camera.FOV);
 	}
 
 	//Check for roffing angles
-	if ( (client_camera.info_state & CAMERA_ROFFING) && !(client_camera.info_state & CAMERA_FOLLOWING) )
+	if ((client_camera.info_state & CAMERA_ROFFING) && !(client_camera.info_state & CAMERA_FOLLOWING))
 	{
 		if (client_camera.info_state & CAMERA_CUT)
 		{
 			// we're doing a cut, so just go to the new angles. none of this hifalutin lerping business.
-			for ( i = 0; i < 3; i++ )
+			for (i = 0; i < 3; i++)
 			{
-				cg.refdefViewAngles[i] = AngleNormalize360( ( client_camera.angles[i] + client_camera.angles2[i] ) );
+				cg.refdefViewAngles[i] = AngleNormalize360((client_camera.angles[i] + client_camera.angles2[i]));
 			}
 		}
 		else
 		{
-			for ( i = 0; i < 3; i++ )
+			for (i = 0; i < 3; i++)
 			{
-				cg.refdefViewAngles[i] =  client_camera.angles[i] + ( client_camera.angles2[i] / client_camera.pan_duration ) * ( cg.time - client_camera.pan_time );
+				cg.refdefViewAngles[i] =  client_camera.angles[i] + (client_camera.angles2[i] / client_camera.pan_duration) * (cg.time - client_camera.pan_time);
 			}
 		}
 	}
-	else if ( client_camera.info_state & CAMERA_PANNING )
+	else if (client_camera.info_state & CAMERA_PANNING)
 	{
 		if (client_camera.info_state & CAMERA_CUT)
 		{
 			// we're doing a cut, so just go to the new angles. none of this hifalutin lerping business.
-			for ( i = 0; i < 3; i++ )
+			for (i = 0; i < 3; i++)
 			{
-				cg.refdefViewAngles[i] = AngleNormalize360( ( client_camera.angles[i] + client_camera.angles2[i] ) );
+				cg.refdefViewAngles[i] = AngleNormalize360((client_camera.angles[i] + client_camera.angles2[i]));
 			}
 		}
 		else
 		{
 			//Note: does not actually change the camera's angles until the pan time is done!
-			if ( client_camera.pan_time + client_camera.pan_duration < cg.time )
+			if (client_camera.pan_time + client_camera.pan_duration < cg.time)
 			{//finished panning
-				for ( i = 0; i < 3; i++ )
+				for (i = 0; i < 3; i++)
 				{
-					client_camera.angles[i] = AngleNormalize360( ( client_camera.angles[i] + client_camera.angles2[i] ) );
+					client_camera.angles[i] = AngleNormalize360((client_camera.angles[i] + client_camera.angles2[i]));
 				}
 
 				client_camera.info_state &= ~CAMERA_PANNING;
-				VectorCopy(client_camera.angles, cg.refdefViewAngles );
+				VectorCopy(client_camera.angles, cg.refdefViewAngles);
 			}
 			else
 			{//still panning
-				for ( i = 0; i < 3; i++ )
+				for (i = 0; i < 3; i++)
 				{
 					//NOTE: does not store the resultant angle in client_camera.angles until pan is done
-					cg.refdefViewAngles[i] = client_camera.angles[i] + ( client_camera.angles2[i] / client_camera.pan_duration ) * ( cg.time - client_camera.pan_time );
+					cg.refdefViewAngles[i] = client_camera.angles[i] + (client_camera.angles2[i] / client_camera.pan_duration) * (cg.time - client_camera.pan_time);
 				}
 			}
 		}
@@ -1240,30 +1240,30 @@ void CGCam_Update( void )
 	}
 
 	//Check for movement
-	if ( client_camera.info_state & CAMERA_MOVING )
+	if (client_camera.info_state & CAMERA_MOVING)
 	{
 		//NOTE: does not actually move the camera until the movement time is done!
-		if ( client_camera.move_time + client_camera.move_duration < cg.time )
+		if (client_camera.move_time + client_camera.move_duration < cg.time)
 		{
-			VectorCopy( client_camera.origin2, client_camera.origin );
+			VectorCopy(client_camera.origin2, client_camera.origin);
 			client_camera.info_state &= ~CAMERA_MOVING;
-			VectorCopy( client_camera.origin, cg.refdef.vieworg );
+			VectorCopy(client_camera.origin, cg.refdef.vieworg);
 		}
 		else
 		{
 			if (client_camera.info_state & CAMERA_CUT)
 			{
 				// we're doing a cut, so just go to the new origin. none of this fancypants lerping stuff.
-				for ( i = 0; i < 3; i++ )
+				for (i = 0; i < 3; i++)
 				{
 					cg.refdef.vieworg[i] = client_camera.origin2[i];
 				}
 			}
 			else
 			{
-				for ( i = 0; i < 3; i++ )
+				for (i = 0; i < 3; i++)
 				{
-					cg.refdef.vieworg[i] = client_camera.origin[i] + (( ( client_camera.origin2[i] - client_camera.origin[i] ) ) / client_camera.move_duration ) * ( cg.time - client_camera.move_time );
+					cg.refdef.vieworg[i] = client_camera.origin[i] + (((client_camera.origin2[i] - client_camera.origin[i])) / client_camera.move_duration) * (cg.time - client_camera.move_time);
 				}
 			}
 		}
@@ -1273,27 +1273,27 @@ void CGCam_Update( void )
 		checkTrack = qtrue;
 	}
 
-	if ( checkFollow )
+	if (checkFollow)
 	{
-		if ( client_camera.info_state & CAMERA_FOLLOWING )
+		if (client_camera.info_state & CAMERA_FOLLOWING)
 		{//This needs to be done after camera movement
 			CGCam_FollowUpdate();
 		}
-		VectorCopy(client_camera.angles, cg.refdefViewAngles );
+		VectorCopy(client_camera.angles, cg.refdefViewAngles);
 	}
 
-	if ( checkTrack )
+	if (checkTrack)
 	{
-		if ( client_camera.info_state & CAMERA_TRACKING )
+		if (client_camera.info_state & CAMERA_TRACKING)
 		{//This has to run AFTER Follow if the camera is following a cameraGroup
 			CGCam_TrackUpdate();
 		}
 
-		VectorCopy( client_camera.origin, cg.refdef.vieworg );
+		VectorCopy(client_camera.origin, cg.refdef.vieworg);
 	}
 
 	//Bar fading
-	if ( client_camera.info_state & CAMERA_BAR_FADING )
+	if (client_camera.info_state & CAMERA_BAR_FADING)
 	{
 		CGCam_UpdateBarFade();
 	}
@@ -1302,9 +1302,9 @@ void CGCam_Update( void )
 	CGCam_UpdateFade();
 
 	//Update shaking if there's any
-	//CGCam_UpdateSmooth( cg.refdef.vieworg, cg.refdefViewAngles );
-	CGCam_UpdateShake( cg.refdef.vieworg, cg.refdefViewAngles );
-	AnglesToAxis( cg.refdefViewAngles, cg.refdef.viewaxis );
+	//CGCam_UpdateSmooth(cg.refdef.vieworg, cg.refdefViewAngles);
+	CGCam_UpdateShake(cg.refdef.vieworg, cg.refdefViewAngles);
+	AnglesToAxis(cg.refdefViewAngles, cg.refdef.viewaxis);
 }
 
 /*
@@ -1313,27 +1313,27 @@ CGCam_DrawWideScreen
 -------------------------
 */
 
-void CGCam_DrawWideScreen( void )
+void CGCam_DrawWideScreen(void)
 {
 	vec4_t	modulate;
 
 	//Only draw if visible
-	if ( client_camera.bar_alpha )
+	if (client_camera.bar_alpha)
 	{
 		CGCam_UpdateBarFade();
 
 		modulate[0] = modulate[1] = modulate[2] = 0.0f;
 		modulate[3] = client_camera.bar_alpha;
 
-		CG_FillRect( cg.refdef.x, cg.refdef.y, 640, client_camera.bar_height, modulate  );
-		CG_FillRect( cg.refdef.x, cg.refdef.y + 480 - client_camera.bar_height, 640, client_camera.bar_height, modulate  );
+		CG_FillRect(cg.refdef.x, cg.refdef.y, 640, client_camera.bar_height, modulate );
+		CG_FillRect(cg.refdef.x, cg.refdef.y + 480 - client_camera.bar_height, 640, client_camera.bar_height, modulate );
 	}
 
 	//NOTENOTE: Camera always draws the fades unless the alpha is 0
-	if ( client_camera.fade_color[3] == 0.0f )
+	if (client_camera.fade_color[3] == 0.0f)
 		return;
 
-	CG_FillRect( cg.refdef.x, cg.refdef.y, 640, 480, client_camera.fade_color );
+	CG_FillRect(cg.refdef.x, cg.refdef.y, 640, 480, client_camera.fade_color);
 }
 
 /*
@@ -1341,7 +1341,7 @@ void CGCam_DrawWideScreen( void )
 CGCam_RenderScene
 -------------------------
 */
-void CGCam_RenderScene( void )
+void CGCam_RenderScene(void)
 {
 	CGCam_Update();
 	CG_CalcVrect();
@@ -1353,9 +1353,9 @@ CGCam_Shake
 -------------------------
 */
 
-void CGCam_Shake( float intensity, int duration )
+void CGCam_Shake(float intensity, int duration)
 {
-	if ( intensity > MAX_SHAKE_INTENSITY )
+	if (intensity > MAX_SHAKE_INTENSITY)
 		intensity = MAX_SHAKE_INTENSITY;
 
 	client_camera.shake_intensity = intensity;
@@ -1371,15 +1371,15 @@ This doesn't actually affect the camera's info, but passed information instead
 -------------------------
 */
 
-void CGCam_UpdateShake( vec3_t origin, vec3_t angles )
+void CGCam_UpdateShake(vec3_t origin, vec3_t angles)
 {
 	vec3_t	moveDir;
 	float	intensity_scale, intensity;
 
-	if ( client_camera.shake_duration <= 0 )
+	if (client_camera.shake_duration <= 0)
 		return;
 
-	if ( cg.time > ( client_camera.shake_start + client_camera.shake_duration ) )
+	if (cg.time > (client_camera.shake_start + client_camera.shake_duration))
 	{
 		client_camera.shake_intensity = 0;
 		client_camera.shake_duration = 0;
@@ -1388,33 +1388,33 @@ void CGCam_UpdateShake( vec3_t origin, vec3_t angles )
 	}
 
 	//intensity_scale now also takes into account FOV with 90.0 as normal
-	intensity_scale = 1.0f - ( (float) ( cg.time - client_camera.shake_start ) / (float) client_camera.shake_duration ) * (((client_camera.FOV+client_camera.FOV2)/2.0f)/90.0f);
+	intensity_scale = 1.0f - ((float) (cg.time - client_camera.shake_start) / (float) client_camera.shake_duration) * (((client_camera.FOV+client_camera.FOV2)/2.0f)/90.0f);
 
 	intensity = client_camera.shake_intensity * intensity_scale;
 
-	for ( int i = 0; i < 3; i++ )
+	for (int i = 0; i < 3; i++)
 	{
-		moveDir[i] = ( Q_flrand(-1.0f, 1.0f) * intensity );
+		moveDir[i] = (Q_flrand(-1.0f, 1.0f) * intensity);
 	}
 
 	//FIXME: Lerp
 
 	//Move the camera
-	VectorAdd( origin, moveDir, origin );
+	VectorAdd(origin, moveDir, origin);
 
-	for ( int i = 0; i < 2; i++ ) // Don't do ROLL
-		moveDir[i] = ( Q_flrand(-1.0f, 1.0f) * intensity );
+	for (int i = 0; i < 2; i++) // Don't do ROLL
+		moveDir[i] = (Q_flrand(-1.0f, 1.0f) * intensity);
 
 	//FIXME: Lerp
 
 	//Move the angles
-	VectorAdd( angles, moveDir, angles );
+	VectorAdd(angles, moveDir, angles);
 }
 
-void CGCam_Smooth( float intensity, int duration )
+void CGCam_Smooth(float intensity, int duration)
 {
 	client_camera.smooth_active=false; // means smooth_origin and angles are valid
-	if ( intensity>1.0f||intensity==0.0f||duration<1)
+	if (intensity>1.0f||intensity==0.0f||duration<1)
 	{
 		client_camera.info_state &= ~CAMERA_SMOOTHING;
 		return;
@@ -1425,9 +1425,9 @@ void CGCam_Smooth( float intensity, int duration )
 	client_camera.smooth_start = cg.time;
 }
 
-void CGCam_UpdateSmooth( vec3_t origin, vec3_t angles )
+void CGCam_UpdateSmooth(vec3_t origin, vec3_t angles)
 {
-	if (!(client_camera.info_state&CAMERA_SMOOTHING)||cg.time > ( client_camera.smooth_start + client_camera.smooth_duration ))
+	if (!(client_camera.info_state&CAMERA_SMOOTHING)||cg.time > (client_camera.smooth_start + client_camera.smooth_duration))
 	{
 		client_camera.info_state &= ~CAMERA_SMOOTHING;
 		return;
@@ -1439,7 +1439,7 @@ void CGCam_UpdateSmooth( vec3_t origin, vec3_t angles )
 		return;
 	}
 	float factor=client_camera.smooth_intensity;
-	if (client_camera.smooth_duration>200&&cg.time > ( client_camera.smooth_start + client_camera.smooth_duration-100 ))
+	if (client_camera.smooth_duration>200&&cg.time > (client_camera.smooth_start + client_camera.smooth_duration-100))
 	{
 		factor+=(1.0f-client_camera.smooth_intensity)*
 			(100.0f-(client_camera.smooth_start + client_camera.smooth_duration-cg.time))/100.0f;
@@ -1721,7 +1721,7 @@ static void CG_RoffNotetrackCallback(const char *notetrack)
 	type[i] = '\0';
 
 	//if (notetrack[i] != ' ')
-	//{ //didn't pass in a valid notetrack type, or forgot the argument for it
+	//{//didn't pass in a valid notetrack type, or forgot the argument for it
 	//	return;
 	//}
 
@@ -1730,7 +1730,7 @@ static void CG_RoffNotetrackCallback(const char *notetrack)
 	while (notetrack[i] && notetrack[i] != ' ')
 	{
 		if (notetrack[i] != '\n' && notetrack[i] != '\r')
-		{ //don't read line ends for an argument
+		{//don't read line ends for an argument
 			argument[r] = notetrack[i];
 			r++;
 		}
@@ -1744,7 +1744,7 @@ static void CG_RoffNotetrackCallback(const char *notetrack)
 */
 
 	if (notetrack[i] == ' ')
-	{ //additional arguments...
+	{//additional arguments...
 		addlArgs = 1;
 
 		i++;
@@ -1810,7 +1810,7 @@ a rof file
 -------------------------
 */
 
-void CGCam_StartRoff( char *roff )
+void CGCam_StartRoff(char *roff)
 {
 	CGCam_FollowDisable();
 	CGCam_TrackDisable();
@@ -1820,10 +1820,10 @@ void CGCam_StartRoff( char *roff )
 	client_camera.info_state |= CAMERA_MOVING;
 	client_camera.info_state |= CAMERA_PANNING;
 
-	if ( !G_LoadRoff( roff ) )
+	if (!G_LoadRoff(roff))
 	{
 		// The load failed so don't turn on the roff playback...
-		Com_Printf( S_COLOR_RED"ROFF camera playback failed\n" );
+		Com_Printf(S_COLOR_RED"ROFF camera playback failed\n");
 		return;
 	};
 
@@ -1842,7 +1842,7 @@ Stops camera rof
 -------------------------
 */
 
-static void CGCam_StopRoff( void )
+static void CGCam_StopRoff(void)
 {
 	// Clear the roff flag
 	client_camera.info_state &= ~CAMERA_ROFFING;
@@ -1861,14 +1861,14 @@ so often...or maybe I'm just on crack.
 ------------------------------------------------------
 */
 
-static void CGCam_Roff( void )
+static void CGCam_Roff(void)
 {
- while ( client_camera.next_roff_time <= cg.time )
+ while (client_camera.next_roff_time <= cg.time)
  {
 	// Make sure that the roff is cached
-	const int roff_id = G_LoadRoff( client_camera.sRoff );
+	const int roff_id = G_LoadRoff(client_camera.sRoff);
 
-	if ( !roff_id )
+	if (!roff_id)
 	{
 		return;
 	}
@@ -1877,11 +1877,11 @@ static void CGCam_Roff( void )
 	const roff_list_t	*roff	= &roffs[ roff_id - 1 ];
 	vec3_t org, ang;
 
-	if ( roff->type == 2 )
+	if (roff->type == 2)
 	{
 		move_rotate2_t	*data	= &((move_rotate2_t *)roff->data)[ client_camera.roff_frame ];
-		VectorCopy( data->origin_delta, org );
-		VectorCopy( data->rotate_delta, ang );
+		VectorCopy(data->origin_delta, org);
+		VectorCopy(data->rotate_delta, ang);
 
 		// since we just hit a new frame, clear our CUT flag
 		client_camera.info_state &= ~CAMERA_CUT;
@@ -1894,8 +1894,8 @@ static void CGCam_Roff( void )
 	else
 	{
 		move_rotate_t	*data	= &((move_rotate_t *)roff->data)[ client_camera.roff_frame ];
-		VectorCopy( data->origin_delta, org );
-		VectorCopy( data->rotate_delta, ang );
+		VectorCopy(data->origin_delta, org);
+		VectorCopy(data->rotate_delta, ang);
 	}
 
 	// Yeah, um, I guess this just has to be negated?
@@ -1903,39 +1903,39 @@ static void CGCam_Roff( void )
 	ang[ROLL]	= -ang[ROLL];
 	// might need to to yaw as well.  need a test...
 
-	if ( cg_developer.integer )
+	if (cg_developer.integer)
 	{
-		Com_Printf( S_COLOR_GREEN"CamROFF: frame: %d o:<%.2f %.2f %.2f> a:<%.2f %.2f %.2f>\n",
+		Com_Printf(S_COLOR_GREEN"CamROFF: frame: %d o:<%.2f %.2f %.2f> a:<%.2f %.2f %.2f>\n",
 					client_camera.roff_frame,
 					org[0], org[1], org[2],
-					ang[0], ang[1], ang[2] );
+					ang[0], ang[1], ang[2]);
 	}
 
-	if ( client_camera.roff_frame )
+	if (client_camera.roff_frame)
 	{
 		// Don't mess with angles if we are following
-		if ( !(client_camera.info_state & CAMERA_FOLLOWING) )
+		if (!(client_camera.info_state & CAMERA_FOLLOWING))
 		{
-			VectorAdd( client_camera.angles, client_camera.angles2, client_camera.angles );
+			VectorAdd(client_camera.angles, client_camera.angles2, client_camera.angles);
 		}
 
-		VectorCopy( client_camera.origin2, client_camera.origin );
+		VectorCopy(client_camera.origin2, client_camera.origin);
 	}
 
 	// Don't mess with angles if we are following
-	if ( !(client_camera.info_state & CAMERA_FOLLOWING) )
+	if (!(client_camera.info_state & CAMERA_FOLLOWING))
 	{
-		VectorCopy( ang, client_camera.angles2 );
+		VectorCopy(ang, client_camera.angles2);
 		client_camera.pan_time = cg.time;
 		client_camera.pan_duration = roff->mFrameTime;
 	}
 
-	VectorAdd( client_camera.origin, org, client_camera.origin2 );
+	VectorAdd(client_camera.origin, org, client_camera.origin2);
 
 	client_camera.move_time = cg.time;
 	client_camera.move_duration = roff->mFrameTime;
 
-	if ( ++client_camera.roff_frame >= roff->frames )
+	if (++client_camera.roff_frame >= roff->frames)
 	{
 		CGCam_StopRoff();
 		return;
@@ -1943,14 +1943,14 @@ static void CGCam_Roff( void )
 
 	// Check back in frameTime to get the next roff entry
 	client_camera.next_roff_time += roff->mFrameTime;
- }
+}
 }
 
-void CMD_CGCam_Disable( void )
+void CMD_CGCam_Disable(void)
 {
 	vec4_t	fade = {0, 0, 0, 0};
 
 	CGCam_Disable();
-	CGCam_SetFade( fade );
+	CGCam_SetFade(fade);
 	player_locked = qfalse;
 }

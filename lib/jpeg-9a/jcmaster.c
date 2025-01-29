@@ -71,7 +71,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
     cinfo->jpeg_height = cinfo->image_height * cinfo->block_size;
     cinfo->min_DCT_h_scaled_size = 1;
     cinfo->min_DCT_v_scaled_size = 1;
-  } else if (cinfo->scale_num * 2 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 2 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/2 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 2L);
@@ -79,7 +79,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 2L);
     cinfo->min_DCT_h_scaled_size = 2;
     cinfo->min_DCT_v_scaled_size = 2;
-  } else if (cinfo->scale_num * 3 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 3 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/3 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 3L);
@@ -87,7 +87,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 3L);
     cinfo->min_DCT_h_scaled_size = 3;
     cinfo->min_DCT_v_scaled_size = 3;
-  } else if (cinfo->scale_num * 4 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 4 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/4 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 4L);
@@ -95,7 +95,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 4L);
     cinfo->min_DCT_h_scaled_size = 4;
     cinfo->min_DCT_v_scaled_size = 4;
-  } else if (cinfo->scale_num * 5 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 5 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/5 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 5L);
@@ -103,7 +103,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 5L);
     cinfo->min_DCT_h_scaled_size = 5;
     cinfo->min_DCT_v_scaled_size = 5;
-  } else if (cinfo->scale_num * 6 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 6 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/6 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 6L);
@@ -111,7 +111,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 6L);
     cinfo->min_DCT_h_scaled_size = 6;
     cinfo->min_DCT_v_scaled_size = 6;
-  } else if (cinfo->scale_num * 7 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 7 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/7 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 7L);
@@ -119,7 +119,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 7L);
     cinfo->min_DCT_h_scaled_size = 7;
     cinfo->min_DCT_v_scaled_size = 7;
-  } else if (cinfo->scale_num * 8 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 8 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/8 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 8L);
@@ -127,7 +127,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 8L);
     cinfo->min_DCT_h_scaled_size = 8;
     cinfo->min_DCT_v_scaled_size = 8;
-  } else if (cinfo->scale_num * 9 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 9 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/9 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 9L);
@@ -135,7 +135,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 9L);
     cinfo->min_DCT_h_scaled_size = 9;
     cinfo->min_DCT_v_scaled_size = 9;
-  } else if (cinfo->scale_num * 10 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 10 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/10 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 10L);
@@ -143,7 +143,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 10L);
     cinfo->min_DCT_h_scaled_size = 10;
     cinfo->min_DCT_v_scaled_size = 10;
-  } else if (cinfo->scale_num * 11 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 11 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/11 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 11L);
@@ -151,7 +151,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 11L);
     cinfo->min_DCT_h_scaled_size = 11;
     cinfo->min_DCT_v_scaled_size = 11;
-  } else if (cinfo->scale_num * 12 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 12 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/12 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 12L);
@@ -159,7 +159,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 12L);
     cinfo->min_DCT_h_scaled_size = 12;
     cinfo->min_DCT_v_scaled_size = 12;
-  } else if (cinfo->scale_num * 13 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 13 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/13 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 13L);
@@ -167,7 +167,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 13L);
     cinfo->min_DCT_h_scaled_size = 13;
     cinfo->min_DCT_v_scaled_size = 13;
-  } else if (cinfo->scale_num * 14 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 14 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/14 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 14L);
@@ -175,7 +175,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 14L);
     cinfo->min_DCT_h_scaled_size = 14;
     cinfo->min_DCT_v_scaled_size = 14;
-  } else if (cinfo->scale_num * 15 >= cinfo->scale_denom * cinfo->block_size) {
+ } else if (cinfo->scale_num * 15 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/15 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 15L);
@@ -183,7 +183,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 15L);
     cinfo->min_DCT_h_scaled_size = 15;
     cinfo->min_DCT_v_scaled_size = 15;
-  } else {
+ } else {
     /* Provide block_size/16 scaling */
     cinfo->jpeg_width = (JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 16L);
@@ -191,7 +191,7 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 16L);
     cinfo->min_DCT_h_scaled_size = 16;
     cinfo->min_DCT_v_scaled_size = 16;
-  }
+ }
 
 #else /* !DCT_SCALING_SUPPORTED */
 
@@ -241,7 +241,7 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
   case 6: cinfo->natural_order = jpeg_natural_order6; break;
   case 7: cinfo->natural_order = jpeg_natural_order7; break;
   default: cinfo->natural_order = jpeg_natural_order; break;
-  }
+ }
 
   /* Derive lim_Se from block_size */
   cinfo->lim_Se = cinfo->block_size < DCTSIZE ?
@@ -278,7 +278,7 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
 				   compptr->h_samp_factor);
     cinfo->max_v_samp_factor = MAX(cinfo->max_v_samp_factor,
 				   compptr->v_samp_factor);
-  }
+ }
 
   /* Compute dimensions of components */
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
@@ -296,7 +296,7 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
 	   (cinfo->do_fancy_downsampling ? DCTSIZE : DCTSIZE / 2) &&
 	   (cinfo->max_h_samp_factor % (compptr->h_samp_factor * ssize * 2)) == 0) {
       ssize = ssize * 2;
-    }
+   }
 #endif
     compptr->DCT_h_scaled_size = cinfo->min_DCT_h_scaled_size * ssize;
     ssize = 1;
@@ -305,7 +305,7 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
 	   (cinfo->do_fancy_downsampling ? DCTSIZE : DCTSIZE / 2) &&
 	   (cinfo->max_v_samp_factor % (compptr->v_samp_factor * ssize * 2)) == 0) {
       ssize = ssize * 2;
-    }
+   }
 #endif
     compptr->DCT_v_scaled_size = cinfo->min_DCT_v_scaled_size * ssize;
 
@@ -335,7 +335,7 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
      * until color conversion says otherwise.
      */
     compptr->component_needed = FALSE;
-  }
+ }
 
   /* Compute number of fully interleaved MCU rows (number of times that
    * main controller will call coefficient controller).
@@ -381,11 +381,11 @@ validate_script (j_compress_ptr cinfo)
 #else
     ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
-  } else {
+ } else {
     cinfo->progressive_mode = FALSE;
     for (ci = 0; ci < cinfo->num_components; ci++) 
       component_sent[ci] = FALSE;
-  }
+ }
 
   for (scanno = 1; scanno <= cinfo->num_scans; scanptr++, scanno++) {
     /* Validate component indexes */
@@ -399,7 +399,7 @@ validate_script (j_compress_ptr cinfo)
       /* Components must appear in SOF order within each scan */
       if (ci > 0 && thisi <= scanptr->component_index[ci-1])
 	ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, scanno);
-    }
+   }
     /* Validate progression parameters */
     Ss = scanptr->Ss;
     Se = scanptr->Se;
@@ -425,10 +425,10 @@ validate_script (j_compress_ptr cinfo)
       if (Ss == 0) {
 	if (Se != 0)		/* DC and AC together not OK */
 	  ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
-      } else {
+     } else {
 	if (ncomps != 1)	/* AC scans must be for only one component */
 	  ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
-      }
+     }
       for (ci = 0; ci < ncomps; ci++) {
 	last_bitpos_ptr = & last_bitpos[scanptr->component_index[ci]][0];
 	if (Ss != 0 && last_bitpos_ptr[0] < 0) /* AC without prior DC scan */
@@ -438,16 +438,16 @@ validate_script (j_compress_ptr cinfo)
 	    /* first scan of this coefficient */
 	    if (Ah != 0)
 	      ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
-	  } else {
+	 } else {
 	    /* not first scan */
 	    if (Ah != last_bitpos_ptr[coefi] || Al != Ah-1)
 	      ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
-	  }
+	 }
 	  last_bitpos_ptr[coefi] = Al;
 	}
-      }
+     }
 #endif
-    } else {
+   } else {
       /* For sequential JPEG, all progression parameters must be these: */
       if (Ss != 0 || Se != DCTSIZE2-1 || Ah != 0 || Al != 0)
 	ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
@@ -457,9 +457,9 @@ validate_script (j_compress_ptr cinfo)
 	if (component_sent[thisi])
 	  ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, scanno);
 	component_sent[thisi] = TRUE;
-      }
-    }
-  }
+     }
+   }
+ }
 
   /* Now verify that everything got sent. */
   if (cinfo->progressive_mode) {
@@ -472,14 +472,14 @@ validate_script (j_compress_ptr cinfo)
     for (ci = 0; ci < cinfo->num_components; ci++) {
       if (last_bitpos[ci][0] < 0)
 	ERREXIT(cinfo, JERR_MISSING_DATA);
-    }
+   }
 #endif
-  } else {
+ } else {
     for (ci = 0; ci < cinfo->num_components; ci++) {
       if (! component_sent[ci])
 	ERREXIT(cinfo, JERR_MISSING_DATA);
-    }
-  }
+   }
+ }
 }
 
 
@@ -510,7 +510,7 @@ reduce_script (j_compress_ptr cinfo)
       /* Limit scan to end of block */
       scanptr[idxout].Se = cinfo->lim_Se;
     idxout++;
-  }
+ }
 
   cinfo->num_scans = idxout;
 }
@@ -534,15 +534,15 @@ select_scan_parameters (j_compress_ptr cinfo)
     for (ci = 0; ci < scanptr->comps_in_scan; ci++) {
       cinfo->cur_comp_info[ci] =
 	&cinfo->comp_info[scanptr->component_index[ci]];
-    }
+   }
     if (cinfo->progressive_mode) {
       cinfo->Ss = scanptr->Ss;
       cinfo->Se = scanptr->Se;
       cinfo->Ah = scanptr->Ah;
       cinfo->Al = scanptr->Al;
       return;
-    }
-  }
+   }
+ }
   else
 #endif
   {
@@ -553,8 +553,8 @@ select_scan_parameters (j_compress_ptr cinfo)
     cinfo->comps_in_scan = cinfo->num_components;
     for (ci = 0; ci < cinfo->num_components; ci++) {
       cinfo->cur_comp_info[ci] = &cinfo->comp_info[ci];
-    }
-  }
+   }
+ }
   cinfo->Ss = 0;
   cinfo->Se = cinfo->block_size * cinfo->block_size - 1;
   cinfo->Ah = 0;
@@ -596,7 +596,7 @@ per_scan_setup (j_compress_ptr cinfo)
     cinfo->blocks_in_MCU = 1;
     cinfo->MCU_membership[0] = 0;
     
-  } else {
+ } else {
     
     /* Interleaved (multi-component) scan */
     if (cinfo->comps_in_scan <= 0 || cinfo->comps_in_scan > MAX_COMPS_IN_SCAN)
@@ -633,17 +633,17 @@ per_scan_setup (j_compress_ptr cinfo)
 	ERREXIT(cinfo, JERR_BAD_MCU_SIZE);
       while (mcublks-- > 0) {
 	cinfo->MCU_membership[cinfo->blocks_in_MCU++] = ci;
-      }
-    }
+     }
+   }
     
-  }
+ }
 
   /* Convert restart specified in rows to actual MCU count. */
   /* Note that count must fit in 16 bits, so we provide limiting. */
   if (cinfo->restart_in_rows > 0) {
     long nominal = (long) cinfo->restart_in_rows * (long) cinfo->MCUs_per_row;
     cinfo->restart_interval = (unsigned int) MIN(nominal, 65535L);
-  }
+ }
 }
 
 
@@ -671,7 +671,7 @@ prepare_for_pass (j_compress_ptr cinfo)
       (*cinfo->cconvert->start_pass) (cinfo);
       (*cinfo->downsample->start_pass) (cinfo);
       (*cinfo->prep->start_pass) (cinfo, JBUF_PASS_THRU);
-    }
+   }
     (*cinfo->fdct->start_pass) (cinfo);
     (*cinfo->entropy->start_pass) (cinfo, cinfo->optimize_coding);
     (*cinfo->coef->start_pass) (cinfo,
@@ -681,10 +681,10 @@ prepare_for_pass (j_compress_ptr cinfo)
     if (cinfo->optimize_coding) {
       /* No immediate data output; postpone writing frame/scan headers */
       master->pub.call_pass_startup = FALSE;
-    } else {
+   } else {
       /* Will write frame/scan headers at first jpeg_write_scanlines call */
       master->pub.call_pass_startup = TRUE;
-    }
+   }
     break;
 #ifdef ENTROPY_OPT_SUPPORTED
   case huff_opt_pass:
@@ -696,7 +696,7 @@ prepare_for_pass (j_compress_ptr cinfo)
       (*cinfo->coef->start_pass) (cinfo, JBUF_CRANK_DEST);
       master->pub.call_pass_startup = FALSE;
       break;
-    }
+   }
     /* Special case: Huffman DC refinement scans need no Huffman table
      * and therefore we can skip the optimization pass for them.
      */
@@ -710,7 +710,7 @@ prepare_for_pass (j_compress_ptr cinfo)
     if (! cinfo->optimize_coding) {
       select_scan_parameters(cinfo);
       per_scan_setup(cinfo);
-    }
+   }
     (*cinfo->entropy->start_pass) (cinfo, FALSE);
     (*cinfo->coef->start_pass) (cinfo, JBUF_CRANK_DEST);
     /* We emit frame/scan headers now */
@@ -721,7 +721,7 @@ prepare_for_pass (j_compress_ptr cinfo)
     break;
   default:
     ERREXIT(cinfo, JERR_NOT_COMPILED);
-  }
+ }
 
   master->pub.is_last_pass = (master->pass_number == master->total_passes-1);
 
@@ -729,7 +729,7 @@ prepare_for_pass (j_compress_ptr cinfo)
   if (cinfo->progress != NULL) {
     cinfo->progress->completed_passes = master->pass_number;
     cinfo->progress->total_passes = master->total_passes;
-  }
+ }
 }
 
 
@@ -787,7 +787,7 @@ finish_pass_master (j_compress_ptr cinfo)
       master->pass_type = huff_opt_pass;
     master->scan_number++;
     break;
-  }
+ }
 
   master->pass_number++;
 }
@@ -822,10 +822,10 @@ jinit_c_master_control (j_compress_ptr cinfo, boolean transcode_only)
 #else
     ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
-  } else {
+ } else {
     cinfo->progressive_mode = FALSE;
     cinfo->num_scans = 1;
-  }
+ }
 
   if (cinfo->optimize_coding)
     cinfo->arith_code = FALSE; /* disable arithmetic coding */
@@ -843,10 +843,10 @@ jinit_c_master_control (j_compress_ptr cinfo, boolean transcode_only)
       master->pass_type = huff_opt_pass;
     else
       master->pass_type = output_pass;
-  } else {
+ } else {
     /* for normal compression, first pass is always this type: */
     master->pass_type = main_pass;
-  }
+ }
   master->scan_number = 0;
   master->pass_number = 0;
   if (cinfo->optimize_coding)

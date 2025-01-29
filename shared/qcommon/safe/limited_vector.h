@@ -17,7 +17,7 @@ namespace Q
 	class LimitedVector
 	{
 	private:
-		using Memory = std::array< char, sizeof( T ) * maximum >;
+		using Memory = std::array< char, sizeof(T) * maximum >;
 	public:
 		using value_type = T;
 		using size_type = std::size_t;
@@ -34,41 +34,41 @@ namespace Q
 		{
 			clear();
 		}
-		LimitedVector( const LimitedVector& rhs ) NOEXCEPT_IF( IS_NOEXCEPT(
-			T{ static_cast< const T& >( std::declval< T >() ) }
-			) )
+		LimitedVector(const LimitedVector& rhs) NOEXCEPT_IF(IS_NOEXCEPT(
+			T{static_cast< const T& >(std::declval< T >())}
+			))
 		{
 			*this = rhs;
 		}
-		LimitedVector& operator=( const LimitedVector& rhs ) NOEXCEPT_IF( IS_NOEXCEPT(
-			T{ static_cast< const T& >( std::declval< T >() ) }
-			) )
+		LimitedVector& operator=(const LimitedVector& rhs) NOEXCEPT_IF(IS_NOEXCEPT(
+			T{static_cast< const T& >(std::declval< T >())}
+			))
 		{
 			clear();
-			std::copy( rhs.begin(), rhs.end(), std::back_inserter( *this ) );
+			std::copy(rhs.begin(), rhs.end(), std::back_inserter(*this));
 			return *this;
 		}
-		LimitedVector( LimitedVector&& rhs ) NOEXCEPT_IF( IS_NOEXCEPT(
-			T{ std::move( std::declval< T >() ) }
-			) )
+		LimitedVector(LimitedVector&& rhs) NOEXCEPT_IF(IS_NOEXCEPT(
+			T{std::move(std::declval< T >())}
+			))
 		{
-			*this = std::move( rhs );
+			*this = std::move(rhs);
 		}
-		LimitedVector& operator=( LimitedVector&& rhs ) NOEXCEPT_IF( IS_NOEXCEPT(
-			T{ std::move( std::declval< T >() ) }
-			) )
+		LimitedVector& operator=(LimitedVector&& rhs) NOEXCEPT_IF(IS_NOEXCEPT(
+			T{std::move(std::declval< T >())}
+			))
 		{
 			clear();
-			std::move( rhs.begin(), rhs.end(), std::back_inserter( *this ) );
+			std::move(rhs.begin(), rhs.end(), std::back_inserter(*this));
 			rhs.clear();
 			return *this;
 		}
 
-		void swap( LimitedVector& rhs )
+		void swap(LimitedVector& rhs)
 		{
-			LimitedVector temp = std::move( rhs );
-			rhs = std::move( *this );
-			*this = std::move( temp );
+			LimitedVector temp = std::move(rhs);
+			rhs = std::move(*this);
+			*this = std::move(temp);
 		}
 
 		size_type size() const NOEXCEPT
@@ -87,48 +87,48 @@ namespace Q
 		}
 
 		template< typename... Args >
-		bool emplace_back( Args&&... args ) NOEXCEPT_IF( IS_NOEXCEPT(
-			T{ std::forward< Args >( std::declval< Args >() )... }
-			) )
+		bool emplace_back(Args&&... args) NOEXCEPT_IF(IS_NOEXCEPT(
+			T{std::forward< Args >(std::declval< Args >())...}
+			))
 		{
-			if( size() == max_size() )
+			if(size() == max_size())
 			{
 				return false;
 			}
 			T* memory = &data()[ size() ];
 			// construct in-place (placement new)
-			new( memory ) T( std::forward< Args >( args )... );
+			new(memory) T(std::forward< Args >(args)...);
 			++_size;
 			return true;
 		}
 
-		bool push_back( const T& value ) NOEXCEPT_IF( IS_NOEXCEPT(
-			emplace_back( static_cast< const T& >( std::declval< T >() ) )
-			) )
+		bool push_back(const T& value) NOEXCEPT_IF(IS_NOEXCEPT(
+			emplace_back(static_cast< const T& >(std::declval< T >()))
+			))
 		{
-			return emplace_back( value );
+			return emplace_back(value);
 		}
 
-		bool push_back( T&& value ) NOEXCEPT_IF( IS_NOEXCEPT(
-			emplace_back( std::move( std::declval< T >() ) )
-			) )
+		bool push_back(T&& value) NOEXCEPT_IF(IS_NOEXCEPT(
+			emplace_back(std::move(std::declval< T >()))
+			))
 		{
-			return emplace_back( std::move( value ) );
+			return emplace_back(std::move(value));
 		}
 
 		void pop_back() NOEXCEPT
 		{
-			if( size() == 0 )
+			if(size() == 0)
 			{
 				return;
 			}
-			( &( *this )[ size() - 1 ] )->~T();
+			(&(*this)[ size() - 1 ])->~T();
 			--_size;
 		}
 
 		void clear() NOEXCEPT
 		{
-			while( !empty() )
+			while(!empty())
 			{
 				pop_back();
 			}
@@ -136,34 +136,34 @@ namespace Q
 
 		const_pointer data() const NOEXCEPT
 		{
-			return reinterpret_cast< const T* >( _memory.data() );
+			return reinterpret_cast< const T* >(_memory.data());
 		}
 
 		pointer data() NOEXCEPT
 		{
-			return reinterpret_cast< T* >( _memory.data() );
+			return reinterpret_cast< T* >(_memory.data());
 		}
 
-		const T& operator[]( size_type index ) const NOEXCEPT
+		const T& operator[](size_type index) const NOEXCEPT
 		{
-			assert( index < _size );
+			assert(index < _size);
 			return data()[ index ];
 		}
 
-		T& operator[]( size_type index ) NOEXCEPT
+		T& operator[](size_type index) NOEXCEPT
 		{
-			assert( index < _size );
+			assert(index < _size);
 			return data()[ index ];
 		}
 
 		iterator begin() NOEXCEPT
 		{
-			return{ data() };
+			return{data()};
 		}
 
 		const_iterator begin() const NOEXCEPT
 		{
-			return{ data() };
+			return{data()};
 		}
 
 		const_iterator cbegin() const NOEXCEPT
@@ -173,12 +173,12 @@ namespace Q
 
 		iterator end() NOEXCEPT
 		{
-			return{ data() + size() };
+			return{data() + size()};
 		}
 
 		const_iterator end() const NOEXCEPT
 		{
-			return{ data() + size() };
+			return{data() + size()};
 		}
 
 		const_iterator cend() const NOEXCEPT
@@ -186,18 +186,18 @@ namespace Q
 			return end();
 		}
 
-		bool operator==( const LimitedVector& rhs ) const NOEXCEPT_IF( IS_NOEXCEPT(
+		bool operator==(const LimitedVector& rhs) const NOEXCEPT_IF(IS_NOEXCEPT(
 			std::declval< T >() == std::declval< T >()
-			) )
+			))
 		{
-			return size() == rhs.size() && std::equal( begin(), end(), rhs.begin() );
+			return size() == rhs.size() && std::equal(begin(), end(), rhs.begin());
 		}
 
-		bool operator!=( const LimitedVector& rhs ) const NOEXCEPT_IF( IS_NOEXCEPT(
+		bool operator!=(const LimitedVector& rhs) const NOEXCEPT_IF(IS_NOEXCEPT(
 			std::declval< T >() == std::declval< T >()
-			) )
+			))
 		{
-			return !( *this == rhs );
+			return !(*this == rhs);
 		}
 
 	private:

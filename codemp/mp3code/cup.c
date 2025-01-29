@@ -69,7 +69,7 @@ freq_limit      input, limits bandwidth of pcm output to specified
 
 
 ---------------------------------
-void audio_decode_info( DEC_INFO *info)
+void audio_decode_info(DEC_INFO *info)
 
 information return:
           Call after audio_decode_init.  See mhead.h for
@@ -198,8 +198,8 @@ static long load(int n)
       {
 	 bitbuf = (bitbuf << 8) | *bs_ptr++;
 	 bits += 8;
-      }
-   }
+     }
+  }
    bits -= n;
    x = bitbuf >> bits;
    bitbuf -= x << bits;
@@ -219,22 +219,22 @@ static void skip(int n)
       n -= k << 3;
       bitbuf = *bs_ptr++;
       bits = 8;
-   }
+  }
    bits -= n;
    bitbuf -= (bitbuf >> bits) << bits;
 }
 /*--------------------------------------------------------------*/
-#define mac_load_check(n) if( bits < (n) ) {                           \
-          while( bits <= 24 ) {               \
+#define mac_load_check(n) if(bits < (n)) {                          \
+          while(bits <= 24) {              \
              bitbuf = (bitbuf << 8) | *bs_ptr++;  \
              bits += 8;                       \
-          }                                   \
-   }
+         }                                   \
+  }
 /*--------------------------------------------------------------*/
-#define mac_load(n) ( bits -= n,                    \
+#define mac_load(n) (bits -= n,                    \
          bitval = bitbuf >> bits,      \
          bitbuf -= bitval << bits,     \
-         bitval )
+         bitval)
 /*======================================================================*/
 static void unpack_ba()
 {
@@ -263,9 +263,9 @@ static void unpack_ba()
 	    c_value[k + 1] = c_value[k];
 	    k++;
 	    j++;
-	 }
-      }
-   }
+	}
+     }
+  }
    samp_dispatch[pMP3Stream->nsb_limit] = 37;	/* terminate the dispatcher with skip */
    samp_dispatch[k] = 36;	/* terminate the dispatcher */
 
@@ -282,7 +282,7 @@ static void unpack_sfs()	/* unpack scale factor selectors */
 	 sf_dispatch[i] = mac_load(2);
       else
 	 sf_dispatch[i] = 4;	/* no allo */
-   }
+  }
    sf_dispatch[i] = 5;		/* terminate dispatcher */
 }
 /*-------------------------------------------------------------------------*/
@@ -319,7 +319,7 @@ static void unpack_sf()		/* unpack scale factor */
 	 goto dispatch;
       case 5:			/* all done */
 	 ;
-   }				/* end switch */
+  }				/* end switch */
 }
 /*-------------------------------------------------------------------------*/
 #define UNPACK_N(n) s[k]     =  pMP3Stream->cs_factor[i][k]*(load(n)-((1 << (n-1)) -1));   \
@@ -484,9 +484,9 @@ static void unpack_samp()	/* unpack samples */
 	       skip(pMP3Stream->bit_skip);
 	    case 36:
 	       s += 3 * 64;
-	 }			/* end switch */
-      }				/* end j loop */
-   }				/* end i loop */
+	}			/* end switch */
+     }				/* end j loop */
+  }				/* end i loop */
 
 
 }

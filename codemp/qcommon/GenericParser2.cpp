@@ -247,11 +247,11 @@ bool CGPObject::WriteText(CTextPool **textPool, const char *text)
 	   (*textPool)->AllocText("\"", false, textPool);
 	   (*textPool)->AllocText((char *)text, false, textPool);
 	   (*textPool)->AllocText("\"", false, textPool);
-   }
+  }
    else
    {
 	   (*textPool)->AllocText((char *)text, false, textPool);
-   }
+  }
 
    return true;
 }

@@ -481,8 +481,8 @@ bool	CVec4::PtInCircle(const CVec4 &A, const CVec4 &B, const CVec4 &C) const
 	czdz=cz-dz;
 	vol = (az-dz)*(bxdx*cydy-bydy*cxdx) + (ay-dy)*(bzdz*cxdx-bxdx*czdz) + (ax-dx)*(bydy*czdz-bzdz*cydy);
 
-	if      ( vol >    tolerance)  return  true;
-	else if ( vol < -1*tolerance)  return  false;
+	if      (vol >    tolerance)  return  true;
+	else if (vol < -1*tolerance)  return  false;
 	else                           return  false;
 }
 
@@ -1056,8 +1056,8 @@ bool	CVec3::PtInCircle(const CVec3 &A, const CVec3 &B, const CVec3 &C) const
 	czdz=cz-dz;
 	vol = (az-dz)*(bxdx*cydy-bydy*cxdx) + (ay-dy)*(bzdz*cxdx-bxdx*czdz) + (ax-dx)*(bydy*czdz-bzdz*cydy);
 
-	if      ( vol >    tolerance)  return  true;
-	else if ( vol < -1*tolerance)  return  false;
+	if      (vol >    tolerance)  return  true;
+	else if (vol < -1*tolerance)  return  false;
 	else                           return  false;
 }
 

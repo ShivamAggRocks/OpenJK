@@ -77,7 +77,7 @@ typedef struct
 
 static inline zoneTail_t *ZoneTailFromHeader(zoneHeader_t *pHeader)
 {
-	return (zoneTail_t*) ( (char*)pHeader + sizeof(*pHeader) + pHeader->iSize );
+	return (zoneTail_t*) ((char*)pHeader + sizeof(*pHeader) + pHeader->iSize);
 }
 
 #ifdef DETAILED_ZONE_DEBUG_CODE
@@ -145,7 +145,7 @@ int Z_Validate(void)
 		if (pMemory->eTag != TAG_IMAGE_T
 			&& pMemory->eTag != TAG_MODEL_MD3
 			&& pMemory->eTag != TAG_MODEL_GLM
-			&& pMemory->eTag != TAG_MODEL_GLA )	//don't bother with disk caches as they've already been hit or will be thrown out next
+			&& pMemory->eTag != TAG_MODEL_GLA)	//don't bother with disk caches as they've already been hit or will be thrown out next
 		{
 			unsigned char *memstart = (unsigned char *)pMemory;
 			int totalSize = pMemory->iSize;
@@ -191,28 +191,28 @@ typedef struct
 #pragma pack(pop)
 
 const static StaticZeroMem_t gZeroMalloc  =
-	{ {ZONE_MAGIC, TAG_STATIC,0,NULL,NULL},{ZONE_MAGIC}};
+	{{ZONE_MAGIC, TAG_STATIC,0,NULL,NULL},{ZONE_MAGIC}};
 
 #ifdef DEBUG_ZONE_ALLOCS
 #define DEF_STATIC(_char) {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL, "<static>",0,"",0},{_char,'\0'},{ZONE_MAGIC}
 #else
-#define DEF_STATIC(_char) {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL			        },{_char,'\0'},{ZONE_MAGIC}
+#define DEF_STATIC(_char) {ZONE_MAGIC, TAG_STATIC,2,NULL,NULL			       },{_char,'\0'},{ZONE_MAGIC}
 #endif
 
 const static StaticMem_t gEmptyString =
-	{ DEF_STATIC('\0') };
+	{DEF_STATIC('\0')};
 
 const static StaticMem_t gNumberString[] = {
-	{ DEF_STATIC('0') },
-	{ DEF_STATIC('1') },
-	{ DEF_STATIC('2') },
-	{ DEF_STATIC('3') },
-	{ DEF_STATIC('4') },
-	{ DEF_STATIC('5') },
-	{ DEF_STATIC('6') },
-	{ DEF_STATIC('7') },
-	{ DEF_STATIC('8') },
-	{ DEF_STATIC('9') },
+	{DEF_STATIC('0')},
+	{DEF_STATIC('1')},
+	{DEF_STATIC('2')},
+	{DEF_STATIC('3')},
+	{DEF_STATIC('4')},
+	{DEF_STATIC('5')},
+	{DEF_STATIC('6')},
+	{DEF_STATIC('7')},
+	{DEF_STATIC('8')},
+	{DEF_STATIC('9')},
 };
 
 qboolean gbMemFreeupOccured = qfalse;
@@ -247,7 +247,7 @@ char *_D_Z_Filename_WithoutPath(const char *psFilename)
 extern refexport_t re;
 
 #ifdef DEBUG_ZONE_ALLOCS
-void *_D_Z_Malloc ( int iSize, memtag_t eTag, qboolean bZeroit, const char *psFile, int iLine)
+void *_D_Z_Malloc (int iSize, memtag_t eTag, qboolean bZeroit, const char *psFile, int iLine)
 #else
 void *Z_Malloc(int iSize, memtag_t eTag, qboolean bZeroit, int /*unusedAlign*/)
 #endif
@@ -276,9 +276,9 @@ void *Z_Malloc(int iSize, memtag_t eTag, qboolean bZeroit, int /*unusedAlign*/)
 		}
 
 		if (bZeroit) {
-			pMemory = (zoneHeader_t *) calloc ( iRealSize, 1 );
+			pMemory = (zoneHeader_t *) calloc (iRealSize, 1);
 		} else {
-			pMemory = (zoneHeader_t *) malloc ( iRealSize );
+			pMemory = (zoneHeader_t *) malloc (iRealSize);
 		}
 		if (!pMemory)
 		{
@@ -339,7 +339,7 @@ void *Z_Malloc(int iSize, memtag_t eTag, qboolean bZeroit, int /*unusedAlign*/)
 				if (iBytesFreed)
 				{
 					int iTheseBytesFreed = 0;
-					while ( (iTheseBytesFreed = SND_FreeOldestSound()) != 0)
+					while ((iTheseBytesFreed = SND_FreeOldestSound()) != 0)
 					{
 						iBytesFreed += iTheseBytesFreed;
 						if (iBytesFreed >= iRealSize)
@@ -426,7 +426,7 @@ int openjk_minizip_free(void *to_free)
 // used during model cacheing to save an extra malloc, lets us morph the disk-load buffer then
 //	just not fs_freefile() it afterwards.
 //
-void Z_MorphMallocTag( void *pvAddress, memtag_t eDesiredTag )
+void Z_MorphMallocTag(void *pvAddress, memtag_t eDesiredTag)
 {
 	zoneHeader_t *pMemory = ((zoneHeader_t *)pvAddress) - 1;
 
@@ -639,7 +639,7 @@ void Z_TagFree(memtag_t eTag)
 	while (pMemory)
 	{
 		zoneHeader_t *pNext = pMemory->pNext;
-		if ( (eTag == TAG_ALL) || (pMemory->eTag == eTag))
+		if ((eTag == TAG_ALL) || (pMemory->eTag == eTag))
 		{
 			Zone_FreeBlock(pMemory);
 		}
@@ -649,22 +649,22 @@ void Z_TagFree(memtag_t eTag)
 // these stupid pragmas don't work here???!?!?!
 //
 //#ifdef _DEBUG
-//#pragma warning( disable : 4189)
+//#pragma warning(disable : 4189)
 //	int iBlocksFreed = iZoneBlocks - TheZone.Stats.iCount;
-//#pragma warning( default : 4189)
+//#pragma warning(default : 4189)
 //#endif
 }
 
 
 #ifdef DEBUG_ZONE_ALLOCS
-void *_D_S_Malloc ( int iSize, const char *psFile, int iLine)
+void *_D_S_Malloc (int iSize, const char *psFile, int iLine)
 {
-	return _D_Z_Malloc( iSize, TAG_SMALL, qfalse, psFile, iLine );
+	return _D_Z_Malloc(iSize, TAG_SMALL, qfalse, psFile, iLine);
 }
 #else
-void *S_Malloc( int iSize )
+void *S_Malloc(int iSize)
 {
-	return Z_Malloc( iSize, TAG_SMALL, qfalse);
+	return Z_Malloc(iSize, TAG_SMALL, qfalse);
 }
 #endif
 
@@ -674,12 +674,12 @@ static void Z_MemRecoverTest_f(void)
 {
 	// needs to be in _DEBUG only, not good for final game!
 	//
-	if ( Cmd_Argc() != 2 ) {
-		Com_Printf( "Usage: zone_memrecovertest max2alloc\n" );
+	if (Cmd_Argc() != 2) {
+		Com_Printf("Usage: zone_memrecovertest max2alloc\n");
 		return;
 	}
 
-	int iMaxAlloc = 1024*1024*atoi( Cmd_Argv(1) );
+	int iMaxAlloc = 1024*1024*atoi(Cmd_Argv(1));
 	int iTotalMalloc = 0;
 	while (1)
 	{
@@ -687,7 +687,7 @@ static void Z_MemRecoverTest_f(void)
 		Z_Malloc(iThisMalloc, TAG_SPECIAL_MEM_TEST, qfalse);	// and lose, just to consume memory
 		iTotalMalloc += iThisMalloc;
 
-		if (gbMemFreeupOccured || (iTotalMalloc >= iMaxAlloc) )
+		if (gbMemFreeupOccured || (iTotalMalloc >= iMaxAlloc))
 			break;
 	}
 
@@ -762,7 +762,7 @@ static void Z_Snapshot_f(void)
 	}
 
 	giZoneSnaphotNum++;
-	Com_Printf("Ok.    ( Current snapshot num is now %d )\n",giZoneSnaphotNum);
+	Com_Printf("Ok.    (Current snapshot num is now %d)\n",giZoneSnaphotNum);
 }
 
 static void Z_TagDebug_f(void)
@@ -813,7 +813,7 @@ static void Z_TagDebug_f(void)
 		return;
 	}
 
-	Com_Printf("Dumping debug data for tag \"%s\"...%s\n\n",psTagStrings[eTag], bSnapShotTestActive?"( since snapshot only )":"");
+	Com_Printf("Dumping debug data for tag \"%s\"...%s\n\n",psTagStrings[eTag], bSnapShotTestActive?"(since snapshot only)":"");
 
 	Com_Printf("%8s"," ");	// to compensate for code further down:   Com_Printf("(%5d) ",iBlocksListed);
 	if (eTag == TAG_ALL)
@@ -852,7 +852,7 @@ static void Z_TagDebug_f(void)
 	while (pMemory)
 	{
 		if (	(pMemory->eTag == eTag	|| eTag == TAG_ALL)
-			&&  (!bSnapShotTestActive	|| (pMemory->iSnapshotNumber == giZoneSnaphotNum && AllTagBlockLabels_Local[psTagStrings[pMemory->eTag]][pMemory->sOptionalLabel] <0) )
+			&&  (!bSnapShotTestActive	|| (pMemory->iSnapshotNumber == giZoneSnaphotNum && AllTagBlockLabels_Local[psTagStrings[pMemory->eTag]][pMemory->sOptionalLabel] <0))
 			)
 		{
 			float	fSize		= (float)(pMemory->iSize) / 1024.0f / 1024.0f;
@@ -871,10 +871,10 @@ static void Z_TagDebug_f(void)
  							  iSize,iRemainder,
 												pMemory->sSrcFileBaseName,
 															pMemory->iSrcFileLineNum
-					   );
+					  );
 			if (pMemory->sOptionalLabel[0])
 			{
-				Com_Printf("( Label: \"%s\" )\n",pMemory->sOptionalLabel);
+				Com_Printf("(Label: \"%s\")\n",pMemory->sOptionalLabel);
 			}
 			iBlocksListed++;
 			iTotalSize += pMemory->iSize;
@@ -889,7 +889,7 @@ static void Z_TagDebug_f(void)
 		pMemory = pMemory->pNext;
 	}
 
-	Com_Printf("( %d blocks listed, %d bytes (%.2fMB) total )\n",iBlocksListed, iTotalSize, (float)iTotalSize / 1024.0f / 1024.0f);
+	Com_Printf("(%d blocks listed, %d bytes (%.2fMB) total)\n",iBlocksListed, iTotalSize, (float)iTotalSize / 1024.0f / 1024.0f);
 }
 #endif
 
@@ -926,7 +926,7 @@ void Com_ShutdownZoneMemory(void)
 
 // Initialises the zone memory system
 
-void Com_InitZoneMemory( void )
+void Com_InitZoneMemory(void)
 {
 	Com_Printf("Initialising zone memory .....\n");
 
@@ -934,7 +934,7 @@ void Com_InitZoneMemory( void )
 	TheZone.Header.iMagic = ZONE_MAGIC;
 }
 
-void Com_InitZoneMemoryVars( void)
+void Com_InitZoneMemoryVars(void)
 {
 	com_validateZone = Cvar_Get("com_validateZone", "0", 0);
 
@@ -962,7 +962,7 @@ CopyString
 		memory from a memstatic_t might be returned
 ========================
 */
-char *CopyString( const char *in ) {
+char *CopyString(const char *in) {
 	char	*out;
 
 	if (!in[0]) {
@@ -990,7 +990,7 @@ Com_TouchMemory
 Touch all known used data to make sure it is paged in
 ===============
 */
-void Com_TouchMemory( void ) {
+void Com_TouchMemory(void) {
 	//int		start, end;
 	int		i, j;
 	unsigned int		sum;
@@ -1017,7 +1017,7 @@ void Com_TouchMemory( void ) {
 
 	//end = Sys_Milliseconds();
 
-	//Com_Printf( "Com_TouchMemory: %i bytes, %i msec\n", totalTouched, end - start );
+	//Com_Printf("Com_TouchMemory: %i bytes, %i msec\n", totalTouched, end - start);
 }
 
 

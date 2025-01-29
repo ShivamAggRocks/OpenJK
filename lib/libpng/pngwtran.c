@@ -59,14 +59,14 @@ png_do_pack(png_row_infop row_info, png_bytep row, png_uint_32 bit_depth)
                   *dp = (png_byte)v;
                   dp++;
                   v = 0;
-               }
-            }
+              }
+           }
 
             if (mask != 0x80)
                *dp = (png_byte)v;
 
             break;
-         }
+        }
 
          case 2:
          {
@@ -93,19 +93,19 @@ png_do_pack(png_row_infop row_info, png_bytep row, png_uint_32 bit_depth)
                   *dp = (png_byte)v;
                   dp++;
                   v = 0;
-               }
+              }
 
                else
                   shift -= 2;
 
                sp++;
-            }
+           }
 
             if (shift != 6)
                *dp = (png_byte)v;
 
             break;
-         }
+        }
 
          case 4:
          {
@@ -132,29 +132,29 @@ png_do_pack(png_row_infop row_info, png_bytep row, png_uint_32 bit_depth)
                   *dp = (png_byte)v;
                   dp++;
                   v = 0;
-               }
+              }
 
                else
                   shift -= 4;
 
                sp++;
-            }
+           }
 
             if (shift != 4)
                *dp = (png_byte)v;
 
             break;
-         }
+        }
 
          default:
             break;
-      }
+     }
 
       row_info->bit_depth = (png_byte)bit_depth;
       row_info->pixel_depth = (png_byte)(bit_depth * row_info->channels);
       row_info->rowbytes = PNG_ROWBYTES(row_info->pixel_depth,
           row_info->width);
-   }
+  }
 }
 #endif
 
@@ -190,21 +190,21 @@ png_do_shift(png_row_infop row_info, png_bytep row,
          shift_start[channels] = row_info->bit_depth - bit_depth->blue;
          shift_dec[channels] = bit_depth->blue;
          channels++;
-      }
+     }
 
       else
       {
          shift_start[channels] = row_info->bit_depth - bit_depth->gray;
          shift_dec[channels] = bit_depth->gray;
          channels++;
-      }
+     }
 
       if ((row_info->color_type & PNG_COLOR_MASK_ALPHA) != 0)
       {
          shift_start[channels] = row_info->bit_depth - bit_depth->alpha;
          shift_dec[channels] = bit_depth->alpha;
          channels++;
-      }
+     }
 
       /* With low row depths, could only be grayscale, so one channel */
       if (row_info->bit_depth < 8)
@@ -238,11 +238,11 @@ png_do_shift(png_row_infop row_info, png_bytep row,
 
                else
                   out |= (v >> (-j)) & mask;
-            }
+           }
 
             *bp = (png_byte)(out & 0xff);
-         }
-      }
+        }
+     }
 
       else if (row_info->bit_depth == 8)
       {
@@ -267,11 +267,11 @@ png_do_shift(png_row_infop row_info, png_bytep row,
 
                else
                   out |= v >> (-j);
-            }
+           }
 
             *bp = (png_byte)(out & 0xff);
-         }
-      }
+        }
+     }
 
       else
       {
@@ -295,12 +295,12 @@ png_do_shift(png_row_infop row_info, png_bytep row,
 
                else
                   value |= v >> (-j);
-            }
+           }
             *bp++ = (png_byte)((value >> 8) & 0xff);
             *bp++ = (png_byte)(value & 0xff);
-         }
-      }
-   }
+        }
+     }
+  }
 }
 #endif
 
@@ -327,8 +327,8 @@ png_do_write_swap_alpha(png_row_infop row_info, png_bytep row)
                *(dp++) = *(sp++);
                *(dp++) = *(sp++);
                *(dp++) = save;
-            }
-         }
+           }
+        }
 
 #ifdef PNG_WRITE_16BIT_SUPPORTED
          else
@@ -351,10 +351,10 @@ png_do_write_swap_alpha(png_row_infop row_info, png_bytep row)
                *(dp++) = *(sp++);
                *(dp++) = save[0];
                *(dp++) = save[1];
-            }
-         }
+           }
+        }
 #endif /* WRITE_16BIT */
-      }
+     }
 
       else if (row_info->color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
       {
@@ -370,8 +370,8 @@ png_do_write_swap_alpha(png_row_infop row_info, png_bytep row)
                png_byte save = *(sp++);
                *(dp++) = *(sp++);
                *(dp++) = save;
-            }
-         }
+           }
+        }
 
 #ifdef PNG_WRITE_16BIT_SUPPORTED
          else
@@ -390,11 +390,11 @@ png_do_write_swap_alpha(png_row_infop row_info, png_bytep row)
                *(dp++) = *(sp++);
                *(dp++) = save[0];
                *(dp++) = save[1];
-            }
-         }
+           }
+        }
 #endif /* WRITE_16BIT */
-      }
-   }
+     }
+  }
 }
 #endif
 
@@ -423,8 +423,8 @@ png_do_write_invert_alpha(png_row_infop row_info, png_bytep row)
                */
                sp+=3; dp = sp;
                *(dp++) = (png_byte)(255 - *(sp++));
-            }
-         }
+           }
+        }
 
 #ifdef PNG_WRITE_16BIT_SUPPORTED
          else
@@ -447,10 +447,10 @@ png_do_write_invert_alpha(png_row_infop row_info, png_bytep row)
                sp+=6; dp = sp;
                *(dp++) = (png_byte)(255 - *(sp++));
                *(dp++) = (png_byte)(255 - *(sp++));
-            }
-         }
+           }
+        }
 #endif /* WRITE_16BIT */
-      }
+     }
 
       else if (row_info->color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
       {
@@ -465,8 +465,8 @@ png_do_write_invert_alpha(png_row_infop row_info, png_bytep row)
             {
                *(dp++) = *(sp++);
                *(dp++) = (png_byte)(255 - *(sp++));
-            }
-         }
+           }
+        }
 
 #ifdef PNG_WRITE_16BIT_SUPPORTED
          else
@@ -485,11 +485,11 @@ png_do_write_invert_alpha(png_row_infop row_info, png_bytep row)
                sp+=2; dp = sp;
                *(dp++) = (png_byte)(255 - *(sp++));
                *(dp++) = (png_byte)(255 - *(sp++));
-            }
-         }
+           }
+        }
 #endif /* WRITE_16BIT */
-      }
-   }
+     }
+  }
 }
 #endif
 

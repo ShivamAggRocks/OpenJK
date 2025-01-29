@@ -55,10 +55,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 //  returns either char * of loaded file, else NULL for failed-to-open...
 //
-unsigned char *SE_LoadFileData( const char *psFileName, int *piLoadedLength /* = 0 */)
+unsigned char *SE_LoadFileData(const char *psFileName, int *piLoadedLength /* = 0 */)
 {
 	unsigned char *psReturn = NULL;
-	if ( piLoadedLength )
+	if (piLoadedLength)
 	{
 		*piLoadedLength = 0;
 	}
@@ -68,17 +68,17 @@ unsigned char *SE_LoadFileData( const char *psFileName, int *piLoadedLength /* =
 	{
 		// full-path filename...
 		//
-		FILE *fh = fopen( psFileName, "rb" );
+		FILE *fh = fopen(psFileName, "rb");
 		if (fh)
 		{
 			long lLength = filesize(fh);
 
 			if (lLength > 0)
 			{
-				psReturn = (unsigned char *) malloc( lLength + 1);
+				psReturn = (unsigned char *) malloc(lLength + 1);
 				if (psReturn)
 				{
-					int iBytesRead = fread( psReturn, 1, lLength, fh );
+					int iBytesRead = fread(psReturn, 1, lLength, fh);
 					if (iBytesRead != lLength)
 					{
 						// error reading file!!!...
@@ -89,7 +89,7 @@ unsigned char *SE_LoadFileData( const char *psFileName, int *piLoadedLength /* =
 					else
 					{
 						psReturn[ lLength ] = '\0';
-						if ( piLoadedLength )
+						if (piLoadedLength)
 						{
 							*piLoadedLength = iBytesRead;
 						}
@@ -105,12 +105,12 @@ unsigned char *SE_LoadFileData( const char *psFileName, int *piLoadedLength /* =
 		// local filename, so prepend the base dir etc according to game and load it however (from PAK?)
 		//
 		unsigned char *pvLoadedData;
-		int iLen = FS_ReadFile( psFileName, (void **)&pvLoadedData );
+		int iLen = FS_ReadFile(psFileName, (void **)&pvLoadedData);
 
 		if (iLen>0)
 		{
 			psReturn = pvLoadedData;
-			if ( piLoadedLength )
+			if (piLoadedLength)
 			{
 				*piLoadedLength = iLen;
 			}
@@ -123,17 +123,17 @@ unsigned char *SE_LoadFileData( const char *psFileName, int *piLoadedLength /* =
 
 // called by main SGE code after loaded data has been parsedinto internal structures...
 //
-void SE_FreeFileDataAfterLoad( unsigned char *psLoadedFile )
+void SE_FreeFileDataAfterLoad(unsigned char *psLoadedFile)
 {
 #ifdef _STRINGED
-	if ( psLoadedFile )
+	if (psLoadedFile)
 	{
-		free( psLoadedFile );
+		free(psLoadedFile);
 	}
 #else
-	if ( psLoadedFile )
+	if (psLoadedFile)
 	{
-		FS_FreeFile( psLoadedFile );
+		FS_FreeFile(psLoadedFile);
 	}
 #endif
 }
@@ -146,14 +146,14 @@ void SE_FreeFileDataAfterLoad( unsigned char *psLoadedFile )
 // quake-style method of doing things since their file-list code doesn't have a 'recursive' flag...
 //
 int giFilesFound;
-static void SE_R_ListFiles( const char *psExtension, const char *psDir, std::string &strResults )
+static void SE_R_ListFiles(const char *psExtension, const char *psDir, std::string &strResults)
 {
 //	Com_Printf(va("Scanning Dir: %s\n",psDir));
 
 	char	**sysFiles, **dirFiles;
 	int		numSysFiles, i, numdirs;
 
-	dirFiles = FS_ListFiles( psDir, "/", &numdirs);
+	dirFiles = FS_ListFiles(psDir, "/", &numdirs);
 	for (i=0;i<numdirs;i++)
 	{
 		if (dirFiles[i][0] && dirFiles[i][0] != '.')	// skip blanks, plus ".", ".." etc
@@ -168,11 +168,11 @@ static void SE_R_ListFiles( const char *psExtension, const char *psDir, std::str
 			{
 				sDirName[strlen(sDirName)-1] = '\0';
 			}
-			SE_R_ListFiles( psExtension, sDirName, strResults );
+			SE_R_ListFiles(psExtension, sDirName, strResults);
 		}
 	}
 
-	sysFiles = FS_ListFiles( psDir, psExtension, &numSysFiles );
+	sysFiles = FS_ListFiles(psDir, psExtension, &numSysFiles);
 	for(i=0; i<numSysFiles; i++)
 	{
 		char	sFilename[MAX_QPATH];
@@ -187,17 +187,17 @@ static void SE_R_ListFiles( const char *psExtension, const char *psDir, std::str
 		// read it in...
 		//
 /*		byte *pbData = NULL;
-		int iSize = FS_ReadFile( sFilename, (void **)&pbData);
+		int iSize = FS_ReadFile(sFilename, (void **)&pbData);
 
 		if (pbData)
 		{
 
-			FS_FreeFile( pbData );
+			FS_FreeFile(pbData);
 		}
 */
 	}
-	FS_FreeFileList( sysFiles );
-	FS_FreeFileList( dirFiles );
+	FS_FreeFileList(sysFiles);
+	FS_FreeFileList(dirFiles);
 }
 #endif
 
@@ -206,13 +206,13 @@ static void SE_R_ListFiles( const char *psExtension, const char *psDir, std::str
 //
 // expected result is a ';'-delineated string (including last one) containing file-list search results
 //
-int SE_BuildFileList( const char *psStartDir, std::string &strResults )
+int SE_BuildFileList(const char *psStartDir, std::string &strResults)
 {
 #ifndef _STRINGED
 	giFilesFound = 0;
 	strResults = "";
 
-	SE_R_ListFiles( sSE_INGAME_FILE_EXTENSION, psStartDir, strResults );
+	SE_R_ListFiles(sSE_INGAME_FILE_EXTENSION, psStartDir, strResults);
 
 	return giFilesFound;
 #else

@@ -178,7 +178,7 @@ extern  cvar_t	*sv_compress_saved_games;
 // sv_main.c
 //
 void SV_FinalMessage (char *message);
-void QDECL SV_SendServerCommand( client_t *cl, const char *fmt, ...);
+void QDECL SV_SendServerCommand(client_t *cl, const char *fmt, ...);
 
 
 void SV_AddOperatorCommands (void);
@@ -188,46 +188,46 @@ void SV_RemoveOperatorCommands (void);
 //
 // sv_init.c
 //
-void SV_SetConfigstring( int index, const char *val );
-void SV_GetConfigstring( int index, char *buffer, int bufferSize );
+void SV_SetConfigstring(int index, const char *val);
+void SV_GetConfigstring(int index, char *buffer, int bufferSize);
 
-void SV_SetUserinfo( int index, const char *val );
-void SV_GetUserinfo( int index, char *buffer, int bufferSize );
+void SV_SetUserinfo(int index, const char *val);
+void SV_GetUserinfo(int index, char *buffer, int bufferSize);
 
-void SV_SpawnServer( const char *server, ForceReload_e eForceReload, qboolean bAllowScreenDissolve );
+void SV_SpawnServer(const char *server, ForceReload_e eForceReload, qboolean bAllowScreenDissolve);
 
 
 //
 // sv_client.c
 //
-void SV_DirectConnect( netadr_t from );
+void SV_DirectConnect(netadr_t from);
 
-void SV_ExecuteClientMessage( client_t *cl, msg_t *msg );
-void SV_UserinfoChanged( client_t *cl );
+void SV_ExecuteClientMessage(client_t *cl, msg_t *msg);
+void SV_UserinfoChanged(client_t *cl);
 
-void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd, SavedGameJustLoaded_e eSavedGameJustLoaded );
-void SV_DropClient( client_t *drop, const char *reason );
+void SV_ClientEnterWorld(client_t *client, usercmd_t *cmd, SavedGameJustLoaded_e eSavedGameJustLoaded);
+void SV_DropClient(client_t *drop, const char *reason);
 
-void SV_ExecuteClientCommand( client_t *cl, const char *s );
+void SV_ExecuteClientCommand(client_t *cl, const char *s);
 void SV_ClientThink (client_t *cl, usercmd_t *cmd);
 
 
 //
 // sv_snapshot.c
 //
-void SV_AddServerCommand( client_t *client, const char *cmd );
-void SV_SendMessageToClient( msg_t *msg, client_t *client );
-void SV_SendClientMessages( void );
-void SV_SendClientSnapshot( client_t *client );
+void SV_AddServerCommand(client_t *client, const char *cmd);
+void SV_SendMessageToClient(msg_t *msg, client_t *client);
+void SV_SendClientMessages(void);
+void SV_SendClientSnapshot(client_t *client);
 
 
 
 //
 // sv_game.c
 //
-gentity_t	*SV_GentityNum( int num );
-svEntity_t	*SV_SvEntityForGentity( gentity_t *gEnt );
-gentity_t	*SV_GEntityForSvEntity( svEntity_t *svEnt );
+gentity_t	*SV_GentityNum(int num);
+svEntity_t	*SV_SvEntityForGentity(gentity_t *gEnt);
+gentity_t	*SV_GEntityForSvEntity(svEntity_t *svEnt);
 void		SV_InitGameProgs (void);
 void		SV_ShutdownGameProgs (qboolean shutdownCin);
 qboolean	SV_inPVS (const vec3_t p1, const vec3_t p2);
@@ -241,11 +241,11 @@ qboolean	SV_inPVS (const vec3_t p1, const vec3_t p2);
 void SV_ClearWorld (void);
 // called after the world model has been loaded, before linking any entities
 
-void SV_UnlinkEntity( gentity_t *ent );
+void SV_UnlinkEntity(gentity_t *ent);
 // call before removing an entity, and before trying to move one,
 // so it doesn't clip against itself
 
-void SV_LinkEntity( gentity_t *ent );
+void SV_LinkEntity(gentity_t *ent);
 // Needs to be called any time an entity changes origin, mins, maxs,
 // or solid.  Automatically unlinks if needed.
 // sets ent->v.absmin and ent->v.absmax
@@ -253,13 +253,13 @@ void SV_LinkEntity( gentity_t *ent );
 // is not solid
 
 
-clipHandle_t SV_ClipHandleForEntity( const gentity_t *ent );
+clipHandle_t SV_ClipHandleForEntity(const gentity_t *ent);
 
 
-void SV_SectorList_f( void );
+void SV_SectorList_f(void);
 
 
-int SV_AreaEntities( const vec3_t mins, const vec3_t maxs, gentity_t **elist, int maxcount );
+int SV_AreaEntities(const vec3_t mins, const vec3_t maxs, gentity_t **elist, int maxcount);
 // fills in a table of entity pointers with entities that have bounding boxes
 // that intersect the given area.  It is possible for a non-axial bmodel
 // to be returned that doesn't actually intersect the area on an exact
@@ -268,13 +268,13 @@ int SV_AreaEntities( const vec3_t mins, const vec3_t maxs, gentity_t **elist, in
 // The world entity is never returned in this list.
 
 
-int SV_PointContents( const vec3_t p, int passEntityNum );
+int SV_PointContents(const vec3_t p, int passEntityNum);
 // returns the CONTENTS_* value from the world and all entities at the given point.
 
 /*
 Ghoul2 Insert Start
 */
-void SV_Trace( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
+void SV_Trace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
 			  const int passEntityNum, const int contentmask, const EG2_Collision eG2TraceType = G2_NOCOLLIDE, const int useLod = 0);
 /*
 Ghoul2 Insert End
@@ -299,7 +299,7 @@ void SV_LoadGame_f(void);
 void SV_LoadTransition_f(void);
 void SV_SaveGame_f(void);
 void SV_WipeGame_f(void);
-qboolean SV_TryLoadTransition( const char *mapname );
+qboolean SV_TryLoadTransition(const char *mapname);
 qboolean SG_WriteSavegame(const char *psPathlessBaseName, qboolean qbAutosave);
 qboolean SG_ReadSavegame(const char *psPathlessBaseName);
 void SG_WipeSavegame(const char *psPathlessBaseName);
@@ -339,11 +339,11 @@ public:
 	void			SetFlags(unsigned int newFlags);
 	void			SetReference(char *newReference);
 
-	unsigned int	GetFlags(void) { return Flags; }
-	char			*GetReference(void) { return Reference; }
+	unsigned int	GetFlags(void) {return Flags;}
+	char			*GetReference(void) {return Reference;}
 
-	virtual bool	UnderstandToken(int token, char *data );
-	virtual bool	Load(char *&Data, int &Size );
+	virtual bool	UnderstandToken(int token, char *data);
+	virtual bool	Load(char *&Data, int &Size);
 };
 
 
@@ -359,9 +359,9 @@ public:
 					 cStringsSingle(unsigned int initFlags = 0, char *initReference = NULL);
 	virtual			~cStringsSingle();
 
-	char			*GetText(void) { return Text; }
+	char			*GetText(void) {return Text;}
 
-	virtual bool	UnderstandToken(int token, char *data );
+	virtual bool	UnderstandToken(int token, char *data);
 };
 #endif
 

@@ -86,7 +86,7 @@ typedef struct outPacket_s {
 // the parseEntities array must be large enough to hold PACKET_BACKUP frames of
 // entities, so that when a delta compressed message arives from the server
 // it can be un-deltad from the original
-#define	MAX_PARSE_ENTITIES	( PACKET_BACKUP * MAX_SNAPSHOT_ENTITIES )
+#define	MAX_PARSE_ENTITIES	(PACKET_BACKUP * MAX_SNAPSHOT_ENTITIES)
 
 extern int g_console_field_width;
 
@@ -450,42 +450,42 @@ extern	cvar_t	*cl_drawRecording;
 
 void CL_Init (void);
 void CL_FlushMemory(void);
-void CL_ShutdownAll( qboolean shutdownRef );
-void CL_AddReliableCommand( const char *cmd, qboolean isDisconnectCmd );
+void CL_ShutdownAll(qboolean shutdownRef);
+void CL_AddReliableCommand(const char *cmd, qboolean isDisconnectCmd);
 
-void CL_StartHunkUsers( void );
+void CL_StartHunkUsers(void);
 
-qboolean CL_GetSnapshot( int snapshotNumber, snapshot_t *snapshot );
-qboolean CL_GetDefaultState( int index, entityState_t *state );
-qboolean CL_GetServerCommand( int serverCommandNumber );
-qboolean CL_GetUserCmd( int cmdNumber, usercmd_t *ucmd );
-void CL_SetUserCmdValue( int userCmdValue, float sensitivityScale, float mPitchOverride, float mYawOverride, float mSensitivityOverride, int fpSel, int invenSel );
+qboolean CL_GetSnapshot(int snapshotNumber, snapshot_t *snapshot);
+qboolean CL_GetDefaultState(int index, entityState_t *state);
+qboolean CL_GetServerCommand(int serverCommandNumber);
+qboolean CL_GetUserCmd(int cmdNumber, usercmd_t *ucmd);
+void CL_SetUserCmdValue(int userCmdValue, float sensitivityScale, float mPitchOverride, float mYawOverride, float mSensitivityOverride, int fpSel, int invenSel);
 
 void CL_Disconnect_f (void);
 void CL_GetChallengePacket (void);
-void CL_Vid_Restart_f( void );
+void CL_Vid_Restart_f(void);
 void CL_Snd_Restart_f (void);
-void CL_StartDemoLoop( void );
-void CL_NextDemo( void );
-void CL_ReadDemoMessage( void );
+void CL_StartDemoLoop(void);
+void CL_NextDemo(void);
+void CL_ReadDemoMessage(void);
 
 void CL_InitDownloads(void);
 void CL_NextDownload(void);
 
-void CL_GetPing( int n, char *buf, int buflen, int *pingtime );
-void CL_GetPingInfo( int n, char *buf, int buflen );
-void CL_ClearPing( int n );
-int CL_GetPingQueueCount( void );
+void CL_GetPing(int n, char *buf, int buflen, int *pingtime);
+void CL_GetPingInfo(int n, char *buf, int buflen);
+void CL_ClearPing(int n);
+int CL_GetPingQueueCount(void);
 
-void CL_InitRef( void );
+void CL_InitRef(void);
 
-int CL_ServerStatus( const char *serverAddress, char *serverStatusString, int maxLen );
+int CL_ServerStatus(const char *serverAddress, char *serverStatusString, int maxLen);
 
 qboolean CL_CheckPaused(void);
 
-void CL_DrawEngineMenus( void );
-void CL_UpdateCursorPosition( int dx, int dy );
-void CL_CursorButton( int key );
+void CL_DrawEngineMenus(void);
+void CL_UpdateCursorPosition(int dx, int dy);
+void CL_CursorButton(int key);
 
 //
 // cl_input
@@ -503,10 +503,10 @@ void CL_ShutdownInput(void);
 void CL_SendCmd (void);
 void CL_ClearState (void);
 
-void CL_WritePacket( void );
+void CL_WritePacket(void);
 
 float CL_KeyState (kbutton_t *key);
-const char *Key_KeynumToString( int keynum/*, qboolean bTranslate */ ); //note: translate is only called for menu display not configs
+const char *Key_KeynumToString(int keynum/*, qboolean bTranslate */); //note: translate is only called for menu display not configs
 
 //
 // cl_parse.c
@@ -514,17 +514,17 @@ const char *Key_KeynumToString( int keynum/*, qboolean bTranslate */ ); //note: 
 extern int cl_connectedToPureServer;
 extern int cl_connectedToCheatServer;
 
-void CL_SystemInfoChanged( void );
-void CL_ParseServerMessage( msg_t *msg );
+void CL_SystemInfoChanged(void);
+void CL_ParseServerMessage(msg_t *msg);
 
 //====================================================================
 
-void	CL_ServerInfoPacket( const netadr_t *from, msg_t *msg );
-void	CL_LocalServers_f( void );
-void	CL_GlobalServers_f( void );
-void	CL_FavoriteServers_f( void );
-void	CL_Ping_f( void );
-qboolean CL_UpdateVisiblePings_f( int source );
+void	CL_ServerInfoPacket(const netadr_t *from, msg_t *msg);
+void	CL_LocalServers_f(void);
+void	CL_GlobalServers_f(void);
+void	CL_FavoriteServers_f(void);
+void	CL_Ping_f(void);
+qboolean CL_UpdateVisiblePings_f(int source);
 
 
 //
@@ -540,11 +540,11 @@ void Con_DrawNotify (void);
 void Con_ClearNotify (void);
 void Con_RunConsole (void);
 void Con_DrawConsole (void);
-void Con_PageUp( void );
-void Con_PageDown( void );
-void Con_Top( void );
-void Con_Bottom( void );
-void Con_Close( void );
+void Con_PageUp(void);
+void Con_PageDown(void);
+void Con_Top(void);
+void Con_Bottom(void);
+void Con_Close(void);
 
 
 //
@@ -555,28 +555,28 @@ void	SCR_UpdateScreen (void);
 
 void	SCR_DebugGraph (float value, int color);
 
-int		SCR_GetBigStringWidth( const char *str );	// returns in virtual 640x480 coordinates
+int		SCR_GetBigStringWidth(const char *str);	// returns in virtual 640x480 coordinates
 
-void	SCR_FillRect( float x, float y, float width, float height,
-					 const float *color );
-void	SCR_DrawPic( float x, float y, float width, float height, qhandle_t hShader );
-void	SCR_DrawNamedPic( float x, float y, float width, float height, const char *picname );
+void	SCR_FillRect(float x, float y, float width, float height,
+					 const float *color);
+void	SCR_DrawPic(float x, float y, float width, float height, qhandle_t hShader);
+void	SCR_DrawNamedPic(float x, float y, float width, float height, const char *picname);
 
-void	SCR_DrawBigString( int x, int y, const char *s, float alpha, qboolean noColorEscape );			// draws a string with embedded color control characters with fade
-void	SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color, qboolean noColorEscape );	// ignores embedded color control characters
-void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
-void	SCR_DrawSmallChar( int x, int y, int ch );
+void	SCR_DrawBigString(int x, int y, const char *s, float alpha, qboolean noColorEscape);			// draws a string with embedded color control characters with fade
+void	SCR_DrawBigStringColor(int x, int y, const char *s, vec4_t color, qboolean noColorEscape);	// ignores embedded color control characters
+void	SCR_DrawSmallStringExt(int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape);
+void	SCR_DrawSmallChar(int x, int y, int ch);
 
 
 //
 // cl_cin.c
 //
 
-void CL_PlayCinematic_f( void );
+void CL_PlayCinematic_f(void);
 void SCR_DrawCinematic (void);
 void SCR_RunCinematic (void);
 void SCR_StopCinematic (void);
-int CIN_PlayCinematic( const char *arg0, int xpos, int ypos, int width, int height, int bits);
+int CIN_PlayCinematic(const char *arg0, int xpos, int ypos, int width, int height, int bits);
 e_status CIN_StopCinematic(int handle);
 e_status CIN_RunCinematic (int handle);
 void CIN_DrawCinematic (int handle);
@@ -588,21 +588,21 @@ void CIN_CloseAllVideos(void);
 //
 // cl_cgame.c
 //
-void CL_InitCGame( void );
-void CL_ShutdownCGame( void );
-qboolean CL_GameCommand( void );
-void CL_CGameRendering( stereoFrame_t stereo );
-void CL_SetCGameTime( void );
-void CL_FirstSnapshot( void );
+void CL_InitCGame(void);
+void CL_ShutdownCGame(void);
+qboolean CL_GameCommand(void);
+void CL_CGameRendering(stereoFrame_t stereo);
+void CL_SetCGameTime(void);
+void CL_FirstSnapshot(void);
 void CL_ShaderStateChanged(void);
 
 //
 // cl_ui.c
 //
-void CL_InitUI( void );
-void CL_ShutdownUI( void );
-int Key_GetCatcher( void );
-void Key_SetCatcher( int catcher );
+void CL_InitUI(void);
+void CL_ShutdownUI(void);
+int Key_GetCatcher(void);
+void Key_SetCatcher(int catcher);
 void LAN_LoadCachedServers();
 void LAN_SaveServersToCache();
 
@@ -610,16 +610,16 @@ void LAN_SaveServersToCache();
 //
 // cl_net_chan.c
 //
-void CL_Netchan_Transmit( netchan_t *chan, msg_t* msg);	//int length, const byte *data );
-void CL_Netchan_TransmitNextFragment( netchan_t *chan );
-qboolean CL_Netchan_Process( netchan_t *chan, msg_t *msg );
+void CL_Netchan_Transmit(netchan_t *chan, msg_t* msg);	//int length, const byte *data);
+void CL_Netchan_TransmitNextFragment(netchan_t *chan);
+qboolean CL_Netchan_Process(netchan_t *chan, msg_t *msg);
 
 //
 // cl_avi.c
 //
-qboolean CL_OpenAVIForWriting( const char *filename );
-void CL_TakeVideoFrame( void );
-void CL_WriteAVIVideoFrame( const byte *imageBuffer, int size );
-void CL_WriteAVIAudioFrame( const byte *pcmBuffer, int size );
-qboolean CL_CloseAVI( void );
-qboolean CL_VideoRecording( void );
+qboolean CL_OpenAVIForWriting(const char *filename);
+void CL_TakeVideoFrame(void);
+void CL_WriteAVIVideoFrame(const byte *imageBuffer, int size);
+void CL_WriteAVIAudioFrame(const byte *pcmBuffer, int size);
+qboolean CL_CloseAVI(void);
+qboolean CL_VideoRecording(void);
